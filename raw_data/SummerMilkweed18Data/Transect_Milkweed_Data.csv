@@ -1,0 +1,958 @@
+Population ID (Patch ID),Actual Population ID,Plant #,"Pollinia Removed (Inflorescence 1, Flower 1)","Pollinia Removed (Inflorescence 1, Flower 2)","Pollinia Removed (Inflorescence 1, Flower 3)","Pollinia Removed (Inflorescence 2, Flower 1)","Pollinia Removed (Inflorescence 2, Flower 2)","Pollinia Removed (Inflorescence 2, Flower 3)","Pollinia Removed (Inflorescence 3, Flower 1)","Pollinia Removed (Inflorescence 3, Flower 2)","Pollinia Removed (Inflorescence 3, Flower 3)",Area (sq m),Plants Present,Weevil Attack/Eggs,2011 NLCD Land Use/Land Cover within 200 m,Notes,"Population Age Stage (Early, Middle, Late)",Pods Seen,Date Found,Latitude,Longitude,Longitude,Longitude,Longitude,Longitude,Longitude,Longitude,Longitude,Longitude,Longitude,Longitude,Date Revisited,Height (cm),Pods Produced,Peduncles,Leaf collected?,"Leaf collected? 1 = yes, 0 = no",Seeds collected?,"Seeds collected? 1 = yes, 0 = no",Notes
+AS001,MW001,1,1,1,0,3,1,1,0,0,1,15,40,N,"Developed, High Intensity (CCT/UofT buildings)
+Developed, Open Space (Landscaped Area/Garden)",UofT CCT garden,Not recorded,Not recorded,7/9/2018,43.550556,-79.663,,,,,,,,,,,9/16/2018,72,2,3,yes,1,yes,1,>3 m between plants
+AS001,MW001,2,3,1,1,2,2,0,No third inflorescence,No third inflorescence,No third inflorescence,15,40,N,"Developed, High Intensity (CCT/UofT buildings)
+Developed, Open Space (Landscaped Area/Garden)",UofT CCT garden,Not recorded,Not recorded,7/9/2018,43.550556,-79.663,,,,,,,,,,,9/16/2018,121,nothing written,6,yes,1,yes,1,>3 m between plants
+AS001,MW001,3,1,0,1,3,1,1,1,1,2,15,40,N,"Developed, High Intensity (CCT/UofT buildings)
+Developed, Open Space (Landscaped Area/Garden)",UofT CCT garden,Not recorded,Not recorded,7/9/2018,43.550556,-79.663,,,,,,,,,,,9/16/2018,84,3,3,yes,1,yes,1,>3 m between plants
+AS001,MW001,4,2,4,4,0,3,2,4,3,3,15,40,N,"Developed, High Intensity (CCT/UofT buildings)
+Developed, Open Space (Landscaped Area/Garden)",UofT CCT garden,Not recorded,Not recorded,7/9/2018,43.550556,-79.663,,,,,,,,,,,9/16/2018,118,11,6,yes,1,yes,1,>3 m between plants
+AS001,MW001,5,2,1,2,2,0,1,1,1,4,15,40,N,"Developed, High Intensity (CCT/UofT buildings)
+Developed, Open Space (Landscaped Area/Garden)",UofT CCT garden,Not recorded,Not recorded,7/9/2018,43.550556,-79.663,C:1,,,,,,,,,,9/16/2018,94,7,5,yes,1,yes,1,>3 m between plants
+AS002,MW002,1,1,1,0,2,1,2,1,3,2,10,25,Y,"Grassland/Herbaceous
+Developed, Open Space
+Deciduous Forest",Erindale Park hill,Not recorded,Not recorded,7/9/2018,43.550225,-79.654062,,,,,,,,,,,9/16/2018,86,3,4,yes,1,yes,1,>3 m between plants
+AS002,MW002,2,2,3,0,1,0,1,2,4,4,10,25,Y,"Grassland/Herbaceous
+Developed, Open Space
+Deciduous Forest",Erindale Park hill,Not recorded,Not recorded,7/9/2018,43.550225,-79.654062,,,,S:1 (escaped),,,,,,,9/16/2018,100,11,7,yes,1,yes,1,>3 m between plants
+AS002,MW002,3,1,3,1,0,2,0,1,0,0,10,25,Y,"Grassland/Herbaceous
+Developed, Open Space
+Deciduous Forest",Erindale Park hill,Not recorded,Not recorded,7/9/2018,43.550225,-79.654062,,,,,,,,,,,9/16/2018,100,2,3,yes,1,yes,1,>3 m between plants
+AS002,MW002,4,0,1,1,0,2,1,2,0,3,10,25,"Y, eggs","Grassland/Herbaceous
+Developed, Open Space
+Deciduous Forest",Erindale Park hill,Not recorded,Not recorded,7/9/2018,43.550225,-79.654062,C:1,,,,,,,,,,9/16/2018,85,2,2,yes,1,yes,1,>3 m between plants
+AS002,MW002,5,2,3,3,0,0,2,0,2,2,10,25,N,"Grassland/Herbaceous
+Developed, Open Space
+Deciduous Forest",Erindale Park hill,Not recorded,Not recorded,7/9/2018,43.550225,-79.654062,C:1,,,,,,,,,,9/16/2018,86,5,3,yes,1,yes,1,>3 m between plants
+AS003,MW003,1,0,0,0,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,3,20,N,"Emergent Herbaceous Wetlands
+Developed, Low Intensity (the visitor's center)
+Developed, Medium Intensity (roads, parking lots)",Riverwood Conservancy marsh pond,Not recorded,Not recorded,7/9/2018,43.565106,-79.671002,C:2,,,,,,,,,,9/14/2018,149,5,6,yes,1,yes,1,"For MW003, all plants collected from AS003. No pods at AS004"
+AS003,MW003,2,0,0,0,0,0,1,No third inflorescence,No third inflorescence,No third inflorescence,3,20,N,"Emergent Herbaceous Wetlands
+Developed, Low Intensity (the visitor's center)
+Developed, Medium Intensity (roads, parking lots)",Riverwood Conservancy marsh pond,Not recorded,Not recorded,7/9/2018,43.565106,-79.671002,"C:1, ant seen",,,,,,,,,,9/14/2018,138,2,5,yes,1,yes,1,"For MW003, all plants collected from AS003. No pods at AS004"
+AS003,MW003,3,1,2,0,2,2,2,0,1,0,3,20,N,"Emergent Herbaceous Wetlands
+Developed, Low Intensity (the visitor's center)
+Developed, Medium Intensity (roads, parking lots)",Riverwood Conservancy marsh pond,Not recorded,Not recorded,7/9/2018,43.565106,-79.671002,3+ ants (one on every flower of 1 inflorescence),,,,,,,,,,9/14/2018,155,7,7,yes,1,yes,1,"For MW003, all plants collected from AS003. No pods at AS004"
+AS003,MW003,4,2,1,1,0,1,0,4,4,3,3,20,N,"Emergent Herbaceous Wetlands
+Developed, Low Intensity (the visitor's center)
+Developed, Medium Intensity (roads, parking lots)",Riverwood Conservancy marsh pond,Not recorded,Not recorded,7/9/2018,43.565106,-79.671002,"ants, monarch egg",,,,,,,,,,9/14/2018,113,3,5,yes,1,yes,1,"For MW003, all plants collected from AS003. No pods at AS004"
+AS003,MW003,5,2,0,0,3,1,1,1,1,2,3,20,N,"Emergent Herbaceous Wetlands
+Developed, Low Intensity (the visitor's center)
+Developed, Medium Intensity (roads, parking lots)",Riverwood Conservancy marsh pond,Not recorded,Not recorded,7/9/2018,43.565106,-79.671002,,,,,,,,,,,9/14/2018,161,9,7,yes,1,yes,1,"For MW003, all plants collected from AS003. No pods at AS004"
+AS004,MW003,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,25,30,N,"Scrub/Shrub
+Open Water
+Deciduous Forest",Riverwood Conservancy Credit River bank,Not recorded,Not recorded,7/9/2018,43.562538,-79.674057,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW003, all plants collected from AS003. No pods at AS004"
+AS004,MW003,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,25,30,N,"Scrub/Shrub
+Open Water
+Deciduous Forest",Riverwood Conservancy Credit River bank,Not recorded,Not recorded,7/9/2018,43.562538,-79.674057,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW003, all plants collected from AS003. No pods at AS004"
+AS004,MW003,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,25,30,N,"Scrub/Shrub
+Open Water
+Deciduous Forest",Riverwood Conservancy Credit River bank,Not recorded,Not recorded,7/9/2018,43.562538,-79.674057,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW003, all plants collected from AS003. No pods at AS004"
+AS004,MW003,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,25,30,"Y, eggs","Scrub/Shrub
+Open Water
+Deciduous Forest",Riverwood Conservancy Credit River bank,Not recorded,Not recorded,7/9/2018,43.562538,-79.674057,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW003, all plants collected from AS003. No pods at AS004"
+AS004,MW003,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,25,30,N,"Scrub/Shrub
+Open Water
+Deciduous Forest",Riverwood Conservancy Credit River bank,Not recorded,Not recorded,7/9/2018,43.562538,-79.674057,C:1,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW003, all plants collected from AS003. No pods at AS004"
+AS005,MW004,1,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,20,"Y, eggs","Scrub/Shrub
+Open Water
+Deciduous Forest","Hewick Meadows. Much evidence of herbivory by insects: wrinkled, disformed, discolored/splotchy leaves",Not recorded,Not recorded,7/9/2018,43.567334,-79.686386,Y,,,,,,,,,,9/16/2018,130,1,4,yes,1,yes,1,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 1."
+AS005,MW004,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,20,N,"Scrub/Shrub
+Open Water
+Deciduous Forest","Hewick Meadows. Much evidence of herbivory by insects: wrinkled, disformed, discolored/splotchy leaves",Not recorded,Not recorded,7/9/2018,43.567334,-79.686386,,,,,,,,,,,,,,,,,,,
+AS005,MW004,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,20,N,"Scrub/Shrub
+Open Water
+Deciduous Forest","Hewick Meadows. Much evidence of herbivory by insects: wrinkled, disformed, discolored/splotchy leaves",Not recorded,Not recorded,7/9/2018,43.567334,-79.686386,Big spider (photo),,,,,,,,,,,,,,,,,,
+AS005,MW004,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,20,N,"Scrub/Shrub
+Open Water
+Deciduous Forest","Hewick Meadows. Much evidence of herbivory by insects: wrinkled, disformed, discolored/splotchy leaves",Not recorded,Not recorded,7/9/2018,43.567334,-79.686386,"4 earwigs, 1 collected",,,,,,,,,,,,,,,,,,
+AS005,MW004,5,0,0,0,Aborted inflorescence,Aborted inflorescence,Aborted inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,20,N,"Scrub/Shrub
+Open Water
+Deciduous Forest","Hewick Meadows. Much evidence of herbivory by insects: wrinkled, disformed, discolored/splotchy leaves",Not recorded,Not recorded,7/9/2018,43.567334,-79.686386,,,,,,,,,,,,,,,,,,,
+AS006,MW004,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,Y,"Open Space, Medium Intensity
+Scrub/Shrub
+Deciduous Forest",Garden in front yard of 4416 Credit Pointe Drive,Not recorded,Not recorded,7/9/2018,43.569004,-79.684245,,,,,,,,,,,,,,,,,,,
+AS006,MW004,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,N,"Open Space, Medium Intensity
+Scrub/Shrub
+Deciduous Forest",Garden in front yard of 4416 Credit Pointe Drive,Not recorded,Not recorded,7/9/2018,43.569004,-79.684245,,,,,,,,,,,,,,,,,,,
+AS007,MW004,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,400,10,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566504,-79.680149,1 earwig,,,,,,,,,,9/16/2018,82,7,2,yes,1,yes,1,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 3."
+AS007,MW004,2,Undeveloped inflorescence,Undeveloped inflorescence,Undeveloped inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,400,10,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566504,-79.680149,2,,,,,,,,,,,,,,,,,,
+AS007,MW004,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,400,10,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566504,-79.680149,1 monarch egg,,,,,,,,,,,,,,,,,,
+AS007,MW004,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,400,10,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566504,-79.680149,,,,,,,,,,,,,,,,,,,
+AS007,MW004,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,400,10,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566504,-79.680149,,,,,,,,,,,,,,,,,,,
+AS008,MW004,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,25,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566922,-79.679797,"2 earwigs, 1 caught",,,,,,,,,,9/16/2018,76,2,2,yes,1,yes,1,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 2."
+AS008,MW004,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,25,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566922,-79.679797,,,,,,,,,,,9/16/2018,60,2,2,yes,1,yes,1,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 4."
+AS008,MW004,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,25,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566922,-79.679797,1,,,,,,,,,,,,,,,,,,
+AS008,MW004,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,25,"Y, eggs",Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566922,-79.679797,1,,,,,,,,,,,,,,,,,,
+AS008,MW004,5,2,1,0,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20,25,"Y, eggs",Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.566922,-79.679797,Monarch caterpillar,,,,,,,,,,,,,,,,,,
+AS009,MW004,1,3,2,2,5,4,0,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,15,5,Y,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.563919,-79.682622,4,,,,,,,,,,9/16/2018,111,5,3,yes,1,yes,1,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 5."
+AS009,MW004,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,15,5,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.563919,-79.682622,Monarch egg,,,,,,,,,,,,,,,,,,
+AS009,MW004,3,4,1,0,3,4,4,No third inflorescence,No third inflorescence,No third inflorescence,15,5,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.563919,-79.682622,"4 soldier beetles, 1 monarch caterpillar",,,,,,,,,,,,,,,,,,
+AS009,MW004,4,1,1,0,2,1,1,4,1,0,15,5,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.563919,-79.682622,"10 soldier beetles, 1 collected",,,,,,,,,,,,,,,,,,
+AS009,MW004,5,1,5,4,2,2,2,1,0,2,15,5,N,Scrub/Shrub,Right of Way (mowed and unmowed areas),Not recorded,Not recorded,7/9/2018,43.563919,-79.682622,"1 earwig; 10 soldier beetles, 1 collected",,,,,,,,,,,,,,,,,,
+AS010,MW005,1,2,0,1,1,0,1,1,0,3,9,15,"Y, eggs","Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.493329,-79.747541,2,,,,,,,,,,9/14/2018,80,2,2,yes,1,yes,1,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS010,MW005,2,0,0,0,0,4,3,1,2,3,9,15,N,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.493329,-79.747541,"Milkweed leaf beetle seen, 4 other insects collected",,,,,,,,,,9/14/2018,94,5,3,yes,1,yes,1,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS010,MW005,3,1,2,2,3,1,1,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,9,15,N,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.493329,-79.747541,1,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS010,MW005,4,2,0,0,0,No viable flower,No viable flower,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,9,15,N,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.493329,-79.747541,2,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS010,MW005,5,0,1,0,0,0,1,1,0,0,9,15,N,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.493329,-79.747541,2,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS011,MW005,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4,5,N,"Cropland
+Developed, Low Intensity","Population looks diseased: spots, discoloration, and herbivory observed",Not recorded,Not recorded,7/10/2018,43.493262,-79.747925,1,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS011,MW005,2,Aborted inflorescence,Aborted inflorescence,Aborted inflorescence,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,4,5,N,"Cropland
+Developed, Low Intensity","Population looks diseased: spots, discoloration, and herbivory observed",Not recorded,Not recorded,7/10/2018,43.493262,-79.747925,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS011,MW005,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4,5,"Y, eggs","Cropland
+Developed, Low Intensity","Population looks diseased: spots, discoloration, and herbivory observed",Not recorded,Not recorded,7/10/2018,43.493262,-79.747925,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS011,MW005,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4,5,N,"Cropland
+Developed, Low Intensity","Population looks diseased: spots, discoloration, and herbivory observed",Not recorded,Not recorded,7/10/2018,43.493262,-79.747925,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS011,MW005,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4,5,N,"Cropland
+Developed, Low Intensity","Population looks diseased: spots, discoloration, and herbivory observed",Not recorded,Not recorded,7/10/2018,43.493262,-79.747925,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS012,MW005,1,0,0,1,0,0,1,1,0,0,30,30,Y,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.492717,-79.748081,"1, 1 ladybug seen",,,,,,,,,,9/14/2018,114,5,9,yes,1,yes,1,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS012,MW005,2,2,2,2,3,1,0,1,1,0,30,30,Y,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.492717,-79.748081,4,,,,,,,,,,9/14/2018,101,6,3,yes,1,yes,1,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS012,MW005,3,0,0,0,0,0,0,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,30,30,"Y, eggs","Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.492717,-79.748081,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS012,MW005,4,0,4,1,0,0,1,2,1,1,30,30,N,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.492717,-79.748081,"Y, approx. 5 soldier beetles seen",,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS012,MW005,5,4,4,0,5,3,2,0,3,0,30,30,N,"Cropland
+Developed, Low Intensity",,Not recorded,Not recorded,7/10/2018,43.492717,-79.748081,"Y, approx. 3 soldier beetles seen",,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS013,MW005,1,0,0,0,0,0,0,0,0,1,60,20,N,"Cropland
+Developed, Low Intensity",Spread along roadside,Not recorded,Not recorded,7/10/2018,43.492005,-79.749026,Y,,,,,,,,,,9/14/2018,127,4,5,yes,1,yes,1,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS013,MW005,2,0,2,0,0,1,1,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,60,20,N,"Cropland
+Developed, Low Intensity",Spread along roadside,Not recorded,Not recorded,7/10/2018,43.492005,-79.749026,4 ants seen,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS013,MW005,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,60,20,N,"Cropland
+Developed, Low Intensity",Spread along roadside,Not recorded,Not recorded,7/10/2018,43.492005,-79.749026,4 (3 collected),,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS013,MW005,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,60,20,N,"Cropland
+Developed, Low Intensity",Spread along roadside,Not recorded,Not recorded,7/10/2018,43.492005,-79.749026,1,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS013,MW005,5,1,0,0,0,0,0,1,1,0,60,20,N,"Cropland
+Developed, Low Intensity",Spread along roadside,Not recorded,Not recorded,7/10/2018,43.492005,-79.749026,"Y, 5 spp. spiders observed",,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+AS014,MW006,1,0,0,0,0,1,2,1,0,0,300,100,N,"Grassland/Herbaceous
+Developed, Medium Intensity",Roadside swale,Not recorded,Not recorded,7/10/2018,43.438669,-79.780878,"1, ants on ever flower of 2 inflorescences",,,,,,,,,,9/14/2018,87,4,3,yes,1,yes,1,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS014,MW006,2,0,0,0,0,0,0,0,0,0,300,100,Y,"Grassland/Herbaceous
+Developed, Medium Intensity",Roadside swale,Not recorded,Not recorded,7/10/2018,43.438669,-79.780878,2,,,,,,,,,,9/14/2018,112,2,4,yes,1,yes,1,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS014,MW006,3,0,1,1,0,3,1,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,300,100,N,"Grassland/Herbaceous
+Developed, Medium Intensity",Roadside swale,Not recorded,Not recorded,7/10/2018,43.438669,-79.780878,1,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS014,MW006,4,0,1,0,2,2,2,0,3,2,300,100,N,"Grassland/Herbaceous
+Developed, Medium Intensity",Roadside swale,Not recorded,Not recorded,7/10/2018,43.438669,-79.780878,N,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS014,MW006,5,0,0,0,0,0,0,No third inflorescence,No third inflorescence,No third inflorescence,300,100,N,"Grassland/Herbaceous
+Developed, Medium Intensity",Roadside swale,Not recorded,Not recorded,7/10/2018,43.438669,-79.780878,"10 ants seen, 2 insects collected",,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS015,MW006,1,2,5,5,4,4,2,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,10,15,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.434924,-79.777459,1,,,,,,,,,,9/14/2018,103,3,2,yes,1,yes,1,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS015,MW006,2,0,0,0,2,1,2,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,10,15,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.434924,-79.777459,1,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS015,MW006,3,0,0,0,0,0,1,No third inflorescence,No third inflorescence,No third inflorescence,10,15,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.434924,-79.777459,3 milkweed beetles (2 collected),,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS015,MW006,4,2,0,1,3,2,2,No third inflorescence,No third inflorescence,No third inflorescence,10,15,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.434924,-79.777459,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS015,MW006,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,10,15,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.434924,-79.777459,"1, 1 soldier beetle seen",,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS016,MW006,1,0,0,0,0,2,3,1,0,1,200,60,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.436081,-79.777321,1 milkweed beetle seen,,,,,,,,,,9/14/2018,151,7,6,yes,1,yes,1,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS016,MW006,2,0,0,0,2,0,2,0,1,0,200,60,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.436081,-79.777321,1 collected. Ants covering 1 inflorescence,,,,,,,,,,9/14/2018,163,13,9,yes,1,yes,1,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS016,MW006,3,0,0,0,3,3,2,0,0,2,200,60,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.436081,-79.777321,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS016,MW006,4,4,0,2,0,0,1,No third inflorescence,No third inflorescence,No third inflorescence,200,60,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.436081,-79.777321,"Ants seen, 1 collected",,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS016,MW006,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,200,60,N,"Scrub/Shrub
+Developed, Medium Intensity",,Not recorded,Not recorded,7/10/2018,43.436081,-79.777321,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+AS017,MW007,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,N,"Open Water
+Deciduous Forest
+Developed, Open Space",Lowville Park. Much herbivory observed.,Not recorded,Not recorded,7/10/2018,43.434493,-79.904435,3+ collected,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS017,MW007,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,N,"Open Water
+Deciduous Forest
+Developed, Open Space",Lowville Park. Much herbivory observed.,Not recorded,Not recorded,7/10/2018,43.434493,-79.904435,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS018,MW007,1,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,3,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Lowville Park,Not recorded,Not recorded,7/10/2018,43.434819,-79.902274,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS018,MW007,2,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,3,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Lowville Park,Not recorded,Not recorded,7/10/2018,43.434819,-79.902274,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS018,MW007,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,3,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Lowville Park,Not recorded,Not recorded,7/10/2018,43.434819,-79.902274,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS019,MW007,1,0,1,1,1,3,2,1,4,1,36,50,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",,Not recorded,Not recorded,7/10/2018,43.434125,-79.903894,Y,,,,,,,,,,9/13/2018,99,5,4,yes,1,yes,1,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS019,MW007,2,1,0,1,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,36,50,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",,Not recorded,Not recorded,7/10/2018,43.434125,-79.903894,2 earwings not collected,,,,,,,,,,9/13/2018,136,11,5,yes,1,yes,1,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS019,MW007,3,2,0,2,2,2,4,2,4,2,36,50,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",,Not recorded,Not recorded,7/10/2018,43.434125,-79.903894,1,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS019,MW007,4,3,0,1,0,1,2,1,0,4,36,50,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",,Not recorded,Not recorded,7/10/2018,43.434125,-79.903894,"Y, 1 soldier beetle not collected",,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS019,MW007,5,1,2,0,3,2,3,No third inflorescence,No third inflorescence,No third inflorescence,36,50,N,"Open Water
+Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",,Not recorded,Not recorded,7/10/2018,43.434125,-79.903894,1,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS020,MW007,1,0,1,2,1,5,1,3,0,3,900,300,N,"Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Large sloping field at Lowville Park,Not recorded,Not recorded,7/10/2018,43.433302,-79.902403,2,,,,,,,,,,9/13/2018,74,5,2,yes,1,yes,1,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS020,MW007,2,0,0,0,0,1,1,5,4,0,900,300,"Y, eggs","Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Large sloping field at Lowville Park,Not recorded,Not recorded,7/10/2018,43.433302,-79.902403,4. 4+ milkweed beetles seen. 20+ soldier beetles seen.,,,,,,,,,,9/13/2018,141,10,6,yes,1,yes,1,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS020,MW007,3,3,1,4,0,2,3,No third inflorescence,No third inflorescence,No third inflorescence,900,300,N,"Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Large sloping field at Lowville Park,Not recorded,Not recorded,7/10/2018,43.433302,-79.902403,"10+ soldier beetles, 1 collected. Leafhopper seen",,,,,,,,,,9/13/2018,139,8,3,yes,1,yes,1,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS020,MW007,4,4,5,5,1,1,1,4,4,No viable flower,900,300,N,"Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Large sloping field at Lowville Park,Not recorded,Not recorded,7/10/2018,43.433302,-79.902403,Soldier beetles seen. Spider collected.,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS020,MW007,5,2,2,3,0,2,3,3,4,4,900,300,N,"Deciduous Forest
+Developed, Open Space
+Grassland/Herbaceous",Large sloping field at Lowville Park,Not recorded,Not recorded,7/10/2018,43.433302,-79.902403,"Soldier beetles seen, 1 collected. Ants seen.",,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,1,N/A,0,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+AS021,MW008,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,21,25,N,"Open Water
+Cropland
+Developed, Low Intensity",Population next to stop sign,Not recorded,Not recorded,7/10/2018,43.457451,-79.866815,,,,,,,,,,,9/13/2018,126,4,3,yes,1,yes,1,Plants less than 3 m apart
+AS021,MW008,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,21,25,N,"Open Water
+Cropland
+Developed, Low Intensity",Population next to stop sign,Not recorded,Not recorded,7/10/2018,43.457451,-79.866815,,,,,,,,,,,9/13/2018,115,3,3,yes,1,yes,1,Plants less than 3 m apart
+AS021,MW008,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,21,25,N,"Open Water
+Cropland
+Developed, Low Intensity",Population next to stop sign,Not recorded,Not recorded,7/10/2018,43.457451,-79.866815,,,,,,,,,,,9/13/2018,109,1,1,yes,1,yes,1,Plants less than 3 m apart
+AS021,MW008,4,0,1,1,2,5,3,3,3,3,21,25,N,"Open Water
+Cropland
+Developed, Low Intensity",Population next to stop sign,Not recorded,Not recorded,7/10/2018,43.457451,-79.866815,Ants seen,,,,,,,,,,9/13/2018,95,0,0,yes,1,no,0,Plants less than 3 m apart
+AS021,MW008,5,0,1,1,0,0,0,1,0,0,21,25,N,"Open Water
+Cropland
+Developed, Low Intensity",Population next to stop sign,Not recorded,Not recorded,7/10/2018,43.457451,-79.866815,,,,,,,,,,,9/13/2018,73,0,0,yes,1,no,0,Plants less than 3 m apart
+AS022,MW009,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,21,25,NA,"Cropland
+Developed, Low Intensity",POPULATION NOT SAMPLED. Location too steep to access safetly.,Not recorded,Not recorded,7/10/2018,43.516263,-79.779220,NA,,,,,,,,,,9/14/2018,109,5,3,yes,1,yes,1,
+AS022,MW009,2,,,,,,,,,,21,25,NA,"Cropland
+Developed, Low Intensity",POPULATION NOT SAMPLED. Location too steep to access safetly.,Not recorded,Not recorded,7/10/2018,43.516263,-79.779220,,,,,,,,,,,9/14/2018,83,2,3,yes,1,yes,1,
+AS022,MW009,3,,,,,,,,,,21,25,NA,"Cropland
+Developed, Low Intensity",POPULATION NOT SAMPLED. Location too steep to access safetly.,Not recorded,Not recorded,7/10/2018,43.516263,-79.779220,,,,,,,,,,,9/14/2018,30,0,0,yes,1,no,0,
+AS022,MW009,4,,,,,,,,,,21,25,NA,"Cropland
+Developed, Low Intensity",POPULATION NOT SAMPLED. Location too steep to access safetly.,Not recorded,Not recorded,7/10/2018,43.516263,-79.779220,,,,,,,,,,,9/14/2018,47,0,0,yes,1,no,0,
+AS022,MW009,5,,,,,,,,,,21,25,NA,"Cropland
+Developed, Low Intensity",POPULATION NOT SAMPLED. Location too steep to access safetly.,Not recorded,Not recorded,7/10/2018,43.516263,-79.779220,,,,,,,,,,,9/14/2018,63,0,0,yes,1,no,0,
+AS023,MW010,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,1,N,"Cropland
+Grassland/Herbaceous
+Developed, Low Intensity",,Not recorded,Not recorded,7/13/2018,43.525816,-79.791571,,,,,,,,,,,9/13/2018,35,0,0,yes,1,no,0,
+AS023,MW010,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,1,N,"Cropland
+Grassland/Herbaceous
+Developed, Low Intensity",,Not recorded,Not recorded,7/13/2018,43.525816,-79.791571,1 milkweed beetle seen,,,,,,,,,,9/13/2018,42,0,0,yes,1,no,0,
+AS024,MW011,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,1000,100,N,"Scrub/Shrub
+Developed, High Intensity",Kariya Park,Late,7,7/12/2018,43.589594,-79.638468,,,,,,,,,,,9/19/2018,124,4,4,yes,1,yes,1,plants >3 m apart
+AS024,MW011,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,1000,100,N,"Scrub/Shrub
+Developed, High Intensity",Kariya Park,Late,0,7/12/2018,43.589594,-79.638468,,,,,,,,,,,9/19/2018,123,2,6,yes,1,yes,1,plants >3 m apart
+AS024,MW011,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,1000,100,N,"Scrub/Shrub
+Developed, High Intensity",Kariya Park,Late,7,7/12/2018,43.589594,-79.638468,,,,,,,,,,,9/19/2018,155,6,9,yes,1,yes,1,plants >3 m apart
+AS024,MW011,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,100,N,"Scrub/Shrub
+Developed, High Intensity",Kariya Park,Late,0,7/12/2018,43.589594,-79.638468,1,,,,,,,,,,9/19/2018,137,4,7,yes,1,yes,1,plants >3 m apart
+AS024,MW011,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,100,N,"Scrub/Shrub
+Developed, High Intensity",Kariya Park,Late,0,7/12/2018,43.589594,-79.638468,1,,,,,,,,,,9/19/2018,127,4,5,yes,1,yes,1,plants >3 m apart
+AS025,MW012,1,0,1,1,3,0,2,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,20,15,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Medium Intensity",Springbank Park,Mid-Late,0,7/12/2018,43.534585,-79.645432,,,,,,,,,,,9/16/2018,130,9,5,yes,1,yes,1,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+AS025,MW012,2,1,2,1,0,0,5,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,20,15,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Medium Intensity",Springbank Park,Mid-Late,4,7/12/2018,43.534585,-79.645432,,,,,,,,,,,9/16/2018,84,1,2,yes,1,yes,1,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+AS025,MW012,3,3,3,3,2,2,3,1,1,3,20,15,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Medium Intensity",Springbank Park,Mid-Late,0,7/12/2018,43.534585,-79.645432,Ants seen,,,,,,,,,,9/16/2018,137,12,5,yes,1,yes,1,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+AS025,MW012,4,1,3,3,3,0,3,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,20,15,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Medium Intensity",Springbank Park,Mid-Late,0,7/12/2018,43.534585,-79.645432,1,,,,,,,,,,9/16/2018,97,5,4,yes,1,yes,1,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+AS025,MW012,5,1,3,3,1,2,3,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,20,15,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Medium Intensity",Springbank Park,Mid-Late,0,7/12/2018,43.534585,-79.645432,1 vial coll. Soldier beetle observed,,,,,,,,,,9/16/2018,134,10,3,yes,1,yes,1,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+AS026,MW013,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,6,15,N,"Developed, Medium Intensity",Garden outside Stan Design. Not planted; colonized naturally- spoke to worker.,Late,8,7/12/2018,43.615384,-79.570454,2 earwigs seen. 1 milkweed beetle collected.,,,,,,,,,,9/10/2018,128,12,4,yes (pod collected; no leaves left),1,yes,1,Dense patch. <3m between plants
+AS026,MW013,2,1,0,1,3,0,3,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,6,15,N,"Developed, Medium Intensity",Garden outside Stan Design. Not planted; colonized naturally- spoke to worker.,Late,13,7/12/2018,43.615384,-79.570454,ant and earwig seen. 1 red spider collected.,,,,,,,,,,9/10/2018,79,6,4,yes,1,yes,1,Dense patch. <3m between plants
+AS026,MW013,3,3,3,5,0,0,4,4,1,3,6,15,N,"Developed, Medium Intensity",Garden outside Stan Design. Not planted; colonized naturally- spoke to worker.,Late,0,7/12/2018,43.615384,-79.570454,"moth, monarch eggs, ants, and earwig seen.",,,,,,,,,,9/10/2018,91,3,2,yes,1,yes,1,Dense patch. <3m between plants
+AS026,MW013,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,6,15,N,"Developed, Medium Intensity",Garden outside Stan Design. Not planted; colonized naturally- spoke to worker.,Late,2,7/12/2018,43.615384,-79.570454,monarch eggs seen,,,,,,,,,,9/10/2018,115,11,7,yes,1,yes,1,Dense patch. <3m between plants
+AS026,MW013,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6,15,N,"Developed, Medium Intensity",Garden outside Stan Design. Not planted; colonized naturally- spoke to worker.,Late,0,7/12/2018,43.615384,-79.570454,monarch eggs seen,,,,,,,,,,9/10/2018,107,8,4,yes,1,yes,1,Dense patch. <3m between plants
+AS027,MW014,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,50,N,"Scrub/Shrub
+Developed, Open Space
+Developed, Medium Intensity","Right of Way at Tom Riley Park. Young plants, probably mowed within a year.",Late,0,7/12/2018,43.648581,-79.521463,2 collected,,,,,,,,,,9/10/2018,85,1,1,yes,1,yes,1,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+AS027,MW014,2,1,1,0,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,4000,50,N,"Scrub/Shrub
+Developed, Open Space
+Developed, Medium Intensity","Right of Way at Tom Riley Park. Young plants, probably mowed within a year.",Late,13,7/12/2018,43.648581,-79.521463,"2 collected, 3 ladybugs seen",,,,,,,,,,9/10/2018,82,1,2,yes,1,yes,1,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+AS027,MW014,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,50,N,"Scrub/Shrub
+Developed, Open Space
+Developed, Medium Intensity","Right of Way at Tom Riley Park. Young plants, probably mowed within a year.",Late,0,7/12/2018,43.648581,-79.521463,monarch eggs seen,,,,,,,,,,9/10/2018,91,5,3,yes,1,no- immature seeds,0,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+AS027,MW014,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,50,N,"Scrub/Shrub
+Developed, Open Space
+Developed, Medium Intensity","Right of Way at Tom Riley Park. Young plants, probably mowed within a year.",Late,3,7/12/2018,43.648581,-79.521463,,,,,,,,,,,9/10/2018,82,2,4,yes,1,yes,1,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+AS027,MW014,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,50,N,"Scrub/Shrub
+Developed, Open Space
+Developed, Medium Intensity","Right of Way at Tom Riley Park. Young plants, probably mowed within a year.",Late,0,7/12/2018,43.648581,-79.521463,monarch egg seen,,,,,,,,,,9/10/2018,79,1,4,yes,1,yes,1,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+AS028,MW015,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,25,N,"Developed, Medium Intensity
+Developed, Open Space",Etienne Brule Park. Planted 2 years ago- spoke to community member.,Late,6,7/12/2018,43.661177,-79.500382,,,,,,,,,,,9/10/2018,114,5,2,yes,1,yes,1,Dense patch. <3m between plants
+AS028,MW015,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,25,N,"Developed, Medium Intensity
+Developed, Open Space",Etienne Brule Park. Planted 2 years ago- spoke to community member.,Late,2,7/12/2018,43.661177,-79.500382,1 collected. 7 monarch eggs seen.,,,,,,,,,,9/10/2018,78,5,2,yes,1,yes,1,Dense patch. <3m between plants
+AS028,MW015,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,12,25,N,"Developed, Medium Intensity
+Developed, Open Space",Etienne Brule Park. Planted 2 years ago- spoke to community member.,Late,0,7/12/2018,43.661177,-79.500382,2 collected.,,,,,,,,,,9/10/2018,123,2,1,yes,1,yes,1,Dense patch. <3m between plants
+AS028,MW015,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,12,25,N,"Developed, Medium Intensity
+Developed, Open Space",Etienne Brule Park. Planted 2 years ago- spoke to community member.,Late,2,7/12/2018,43.661177,-79.500382,monarch eggs seen.,,,,,,,,,,9/10/2018,137,7,3,yes,1,yes,1,Dense patch. <3m between plants
+AS028,MW015,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,25,N,"Developed, Medium Intensity
+Developed, Open Space",Etienne Brule Park. Planted 2 years ago- spoke to community member.,Late,2,7/12/2018,43.661177,-79.500382,,,,,,,,,,,9/10/2018,123,1,2,yes,1,yes,1,Dense patch. <3m between plants
+AS029,MW016,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,100,15,N,"Grassland/Herbaceous
+Developed, High Intensity",Patch next to highway turn-off lane,Early-Late,0,7/12/2018,43.711948,-79.535894,,,,,,,,,,,9/12/2018,88,2,1,yes,1,yes,1,Original sampled plants mown; crossed ramp and sampled from there!
+AS029,MW016,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,100,15,N,"Grassland/Herbaceous
+Developed, High Intensity",Patch next to highway turn-off lane,Early-Late,4,7/12/2018,43.711948,-79.535894,,,,,,,,,,,9/12/2018,72,1,1,yes,1,yes,1,Original sampled plants mown; crossed ramp and sampled from there!
+AS029,MW016,3,3,0,0,0,2,0,3,0,5,100,15,N,"Grassland/Herbaceous
+Developed, High Intensity",Patch next to highway turn-off lane,Early-Late,0,7/12/2018,43.711948,-79.535894,"1 collected, already dead",,,,,,,,,,9/12/2018,129,0,6,yes,1,no,0,Original sampled plants mown; crossed ramp and sampled from there!
+AS029,MW016,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,100,15,N,"Grassland/Herbaceous
+Developed, High Intensity",Patch next to highway turn-off lane,Early-Late,3,7/12/2018,43.711948,-79.535894,1 collected,,,,,,,,,,9/12/2018,88,0,4,yes,1,no,0,Original sampled plants mown; crossed ramp and sampled from there!
+AS029,MW016,5,1,0,4,4,3,0,1,0,1,100,15,N,"Grassland/Herbaceous
+Developed, High Intensity",Patch next to highway turn-off lane,Early-Late,0,7/12/2018,43.711948,-79.535894,"bumblebee, earwig seen. 1 milkweed beetle collected.",,,,,,,,,,9/12/2018,97,4,2,yes,1,yes,1,Original sampled plants mown; crossed ramp and sampled from there!
+AS030,MW017,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,80,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub",Lot to be developed into church soon- can't access private property. Collected samples from milkweed along driveway at 321 Yates Dr.,Late,16,7/13/2018,43.501061,-79.844567,,,,,,,,,,,9/13/2018,117,7,4,yes,1,yes,1,collected from corner; nobody answered. Plants less than 3m apart
+AS030,MW017,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,80,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub",Lot to be developed into church soon- can't access private property. Collected samples from milkweed along driveway at 321 Yates Dr.,Late,11,7/13/2018,43.501061,-79.844567,,,,,,,,,,,9/13/2018,118,5,6,yes,1,yes,1,collected from corner; nobody answered. Plants less than 3m apart
+AS030,MW017,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,80,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub",Lot to be developed into church soon- can't access private property. Collected samples from milkweed along driveway at 321 Yates Dr.,Late,12,7/13/2018,43.501061,-79.844567,,,,,,,,,,,9/13/2018,113,5,3,yes,1,yes,1,collected from corner; nobody answered. Plants less than 3m apart
+AS030,MW017,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,80,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub",Lot to be developed into church soon- can't access private property. Collected samples from milkweed along driveway at 321 Yates Dr.,Late,10,7/13/2018,43.501061,-79.844567,,,,,,,,,,,9/13/2018,105,4,3,yes,1,yes,1,collected from corner; nobody answered. Plants less than 3m apart
+AS030,MW017,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,80,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub",Lot to be developed into church soon- can't access private property. Collected samples from milkweed along driveway at 321 Yates Dr.,Late,0,7/13/2018,43.501061,-79.844567,,,,,,,,,,,9/13/2018,120,6,4,yes,1,yes,1,collected from corner; nobody answered. Plants less than 3m apart
+AS031,MW018,1,5,3,3,3,3,2,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,12,30,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub
+Cropland",,Late,0,7/13/2018,43.484111,-79.837702,,,,,,,,,,,9/13/2018,102,2,2,yes,1,yes,1,"plants 1, 2 are <3 m apart"
+AS031,MW018,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,30,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub
+Cropland",,Late,8,7/13/2018,43.484111,-79.837702,,,,,,,,,,,9/13/2018,118,3,5,yes,1,yes,1,"plants 1, 2 are <3 m apart"
+AS031,MW018,3,1,2,2,0,0,0,4,0,1,12,30,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub
+Cropland",,Late,8,7/13/2018,43.484111,-79.837702,,,,,,,,,,,9/13/2018,90,4,3,yes,1,yes,1,
+AS031,MW018,4,2,0,1,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,30,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub
+Cropland",,Late,0,7/13/2018,43.484111,-79.837702,,,,,,,,,,,9/13/2018,87,2,2,yes,1,yes,1,
+AS031,MW018,5,0,3,0,2,0,1,2,3,0,12,30,N,"Developed, Medium Intensity
+Grassland/Herbaceous
+Shrub/Scrub
+Cropland",,Late,11,7/13/2018,43.484111,-79.837702,,,,,,,,,,,9/13/2018,105,2,3,yes,1,yes,1,
+AS032,MW019,1,0,0,0,Aborted inflorescence,Aborted inflorescence,Aborted inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,18,20,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",,Middle,0,7/13/2018,43.41401,-79.953028,,,,,,,,,,,9/13/2018,105,1,4,yes,1,yes,1,all plants < 3 m apart
+AS032,MW019,2,0,1,1,5,1,5,0,3,1,18,20,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",,Middle,0,7/13/2018,43.41401,-79.953028,1,,,,,,,,,,9/13/2018,118,2,5,yes,1,yes,1,all plants < 3 m apart
+AS032,MW019,3,3,4,3,1,4,0,1,2,0,18,20,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",,Middle,0,7/13/2018,43.41401,-79.953028,Monarch eggs,,,,,,,,,,9/13/2018,123,1,3,yes,1,yes,1,all plants < 3 m apart
+AS032,MW019,4,1,0,3,4,3,0,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,18,20,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",,Middle,0,7/13/2018,43.41401,-79.953028,,,,,,,,,,,9/13/2018,104,3,3,yes,1,yes,1,all plants < 3 m apart
+AS032,MW019,5,4,3,2,1,3,3,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,18,20,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",,Middle,0,7/13/2018,43.41401,-79.953028,***STOPPED ADDING INSECT DATA TO SPREADSHEET***,,,,,,,,,,9/13/2018,92,1,2,yes,1,yes,1,all plants < 3 m apart
+AS033,MW020,1,3,4,1,3,0,4,2,4,4,2400,60,N,"Cropland
+Developed, Open Space
+Developed, Medium Intensity",,Middle,0,7/13/2018,43.387612,-79.959232,,,,,,,,,,,9/13/2018,99,1,3,yes,1,yes,1,all plants < 3 m apart
+AS033,MW020,2,2,4,4,3,5,5,5,4,2,2400,60,N,"Cropland
+Developed, Open Space
+Developed, Medium Intensity",,Middle,0,7/13/2018,43.387612,-79.959232,,,,,,,,,,,9/13/2018,136,3,6,yes,1,yes,1,all plants < 3 m apart
+AS033,MW020,3,4,4,5,3,1,0,5,4,5,2400,60,N,"Cropland
+Developed, Open Space
+Developed, Medium Intensity",,Middle,0,7/13/2018,43.387612,-79.959232,,,,,,,,,,,9/13/2018,108,1,3,yes,1,yes,1,all plants < 3 m apart
+AS033,MW020,4,5,5,2,4,5,5,4,3,2,2400,60,N,"Cropland
+Developed, Open Space
+Developed, Medium Intensity",,Middle,0,7/13/2018,43.387612,-79.959232,,,,,,,,,,,9/13/2018,123,1,7,yes,1,yes,1,all plants < 3 m apart
+AS033,MW020,5,3,5,3,3,4,3,4,1,2,2400,60,N,"Cropland
+Developed, Open Space
+Developed, Medium Intensity",,Middle,0,7/13/2018,43.387612,-79.959232,,,,,,,,,,,9/13/2018,144,3,5,yes,1,yes,1,all plants < 3 m apart
+AS034,MW021,1,3,1,3,3,4,5,3,5,4,1500,60,Y,Cropland,,Middle,0,7/13/2018,43.399222,-79.930576,,,,,,,,,,,9/13/2018,120,3,3,yes,1,yes,1,"plants 1, 2 < 3m apart"
+AS034,MW021,2,3,2,2,2,2,1,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,1500,60,N,Cropland,,Middle,0,7/13/2018,43.399222,-79.930576,,,,,,,,,,,9/13/2018,113,4,3,yes,1,yes,1,"plants 1, 2 < 3m apart"
+AS034,MW021,3,1,0,5,5,2,5,4,5,3,1500,60,N,Cropland,,Middle,0,7/13/2018,43.399222,-79.930576,,,,,,,,,,,9/13/2018,133,1,3,yes,1,yes,1,"plants 3, 4 < 3m apart"
+AS034,MW021,4,1,3,1,1,3,3,2,4,3,1500,60,N,Cropland,,Middle,0,7/13/2018,43.399222,-79.930576,,,,,,,,,,,9/13/2018,86,2,3,yes,1,yes,1,"plants 3, 4 < 3m apart"
+AS034,MW021,5,2,3,2,1,2,0,3,3,4,1500,60,"Y, eggs",Cropland,,Middle,0,7/13/2018,43.399222,-79.930576,,,,,,,,,,,9/13/2018,152,6,7,yes,1,yes,1,
+AS035,MW022,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30,13,N,"Developed, Low Intensity
+Cropland",No inflorescences; young population?,Not sure,0,7/13/2018,43.377146,-79.973861,,,,,,,,,,,9/13/2018,35,0,0,yes,1,no,0,Only 4 plants
+AS035,MW022,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30,13,N,"Developed, Low Intensity
+Cropland",No inflorescences; young population?,Not sure,0,7/13/2018,43.377146,-79.973861,,,,,,,,,,,9/13/2018,40,0,0,yes,1,no,0,Only 4 plants
+AS035,MW022,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30,13,N,"Developed, Low Intensity
+Cropland",No inflorescences; young population?,Not sure,0,7/13/2018,43.377146,-79.973861,,,,,,,,,,,9/13/2018,33,0,0,yes,1,no,0,Only 4 plants
+AS035,MW022,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30,13,N,"Developed, Low Intensity
+Cropland",No inflorescences; young population?,Not sure,0,7/13/2018,43.377146,-79.973861,,,,,,,,,,,9/13/2018,53,0,0,yes,1,no,0,Only 4 plants
+AS035,MW022,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30,13,N,"Developed, Low Intensity
+Cropland",No inflorescences; young population?,Not sure,0,7/13/2018,43.377146,-79.973861,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Only 4 plants
+AS036,MW023,1,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,600,20,N,"Developed, Low Intensity
+Cropland",Recently mowed,Late,0,7/13/2018,43.371308,-79.981819,,,,,,,,,,,9/13/2018,90,0,0,yes,1,no,0,Plants 1 and 2 are less than 3 m apart
+AS036,MW023,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,600,20,N,"Developed, Low Intensity
+Cropland",Recently mowed,Late,0,7/13/2018,43.371308,-79.981819,,,,,,,,,,,9/13/2018,56,0,0,yes,1,no,0,Plants 1 and 2 are less than 3 m apart
+AS036,MW023,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,600,20,N,"Developed, Low Intensity
+Cropland",Recently mowed,Late,5,7/13/2018,43.371308,-79.981819,,,,,,,,,,,9/13/2018,67,0,0,yes,1,no,0,"Plants 3, 4, 5 are less than 3 m apart"
+AS036,MW023,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,600,20,N,"Developed, Low Intensity
+Cropland",Recently mowed,Late,0,7/13/2018,43.371308,-79.981819,,,,,,,,,,,9/13/2018,113,3,2,yes,1,yes,1,"Plants 3, 4, 5 are less than 3 m apart"
+AS036,MW023,5,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,600,20,N,"Developed, Low Intensity
+Cropland",Recently mowed,Late,0,7/13/2018,43.371308,-79.981819,,,,,,,,,,,9/13/2018,100,0,0,yes,1,no,0,"Plants 3, 4, 5 are less than 3 m apart"
+AS037,MW024,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,2,N,"Developed, Low Intensity
+Cropland",,Not sure,0,7/13/2018,43.363349,-80.01471,,,,,,,,,,,9/13/2018,54,0,0,yes,1,no,0,< 3m apart. Lots of herbivory
+AS037,MW024,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,2,N,"Developed, Low Intensity
+Cropland",,Not sure,0,7/13/2018,43.363349,-80.01471,,,,,,,,,,,9/13/2018,63,0,0,yes,1,no,0,< 3m apart. Lots of herbivory
+AS038,MW025,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,3,12,N,"Developed, High Intensity
+Developed, Medium Intensity",Young population,Not sure,0,7/16/2018,43.726774,-79.432109,,,,,,,,,,,9/10/2018,70,0,0,yes,1,no,0,plants all less than 3 m apart from each other
+AS038,MW025,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,3,12,N,"Developed, High Intensity
+Developed, Medium Intensity",Young population,Not sure,0,7/16/2018,43.726774,-79.432109,,,,,,,,,,,9/10/2018,50,0,0,yes,1,no,0,plants all less than 3 m apart from each other
+AS038,MW025,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,3,12,N,"Developed, High Intensity
+Developed, Medium Intensity",Young population,Not sure,0,7/16/2018,43.726774,-79.432109,,,,,,,,,,,9/10/2018,64,0,0,yes,1,no,0,plants all less than 3 m apart from each other
+AS038,MW025,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,3,12,N,"Developed, High Intensity
+Developed, Medium Intensity",Young population,Not sure,0,7/16/2018,43.726774,-79.432109,,,,,,,,,,,9/10/2018,30,0,0,yes,1,no,0,plants all less than 3 m apart from each other
+AS038,MW025,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,3,12,N,"Developed, High Intensity
+Developed, Medium Intensity",Young population,Not sure,0,7/16/2018,43.726774,-79.432109,,,,,,,,,,,9/10/2018,69,0,0,yes,1,no,0,plants all less than 3 m apart from each other
+AS039,MW026,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,160,8,N,"Developed, High Intensity
+Developed, Open Space",Next to school and highway. 3 monarch eggs. Flemington Park area.,Late,0,7/16/2018,43.719453,-79.445163,,,,,,,,,,,9/10/2018,77,3,2,yes,1,yes,1,3m apart from plant 2 only
+AS039,MW026,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,160,8,N,"Developed, High Intensity
+Developed, Open Space",Next to school and highway. 3 monarch eggs. Flemington Park area.,Late,0,7/16/2018,43.719453,-79.445163,,,,,,,,,,,9/10/2018,105,4,3,yes,1,yes,1,3m apart from other plants
+AS039,MW026,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,160,8,N,"Developed, High Intensity
+Developed, Open Space",Next to school and highway. 3 monarch eggs. Flemington Park area.,Late,0,7/16/2018,43.719453,-79.445163,,,,,,,,,,,9/10/2018,69,0,0,yes,1,no,0,3m apart from plant 2 only
+AS039,MW026,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,160,8,N,"Developed, High Intensity
+Developed, Open Space",Next to school and highway. 3 monarch eggs. Flemington Park area.,Late,6,7/16/2018,43.719453,-79.445163,,,,,,,,,,,9/10/2018,55,0,0,yes,1,no,0,3m apart from plant 2 only
+AS039,MW026,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,160,8,N,"Developed, High Intensity
+Developed, Open Space",Next to school and highway. 3 monarch eggs. Flemington Park area.,Late,3,7/16/2018,43.719453,-79.445163,,,,,,,,,,,9/10/2018,38,0,0,yes,1,no,0,3m apart from plant 2 only
+AS040,MW027,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,48,60,N,"Developed, Open Space
+Developed, High Intensity
+Developed, Medium Intensity",In Baycrest Park garden area. Looks wild; dispersed in weeds.,Mid-Late,2,7/16/2018,43.726466,-79.445593,,,,,,,,,,,9/10/2018,99,4,2,yes,1,yes,1,most of the plants from this site have been mowed or removed; only 20 plants remain
+AS040,MW027,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,48,60,N,"Developed, Open Space
+Developed, High Intensity
+Developed, Medium Intensity",In Baycrest Park garden area. Looks wild; dispersed in weeds.,Mid-Late,4,7/16/2018,43.726466,-79.445593,,,,,,,,,,,9/10/2018,70,4,2,yes,1,yes,1,most of the plants from this site have been mowed or removed; only 20 plants remain
+AS040,MW027,3,4,2,0,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,48,60,N,"Developed, Open Space
+Developed, High Intensity
+Developed, Medium Intensity",In Baycrest Park garden area. Looks wild; dispersed in weeds.,Mid-Late,1,7/16/2018,43.726466,-79.445593,,,,,,,,,,,9/10/2018,79,2,2,yes,1,yes,1,most of the plants from this site have been mowed or removed; only 20 plants remain
+AS040,MW027,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,48,60,N,"Developed, Open Space
+Developed, High Intensity
+Developed, Medium Intensity",In Baycrest Park garden area. Looks wild; dispersed in weeds.,Mid-Late,8,7/16/2018,43.726466,-79.445593,,,,,,,,,,,9/10/2018,79,3,2,yes,1,yes,1,most of the plants from this site have been mowed or removed; only 20 plants remain
+AS040,MW027,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,48,60,N,"Developed, Open Space
+Developed, High Intensity
+Developed, Medium Intensity",In Baycrest Park garden area. Looks wild; dispersed in weeds.,Mid-Late,10,7/16/2018,43.726466,-79.445593,,,,,,,,,,,9/10/2018,75,3,1,yes,1,yes,1,most of the plants from this site have been mowed or removed; only 20 plants remain
+AS041,MW028,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,4000,18,N,"Developed, Open Space
+Developed, Medium Intensity",Caledonia Park,Late,1,7/16/2018,43.713472,-79.463271,,,,,,,,,,,9/10/2018,97,2,1,yes,1,yes,1,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+AS041,MW028,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,18,N,"Developed, Open Space
+Developed, Medium Intensity",Caledonia Park,Late,4,7/16/2018,43.713472,-79.463271,,,,,,,,,,,9/10/2018,85,1,1,yes,1,yes,1,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+AS041,MW028,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,18,N,"Developed, Open Space
+Developed, Medium Intensity",Caledonia Park,Late,0,7/16/2018,43.713472,-79.463271,,,,,,,,,,,9/10/2018,56,0,0,yes,1,no,0,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+AS041,MW028,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,18,N,"Developed, Open Space
+Developed, Medium Intensity",Caledonia Park,Late,0,7/16/2018,43.713472,-79.463271,,,,,,,,,,,9/10/2018,112,1,1,yes,1,yes,1,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+AS041,MW028,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,18,N,"Developed, Open Space
+Developed, Medium Intensity",Spread throughout Caledonia Park,Late,0,7/16/2018,43.713472,-79.463271,,,,,,,,,,,9/10/2018,78,5,5,yes,1,yes,1,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+AS042,MW029,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,19,N,"Scrub/Shrub
+Deciduous Forest",North Park. Many pods seen,Late,9,7/16/2018,43.713584,-79.475768,,,,,,,,,,,9/10/2018,114,3,3,yes,1,yes,1,all less than 3 m apart
+AS042,MW029,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,19,N,"Scrub/Shrub
+Deciduous Forest",North Park. Many pods seen,Late,7,7/16/2018,43.713584,-79.475768,,,,,,,,,,,9/10/2018,145,7,4,yes,1,yes,1,all less than 3 m apart
+AS042,MW029,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,19,N,"Scrub/Shrub
+Deciduous Forest",North Park. Many pods seen,Late,3,7/16/2018,43.713584,-79.475768,,,,,,,,,,,9/10/2018,110,3,2,yes,1,yes,1,all less than 3 m apart
+AS042,MW029,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,19,N,"Scrub/Shrub
+Deciduous Forest",North Park. Many pods seen,Late,0,7/16/2018,43.713584,-79.475768,,,,,,,,,,,9/10/2018,114,4,3,yes,1,yes,1,all less than 3 m apart
+AS042,MW029,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,19,N,"Scrub/Shrub
+Deciduous Forest",North Park. Many pods seen,Late,10,7/16/2018,43.713584,-79.475768,,,,,,,,,,,9/10/2018,126,4,4,yes,1,yes,1,all less than 3 m apart
+AS043,MW030,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,2,10,N,"Developed, Open Space
+Developed, Medium Intensity",8 Raven Drive. Not planted; sprouted this year.,Early-Late,6,7/16/2018,43.71387,-79.505919,,,,,,,,,,,9/10/2018,155,5,7,yes,1,yes,1,all less than 3 m apart
+AS043,MW030,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,2,10,N,"Developed, Open Space
+Developed, Medium Intensity",8 Raven Drive. Not planted; sprouted this year.,Early-Late,3,7/16/2018,43.71387,-79.505919,,,,,,,,,,,9/10/2018,146,1,8,yes,1,yes,1,all less than 3 m apart
+AS043,MW030,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, Open Space
+Developed, Medium Intensity",8 Raven Drive. Not planted; sprouted this year.,Early-Late,3,7/16/2018,43.71387,-79.505919,,,,,,,,,,,9/10/2018,153,4,8,yes,1,yes,1,all less than 3 m apart
+AS043,MW030,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, Open Space
+Developed, Medium Intensity",8 Raven Drive. Not planted; sprouted this year.,Early-Late,4,7/16/2018,43.71387,-79.505919,,,,,,,,,,,9/10/2018,143,8,7,yes,1,yes,1,all less than 3 m apart
+AS043,MW030,5,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, Open Space
+Developed, Medium Intensity",8 Raven Drive. Not planted; sprouted this year.,Early-Late,0,7/16/2018,43.71387,-79.505919,,,,,,,,,,,9/10/2018,153,3,8,yes,1,yes,1,all less than 3 m apart
+AS044,MW031,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6000,240,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",Pelmo Park. Near highway. Herbivory evident.,Late,0,7/16/2018,43.713092,-79.515599,,,,,,,,,,,9/12/2018,89,2,2,yes,1,yes,1,
+AS044,MW031,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,6000,240,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",Pelmo Park. Near highway. Herbivory evident.,Late,0,7/16/2018,43.713092,-79.515599,,,,,,,,,,,9/12/2018,97,3,2,yes,1,yes,1,
+AS044,MW031,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,6000,240,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",Pelmo Park. Near highway. Herbivory evident.,Late,0,7/16/2018,43.713092,-79.515599,,,,,,,,,,,9/12/2018,88,2,2,yes,1,yes,1,
+AS044,MW031,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,6000,240,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",Pelmo Park. Near highway. Herbivory evident.,Late,0,7/16/2018,43.713092,-79.515599,,,,,,,,,,,9/12/2018,84,1,2,yes,1,yes,1,
+AS044,MW031,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6000,240,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",Pelmo Park. Near highway. Herbivory evident.,Late,2,7/16/2018,43.713092,-79.515599,,,,,,,,,,,9/12/2018,73,2,4,yes,1,yes,1,
+AS045,MW032,1,2,1,0,3,2,0,2,1,4,6000,27,N,"Cropland
+Developed, Medium Intensity
+Developed, Open Space",Population growing around perimeter of community garden.,Early-Late,18,7/16/2018,43.66963,-79.498027,,,,,,,,,,,9/9/2018,103,4,2,yes,1,yes,1,Only 1 plant found. Rest of original population must've been weeded or covered up by overgrown plants around garden.
+AS045,MW032,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6000,27,N,"Cropland
+Developed, Medium Intensity
+Developed, Open Space",Population growing around perimeter of community garden.,Early-Late,8,7/16/2018,43.66963,-79.498027,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,N/A
+AS045,MW032,3,5,2,5,1,0,2,2,2,1,6000,27,N,"Cropland
+Developed, Medium Intensity
+Developed, Open Space",Population growing around perimeter of community garden.,Early-Late,0,7/16/2018,43.66963,-79.498027,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,N/A
+AS045,MW032,4,1,1,2,3,3,1,3,3,3,6000,27,N,"Cropland
+Developed, Medium Intensity
+Developed, Open Space",Population growing around perimeter of community garden.,Early-Late,0,7/16/2018,43.66963,-79.498027,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,N/A
+AS045,MW032,5,0,2,2,4,4,0,No third inflorescence,No third inflorescence,No third inflorescence,6000,27,N,"Cropland
+Developed, Medium Intensity
+Developed, Open Space",Population growing around perimeter of community garden.,Early-Late,5,7/16/2018,43.66963,-79.498027,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,N/A
+AS046,MW033,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,80,25,N,"Cropland
+Deciduous Forest
+Developed, Low Intensity",Along roadside. Mowed and unmowed portions. Next to crop field. Leaves very dry.,Not sure,0,7/17/2018,43.358912,-80.043033,,,,,,,,,,,9/13/2018,81,0,0,yes,1,no,0,may have been mown; only saw 3 plants
+AS046,MW033,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,80,25,N,"Cropland
+Deciduous Forest
+Developed, Low Intensity",Along roadside. Mowed and unmowed portions. Next to crop field. Leaves very dry.,Not sure,0,7/17/2018,43.358912,-80.043033,,,,,,,,,,,9/13/2018,57,0,0,yes,1,no,0,may have been mown; only saw 3 plants
+AS046,MW033,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,80,25,N,"Cropland
+Deciduous Forest
+Developed, Low Intensity",Along roadside. Mowed and unmowed portions. Next to crop field. Leaves very dry.,Not sure,0,7/17/2018,43.358912,-80.043033,,,,,,,,,,,9/13/2018,41,0,0,yes,1,no,0,may have been mown; only saw 3 plants
+AS046,MW033,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,80,25,N,"Cropland
+Deciduous Forest
+Developed, Low Intensity",Along roadside. Mowed and unmowed portions. Next to crop field. Leaves very dry.,Not sure,0,7/17/2018,43.358912,-80.043033,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,may have been mown; only saw 3 plants
+AS046,MW033,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,80,25,N,"Cropland
+Deciduous Forest
+Developed, Low Intensity",Along roadside. Mowed and unmowed portions. Next to crop field. Leaves very dry.,Not sure,0,7/17/2018,43.358912,-80.043033,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,may have been mown; only saw 3 plants
+AS047,MW034,1,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,18850,980,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",Mowed and grassy areas. Area extends 450m east of waypoint on N side of road. Huge field 100m west of waypoint.,Early-Middle,0,7/17/2018,43.357422,-80.052572,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+AS047,MW034,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,18850,980,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",Mowed and grassy areas. Area extends 450m east of waypoint on N side of road. Huge field 100m west of waypoint.,Early-Middle,0,7/17/2018,43.357422,-80.052572,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+AS047,MW034,3,4,3,5,5,4,4,5,5,2,18850,980,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",Mowed and grassy areas. Area extends 450m east of waypoint on N side of road. Huge field 100m west of waypoint.,Early-Middle,0,7/17/2018,43.357422,-80.052572,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+AS047,MW034,4,5,3,4,4,3,4,4,3,3,18850,980,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",Mowed and grassy areas. Area extends 450m east of waypoint on N side of road. Huge field 100m west of waypoint.,Early-Middle,0,7/17/2018,43.357422,-80.052572,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+AS047,MW034,5,2,3,2,5,4,3,4,4,0,18850,980,N,"Cropland
+Pasture/Hay
+Developed, Low Intensity",Mowed and grassy areas. Area extends 450m east of waypoint on N side of road. Huge field 100m west of waypoint.,Early-Middle,0,7/17/2018,43.357422,-80.052572,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+AS048,MW035,1,5,5,5,5,4,5,4,5,5,8000,170,"Y, eggs","Grassland/Herbaceous
+Deciduous Forest
+Developed, Low Intensity",Some milkweed have a rusty purple/dark green undertone (stress?),Mid-Late,0,7/17/2018,43.349551,-80.098407,,,,,,,,,,,9/13/2018,84,3,3,yes,1,yes,1,all less than 3 m apart
+AS048,MW035,2,0,0,0,1,0,0,1,2,0,8000,170,N,"Grassland/Herbaceous
+Deciduous Forest
+Developed, Low Intensity",Some milkweed have a rusty purple/dark green undertone (stress?),Mid-Late,0,7/17/2018,43.349551,-80.098407,,,,,,,,,,,9/13/2018,108,10,3,yes,1,yes,1,all less than 3 m apart
+AS048,MW035,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,170,Y,"Grassland/Herbaceous
+Deciduous Forest
+Developed, Low Intensity",Some milkweed have a rusty purple/dark green undertone (stress?),Mid-Late,9,7/17/2018,43.349551,-80.098407,,,,,,,,,,,9/13/2018,89,1,1,yes,1,yes,1,all less than 3 m apart
+AS048,MW035,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,170,Y,"Grassland/Herbaceous
+Deciduous Forest
+Developed, Low Intensity",Some milkweed have a rusty purple/dark green undertone (stress?),Mid-Late,0,7/17/2018,43.349551,-80.098407,,,,,,,,,,,9/13/2018,120,2,2,yes,1,yes,1,all less than 3 m apart
+AS048,MW035,5,0,1,0,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,170,N,"Grassland/Herbaceous
+Deciduous Forest
+Developed, Low Intensity",Some milkweed have a rusty purple/dark green undertone (stress?),Mid-Late,0,7/17/2018,43.349551,-80.098407,,,,,,,,,,,9/13/2018,97,3,4,yes,1,yes,1,all less than 3 m apart
+AS049,MW036,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,1800,170,N,"Pasture/Hay
+Cropland
+Developed, Low Intensity",One monarch caterpillar dead when collected,Late,1,7/17/2018,43.321018,-80.049313,,,,,,,,,,,9/14/2018,94,4,2,yes,1,yes,1,"Plants 1, 2, 3 are less than 3 m apart"
+AS049,MW036,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,1800,170,N,"Pasture/Hay
+Cropland
+Developed, Low Intensity",One monarch caterpillar dead when collected,Late,0,7/17/2018,43.321018,-80.049313,,,,,,,,,,,9/14/2018,73,2,2,yes,1,yes,1,"Plants 1, 2, 3 are less than 3 m apart"
+AS049,MW036,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1800,170,N,"Pasture/Hay
+Cropland
+Developed, Low Intensity",One monarch caterpillar dead when collected,Late,14,7/17/2018,43.321018,-80.049313,,,,,,,,,,,9/14/2018,82,2,2,yes,1,yes,1,"Plants 1, 2, 3 are less than 3 m apart"
+AS049,MW036,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1800,170,N,"Pasture/Hay
+Cropland
+Developed, Low Intensity",One monarch caterpillar dead when collected,Late,5,7/17/2018,43.321018,-80.049313,,,,,,,,,,,9/14/2018,93,3,2,yes,1,yes,1,Plants 4 and 5 are less than 3 m apart
+AS049,MW036,5,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1800,170,N,"Pasture/Hay
+Cropland
+Developed, Low Intensity",One monarch caterpillar dead when collected,Late,0,7/17/2018,43.321018,-80.049313,,,,,,,,,,,9/14/2018,90,3,2,yes,1,yes,1,Plants 4 and 5 are less than 3 m apart
+AS050,MW037,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,70,30,N,"Developed, Medium Intensity
+Developed, Open Space","Lindsay's first day in field. She took over for Samreen starting today. Young plants, no inflorescences. 64/62 Golfwood Heights.",Not sure,0,7/23/2018,43.702158,-79.543737,,,,,,,,,,,9/12/2018,63,0,0,yes,1,no,0,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+AS050,MW037,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,70,30,N,"Developed, Medium Intensity
+Developed, Open Space","Lindsay's first day in field. She took over for Samreen starting today. Young plants, no inflorescences. 64/62 Golfwood Heights.",Not sure,0,7/23/2018,43.702158,-79.543737,,,,,,,,,,,9/12/2018,70,0,1,yes,1,no,0,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+AS050,MW037,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,70,30,N,"Developed, Medium Intensity
+Developed, Open Space","Lindsay's first day in field. She took over for Samreen starting today. Young plants, no inflorescences. 64/62 Golfwood Heights.",Not sure,0,7/23/2018,43.702158,-79.543737,,,,,,,,,,,9/12/2018,61,0,0,yes,1,no,0,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+AS050,MW037,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,70,30,N,"Developed, Medium Intensity
+Developed, Open Space","Lindsay's first day in field. She took over for Samreen starting today. Young plants, no inflorescences. 64/62 Golfwood Heights.",Not sure,0,7/23/2018,43.702158,-79.543737,,,,,,,,,,,9/12/2018,90,0,0,yes,1,no,0,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+AS050,MW037,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,70,30,N,"Developed, Medium Intensity
+Developed, Open Space","Lindsay's first day in field. She took over for Samreen starting today. Young plants, no inflorescences. 64/62 Golfwood Heights.",Not sure,0,7/23/2018,43.702158,-79.543737,,,,,,,,,,,9/12/2018,46,0,0,yes,1,no,0,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+AS051,MW038,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,16,12,N,"Developed, Medium Intensity
+Developed, Open Space
+Developed, High Intensity",,Late,1,7/23/2018,43.701032,-79.549473,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,nobody answered door
+AS051,MW038,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,16,12,N,"Developed, Medium Intensity
+Developed, Open Space
+Developed, High Intensity",,Late,0,7/23/2018,43.701032,-79.549473,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,nobody answered door
+AS051,MW038,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,16,12,N,"Developed, Medium Intensity
+Developed, Open Space
+Developed, High Intensity",,Late,3,7/23/2018,43.701032,-79.549473,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,nobody answered door
+AS051,MW038,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,16,12,N,"Developed, Medium Intensity
+Developed, Open Space
+Developed, High Intensity",,Late,0,7/23/2018,43.701032,-79.549473,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,nobody answered door
+AS051,MW038,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,16,12,N,"Developed, Medium Intensity
+Developed, Open Space
+Developed, High Intensity",,Late,0,7/23/2018,43.701032,-79.549473,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,nobody answered door
+AS052,MW039,1,0,0,0,0,0,0,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,10000,480,N,"Developed, Medium Intensity
+Developed, High Intensity",Spread throughout industrial mall area.,Early-Late,0,7/23/2018,43.701432,-79.56251,,,,,,,,,,,9/12/2018,78,1,3,yes,1,yes,1,Sampled plants growing along ditch adjacent to Ronson Dr 
+AS052,MW039,2,3,0,3,2,3,1,No third inflorescence,No third inflorescence,No third inflorescence,10000,480,N,"Developed, Medium Intensity
+Developed, High Intensity",Spread throughout industrial mall area.,Early-Late,0,7/23/2018,43.701432,-79.56251,,,,,,,,,,,9/12/2018,94,3,6,yes,1,yes,1,Sampled plants growing along ditch adjacent to Ronson Dr 
+AS052,MW039,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,10000,480,N,"Developed, Medium Intensity
+Developed, High Intensity",Spread throughout industrial mall area.,Early-Late,5,7/23/2018,43.701432,-79.56251,,,,,,,,,,,9/12/2018,102,5,4,yes,1,yes,1,Sampled plants growing along ditch adjacent to Ronson Dr 
+AS052,MW039,4,0,0,0,1,No viable flower,No viable flower,No third inflorescence,No third inflorescence,No third inflorescence,10000,480,N,"Developed, Medium Intensity
+Developed, High Intensity",Spread throughout industrial mall area.,Early-Late,0,7/23/2018,43.701432,-79.56251,,,,,,,,,,,9/12/2018,131,9,3,yes,1,yes,1,Sampled plants growing along ditch adjacent to Ronson Dr 
+AS052,MW039,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,10000,480,N,"Developed, Medium Intensity
+Developed, High Intensity",Spread throughout industrial mall area.,Early-Late,1,7/23/2018,43.701432,-79.56251,,,,,,,,,,,9/12/2018,98,4,3,yes,1,yes,1,Sampled plants growing along ditch adjacent to Ronson Dr 
+AS053,MW040,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,150,N,"Cropland
+Grassland/Herbaceous
+Developed, Medium Intensity",ROW near urban garden. Many young plants. Near Stoffel Drive Allotments.,Late,5,7/23/2018,43.690086,-79.572325,,,,,,,,,,,9/12/2018,85,1,2,yes,1,yes,1,
+AS053,MW040,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,150,N,"Cropland
+Grassland/Herbaceous
+Developed, Medium Intensity",ROW near urban garden. Many young plants. Near Stoffel Drive Allotments.,Late,0,7/23/2018,43.690086,-79.572325,,,,,,,,,,,9/12/2018,62,1,1,yes,1,yes,1,
+AS053,MW040,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,2000,150,N,"Cropland
+Grassland/Herbaceous
+Developed, Medium Intensity",ROW near urban garden. Many young plants. Near Stoffel Drive Allotments.,Late,0,7/23/2018,43.690086,-79.572325,,,,,,,,,,,9/12/2018,82,6,2,yes,1,yes,1,
+AS053,MW040,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,150,N,"Cropland
+Grassland/Herbaceous
+Developed, Medium Intensity",ROW near urban garden. Many young plants. Near Stoffel Drive Allotments.,Late,0,7/23/2018,43.690086,-79.572325,,,,,,,,,,,9/12/2018,69,2,1,yes,1,yes,1,
+AS053,MW040,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,150,N,"Cropland
+Grassland/Herbaceous
+Developed, Medium Intensity",ROW near urban garden. Many young plants. Near Stoffel Drive Allotments.,Late,10,7/23/2018,43.690086,-79.572325,,,,,,,,,,,9/12/2018,96,1,3,yes,1,yes,1,
+AS054,MW041,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,50,5,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",No inflorescences; hard to tell age of plants.,Not sure,0,7/23/2018,43.675131,-79.571575,,,,,,,,,,,9/12/2018,125,10,4,yes,1,yes,1,"plants 1, 2, 3 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+AS054,MW041,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,50,5,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",No inflorescences; hard to tell age of plants.,Not sure,0,7/23/2018,43.675131,-79.571575,,,,,,,,,,,9/12/2018,123,5,5,yes,1,yes,1,"plants 1, 2, 3 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+AS054,MW041,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,50,5,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",No inflorescences; hard to tell age of plants.,Not sure,0,7/23/2018,43.675131,-79.571575,,,,,,,,,,,9/12/2018,75,0,0,yes,1,no,0,"plants 1, 2, 3 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+AS054,MW041,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,50,5,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",No inflorescences; hard to tell age of plants.,Not sure,0,7/23/2018,43.675131,-79.571575,,,,,,,,,,,9/12/2018,61,0,0,yes,1,no,0,"plants 4, 5 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+AS054,MW041,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,50,5,N,"Developed, Open Space
+Developed, Medium Intensity
+Developed, High Intensity",No inflorescences; hard to tell age of plants.,Not sure,0,7/23/2018,43.675131,-79.571575,,,,,,,,,,,9/12/2018,77,0,1,yes,1,no,0,"plants 4, 5 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+AS055,MW042,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,10,11,N,"Developed, Medium Intensity",,Mid-Late,0,7/23/2018,43.664067,-79.577284,,,,,,,,,,,9/12/2018,84,7,4,yes,1,yes,1,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+AS055,MW042,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,10,11,N,"Developed, Medium Intensity",,Mid-Late,0,7/23/2018,43.664067,-79.577284,,,,,,,,,,,9/12/2018,106,7,10,yes,1,yes,1,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+AS055,MW042,3,0,0,0,0,4,0,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,10,11,N,"Developed, Medium Intensity",,Mid-Late,7,7/23/2018,43.664067,-79.577284,,,,,,,,,,,9/12/2018,73,0,0,yes,1,no,0,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+AS055,MW042,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,10,11,N,"Developed, Medium Intensity",,Mid-Late,7,7/23/2018,43.664067,-79.577284,,,,,,,,,,,9/12/2018,96,0,0,yes,1,no,0,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+AS055,MW042,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,10,11,N,"Developed, Medium Intensity",,Mid-Late,0,7/23/2018,43.664067,-79.577284,,,,,,,,,,,9/12/2018,102,0,0,yes,1,no,0,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+AS056,MW043,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4800,102,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Low Intensity",Ash swamp (lowland). Lateral population spread along roadside.,Late,0,7/24/2018,43.32296,-80.038276,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+AS056,MW043,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,4800,102,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Low Intensity",Ash swamp (lowland). Lateral population spread along roadside.,Late,0,7/24/2018,43.32296,-80.038276,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+AS056,MW043,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4800,102,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Low Intensity",Ash swamp (lowland). Lateral population spread along roadside.,Late,0,7/24/2018,43.32296,-80.038276,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+AS056,MW043,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4800,102,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Low Intensity",Ash swamp (lowland). Lateral population spread along roadside.,Late,0,7/24/2018,43.32296,-80.038276,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+AS056,MW043,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4800,102,N,"Scrub/Shrub
+Deciduous Forest
+Developed, Low Intensity",Ash swamp (lowland). Lateral population spread along roadside.,Late,0,7/24/2018,43.32296,-80.038276,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+AS057,MW044,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,450,17,N,"Developed, Medium Intensity",,Early-Middle,0,7/24/2018,43.330042,-79.995566,,,,,,,,,,,9/14/2018,103,0,0,yes,1,no,0,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+AS057,MW044,2,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,450,17,N,"Developed, Medium Intensity",,Early-Middle,0,7/24/2018,43.330042,-79.995566,,,,,,,,,,,9/14/2018,60,0,0,yes,1,no,0,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+AS057,MW044,3,0,1,0,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,450,17,N,"Developed, Medium Intensity",,Early-Middle,0,7/24/2018,43.330042,-79.995566,,,,,,,,,,,9/14/2018,44,0,0,yes,1,no,0,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+AS057,MW044,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,450,17,N,"Developed, Medium Intensity",,Early-Middle,0,7/24/2018,43.330042,-79.995566,,,,,,,,,,,9/14/2018,34,0,0,yes,1,no,0,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+AS057,MW044,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,450,17,Y,"Developed, Medium Intensity",,Early-Middle,0,7/24/2018,43.330042,-79.995566,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+AS058,MW045,1,1,2,3,3,3,3,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,430,50,N,"Cropland
+Developed, Low Intensity
+Developed, Medium Intensity",ROW within 200m,Early-Late,0,7/24/2018,43.335538,-79.962974,,,,,,,,,,,9/14/2018,124,8,3,yes,1,yes,1,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+AS058,MW045,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,430,50,N,"Cropland
+Developed, Low Intensity
+Developed, Medium Intensity",ROW within 200m,Early-Late,5,7/24/2018,43.335538,-79.962974,,,,,,,,,,,9/14/2018,117,0,0,yes,1,no,0,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+AS058,MW045,3,1,1,3,3,4,4,0,0,0,430,50,N,"Cropland
+Developed, Low Intensity
+Developed, Medium Intensity",ROW within 200m,Early-Late,0,7/24/2018,43.335538,-79.962974,,,,,,,,,,,9/14/2018,101,6,2,yes,1,yes,1,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+AS058,MW045,4,0,0,0,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,430,50,N,"Cropland
+Developed, Low Intensity
+Developed, Medium Intensity",ROW within 200m,Early-Late,0,7/24/2018,43.335538,-79.962974,,,,,,,,,,,9/14/2018,85,0,0,yes,1,no,0,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+AS058,MW045,5,1,1,2,4,3,2,3,4,4,430,50,N,"Cropland
+Developed, Low Intensity
+Developed, Medium Intensity",ROW within 200m,Early-Late,0,7/24/2018,43.335538,-79.962974,,,,,,,,,,,9/14/2018,123,7,4,yes,1,yes,1,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+AS059,MW046,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6000,430,N,"Grassland/Herbaceous
+Developed, Medium Intensity
+Developed, High Intensity",Population extends from 930 Hwy 6 to Petro Canada,Early-Late,4,7/24/2018,43.343046,-79.959704,,,,,,,,,,,9/14/2018,160,6,2,yes,1,yes,1, Plants less than 3 m apart
+AS059,MW046,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6000,430,N,"Grassland/Herbaceous
+Developed, Medium Intensity
+Developed, High Intensity",Population extends from 930 Hwy 6 to Petro Canada,Early-Late,15,7/24/2018,43.343046,-79.959704,,,,,,,,,,,9/14/2018,166,5,5,yes,1,yes,1, Plants less than 3 m apart
+AS059,MW046,3,3,1,4,3,5,4,2,2,2,6000,430,N,"Grassland/Herbaceous
+Developed, Medium Intensity
+Developed, High Intensity",Population extends from 930 Hwy 6 to Petro Canada,Early-Late,0,7/24/2018,43.343046,-79.959704,,,,,,,,,,,9/14/2018,150,2,4,yes,1,yes,1, Plants less than 3 m apart
+AS059,MW046,4,0,1,0,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6000,430,N,"Grassland/Herbaceous
+Developed, Medium Intensity
+Developed, High Intensity",Population extends from 930 Hwy 6 to Petro Canada,Early-Late,0,7/24/2018,43.343046,-79.959704,,,,,,,,,,,9/14/2018,170,6,4,yes,1,yes,1, Plants less than 3 m apart
+AS059,MW046,5,1,No viable flower,No viable flower,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6000,430,N,"Grassland/Herbaceous
+Developed, Medium Intensity
+Developed, High Intensity",Population extends from 930 Hwy 6 to Petro Canada,Early-Late,0,7/24/2018,43.343046,-79.959704,,,,,,,,,,,9/14/2018,155,8,5,yes,1,yes,1, Plants less than 3 m apart
+AS060,MW047,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,240,N,"Cropland
+Developed, Medium Intensity",,Late,6,7/24/2018,43.519441,-79.750471,,,,,,,,,,,9/14/2018,90,3,3,yes,1,yes,1,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+AS060,MW047,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,240,N,"Cropland
+Developed, Medium Intensity",,Late,0,7/24/2018,43.519441,-79.750471,,,,,,,,,,,9/14/2018,71,1,2,yes,1,yes,1,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+AS060,MW047,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,240,N,"Cropland
+Developed, Medium Intensity",,Late,1,7/24/2018,43.519441,-79.750471,,,,,,,,,,,9/14/2018,104,7,5,yes,1,yes,1,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+AS060,MW047,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2000,240,N,"Cropland
+Developed, Medium Intensity",,Late,3,7/24/2018,43.519441,-79.750471,,,,,,,,,,,9/14/2018,81,4,5,yes,1,yes,1,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+AS060,MW047,5,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,2000,240,N,"Cropland
+Developed, Medium Intensity",,Late,1,7/24/2018,43.519441,-79.750471,,,,,,,,,,,9/14/2018,82,5,5,yes,1,yes,1,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+AS061,MW048,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,1,N,Scrub/Shrub,ROW within 200m. Plant 300m west of hwy 407.,Late,1,7/24/2018,43.530493,-79.738194,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,Couldn't find plant; didn't visit site originally so maybe just missed it
+AS062,MW049,1,1,4,3,3,0,0,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,40,72,N,"Developed, Open Space
+Developed, High Intensity
+Cropland
+Barren Land",Property to be developed soon. At stoplight corner. Many Tetraopes and bees seen.,Early-Late,8,7/24/2018,43.534939,-79.732912,,,,,,,,,,,9/14/2018,92,4,4,yes,1,yes,1,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+AS062,MW049,2,1,1,1,4,3,3,2,0,3,40,72,N,"Developed, Open Space
+Developed, High Intensity
+Cropland
+Barren Land",Property to be developed soon. At stoplight corner. Many Tetraopes and bees seen.,Early-Late,0,7/24/2018,43.534939,-79.732912,,,,,,,,,,,9/14/2018,102,15,8,yes,1,yes,1,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+AS062,MW049,3,5,4,5,3,2,2,3,3,3,40,72,N,"Developed, Open Space
+Developed, High Intensity
+Cropland
+Barren Land",Property to be developed soon. At stoplight corner. Many Tetraopes and bees seen.,Early-Late,0,7/24/2018,43.534939,-79.732912,,,,,,,,,,,9/14/2018,93,9,6,yes,1,yes,1,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+AS062,MW049,4,5,5,5,3,0,2,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,40,72,N,"Developed, Open Space
+Developed, High Intensity
+Cropland
+Barren Land",Property to be developed soon. At stoplight corner. Many Tetraopes and bees seen.,Early-Late,0,7/24/2018,43.534939,-79.732912,,,,,,,,,,,9/14/2018,96,7,6,yes,1,yes,1,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+AS062,MW049,5,0,0,No viable flower,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,40,72,N,"Developed, Open Space
+Developed, High Intensity
+Cropland
+Barren Land",Property to be developed soon. At stoplight corner. Many Tetraopes and bees seen.,Early-Late,0,7/24/2018,43.534939,-79.732912,,,,,,,,,,,9/14/2018,86,9,6,yes,1,yes,1,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+AS063,MW050,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,60,N,"Grassland/Herbaceous
+Developed, High Intensity",Weevils seen and captured.,Early-Late,4,7/24/2018,43.535065,-79.721652,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+AS063,MW050,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,60,N,"Grassland/Herbaceous
+Developed, High Intensity",Weevils seen and captured.,Early-Late,12,7/24/2018,43.535065,-79.721652,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+AS063,MW050,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,60,N,"Grassland/Herbaceous
+Developed, High Intensity",Weevils seen and captured.,Early-Late,0,7/24/2018,43.535065,-79.721652,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+AS063,MW050,4,4,0,1,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,1000,60,N,"Grassland/Herbaceous
+Developed, High Intensity",Weevils seen and captured.,Early-Late,0,7/24/2018,43.535065,-79.721652,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+AS063,MW050,5,3,4,4,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,1000,60,N,"Grassland/Herbaceous
+Developed, High Intensity",Weevils seen and captured.,Early-Late,0,7/24/2018,43.535065,-79.721652,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+AS064,MW051,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,900,25,N,"Developed, High Intensity",Many aphids seen and captured. Population extends from 93-94 and 151 Yarmouth Ave.,Late,3,7/25/2018,43.669676,-79.422881,,,,,,,,,,,9/8/2018,53,8,6,yes,1,yes,1,<3 m between plants
+AS064,MW051,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,900,25,N,"Developed, High Intensity",Many aphids seen and captured. Population extends from 93-94 and 151 Yarmouth Ave.,Late,5,7/25/2018,43.669676,-79.422881,,,,,,,,,,,9/8/2018,104,3,9,yes,1,yes,1,<3 m between plants
+AS064,MW051,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,900,25,N,"Developed, High Intensity",Many aphids seen and captured. Population extends from 93-94 and 151 Yarmouth Ave.,Late,3,7/25/2018,43.669676,-79.422881,,,,,,,,,,,9/8/2018,117,2,4,yes,1,yes,1,<3 m between plants
+AS064,MW051,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,900,25,N,"Developed, High Intensity",Many aphids seen and captured. Population extends from 93-94 and 151 Yarmouth Ave.,Late,8,7/25/2018,43.669676,-79.422881,,,,,,,,,,,9/8/2018,111,2,5,yes,1,yes,1,<3 m between plants
+AS064,MW051,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,900,25,N,"Developed, High Intensity",Many aphids seen and captured. Population extends from 93-94 and 151 Yarmouth Ave.,Late,7,7/25/2018,43.669676,-79.422881,,,,,,,,,,,9/8/2018,122,7,5,yes,1,yes,1,<3 m between plants
+AS065,MW052,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,N,"Developed, High Intensity",Young plants.,Not sure,0,7/25/2018,43.680726,-79.411251,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,Plants removed from site (garden)
+AS065,MW052,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,N,"Developed, High Intensity",Young plants.,Not sure,0,7/25/2018,43.680726,-79.411251,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,Plants removed from site (garden)
+AS066,MW053,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,75,20,N,"Deciduous Forest
+Developed, Medium Intensity
+Developed, Open Space","Cedarvale Park, east of dog park. On path.",Not sure,0,7/25/2018,43.691138,-79.427943,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS066,MW053,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,75,20,N,"Deciduous Forest
+Developed, Medium Intensity
+Developed, Open Space","Cedarvale Park, east of dog park. On path.",Not sure,0,7/25/2018,43.691138,-79.427943,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS066,MW053,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,75,20,N,"Deciduous Forest
+Developed, Medium Intensity
+Developed, Open Space","Cedarvale Park, east of dog park. On path.",Not sure,0,7/25/2018,43.691138,-79.427943,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS066,MW053,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,75,20,N,"Deciduous Forest
+Developed, Medium Intensity
+Developed, Open Space","Cedarvale Park, east of dog park. On path.",Not sure,0,7/25/2018,43.691138,-79.427943,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS066,MW053,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,75,20,N,"Deciduous Forest
+Developed, Medium Intensity
+Developed, Open Space","Cedarvale Park, east of dog park. On path.",Not sure,0,7/25/2018,43.691138,-79.427943,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS067,MW054,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,14,N,"Developed, High Intensity",140-142 Winona Dr,Not sure,0,7/25/2018,43.67876,-79.431977,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS067,MW054,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,14,N,"Developed, High Intensity",140-142 Winona Dr,Not sure,0,7/25/2018,43.67876,-79.431977,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS067,MW054,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,14,N,"Developed, High Intensity",140-142 Winona Dr,Not sure,0,7/25/2018,43.67876,-79.431977,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS067,MW054,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,14,N,"Developed, High Intensity",140-142 Winona Dr,Not sure,0,7/25/2018,43.67876,-79.431977,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS067,MW054,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,12,14,N,"Developed, High Intensity",140-142 Winona Dr,Not sure,0,7/25/2018,43.67876,-79.431977,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS068,MW055,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,5,4,N,"Developed, High Intensity",97 Auburn Ave. Young plants.,Not sure,0,7/25/2018,43.674579,-79.446438,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS068,MW055,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,5,4,N,"Developed, High Intensity",97 Auburn Ave. Young plants.,Not sure,0,7/25/2018,43.674579,-79.446438,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS068,MW055,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,5,4,N,"Developed, High Intensity",97 Auburn Ave. Young plants.,Not sure,0,7/25/2018,43.674579,-79.446438,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS068,MW055,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,5,4,N,"Developed, High Intensity",97 Auburn Ave. Young plants.,Not sure,0,7/25/2018,43.674579,-79.446438,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS068,MW055,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,5,4,N,"Developed, High Intensity",97 Auburn Ave. Young plants.,Not sure,0,7/25/2018,43.674579,-79.446438,,,,,,,,,,,9/8/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS069,MW056,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1600,30,N,"Developed, High Intensity",At telephone pole.,Late,8,7/25/2018,43.671068,-79.452408,,,,,,,,,,,9/9/2018,55,4,3,yes,1,yes,1,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+AS069,MW056,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1600,30,N,"Developed, High Intensity",At telephone pole.,Late,8,7/25/2018,43.671068,-79.452408,,,,,,,,,,,9/9/2018,104,8,3,yes,1,yes,1,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+AS069,MW056,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1600,30,N,"Developed, High Intensity",At telephone pole.,Late,7,7/25/2018,43.671068,-79.452408,,,,,,,,,,,9/9/2018,78,2,5,yes,1,yes,1,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+AS069,MW056,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1600,30,N,"Developed, High Intensity",At telephone pole.,Late,8,7/25/2018,43.671068,-79.452408,,,,,,,,,,,9/9/2018,92,16,7,yes,1,yes,1,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+AS069,MW056,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1600,30,N,"Developed, High Intensity",At telephone pole.,Late,0,7/25/2018,43.671068,-79.452408,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+AS070,MW057,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30000,170,N,"Developed, High Intensity",Dispersed throughout lot edges in neighborhood. Industrial zone. Near railroad tracks. Near abandoned lots.,Late,3,7/25/2018,43.67024,-79.462135,,,,,,,,,,,9/9/2018,57,5,3,yes,1,yes,1,>3 m between plants
+AS070,MW057,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30000,170,N,"Developed, High Intensity",Dispersed throughout lot edges in neighborhood. Industrial zone. Near railroad tracks. Near abandoned lots.,Late,0,7/25/2018,43.67024,-79.462135,,,,,,,,,,,9/9/2018,93,2,1,yes,1,yes,1,>3 m between plants
+AS070,MW057,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30000,170,N,"Developed, High Intensity",Dispersed throughout lot edges in neighborhood. Industrial zone. Near railroad tracks. Near abandoned lots.,Late,6,7/25/2018,43.67024,-79.462135,,,,,,,,,,,9/9/2018,112,4,4,yes,1,yes,1,>3 m between plants
+AS070,MW057,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30000,170,N,"Developed, High Intensity",Dispersed throughout lot edges in neighborhood. Industrial zone. Near railroad tracks. Near abandoned lots.,Late,1,7/25/2018,43.67024,-79.462135,,,,,,,,,,,9/9/2018,79,7,2,yes,1,yes,1,>3 m between plants
+AS070,MW057,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,30000,170,N,"Developed, High Intensity",Dispersed throughout lot edges in neighborhood. Industrial zone. Near railroad tracks. Near abandoned lots.,Late,9,7/25/2018,43.67024,-79.462135,,,,,,,,,,,9/9/2018,95,12,5,yes,1,yes,1,>3 m between plants
+AS071,MW058,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, High Intensity",58 Tarragona Blvd.,Not sure,0,7/25/2018,43.671812,-79.474258,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS071,MW058,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, High Intensity",58 Tarragona Blvd.,Not sure,0,7/25/2018,43.671812,-79.474258,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS071,MW058,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, High Intensity",58 Tarragona Blvd.,Not sure,0,7/25/2018,43.671812,-79.474258,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS071,MW058,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, High Intensity",58 Tarragona Blvd.,Not sure,0,7/25/2018,43.671812,-79.474258,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS071,MW058,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,2,10,N,"Developed, High Intensity",58 Tarragona Blvd.,Not sure,0,7/25/2018,43.671812,-79.474258,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+AS072,MW059,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,250,36,N,"Developed, High Intensity
+Developed, Medium Intensity","55, 57 Hager Ave. Patch at #69 were not planted by current owners.",Late,0,7/25/2018,43.670454,-79.482484,,,,,,,,,,,9/9/2018,77,1,1,yes,1,yes,1,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+AS072,MW059,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,250,36,N,"Developed, High Intensity
+Developed, Medium Intensity","55, 57 Hager Ave. Patch at #69 were not planted by current owners.",Late,0,7/25/2018,43.670454,-79.482484,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+AS072,MW059,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,250,36,N,"Developed, High Intensity
+Developed, Medium Intensity","55, 57 Hager Ave. Patch at #69 were not planted by current owners.",Late,1,7/25/2018,43.670454,-79.482484,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+AS072,MW058,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,250,36,N,"Developed, High Intensity
+Developed, Medium Intensity","55, 57 Hager Ave. Patch at #69 were not planted by current owners.",Late,1,7/25/2018,43.670454,-79.482484,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+AS072,MW058,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,250,36,N,"Developed, High Intensity
+Developed, Medium Intensity","55, 57 Hager Ave. Patch at #69 were not planted by current owners.",Late,0,7/25/2018,43.670454,-79.482484,,,,,,,,,,,9/9/2018,N/A,N/A,N/A,N/A,0,N/A,0,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+AS073,MW059,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,5,N,"Developed, Medium Intensity
+Developed, Open Space
+Deciduous Forest","25 Canerouth Dr, Etobicoke. Not sure if planted.",Not sure,0,7/27/2018,43.646988,-79.583587,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,None of the gardens had milkweed; might have missed it
+AS073,MW059,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,5,N,"Developed, Medium Intensity
+Developed, Open Space
+Deciduous Forest","25 Canerouth Dr, Etobicoke. Not sure if planted.",Not sure,0,7/27/2018,43.646988,-79.583587,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,None of the gardens had milkweed; might have missed it
+AS073,MW059,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,5,N,"Developed, Medium Intensity
+Developed, Open Space
+Deciduous Forest","25 Canerouth Dr, Etobicoke. Not sure if planted.",Not sure,0,7/27/2018,43.646988,-79.583587,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,None of the gardens had milkweed; might have missed it
+AS073,MW059,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,5,N,"Developed, Medium Intensity
+Developed, Open Space
+Deciduous Forest","25 Canerouth Dr, Etobicoke. Not sure if planted.",Not sure,0,7/27/2018,43.646988,-79.583587,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,None of the gardens had milkweed; might have missed it
+AS073,MW059,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,5,N,"Developed, Medium Intensity
+Developed, Open Space
+Deciduous Forest","25 Canerouth Dr, Etobicoke. Not sure if planted.",Not sure,0,7/27/2018,43.646988,-79.583587,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,None of the gardens had milkweed; might have missed it
+AS074,MW060,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,9000,265,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land",Lot to be developed. Extends south on Satellite Dr.,Mid-Late,3,7/27/2018,43.654607,-79.607519,,,,,,,,,,,9/12/2018,95,4,3,yes,1,yes,1,
+AS074,MW060,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,9000,265,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land",Lot to be developed. Extends south on Satellite Dr.,Mid-Late,3,7/27/2018,43.654607,-79.607519,,,,,,,,,,,9/12/2018,84,4,4,yes,1,yes,1,
+AS074,MW060,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,9000,265,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land",Lot to be developed. Extends south on Satellite Dr.,Mid-Late,6,7/27/2018,43.654607,-79.607519,,,,,,,,,,,9/12/2018,71,1,1,yes,1,yes,1,
+AS074,MW060,4,1,0,0,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9000,265,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land",Lot to be developed. Extends south on Satellite Dr.,Mid-Late,0,7/27/2018,43.654607,-79.607519,,,,,,,,,,,9/12/2018,94,7,4,yes,1,yes,1,
+AS074,MW060,5,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,9000,265,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land",Lot to be developed. Extends south on Satellite Dr.,Mid-Late,0,7/27/2018,43.654607,-79.607519,,,,,,,,,,,9/12/2018,70,2,3,yes,1,yes,1,
+AS075,MW061,1,0,1,2,0,0,0,1,1,0,6000,100,N,"Grassland/Herbaceous
+Deciduous Forest",Just north of overpass on trail. Patch on left side of trail and further down on right side. Many ants seen. Weevils present at waypoint.,Mid-Late,0,7/27/2018,43.651476,-79.617876,,,,,,,,,,,9/12/2018,110,1,3,yes,1,yes,1,
+AS075,MW061,2,2,2,3,0,1,2,1,1,2,6000,100,N,"Grassland/Herbaceous
+Deciduous Forest",Just north of overpass on trail. Patch on left side of trail and further down on right side. Many ants seen. Weevils present at waypoint.,Mid-Late,0,7/27/2018,43.651476,-79.617876,,,,,,,,,,,9/12/2018,104,2,2,yes,1,yes,1,
+AS075,MW061,3,2,1,1,3,1,1,0,1,0,6000,100,N,"Grassland/Herbaceous
+Deciduous Forest",Just north of overpass on trail. Patch on left side of trail and further down on right side. Many ants seen. Weevils present at waypoint.,Mid-Late,0,7/27/2018,43.651476,-79.617876,,,,,,,,,,,9/12/2018,110,1,2,yes,1,yes,1,
+AS075,MW061,4,1,4,2,2,0,0,0,0,0,6000,100,N,"Grassland/Herbaceous
+Deciduous Forest",Just north of overpass on trail. Patch on left side of trail and further down on right side. Many ants seen. Weevils present at waypoint.,Mid-Late,0,7/27/2018,43.651476,-79.617876,,,,,,,,,,,9/12/2018,97,7,3,yes,1,yes,1,
+AS075,MW061,5,0,1,1,2,2,2,1,0,1,6000,100,N,"Grassland/Herbaceous
+Deciduous Forest",Just north of overpass on trail. Patch on left side of trail and further down on right side. Many ants seen. Weevils present at waypoint.,Mid-Late,0,7/27/2018,43.651476,-79.617876,,,,,,,,,,,9/12/2018,120,4,3,yes,1,yes,1,
+AS076,MW062,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,60,36,N,"Developed, High Intensity
+Scrub/Shrub",,Late,0,7/27/2018,43.637760,-79.635241,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,No milkweed; may have been mown
+AS076,MW062,2,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped first inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,Undeveloped second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,60,36,N,"Developed, High Intensity
+Scrub/Shrub",,Late,0,7/27/2018,43.637760,-79.635241,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,No milkweed; may have been mown
+AS076,MW062,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,60,36,N,"Developed, High Intensity
+Scrub/Shrub",,Late,0,7/27/2018,43.637760,-79.635241,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,No milkweed; may have been mown
+AS076,MW062,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,60,36,N,"Developed, High Intensity
+Scrub/Shrub",,Late,20,7/27/2018,43.637760,-79.635241,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,No milkweed; may have been mown
+AS076,MW062,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,60,36,N,"Developed, High Intensity
+Scrub/Shrub",,Late,0,7/27/2018,43.637760,-79.635241,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,No milkweed; may have been mown
+AS077,MW063,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,1250,200,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land","On left side, going to SportZone. Much herbivory observed. Many weevil attacks observed. Population expands to Matheson Blvd, just north and south of 403 overpass. (That area not included in total area and pop size columns.)",Early-Late,3,7/27/2018,43.628807,-79.652009,,,,,,,,,,,9/12/2018,64,3,2,yes,1,yes,1,"some pods at this location already opening on their own, many very brown"
+AS077,MW063,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1250,200,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land","On left side, going to SportZone. Much herbivory observed. Many weevil attacks observed. Population expands to Matheson Blvd, just north and south of 403 overpass. (That area not included in total area and pop size columns.)",Early-Late,9,7/27/2018,43.628807,-79.652009,,,,,,,,,,,9/12/2018,84,6,5,yes,1,yes,1,"some pods at this location already opening on their own, many very brown"
+AS077,MW063,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,1250,200,Y,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land","On left side, going to SportZone. Much herbivory observed. Many weevil attacks observed. Population expands to Matheson Blvd, just north and south of 403 overpass. (That area not included in total area and pop size columns.)",Early-Late,3,7/27/2018,43.628807,-79.652009,,,,,,,,,,,9/12/2018,89,6,4,yes,1,yes,1,"some pods at this location already opening on their own, many very brown"
+AS077,MW063,4,0,1,0,0,0,0,Undeveloped third inflorescence,Undeveloped third inflorescence,Undeveloped third inflorescence,1250,200,Y,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land","On left side, going to SportZone. Much herbivory observed. Many weevil attacks observed. Population expands to Matheson Blvd, just north and south of 403 overpass. (That area not included in total area and pop size columns.)",Early-Late,0,7/27/2018,43.628807,-79.652009,,,,,,,,,,,9/12/2018,94,2,2,yes,1,yes,1,"some pods at this location already opening on their own, many very brown"
+AS077,MW063,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1250,200,N,"Grassland/Herbaceous
+Developed, High Intensity
+Barren Land","On left side, going to SportZone. Much herbivory observed. Many weevil attacks observed. Population expands to Matheson Blvd, just north and south of 403 overpass. (That area not included in total area and pop size columns.)",Early-Late,0,7/27/2018,43.628807,-79.652009,,,,,,,,,,,9/12/2018,99,4,7,yes,1,yes,1,"some pods at this location already opening on their own, many very brown"
+AS078,MW064,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,N,"Developed, High Intensity
+(Seeded field that looked razed for construction- cropland?)",By concrete curb near grass island.,Not sure,0,7/27/2018,43.626304,-79.673743,,,,,,,,,,,9/12/2018,38,0,0,yes,1,no,0,
+AS078,MW064,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1,2,N,"Developed, High Intensity
+(Seeded field that looked razed for construction- cropland?)",By concrete curb near grass island.,Not sure,0,7/27/2018,43.626304,-79.673743,,,,,,,,,,,9/12/2018,42,0,0,yes,1,no,0,
+AS079,MW065,1,3,3,3,2,4,3,3,2,5,20000,50,N,"Developed, High Intensity
+(Seeded field that looked razed for construction- cropland?)",May be developed soon.,Early-Late,3,7/27/2018,43.618104,-79.701542,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"No milkweed seen, may have been mown?"
+AS079,MW065,2,0,0,2,0,0,0,1,2,5,20000,50,N,"Developed, High Intensity
+(Seeded field that looked razed for construction- cropland?)",May be developed soon.,Early-Late,8,7/27/2018,43.618104,-79.701542,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"No milkweed seen, may have been mown?"
+AS079,MW065,3,1,1,0,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,20000,50,N,"Developed, High Intensity
+(Seeded field that looked razed for construction- cropland?)",May be developed soon.,Early-Late,0,7/27/2018,43.618104,-79.701542,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"No milkweed seen, may have been mown?"
+AS079,MW065,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,20000,50,N,"Developed, High Intensity
+(Seeded field that looked razed for construction- cropland?)",May be developed soon.,Early-Late,0,7/27/2018,43.618104,-79.701542,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"No milkweed seen, may have been mown?"
+AS079,MW065,5,2,3,1,3,3,1,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,20000,50,N,"Developed, High Intensity
+(Seeded field that looked razed for construction- cropland?)",May be developed soon.,Early-Late,0,7/27/2018,43.618104,-79.701542,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"No milkweed seen, may have been mown?"
+AS080,MW066,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,64,24,N,"Developed, Medium Intensity",Overgrown garden,Late,1,7/27/2018,43.613475,-79.705867,,,,,,,,,,,9/28/2018,N/A,N/A,N/A,yes,1,yes,1,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+AS080,MW066,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,64,24,N,"Developed, Medium Intensity",Overgrown garden,Late,1,7/27/2018,43.613475,-79.705867,,,,,,,,,,,9/28/2018,N/A,N/A,N/A,yes,1,yes,1,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+AS080,MW066,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,64,24,N,"Developed, Medium Intensity",Overgrown garden,Late,2,7/27/2018,43.613475,-79.705867,,,,,,,,,,,9/28/2018,N/A,N/A,N/A,yes,1,yes,1,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+AS080,MW066,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,64,24,N,"Developed, Medium Intensity",Overgrown garden,Late,0,7/27/2018,43.613475,-79.705867,,,,,,,,,,,9/28/2018,N/A,N/A,N/A,yes,1,yes,1,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+AS080,MW066,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,64,24,N,"Developed, Medium Intensity",Overgrown garden,Late,0,7/27/2018,43.613475,-79.705867,,,,,,,,,,,9/28/2018,N/A,N/A,N/A,yes,1,yes,1,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+AS081,MW067,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,180,36,Y,"Developed, Open Space
+Deciduous Forest",Extends 90m from path leading to Tillsdown Dr to where it meets longer path parallel to river.,Late,0,7/27/2018,43.595802,-79.719547,,,,,,,,,,,9/12/2018,99,3,3,yes,1,yes,1,
+AS081,MW067,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,180,36,N,"Developed, Open Space
+Deciduous Forest",Extends 90m from path leading to Tillsdown Dr to where it meets longer path parallel to river.,Late,0,7/27/2018,43.595802,-79.719547,,,,,,,,,,,9/12/2018,112,3,2,yes,1,yes,1,
+AS081,MW067,3,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,180,36,N,"Developed, Open Space
+Deciduous Forest",Extends 90m from path leading to Tillsdown Dr to where it meets longer path parallel to river.,Late,3,7/27/2018,43.595802,-79.719547,,,,,,,,,,,9/12/2018,86,2,2,yes,1,yes,1,
+AS081,MW067,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,180,36,Y,"Developed, Open Space
+Deciduous Forest",Extends 90m from path leading to Tillsdown Dr to where it meets longer path parallel to river.,Late,2,7/27/2018,43.595802,-79.719547,,,,,,,,,,,9/12/2018,90,2,2,yes,1,yes,1,
+AS081,MW067,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,180,36,Y,"Developed, Open Space
+Deciduous Forest",Extends 90m from path leading to Tillsdown Dr to where it meets longer path parallel to river.,Late,0,7/27/2018,43.595802,-79.719547,,,,,,,,,,,9/12/2018,93,4,2,yes,1,yes,1,
+AS082,MW068,1,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Grassland/Herbaceous
+Developed, High Intensity",Erin Mills Bus Station,Late,0,7/27/2018,43.553597,-79.699608,,,,,,,,,,,9/14/2018,89,3,2,yes,1,yes,1,Only found 4 plants
+AS082,MW068,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,Y,"Grassland/Herbaceous
+Developed, High Intensity",Erin Mills Bus Station,Late,6,7/27/2018,43.553597,-79.699608,,,,,,,,,,,9/14/2018,88,2,3,yes,1,yes,1,Only found 4 plants
+AS082,MW068,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Grassland/Herbaceous
+Developed, High Intensity",Erin Mills Bus Station,Late,0,7/27/2018,43.553597,-79.699608,,,,,,,,,,,9/14/2018,94,0,0,yes,1,no,0,Only found 4 plants
+AS082,MW068,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Grassland/Herbaceous
+Developed, High Intensity",Erin Mills Bus Station,Late,4,7/27/2018,43.553597,-79.699608,,,,,,,,,,,9/14/2018,82,0,0,yes,1,no,0,Only found 4 plants
+AS082,MW068,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Grassland/Herbaceous
+Developed, High Intensity",Erin Mills Bus Station,Late,0,7/27/2018,43.553597,-79.699608,,,,,,,,,,,9/14/2018,N/A,N/A,N/A,N/A,0,N/A,0,
+AS083,MW069,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Developed, Medium Intensity",5849 Glen Erin Dr. Extends to 2573 Quail Run.,Late,1,7/30/2018,43.571026,-79.733337,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS083,MW069,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Developed, Medium Intensity",5849 Glen Erin Dr. Extends to 2573 Quail Run.,Late,5,7/30/2018,43.571026,-79.733337,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS083,MW069,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Developed, Medium Intensity",5849 Glen Erin Dr. Extends to 2573 Quail Run.,Late,0,7/30/2018,43.571026,-79.733337,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS083,MW069,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,1000,24,N,"Developed, Medium Intensity",5849 Glen Erin Dr. Extends to 2573 Quail Run.,Late,0,7/30/2018,43.571026,-79.733337,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS083,MW069,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,1000,24,N,"Developed, Medium Intensity",5849 Glen Erin Dr. Extends to 2573 Quail Run.,Late,11,7/30/2018,43.571026,-79.733337,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS084,MW070,1,1,0,1,4,1,1,No third inflorescence,No third inflorescence,No third inflorescence,5,11,Y,"Developed, Medium Intensity",2613 Burnford Dr,Mid-Late,0,7/30/2018,43.564655,-79.720469,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS084,MW070,2,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,5,11,N,"Developed, Medium Intensity",2613 Burnford Dr,Mid-Late,0,7/30/2018,43.564655,-79.720469,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS084,MW070,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,5,11,N,"Developed, Medium Intensity",2613 Burnford Dr,Mid-Late,1,7/30/2018,43.564655,-79.720469,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS084,MW070,4,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,No third inflorescence,No third inflorescence,No third inflorescence,5,11,Y,"Developed, Medium Intensity",2613 Burnford Dr,Mid-Late,0,7/30/2018,43.564655,-79.720469,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS084,MW070,5,First inflorescence too old,First inflorescence too old,First inflorescence too old,Second inflorescence too old,Second inflorescence too old,Second inflorescence too old,Third inflorescence too old,Third inflorescence too old,Third inflorescence too old,5,11,N,"Developed, Medium Intensity",2613 Burnford Dr,Mid-Late,0,7/30/2018,43.564655,-79.720469,,,,,,,,,,,9/13/2018,N/A,N/A,N/A,N/A,0,N/A,0,Nobody answered door. Milkweed still present.
+AS085,MW071,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,175,N,"Developed, High Intensity
+Shrub/Scrub",Alongside railroad tracks. Several misshapen/warped plants observed.,Late,11,7/30/2018,43.578900,-79.713398,,,,,,,,,,,9/12/2018,71,9,4,yes,1,yes,1,
+AS085,MW071,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,175,N,"Developed, High Intensity
+Shrub/Scrub",Alongside railroad tracks. Several misshapen/warped plants observed.,Late,0,7/30/2018,43.578900,-79.713398,,,,,,,,,,,9/12/2018,63,3,3,yes,1,yes,1,
+AS085,MW071,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,175,N,"Developed, High Intensity
+Shrub/Scrub",Alongside railroad tracks. Several misshapen/warped plants observed.,Late,0,7/30/2018,43.578900,-79.713398,,,,,,,,,,,9/12/2018,104,10,4,yes,1,yes,1,
+AS085,MW071,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,175,Y,"Developed, High Intensity
+Shrub/Scrub",Alongside railroad tracks. Several misshapen/warped plants observed.,Late,0,7/30/2018,43.578900,-79.713398,,,,,,,,,,,9/12/2018,74,18,7,yes,1,yes,1,"plants 4, 5 < 3m apart"
+AS085,MW071,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8000,175,N,"Developed, High Intensity
+Shrub/Scrub",Alongside railroad tracks. Several misshapen/warped plants observed.,Late,3,7/30/2018,43.578900,-79.713398,,,,,,,,,,,9/12/2018,55,6,4,yes,1,yes,1,"plants 4, 5 < 3m apart"
+AS086,MW072,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,300,46,N,"Developed, Medium Intensity
+Developed, Open Space",5939 Questman Hollow. Population extends to May Meadow Park.,Not sure,0,7/30/2018,43.554564,-79.756834,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered, milkweed still present"
+AS086,MW072,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,300,46,N,"Developed, Medium Intensity
+Developed, Open Space",5939 Questman Hollow. Population extends to May Meadow Park.,Not sure,0,7/30/2018,43.554564,-79.756834,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered, milkweed still present"
+AS086,MW072,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,300,46,N,"Developed, Medium Intensity
+Developed, Open Space",5939 Questman Hollow. Population extends to May Meadow Park.,Not sure,0,7/30/2018,43.554564,-79.756834,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered, milkweed still present"
+AS086,MW072,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,300,46,N,"Developed, Medium Intensity
+Developed, Open Space",5939 Questman Hollow. Population extends to May Meadow Park.,Not sure,0,7/30/2018,43.554564,-79.756834,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered, milkweed still present"
+AS086,MW072,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,300,46,N,"Developed, Medium Intensity
+Developed, Open Space",5939 Questman Hollow. Population extends to May Meadow Park.,Not sure,0,7/30/2018,43.554564,-79.756834,,,,,,,,,,,9/12/2018,N/A,N/A,N/A,N/A,0,N/A,0,"nobody answered, milkweed still present"
+AS087,MW073,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,120,N,"Developed, High Intensity
+Shrub/Scrub",Near dumpsters in grapevine patch. Extends to southern parking lot.,Late,0,7/30/2018,43.568721,-79.651832,,,,,,,,,,,9/16/2018,62,0,0,yes,1,no,0,"Plants 2&3, 4&5 < 3m apart"
+AS087,MW073,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,120,N,"Developed, High Intensity
+Shrub/Scrub",Near dumpsters in grapevine patch. Extends to southern parking lot.,Late,0,7/30/2018,43.568721,-79.651832,,,,,,,,,,,9/16/2018,72,1,1,yes,1,yes,1,"Plants 2&3, 4&5 < 3m apart"
+AS087,MW073,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,120,N,"Developed, High Intensity
+Shrub/Scrub",Near dumpsters in grapevine patch. Extends to southern parking lot.,Late,0,7/30/2018,43.568721,-79.651832,,,,,,,,,,,9/16/2018,78,1,2,yes,1,yes,1,"Plants 2&3, 4&5 < 3m apart"
+AS087,MW073,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,120,N,"Developed, High Intensity
+Shrub/Scrub",Near dumpsters in grapevine patch. Extends to southern parking lot.,Late,0,7/30/2018,43.568721,-79.651832,,,,,,,,,,,9/16/2018,28,0,0,yes,1,no,0,"Plants 2&3, 4&5 < 3m apart"
+AS087,MW073,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,4000,120,N,"Developed, High Intensity
+Shrub/Scrub",Near dumpsters in grapevine patch. Extends to southern parking lot.,Late,1,7/30/2018,43.568721,-79.651832,,,,,,,,,,,9/16/2018,61,0,0,yes,1,no,0,"Plants 2&3, 4&5 < 3m apart"
+AS088,MW074,1,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NO ONE HOME- DID NOT INSPECT.,NA,NA,7/30/2018,43.573691,-79.636480,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS089,MW075,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6,7,N,"Developed, Medium Intensity",272 Lech Walesa Dr,Not sure,0,7/30/2018,43.579335,-79.630017,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS089,MW075,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6,7,N,"Developed, Medium Intensity",272 Lech Walesa Dr,Not sure,0,7/30/2018,43.579335,-79.630017,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS089,MW075,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6,7,N,"Developed, Medium Intensity",272 Lech Walesa Dr,Not sure,0,7/30/2018,43.579335,-79.630017,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS089,MW075,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6,7,N,"Developed, Medium Intensity",272 Lech Walesa Dr,Not sure,0,7/30/2018,43.579335,-79.630017,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS089,MW075,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,6,7,N,"Developed, Medium Intensity",272 Lech Walesa Dr,Not sure,0,7/30/2018,43.579335,-79.630017,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS090,MW076,1,4,1,0,1,0,2,1,1,0,4,30,N,"Developed, Medium Intensity
+Developed, Open Space",Not planted. 7 monarch eggs seen on same plant! 4 monarch eggs on same leaf! Population near the Cooksville Creek Trail.,Early-Late,0,7/30/2018,43.589966,-79.618300,,,,,,,,,,,9/16/2018,101,2,3,yes,1,yes,1,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+AS090,MW076,2,2,2,0,0,3,2,1,4,2,4,30,N,"Developed, Medium Intensity
+Developed, Open Space",Not planted. 7 monarch eggs seen on same plant! 4 monarch eggs on same leaf! Population near the Cooksville Creek Trail.,Early-Late,0,7/30/2018,43.589966,-79.618300,,,,,,,,,,,9/16/2018,99,5,6,yes,1,yes,1,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+AS090,MW076,3,1,2,1,1,2,1,0,0,1,4,30,N,"Developed, Medium Intensity
+Developed, Open Space",Not planted. 7 monarch eggs seen on same plant! 4 monarch eggs on same leaf! Population near the Cooksville Creek Trail.,Early-Late,0,7/30/2018,43.589966,-79.618300,,,,,,,,,,,9/16/2018,104,1,7,yes,1,yes,1,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+AS090,MW076,4,2,1,1,0,2,5,2,1,2,4,30,N,"Developed, Medium Intensity
+Developed, Open Space",Not planted. 7 monarch eggs seen on same plant! 4 monarch eggs on same leaf! Population near the Cooksville Creek Trail.,Early-Late,0,7/30/2018,43.589966,-79.618300,,,,,,,,,,,9/16/2018,96,2,11,yes,1,yes,1,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+AS090,MW076,5,1,0,1,0,3,1,1,1,3,4,30,N,"Developed, Medium Intensity
+Developed, Open Space",Not planted. 7 monarch eggs seen on same plant! 4 monarch eggs on same leaf! Population near the Cooksville Creek Trail.,Early-Late,0,7/30/2018,43.589966,-79.618300,,,,,,,,,,,9/16/2018,121,2,8,yes,1,yes,1,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+AS091,MW077,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,15,N,"Developed, Medium Intensity",Overgrown garden,Not sure,0,7/30/2018,43.591194,-79.608405,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS091,MW077,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,15,N,"Developed, Medium Intensity",Overgrown garden,Not sure,0,7/30/2018,43.591194,-79.608405,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS091,MW077,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,15,N,"Developed, Medium Intensity",Overgrown garden,Not sure,0,7/30/2018,43.591194,-79.608405,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS091,MW077,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,15,N,"Developed, Medium Intensity",Overgrown garden,Not sure,0,7/30/2018,43.591194,-79.608405,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS091,MW077,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,9,15,N,"Developed, Medium Intensity",Overgrown garden,Not sure,0,7/30/2018,43.591194,-79.608405,,,,,,,,,,,9/16/2018,N/A,N/A,N/A,N/A,0,N/A,0,Very small plants w/o pods. No one home- did not sample.
+AS092,MW078,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,15000,12,N,"Developed, High Intensity",Produce truck depot near railroad tracks. Patch also in ravine east of waypoint. High fruit count could be result of produce trucks transporting/attracting pollinators,Late,0,7/30/2018,43.601609,-79.583684,,,,,,,,,,,9/16/2018,87,6,5,yes,1,yes,1,<3 m between plants
+AS092,MW078,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,15000,12,N,"Developed, High Intensity",Produce truck depot near railroad tracks. Patch also in ravine east of waypoint. High fruit count could be result of produce trucks transporting/attracting pollinators,Late,25,7/30/2018,43.601609,-79.583684,,,,,,,,,,,9/16/2018,63,4,3,yes,1,yes,1,<3 m between plants
+AS092,MW078,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,15000,12,N,"Developed, High Intensity",Produce truck depot near railroad tracks. Patch also in ravine east of waypoint. High fruit count could be result of produce trucks transporting/attracting pollinators,Late,35,7/30/2018,43.601609,-79.583684,,,,,,,,,,,9/16/2018,98,6,4,yes,1,yes,1,<3 m between plants
+AS092,MW078,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,15000,12,N,"Developed, High Intensity",Produce truck depot near railroad tracks. Patch also in ravine east of waypoint. High fruit count could be result of produce trucks transporting/attracting pollinators,Late,0,7/30/2018,43.601609,-79.583684,,,,,,,,,,,9/16/2018,112,35,8,yes,1,yes,1,<3 m between plants
+AS092,MW078,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,15000,12,N,"Developed, High Intensity",Produce truck depot near railroad tracks. Patch also in ravine east of waypoint. High fruit count could be result of produce trucks transporting/attracting pollinators,Late,8,7/30/2018,43.601609,-79.583684,,,,,,,,,,,9/16/2018,94,24,7,yes,1,yes,1,<3 m between plants
+AS093,MW079,1,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8800,44,N,"Developed, Medium Intensity
+Developed, Open Space",Lawn garden that looks wild. Population extends west to path to right of 57 Lynnford Dr. Population extends east to 36 Lynnford Dr. ,Late,1,7/30/2018,43.633829,-79.553119,,,,,,,,,,,9/10/2018,N/A,N/A,N/A,N/A,0,N/A,0,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+AS093,MW079,2,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8800,44,N,"Developed, Medium Intensity
+Developed, Open Space",Lawn garden that looks wild. Population extends west to path to right of 57 Lynnford Dr. Population extends east to 36 Lynnford Dr. ,Late,0,7/30/2018,43.633829,-79.553119,,,,,,,,,,,9/10/2018,N/A,N/A,N/A,N/A,0,N/A,0,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+AS093,MW079,3,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8800,44,N,"Developed, Medium Intensity
+Developed, Open Space",Lawn garden that looks wild. Population extends west to path to right of 57 Lynnford Dr. Population extends east to 36 Lynnford Dr. ,Late,4,7/30/2018,43.633829,-79.553119,,,,,,,,,,,9/10/2018,N/A,N/A,N/A,N/A,0,N/A,0,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+AS093,MW079,4,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8800,44,N,"Developed, Medium Intensity
+Developed, Open Space",Lawn garden that looks wild. Population extends west to path to right of 57 Lynnford Dr. Population extends east to 36 Lynnford Dr. ,Late,2,7/30/2018,43.633829,-79.553119,,,,,,,,,,,9/10/2018,N/A,N/A,N/A,N/A,0,N/A,0,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+AS093,MW079,5,No first inflorescence,No first inflorescence,No first inflorescence,No second inflorescence,No second inflorescence,No second inflorescence,No third inflorescence,No third inflorescence,No third inflorescence,8800,44,N,"Developed, Medium Intensity
+Developed, Open Space",Lawn garden that looks wild. Population extends west to path to right of 57 Lynnford Dr. Population extends east to 36 Lynnford Dr. ,Late,2,7/30/2018,43.633829,-79.553119,,,,,,,,,,,9/10/2018,N/A,N/A,N/A,N/A,0,N/A,0,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.

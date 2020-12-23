@@ -1,0 +1,879 @@
+﻿Year,Pop_ID,Patch_ID,Plant_Num,Latitude,Longitude,Area_sq_m_2018,Plants_present_2018,City_dist,Transect_ID,Date,Height,Viable_Pods Produced,Aborted_Pods,Peduncles,Collected_pod_length,Other_pod_lengths,Collected_pod_width,Collected_pod_seed_number,Collected_pod_seed_weight,Notes
+2019,AS001,MW001,1,43.550556,-79.663,15,40,15.89,South,9/10/2019,34,3,2,5,10,"7, 9",3.4,,,>3 m between plants
+2019,AS001,MW001,2,43.550556,-79.663,15,40,15.89,South,9/10/2019,67,1,0,1,9.5,NA,2.6,,,>3 m between plants
+2019,AS001,MW001,3,43.550556,-79.663,15,40,15.89,South,9/10/2019,62,0,0,0,NA,NA,NA,,,>3 m between plants
+2019,AS001,MW001,4,43.550556,-79.663,15,40,15.89,South,9/10/2019,97,0,0,0,NA,NA,NA,,,>3 m between plants
+2019,AS001,MW001,5,43.550556,-79.663,15,40,15.89,South,9/10/2019,80,2,0,2,9.5,10,3,,,>3 m between plants
+2019,AS002,MW002,1,43.550225,-79.654062,10,25,15.51,South,9/26/2019,111,4,0,5,7,"6.4,6.4,5.4",2.233,,,Plants >3m apart
+2019,AS002,MW002,2,43.550225,-79.654062,10,25,15.51,South,9/26/2019,116,5,1,7,7.8,"6,8,8,7.4",2.409,,,Plants >3m apart
+2019,AS002,MW002,3,43.550225,-79.654062,10,25,15.51,South,9/26/2019,145,7,0,5,8.6,"8.4,7.6,10.2,8,9,9.8",2.791,,,Plants >3m apart
+2019,AS002,MW002,4,43.550225,-79.654062,10,25,15.51,South,9/26/2019,126,4,0,5,8,"7,6.8,7",2.418,,,Plants >3m apart
+2019,AS002,MW002,5,43.550225,-79.654062,10,25,15.51,South,9/26/2019,108,2,0,3,8,7.6,2.198,,,Plants >3m apart
+2019,AS003,MW003,1,43.565106,-79.671002,3,20,15.82,South,9/24/2019,111,2,0,5,11,8.8,3.039,,,All measurements taken from AS003.
+2019,AS003,MW003,2,43.565106,-79.671002,3,20,15.82,South,9/24/2019,86,2,0,5,9,8.6,2.684,,,All measurements taken from AS003.
+2019,AS003,MW003,3,43.565106,-79.671002,3,20,15.82,South,9/24/2019,149,3,2,5,11.2,"10,11",3.37,,,All measurements taken from AS003.
+2019,AS003,MW003,4,43.565106,-79.671002,3,20,15.82,South,9/24/2019,172,4,0,3,9.6,"10,10,9.2",2.805,,,All measurements taken from AS003.
+2019,AS003,MW003,5,43.565106,-79.671002,3,20,15.82,South,9/24/2019,167,4,1,5,10.6,"10,10,9.4",3.289,,,All measurements taken from AS003.
+2019,AS004,MW003,1,43.562538,-79.674057,25,30,16.03,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS003.
+2019,AS004,MW003,2,43.562538,-79.674057,25,30,16.03,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS003.
+2019,AS004,MW003,3,43.562538,-79.674057,25,30,16.03,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS003.
+2019,AS004,MW003,4,43.562538,-79.674057,25,30,16.03,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS003.
+2019,AS004,MW003,5,43.562538,-79.674057,25,30,16.03,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS003.
+2019,AS005,MW004,1,43.567334,-79.686386,20,20,16.47,South,9/24/2019,117,2,0,3,8,9,1.993,,,All measurements taken from AS007 & AS008. Plants >3 m apart.
+2019,AS005,MW004,2,43.567334,-79.686386,20,20,16.47,South,9/24/2019,112,4,0,4,11.2,"10.6,7.2,8",2.827,,,All measurements taken from AS007 & AS008. Plants >3 m apart.
+2019,AS005,MW004,3,43.567334,-79.686386,20,20,16.47,South,9/24/2019,120,5,0,5,10,"6.2,9.4,9.6,10",2.703,,,All measurements taken from AS007 & AS008. Plants >3 m apart.
+2019,AS005,MW004,4,43.567334,-79.686386,20,20,16.47,South,9/24/2019,103,3,0,4,10,"10,10",3.403,,,All measurements taken from AS007 & AS008. Plants >3 m apart.
+2019,AS005,MW004,5,43.567334,-79.686386,20,20,16.47,South,9/24/2019,103,4,0,2,6.6,"7,7,6.8",2.034,,,All measurements taken from AS007 & AS008. Plants >3 m apart.
+2019,AS006,MW004,1,43.569004,-79.684245,1,2,16.33,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS006,MW004,2,43.569004,-79.684245,1,2,16.33,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS007,MW004,1,43.566504,-79.680149,400,10,16.21,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS007,MW004,2,43.566504,-79.680149,400,10,16.21,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS007,MW004,3,43.566504,-79.680149,400,10,16.21,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS007,MW004,4,43.566504,-79.680149,400,10,16.21,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS007,MW004,5,43.566504,-79.680149,400,10,16.21,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS008,MW004,1,43.566922,-79.679797,20,25,16.18,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS008,MW004,2,43.566922,-79.679797,20,25,16.18,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS008,MW004,3,43.566922,-79.679797,20,25,16.18,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS008,MW004,4,43.566922,-79.679797,20,25,16.18,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS008,MW004,5,43.566922,-79.679797,20,25,16.18,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS009,MW004,1,43.563919,-79.682622,15,5,16.39,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS009,MW004,2,43.563919,-79.682622,15,5,16.39,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS009,MW004,3,43.563919,-79.682622,15,5,16.39,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS009,MW004,4,43.563919,-79.682622,15,5,16.39,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS009,MW004,5,43.563919,-79.682622,15,5,16.39,South,9/24/2019,x,x,x,x,x,x,x,x,x,All measurements taken from AS007 & AS008.
+2019,AS010,MW005,1,43.493329,-79.747541,9,15,21.53,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS010,MW005,2,43.493329,-79.747541,9,15,21.53,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS010,MW005,3,43.493329,-79.747541,9,15,21.53,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS010,MW005,4,43.493329,-79.747541,9,15,21.53,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS010,MW005,5,43.493329,-79.747541,9,15,21.53,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS011,MW005,1,43.493262,-79.747925,4,5,21.55,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS011,MW005,2,43.493262,-79.747925,4,5,21.55,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS011,MW005,3,43.493262,-79.747925,4,5,21.55,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS011,MW005,4,43.493262,-79.747925,4,5,21.55,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS011,MW005,5,43.493262,-79.747925,4,5,21.55,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS012,MW005,1,43.492717,-79.748081,30,30,21.58,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS012,MW005,2,43.492717,-79.748081,30,30,21.58,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS012,MW005,3,43.492717,-79.748081,30,30,21.58,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS012,MW005,4,43.492717,-79.748081,30,30,21.58,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS012,MW005,5,43.492717,-79.748081,30,30,21.58,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS013,MW005,1,43.492005,-79.749026,60,20,21.64,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS013,MW005,2,43.492005,-79.749026,60,20,21.64,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS013,MW005,3,43.492005,-79.749026,60,20,21.64,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS013,MW005,4,43.492005,-79.749026,60,20,21.64,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS013,MW005,5,43.492005,-79.749026,60,20,21.64,Rural,x,x,x,x,x,x,x,x,x,x,Site under construction
+2019,AS014,MW006,1,43.438669,-79.780878,300,100,25.05,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS014,MW006,2,43.438669,-79.780878,300,100,25.05,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS014,MW006,3,43.438669,-79.780878,300,100,25.05,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS014,MW006,4,43.438669,-79.780878,300,100,25.05,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS014,MW006,5,43.438669,-79.780878,300,100,25.05,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS015,MW006,1,43.434924,-79.777459,10,15,25.07,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS015,MW006,2,43.434924,-79.777459,10,15,25.07,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS015,MW006,3,43.434924,-79.777459,10,15,25.07,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS015,MW006,4,43.434924,-79.777459,10,15,25.07,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS015,MW006,5,43.434924,-79.777459,10,15,25.07,Rural,x,x,x,x,x,x,x,x,x,x,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS016,MW006,1,43.436081,-79.777321,200,60,25.01,Rural,9/26/2019,102,2,0,5,9.6,10,2.429,,,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS016,MW006,2,43.436081,-79.777321,200,60,25.01,Rural,9/26/2019,115,2,0,5,11.2,10.4,2.775,,,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS016,MW006,3,43.436081,-79.777321,200,60,25.01,Rural,9/26/2019,131,3,0,4,9.6,"9.8,10",3.212,,,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS016,MW006,4,43.436081,-79.777321,200,60,25.01,Rural,9/26/2019,119,5,0,4,11.6,"11,9.6,9,10",2.622,,,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS016,MW006,5,43.436081,-79.777321,200,60,25.01,Rural,9/26/2019,101,1,0,5,9.6,NA,2.317,,,"Samples for MW006 taken from AS014, 15, and 16. (2, 1, 2) Plants >3 m apart."
+2019,AS017,MW007,1,43.434493,-79.904435,1,2,30.37,Rural,9/26/2019,118,4,0,6,10.4,"12.2,9,12.6",2.873,,,All surveys taken from AS019-AS020.
+2019,AS017,MW007,2,43.434493,-79.904435,1,2,30.37,Rural,9/26/2019,101,5,0,2,8,"8,8,7.6",3.02,,,All surveys taken from AS019-AS020.
+2019,AS018,MW007,1,43.434819,-79.902274,1,3,30.27,Rural,9/26/2019,108,5,0,5,8.2,"8.6,7.8,9,8.2",2.771,,,All surveys taken from AS019-AS020.
+2019,AS018,MW007,2,43.434819,-79.902274,1,3,30.27,Rural,9/26/2019,110,4,0,4,9.8,"9,9.2,10",2.856,,,All surveys taken from AS019-AS020.
+2019,AS018,MW007,3,43.434819,-79.902274,1,3,30.27,Rural,9/26/2019,128,9,0,5,10.2,"10,10,10,11,11.6,9.8,9.4,8.4",2.429,,,All surveys taken from AS019-AS020.
+2019,AS019,MW007,1,43.434125,-79.903894,36,50,30.36,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS019,MW007,2,43.434125,-79.903894,36,50,30.36,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS019,MW007,3,43.434125,-79.903894,36,50,30.36,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS019,MW007,4,43.434125,-79.903894,36,50,30.36,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS019,MW007,5,43.434125,-79.903894,36,50,30.36,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS020,MW007,1,43.433302,-79.902403,900,300,30.32,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS020,MW007,2,43.433302,-79.902403,900,300,30.32,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS020,MW007,3,43.433302,-79.902403,900,300,30.32,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS020,MW007,4,43.433302,-79.902403,900,300,30.32,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS020,MW007,5,43.433302,-79.902403,900,300,30.32,Rural,x,x,x,x,x,x,x,x,x,x,All surveys taken from AS019-AS020.
+2019,AS021,MW008,1,43.457451,-79.866815,21,25,27.94,Rural,x,x,x,x,x,x,x,x,x,x,Mowed/under construction
+2019,AS021,MW008,2,43.457451,-79.866815,21,25,27.94,Rural,x,x,x,x,x,x,x,x,x,x,Mowed/under construction
+2019,AS021,MW008,3,43.457451,-79.866815,21,25,27.94,Rural,x,x,x,x,x,x,x,x,x,x,Mowed/under construction
+2019,AS021,MW008,4,43.457451,-79.866815,21,25,27.94,Rural,x,x,x,x,x,x,x,x,x,x,Mowed/under construction
+2019,AS021,MW008,5,43.457451,-79.866815,21,25,27.94,Rural,x,x,x,x,x,x,x,x,x,x,Mowed/under construction
+2019,AS022,MW009,1,43.516263,-79.779220,21,25,22.16,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access. Very few plants anyway (~4)
+2019,AS022,MW009,2,43.516263,-79.779220,21,25,22.16,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access. Very few plants anyway (~4)
+2019,AS022,MW009,3,43.516263,-79.779220,21,25,22.16,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access. Very few plants anyway (~4)
+2019,AS022,MW009,4,43.516263,-79.779220,21,25,22.16,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access. Very few plants anyway (~4)
+2019,AS022,MW009,5,43.516263,-79.779220,21,25,22.16,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access. Very few plants anyway (~4)
+2019,AS023,MW010,1,43.525816,-79.791571,2,1,22.44,Rural,x,x,x,x,x,x,x,x,x,x,Not visiting. No plants seen in July.
+2019,AS023,MW010,2,43.525816,-79.791571,2,1,22.44,Rural,x,x,x,x,x,x,x,x,x,x,Not visiting. No plants seen in July.
+2019,AS024,MW011,1,43.589594,-79.638468,1000,100,13.68,South,9/24/2019,116,6,0,4,11,"11,11,11.4,11.6,9.2",2.751,,,Plants >3m apart
+2019,AS024,MW011,2,43.589594,-79.638468,1000,100,13.68,South,9/24/2019,112,3,0,5,8.2,"8.8,9.2",1.658,,,Plants >3m apart
+2019,AS024,MW011,3,43.589594,-79.638468,1000,100,13.68,South,9/24/2019,156,4,0,7,9.4,"9,11,9.8",2.464,,,Plants >3m apart
+2019,AS024,MW011,4,43.589594,-79.638468,1000,100,13.68,South,9/24/2019,164,3,0,8,11.8,"10.8,11.8",2.785,,,Plants >3m apart
+2019,AS024,MW011,5,43.589594,-79.638468,1000,100,13.68,South,9/24/2019,175,5,0,6,10.6,"9,10,10.6,11",2.712,,,Plants >3m apart
+2019,AS025,MW012,1,43.534585,-79.645432,20,15,15.68,South,9/26/2019,95,5,0,3,7,"7.4,8,8.4,7.4",2.253,,,Plants >3m apart
+2019,AS025,MW012,2,43.534585,-79.645432,20,15,15.68,South,9/26/2019,97,4,0,3,7,"5.6,6.4,6.2",2.312,,,Plants >3m apart
+2019,AS025,MW012,3,43.534585,-79.645432,20,15,15.68,South,9/26/2019,124,8,0,5,9,"8.6,8.6,9,9,8.6,8.2,10",2.639,,,Plants >3m apart
+2019,AS025,MW012,4,43.534585,-79.645432,20,15,15.68,South,9/26/2019,117,3,0,3,10,"9.4,9.2",2.503,,,Plants >3m apart
+2019,AS025,MW012,5,43.534585,-79.645432,20,15,15.68,South,9/26/2019,153,5,0,4,8.2,"8.6,9,10,8,8",2.506,,,Plants >3m apart
+2019,AS026,MW013,1,43.615384,-79.570454,6,15,9.89,South,9/19/2019,85,2,0,1,8.2,8,2.373,,,Plants <3 m apart
+2019,AS026,MW013,2,43.615384,-79.570454,6,15,9.89,South,9/19/2019,114,6,0,4,9.4,"8,9.6,9.2,9,9.8",2.349,,,Plants <3 m apart
+2019,AS026,MW013,3,43.615384,-79.570454,6,15,9.89,South,9/19/2019,93,8,0,4,9.2,"9.4,9,9,9,9,9,9",2.635,,,Plants <3 m apart
+2019,AS026,MW013,4,43.615384,-79.570454,6,15,9.89,South,9/19/2019,112,2,1,3,9.6,9.4,3.068,,,Plants <3 m apart
+2019,AS026,MW013,5,43.615384,-79.570454,6,15,9.89,South,9/19/2019,121,4,1,4,9.2,"10,9.4,10",2.794,,,Plants <3 m apart
+2019,AS027,MW014,1,43.648581,-79.521463,4000,50,7.05,South,9/19/2019,96,4,0,3,7.6,"8.2,8,8.4",2.359,,,Plants >3m apart
+2019,AS027,MW014,2,43.648581,-79.521463,4000,50,7.05,South,9/19/2019,101,6,0,3,7,"6.6,7,7,7,7",2.023,,,Plants >3m apart
+2019,AS027,MW014,3,43.648581,-79.521463,4000,50,7.05,South,9/19/2019,100,4,0,4,12,"13,13,11.8",3.2,,,Plants >3m apart
+2019,AS027,MW014,4,43.648581,-79.521463,4000,50,7.05,South,9/19/2019,102,4,0,4,11.8,"10.4,10.6,12.2",2.806,,,Plants >3m apart
+2019,AS027,MW014,5,43.648581,-79.521463,4000,50,7.05,South,9/19/2019,95,2,0,4,11.8,11.6,2.054,,,Plants >3m apart
+2019,AS028,MW015,1,43.661177,-79.500382,12,25,5.98,South,9/19/2019,96,13,0,4,7,"4,5.8,6.4,6,4.6,5.4,5.4,3.2,6,6,2.8,5",0.922,,,"Looks like pods were killed prematurely/growth stunted- very small, half-eaten/dead. Plants very late stage and <3m apart. No living leaf tissue left for P2 and P3; use pod"
+2019,AS028,MW015,2,43.661177,-79.500382,12,25,5.98,South,9/19/2019,95,6,0,2,11.4,"10,10.8,11,11,10.4",2.351,,,"Looks like pods were killed prematurely/growth stunted- very small, half-eaten/dead. Plants very late stage and <3m apart. No living leaf tissue left for P2 and P3; use pod"
+2019,AS028,MW015,3,43.661177,-79.500382,12,25,5.98,South,9/19/2019,81,1,0,1,9.2,NA,1.714,,,"Looks like pods were killed prematurely/growth stunted- very small, half-eaten/dead. Plants very late stage and <3m apart. No living leaf tissue left for P2 and P3; use pod"
+2019,AS028,MW015,4,43.661177,-79.500382,12,25,5.98,South,9/19/2019,135,5,0,3,10,"10.6,10,9.4,9.8",2.265,,,"Looks like pods were killed prematurely/growth stunted- very small, half-eaten/dead. Plants very late stage and <3m apart. No living leaf tissue left for P2 and P3; use pod"
+2019,AS028,MW015,5,43.661177,-79.500382,12,25,5.98,South,9/19/2019,47,0,0,0,NA,NA,NA,NA,NA,x
+2019,AS029,MW016,1,43.711948,-79.535894,100,15,8.65,North,9/12/2019,x,x,x,x,x,x,x,x,x,Population recently mowed.
+2019,AS029,MW016,2,43.711948,-79.535894,100,15,8.65,North,9/12/2019,x,x,x,x,x,x,x,x,x,Population recently mowed.
+2019,AS029,MW016,3,43.711948,-79.535894,100,15,8.65,North,9/12/2019,x,x,x,x,x,x,x,x,x,Population recently mowed.
+2019,AS029,MW016,4,43.711948,-79.535894,100,15,8.65,North,9/12/2019,x,x,x,x,x,x,x,x,x,Population recently mowed.
+2019,AS029,MW016,5,43.711948,-79.535894,100,15,8.65,North,9/12/2019,x,x,x,x,x,x,x,x,x,Population recently mowed.
+2019,AS030,MW017,1,43.501061,-79.844567,8000,80,25.57,Rural,9/26/2019,86,1,0,2,6.2,NA,2.562,,,Plants <3 m apart
+2019,AS030,MW017,2,43.501061,-79.844567,8000,80,25.57,Rural,9/26/2019,89,1,0,1,6.8,NA,2.496,,,Plants <3 m apart
+2019,AS030,MW017,3,43.501061,-79.844567,8000,80,25.57,Rural,9/26/2019,83,3,0,2,8.6,"9,9",2.118,,,Plants <3 m apart
+2019,AS030,MW017,4,43.501061,-79.844567,8000,80,25.57,Rural,9/26/2019,117,5,0,4,9,"9,9.2,10.4,8.6",2.004,,,Plants <3 m apart
+2019,AS030,MW017,5,43.501061,-79.844567,8000,80,25.57,Rural,9/26/2019,104,2,0,3,8.4,10,2.521,,,Plants <3 m apart
+2019,AS031,MW018,1,43.484111,-79.837702,12,30,25.78,Rural,x,x,x,x,x,x,x,x,x,x,"Had been weed-whacked earlier so heights didn't reflect true growth rate. Plus only 1 plant with pods, in ditch."
+2019,AS031,MW018,2,43.484111,-79.837702,12,30,25.78,Rural,x,x,x,x,x,x,x,x,x,x,"Had been weed-whacked earlier so heights didn't reflect true growth rate. Plus only 1 plant with pods, in ditch."
+2019,AS031,MW018,3,43.484111,-79.837702,12,30,25.78,Rural,x,x,x,x,x,x,x,x,x,x,"Had been weed-whacked earlier so heights didn't reflect true growth rate. Plus only 1 plant with pods, in ditch."
+2019,AS031,MW018,4,43.484111,-79.837702,12,30,25.78,Rural,x,x,x,x,x,x,x,x,x,x,"Had been weed-whacked earlier so heights didn't reflect true growth rate. Plus only 1 plant with pods, in ditch."
+2019,AS031,MW018,5,43.484111,-79.837702,12,30,25.78,Rural,x,x,x,x,x,x,x,x,x,x,"Had been weed-whacked earlier so heights didn't reflect true growth rate. Plus only 1 plant with pods, in ditch."
+2019,AS032,MW019,1,43.41401,-79.953028,18,20,33.19,Rural,9/25/2019,136,1,0,8,11,NA,2.496,,,Plants <3 m apart
+2019,AS032,MW019,2,43.41401,-79.953028,18,20,33.19,Rural,9/25/2019,117,1,0,4,8.6,NA,1.882,,,Plants <3 m apart
+2019,AS032,MW019,3,43.41401,-79.953028,18,20,33.19,Rural,9/25/2019,117,1,0,5,11.2,NA,2.324,,,Plants <3 m apart
+2019,AS032,MW019,4,43.41401,-79.953028,18,20,33.19,Rural,9/25/2019,137,1,0,7,11,NA,2.353,,,Plants <3 m apart
+2019,AS032,MW019,5,43.41401,-79.953028,18,20,33.19,Rural,9/25/2019,135,1,0,7,NA,NA,2.702,,,Plants <3 m apart
+2019,AS033,MW020,1,43.387612,-79.959232,2400,60,34.41,Rural,9/25/2019,89,3,0,5,9.2,"9,10",3.005,,,Plants <3 m apart
+2019,AS033,MW020,2,43.387612,-79.959232,2400,60,34.41,Rural,9/25/2019,89,1,0,2,10.6,NA,3.372,,,Plants <3 m apart
+2019,AS033,MW020,3,43.387612,-79.959232,2400,60,34.41,Rural,9/25/2019,89,2,0,4,10.4,10.6,3.014,,,Plants <3 m apart
+2019,AS033,MW020,4,43.387612,-79.959232,2400,60,34.41,Rural,9/25/2019,98,2,0,6,9.4,8.8,3.124,,,Plants <3 m apart
+2019,AS033,MW020,5,43.387612,-79.959232,2400,60,34.41,Rural,9/25/2019,63,1,0,3,9.2,NA,3.014,,,Plants <3 m apart
+2019,AS034,MW021,1,43.399222,-79.930576,1500,60,32.77,Rural,9/25/2019,113,2,0,6,15.2,12,2.89,,,Plants >3 m apart
+2019,AS034,MW021,2,43.399222,-79.930576,1500,60,32.77,Rural,9/25/2019,86,1,0,2,11.2,NA,2.213,,,Plants >3 m apart
+2019,AS034,MW021,3,43.399222,-79.930576,1500,60,32.77,Rural,9/25/2019,128,2,0,4,10,7,2.634,,,Plants >3 m apart
+2019,AS034,MW021,4,43.399222,-79.930576,1500,60,32.77,Rural,9/25/2019,109,5,0,5,9.2,"9,8,8,8.6",2.402,,,Plants >3 m apart
+2019,AS034,MW021,5,43.399222,-79.930576,1500,60,32.77,Rural,9/25/2019,141,3,0,5,14,"14,14.2",3.003,,,Plants >3 m apart
+2019,AS035,MW022,1,43.377146,-79.973861,30,13,35.42,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS035,MW022,2,43.377146,-79.973861,30,13,35.42,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS035,MW022,3,43.377146,-79.973861,30,13,35.42,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS035,MW022,4,43.377146,-79.973861,30,13,35.42,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS035,MW022,5,43.377146,-79.973861,30,13,35.42,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS036,MW023,1,43.371308,-79.981819,600,20,35.98,Rural,9/25/2019,90,6,0,6,10.4,"8.6,8.6,8,9,10,10",3.02,,,Plants 2 & 3 <3 m apart
+2019,AS036,MW023,2,43.371308,-79.981819,600,20,35.98,Rural,9/25/2019,75,4,0,2,10.6,"10,11,8",2.651,,,Plants 2 & 3 <3 m apart
+2019,AS036,MW023,3,43.371308,-79.981819,600,20,35.98,Rural,9/25/2019,40,0,0,2,NA,NA,NA,NA,NA,Plants 2 & 3 <3 m apart
+2019,AS036,MW023,4,43.371308,-79.981819,600,20,35.98,Rural,9/25/2019,107,0,0,8,NA,NA,NA,NA,NA,Plants 2 & 3 <3 m apart
+2019,AS036,MW023,5,43.371308,-79.981819,600,20,35.98,Rural,9/25/2019,72,0,0,4,NA,NA,NA,NA,NA,Plants 2 & 3 <3 m apart
+2019,AS037,MW024,1,43.363349,-80.01471,2,2,37.66,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS037,MW024,2,43.363349,-80.01471,2,2,37.66,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS038,MW025,1,43.726774,-79.432109,3,12,5.5,North,9/12/2019,13,0,0,0,0,0,0,0,0,Tiny plants- no pods. <3m apart.
+2019,AS038,MW025,2,43.726774,-79.432109,3,12,5.5,North,9/12/2019,3.5,0,0,0,0,0,0,0,0,Tiny plants- no pods. <3m apart.
+2019,AS038,MW025,3,43.726774,-79.432109,3,12,5.5,North,9/12/2019,16,0,0,0,0,0,0,0,0,Tiny plants- no pods. <3m apart.
+2019,AS038,MW025,4,43.726774,-79.432109,3,12,5.5,North,9/12/2019,x,x,x,x,x,x,x,x,x,x
+2019,AS038,MW025,5,43.726774,-79.432109,3,12,5.5,North,9/12/2019,x,x,x,x,x,x,x,x,x,x
+2019,AS039,MW026,1,43.719453,-79.445163,160,8,5.42,North,9/12/2019,89,7,0,3,9,"9,9,9,9,8.2,9.5",2.4,,,Some seeds not totally ripe
+2019,AS039,MW026,2,43.719453,-79.445163,160,8,5.42,North,9/12/2019,114,6,0,4,10,"10,8,10,10,10,9",2.6,,,Some seeds not totally ripe
+2019,AS039,MW026,3,43.719453,-79.445163,160,8,5.42,North,9/12/2019,79,6,0,4,10.6,"10,9.4,10.4,8,9.4",3,,,Some seeds not totally ripe
+2019,AS039,MW026,4,43.719453,-79.445163,160,8,5.42,North,9/12/2019,93,6,0,5,10.8,"10,9.8,9.8,9.2,9.2",2.9,,,Some seeds not totally ripe
+2019,AS039,MW026,5,43.719453,-79.445163,160,8,5.42,North,9/12/2019,83,0,0,0,x,x,x,,,Some seeds not totally ripe
+2019,AS040,MW027,1,43.726466,-79.445593,48,60,5.82,North,9/12/2019,89,0,0,2,0,0,0,,,"Been weed-whacked, so no pods seen. Plants <3m apart."
+2019,AS040,MW027,2,43.726466,-79.445593,48,60,5.82,North,9/12/2019,49,0,0,0,0,0,0,,,"Been weed-whacked, so no pods seen. Plants <3m apart."
+2019,AS040,MW027,3,43.726466,-79.445593,48,60,5.82,North,9/12/2019,40,0,0,1,0,0,0,,,"Been weed-whacked, so no pods seen. Plants <3m apart."
+2019,AS040,MW027,4,43.726466,-79.445593,48,60,5.82,North,9/12/2019,37,0,0,0,0,0,0,,,"Been weed-whacked, so no pods seen. Plants <3m apart."
+2019,AS040,MW027,5,43.726466,-79.445593,48,60,5.82,North,9/12/2019,43,0,0,0,0,0,0,,,"Been weed-whacked, so no pods seen. Plants <3m apart."
+2019,AS041,MW028,1,43.713472,-79.463271,4000,18,5.7,North,9/12/2019,117,11,0,5,9,"8,8.4,8,7.4,6.2,6.6,7,9,8,8",2.5,,,"Most plants (all except #3) from patch next to parking lot, vs where waypoint is in park"
+2019,AS041,MW028,2,43.713472,-79.463271,4000,18,5.7,North,9/12/2019,104,3,0,5,8.2,"8,9",3.4,,,"Most plants (all except #3) from patch next to parking lot, vs where waypoint is in park"
+2019,AS041,MW028,3,43.713472,-79.463271,4000,18,5.7,North,9/12/2019,109,3,0,5,7.6,"9,8",1.6,,,"Most plants (all except #3) from patch next to parking lot, vs where waypoint is in park"
+2019,AS041,MW028,4,43.713472,-79.463271,4000,18,5.7,North,9/12/2019,93,5,0,4,9.2,"10,10,9.8,8.8",2.4,,,"Most plants (all except #3) from patch next to parking lot, vs where waypoint is in park"
+2019,AS041,MW028,5,43.713472,-79.463271,4000,18,5.7,North,9/12/2019,107,7,0,5,11.2,"7,9,7,7.6,10,9.8",3.3,,,"Most plants (all except #3) from patch next to parking lot, vs where waypoint is in park"
+2019,AS042,MW029,1,43.713584,-79.475768,9,19,6.17,North,9/12/2019,135,3,0,4,11,"10.4,11.4",2.6,,,Plants 1 & 5 <3m apart. Plant 5 had immature seeds.
+2019,AS042,MW029,2,43.713584,-79.475768,9,19,6.17,North,9/12/2019,149,7,0,6,9.4,"9,9,9.2,8.6,9,9",2.6,,,Plants 1 & 5 <3m apart. Plant 5 had immature seeds.
+2019,AS042,MW029,3,43.713584,-79.475768,9,19,6.17,North,9/12/2019,119,1,0,1,11,NA,2.4,,,Plants 1 & 5 <3m apart. Plant 5 had immature seeds.
+2019,AS042,MW029,4,43.713584,-79.475768,9,19,6.17,North,9/12/2019,157,6,0,7,10,"10.2,9.4,8,9.6,9.6",2.5,,,Plants 1 & 5 <3m apart. Plant 5 had immature seeds.
+2019,AS042,MW029,5,43.713584,-79.475768,9,19,6.17,North,9/12/2019,144,7,0,5,10.4,"12,12,10.6,10,9.4,10.8",2.6,,,Plants 1 & 5 <3m apart. Plant 5 had immature seeds.
+2019,AS043,MW030,1,43.71387,-79.505919,2,10,7.4,North,9/12/2019,191,16,0,13,10.4,"10,10,11,11,8.6,10,10,10,8.8,10,10,9.8,10,9,9.2",3.8,,,
+2019,AS043,MW030,2,43.71387,-79.505919,2,10,7.4,North,9/12/2019,186,5,0,28,9.6,"11,10,11,10.8",3.3,,,
+2019,AS043,MW030,3,43.71387,-79.505919,2,10,7.4,North,9/12/2019,180,14,0,14,10.8,"8.8,9.4,8,1,1,11.2,8.8,9,10,10,10,10,10",3.5,,,
+2019,AS043,MW030,4,43.71387,-79.505919,2,10,7.4,North,9/12/2019,163,10,0,11,10.2,"10.4,10.6,9,9.4,9.4,10,10,10,10",3.4,,,
+2019,AS043,MW030,5,43.71387,-79.505919,2,10,7.4,North,9/12/2019,102,1,0,5,10.6,NA,3.3,,,
+2019,AS044,MW031,1,43.713092,-79.515599,6000,240,7.79,North,9/12/2019,108,3,0,4,9.4,"10,9",3.5,,,
+2019,AS044,MW031,2,43.713092,-79.515599,6000,240,7.79,North,9/12/2019,91,2,0,2,10,NA,2.4,,,
+2019,AS044,MW031,3,43.713092,-79.515599,6000,240,7.79,North,9/12/2019,85,3,0,3,9.2,"9.2,8.6",2.7,,,
+2019,AS044,MW031,4,43.713092,-79.515599,6000,240,7.79,North,9/12/2019,97,2,0,2,9.4,9.8,2.5,,,
+2019,AS044,MW031,5,43.713092,-79.515599,6000,240,7.79,North,9/12/2019,103,2,0,2,9,10,2.1,,,
+2019,AS045,MW032,1,43.66963,-79.498027,6000,27,5.93,South,9/14/2019,73,5,1,3,8,"7.2,8,8,9",2.6,,,"Plants <3 m apart. Not all seeds ripe. If need more plants from this pop in the future, 52-54 Eileen Dr had plants w/follicles."
+2019,AS045,MW032,2,43.66963,-79.498027,6000,27,5.93,South,9/14/2019,92,11,0,4,6.6,"8.8,8,8,8,6.8,8,7,6,7,7.4",2.1,,,"Plants <3 m apart. Not all seeds ripe. If need more plants from this pop in the future, 52-54 Eileen Dr had plants w/follicles."
+2019,AS045,MW032,3,43.66963,-79.498027,6000,27,5.93,South,9/14/2019,84,5,2,4,9,"9.2,10,9,8.4",2.5,,,"Plants <3 m apart. Not all seeds ripe. If need more plants from this pop in the future, 52-54 Eileen Dr had plants w/follicles."
+2019,AS045,MW032,4,43.66963,-79.498027,6000,27,5.93,South,9/14/2019,92,3,1,2,9,"8.4,7",2.6,,,"Plants <3 m apart. Not all seeds ripe. If need more plants from this pop in the future, 52-54 Eileen Dr had plants w/follicles."
+2019,AS045,MW032,5,43.66963,-79.498027,6000,27,5.93,South,9/14/2019,79,4,2,2,9.2,"10,8,8.2",3,,,"Plants <3 m apart. Not all seeds ripe. If need more plants from this pop in the future, 52-54 Eileen Dr had plants w/follicles."
+2019,AS046,MW033,1,43.358912,-80.043033,80,25,39.03,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS046,MW033,2,43.358912,-80.043033,80,25,39.03,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS046,MW033,3,43.358912,-80.043033,80,25,39.03,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS046,MW033,4,43.358912,-80.043033,80,25,39.03,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS046,MW033,5,43.358912,-80.043033,80,25,39.03,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS047,MW034,1,43.357422,-80.052572,18850,980,39.49,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS047,MW034,2,43.357422,-80.052572,18850,980,39.49,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS047,MW034,3,43.357422,-80.052572,18850,980,39.49,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS047,MW034,4,43.357422,-80.052572,18850,980,39.49,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS047,MW034,5,43.357422,-80.052572,18850,980,39.49,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants
+2019,AS048,MW035,1,43.349551,-80.098407,8000,170,41.74,Rural,9/25/2019,117,4,0,6,10,"8,8.4,8.6",3.171,,,Plants >3 m apart. Really nice homeowner/farmer! Says to knock on door and say hello if we sample again. Milkweed supporter.
+2019,AS048,MW035,2,43.349551,-80.098407,8000,170,41.74,Rural,9/25/2019,122,2,0,6,9.8,8.4,3.06,,,Plants >3 m apart. Really nice homeowner/farmer! Says to knock on door and say hello if we sample again. Milkweed supporter.
+2019,AS048,MW035,3,43.349551,-80.098407,8000,170,41.74,Rural,9/25/2019,113,4,0,6,8.8,"9,8.6,9.6",2.742,,,Plants >3 m apart. Really nice homeowner/farmer! Says to knock on door and say hello if we sample again. Milkweed supporter.
+2019,AS048,MW035,4,43.349551,-80.098407,8000,170,41.74,Rural,9/25/2019,105,4,0,4,9.8,"9.4,9,10",2.687,,,Plants >3 m apart. Really nice homeowner/farmer! Says to knock on door and say hello if we sample again. Milkweed supporter.
+2019,AS048,MW035,5,43.349551,-80.098407,8000,170,41.74,Rural,9/25/2019,137,10,0,9,10,"10,10,10,10,10,11,10.4,8,9.2",2.934,,,Plants >3 m apart. Really nice homeowner/farmer! Says to knock on door and say hello if we sample again. Milkweed supporter.
+2019,AS049,MW036,1,43.321018,-80.049313,1800,170,40.74,Rural,9/25/2019,75,2,0,5,11.2,11,2.719,,,Plants >3 m apart
+2019,AS049,MW036,2,43.321018,-80.049313,1800,170,40.74,Rural,9/25/2019,89,3,0,4,10.8,"10,5",2.853,,,Plants >3 m apart
+2019,AS049,MW036,3,43.321018,-80.049313,1800,170,40.74,Rural,9/25/2019,103,2,0,2,9.8,9.8,2.781,,,Plants >3 m apart
+2019,AS049,MW036,4,43.321018,-80.049313,1800,170,40.74,Rural,9/25/2019,129,2,0,1,11.2,10.4,2.703,,,Plants >3 m apart
+2019,AS049,MW036,5,43.321018,-80.049313,1800,170,40.74,Rural,9/25/2019,106,4,0,3,10.8,"9.2,9,10",2.961,,,Plants >3 m apart
+2019,AS050,MW037,1,43.702158,-79.543737,70,30,8.73,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants present at house #66 but no one home. Could return.
+2019,AS050,MW037,2,43.702158,-79.543737,70,30,8.73,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants present at house #66 but no one home. Could return.
+2019,AS050,MW037,3,43.702158,-79.543737,70,30,8.73,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants present at house #66 but no one home. Could return.
+2019,AS050,MW037,4,43.702158,-79.543737,70,30,8.73,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants present at house #66 but no one home. Could return.
+2019,AS050,MW037,5,43.702158,-79.543737,70,30,8.73,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants present at house #66 but no one home. Could return.
+2019,AS051,MW038,1,43.701032,-79.549473,16,12,8.97,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants have been removed/replaced with other plants.
+2019,AS051,MW038,2,43.701032,-79.549473,16,12,8.97,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants have been removed/replaced with other plants.
+2019,AS051,MW038,3,43.701032,-79.549473,16,12,8.97,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants have been removed/replaced with other plants.
+2019,AS051,MW038,4,43.701032,-79.549473,16,12,8.97,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants have been removed/replaced with other plants.
+2019,AS051,MW038,5,43.701032,-79.549473,16,12,8.97,North,9/18/2019,x,x,x,x,x,x,x,x,x,Plants have been removed/replaced with other plants.
+2019,AS052,MW039,1,43.701432,-79.56251,10000,480,9.6,North,9/18/2019,89,9,2,8,10,"9.2,10,10,10,8.8,9.2,10,9.4",3.001,,,
+2019,AS052,MW039,2,43.701432,-79.56251,10000,480,9.6,North,9/18/2019,93,3,0,2,9.4,"9.8,8.4",2.839,,,
+2019,AS052,MW039,3,43.701432,-79.56251,10000,480,9.6,North,9/18/2019,94,1,0,5,9.8,NA,3.128,,,
+2019,AS052,MW039,4,43.701432,-79.56251,10000,480,9.6,North,9/18/2019,106,7,0,9,9.8,"10.2,10,8.2,8.8,9,9",2.326,,,
+2019,AS052,MW039,5,43.701432,-79.56251,10000,480,9.6,North,9/18/2019,115,3,0,2,12.8,"11,11.4",2.207,,,
+2019,AS053,MW040,1,43.690086,-79.572325,2000,150,9.85,North,9/18/2019,93,1,0,4,8.8,NA,3.092,,,
+2019,AS053,MW040,2,43.690086,-79.572325,2000,150,9.85,North,9/18/2019,104,9,0,4,8.4,"8,9.6,9.4,9.8,8,10.6,9",2.773,,,
+2019,AS053,MW040,3,43.690086,-79.572325,2000,150,9.85,North,9/18/2019,95,1,0,2,9.4,NA,2.417,,,
+2019,AS053,MW040,4,43.690086,-79.572325,2000,150,9.85,North,9/18/2019,88,2,0,2,12.2,10.2,2.701,,,
+2019,AS053,MW040,5,43.690086,-79.572325,2000,150,9.85,North,9/18/2019,97,7,0,4,11.6,"11,11,11.6,12,12,12.4",3.414,,,
+2019,AS054,MW041,1,43.675131,-79.571575,50,5,9.62,North,9/18/2019,76,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS054,MW041,2,43.675131,-79.571575,50,5,9.62,North,9/18/2019,89,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS054,MW041,3,43.675131,-79.571575,50,5,9.62,North,9/18/2019,53,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS054,MW041,4,43.675131,-79.571575,50,5,9.62,North,9/18/2019,29,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS054,MW041,5,43.675131,-79.571575,50,5,9.62,North,9/18/2019,59,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS055,MW042,1,43.664067,-79.577284,10,11,9.83,North,9/18/2019,19,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS055,MW042,2,43.664067,-79.577284,10,11,9.83,North,9/18/2019,91,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS055,MW042,3,43.664067,-79.577284,10,11,9.83,North,9/18/2019,69,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS055,MW042,4,43.664067,-79.577284,10,11,9.83,North,x,x,x,x,x,x,x,x,x,x,x
+2019,AS055,MW042,5,43.664067,-79.577284,10,11,9.83,North,x,x,x,x,x,x,x,x,x,x,x
+2019,AS056,MW043,1,43.32296,-80.038276,4800,102,40.2,Rural,9/25/2019,85,0,0,0,NA,NA,NA,NA,NA,Very odd: ~25 plants in one patch with no pods and barely any peduncles yet they are tall!
+2019,AS056,MW043,2,43.32296,-80.038276,4800,102,40.2,Rural,9/25/2019,120,0,0,1,NA,NA,NA,NA,NA,Very odd: ~25 plants in one patch with no pods and barely any peduncles yet they are tall!
+2019,AS056,MW043,3,43.32296,-80.038276,4800,102,40.2,Rural,9/25/2019,95,0,0,0,NA,NA,NA,NA,NA,Very odd: ~25 plants in one patch with no pods and barely any peduncles yet they are tall!
+2019,AS056,MW043,4,43.32296,-80.038276,4800,102,40.2,Rural,9/25/2019,117,0,0,0,NA,NA,NA,NA,NA,Very odd: ~25 plants in one patch with no pods and barely any peduncles yet they are tall!
+2019,AS056,MW043,5,43.32296,-80.038276,4800,102,40.2,Rural,9/25/2019,132,0,0,0,NA,NA,NA,NA,NA,Very odd: ~25 plants in one patch with no pods and barely any peduncles yet they are tall!
+2019,AS057,MW044,1,43.330042,-79.995566,450,17,38.18,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS057,MW044,2,43.330042,-79.995566,450,17,38.18,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS057,MW044,3,43.330042,-79.995566,450,17,38.18,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS057,MW044,4,43.330042,-79.995566,450,17,38.18,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS057,MW044,5,43.330042,-79.995566,450,17,38.18,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS058,MW045,1,43.335538,-79.962974,430,50,36.64,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS058,MW045,2,43.335538,-79.962974,430,50,36.64,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS058,MW045,3,43.335538,-79.962974,430,50,36.64,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS058,MW045,4,43.335538,-79.962974,430,50,36.64,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS058,MW045,5,43.335538,-79.962974,430,50,36.64,Rural,x,x,x,x,x,x,x,x,x,x,Mowed- no plants with pods
+2019,AS059,MW046,1,43.343046,-79.959704,6000,430,36.19,Rural,9/25/2019,114,6,0,4,9.6,"9,9,9,9.4,9.2",2.844,,,Plants >3 m apart.
+2019,AS059,MW046,2,43.343046,-79.959704,6000,430,36.19,Rural,9/25/2019,90,4,0,3,10.4,"10.2,10.8,10.4",2.447,,,Plants >3 m apart.
+2019,AS059,MW046,3,43.343046,-79.959704,6000,430,36.19,Rural,9/25/2019,102,8,0,5,10,"8.2,8.8,8.2,9,9,9,9,9",2.483,,,Plants >3 m apart.
+2019,AS059,MW046,4,43.343046,-79.959704,6000,430,36.19,Rural,9/25/2019,109,1,0,7,10.2,NA,2.413,,,Plants >3 m apart.
+2019,AS059,MW046,5,43.343046,-79.959704,6000,430,36.19,Rural,9/25/2019,161,15,0,10,11.6,"10,10,11,11,11,11,11,10.4,10.8,10.8,11,11,10.2,9",2.745,,,Plants >3 m apart.
+2019,AS060,MW047,1,43.519441,-79.750471,2000,240,20.77,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access alone
+2019,AS060,MW047,2,43.519441,-79.750471,2000,240,20.77,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access alone
+2019,AS060,MW047,3,43.519441,-79.750471,2000,240,20.77,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access alone
+2019,AS060,MW047,4,43.519441,-79.750471,2000,240,20.77,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access alone
+2019,AS060,MW047,5,43.519441,-79.750471,2000,240,20.77,Rural,x,x,x,x,x,x,x,x,x,x,Too steep to access alone
+2019,AS061,MW048,1,43.530493,-79.738194,1,1,19.88,Rural,x,x,x,x,x,x,x,x,x,x,No plant seen
+2019,AS062,MW049,1,43.534939,-79.732912,40,72,19.51,South,9/26/2019,121,8,0,6,10,"11,9.8,9,9.8,9.4,8,8.6",2.79,,,Plants <3m apart
+2019,AS062,MW049,2,43.534939,-79.732912,40,72,19.51,South,9/26/2019,111,4,1,4,10,"8.6,8.8,9.8",2.591,,,Plants <3m apart
+2019,AS062,MW049,3,43.534939,-79.732912,40,72,19.51,South,9/26/2019,119,5,1,5,9.8,"8,8,9.8,9.8",2.417,,,Plants <3m apart
+2019,AS062,MW049,4,43.534939,-79.732912,40,72,19.51,South,9/26/2019,83,4,4,4,6.4,"7,6.4,6.4",2.353,,,Plants <3m apart
+2019,AS062,MW049,5,43.534939,-79.732912,40,72,19.51,South,9/26/2019,131,7,0,6,8,"7,8,8,8.2,8.4,9.8",2.413,,,Plants <3m apart
+2019,AS063,MW050,1,43.535065,-79.721652,1000,60,19,South,x,x,x,x,x,x,x,x,x,x,"No milkweed seen. Other plants (e.g. goldenrod) were very tall and hid them, if they were there"
+2019,AS063,MW050,2,43.535065,-79.721652,1000,60,19,South,x,x,x,x,x,x,x,x,x,x,"No milkweed seen. Other plants (e.g. goldenrod) were very tall and hid them, if they were there"
+2019,AS063,MW050,3,43.535065,-79.721652,1000,60,19,South,x,x,x,x,x,x,x,x,x,x,"No milkweed seen. Other plants (e.g. goldenrod) were very tall and hid them, if they were there"
+2019,AS063,MW050,4,43.535065,-79.721652,1000,60,19,South,x,x,x,x,x,x,x,x,x,x,"No milkweed seen. Other plants (e.g. goldenrod) were very tall and hid them, if they were there"
+2019,AS063,MW050,5,43.535065,-79.721652,1000,60,19,South,x,x,x,x,x,x,x,x,x,x,"No milkweed seen. Other plants (e.g. goldenrod) were very tall and hid them, if they were there"
+2019,AS064,MW051,1,43.669676,-79.422881,900,25,2.29,South,9/14/2019,64,1,0,4,9,NA,1.6,,,Plants <3m apart
+2019,AS064,MW051,2,43.669676,-79.422881,900,25,2.29,South,9/14/2019,123,0,0,3,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS064,MW051,3,43.669676,-79.422881,900,25,2.29,South,9/14/2019,185,0,0,0,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS064,MW051,4,43.669676,-79.422881,900,25,2.29,South,9/14/2019,133,0,0,5,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS064,MW051,5,43.669676,-79.422881,900,25,2.29,South,9/14/2019,116,0,0,2,NA,NA,NA,NA,NA,Plants <3m apart
+2019,AS065,MW052,1,43.680726,-79.411251,1,2,2.27,South,9/14/2019,x,x,x,x,x,x,x,x,x,Plants gone from property- probably for good (it's well-tended and in a wealthy neighborhood)
+2019,AS065,MW052,2,43.680726,-79.411251,1,2,2.27,South,9/14/2019,x,x,x,x,x,x,x,x,x,Plants gone from property- probably for good (it's well-tended and in a wealthy neighborhood)
+2019,AS066,MW053,1,43.691138,-79.427943,75,20,3.36,South,9/14/2019,65,0,0,0,NA,NA,NA,NA,NA,"Plants >3m apart but may have been weed-whacked, hence no follicles present."
+2019,AS066,MW053,2,43.691138,-79.427943,75,20,3.36,South,9/14/2019,118,0,0,0,NA,NA,NA,NA,NA,"Plants >3m apart but may have been weed-whacked, hence no follicles present."
+2019,AS066,MW053,3,43.691138,-79.427943,75,20,3.36,South,9/14/2019,123,0,0,0,NA,NA,NA,NA,NA,"Plants >3m apart but may have been weed-whacked, hence no follicles present."
+2019,AS066,MW053,4,43.691138,-79.427943,75,20,3.36,South,9/14/2019,108,0,0,0,NA,NA,NA,NA,NA,"Plants >3m apart but may have been weed-whacked, hence no follicles present."
+2019,AS066,MW053,5,43.691138,-79.427943,75,20,3.36,South,9/14/2019,77,0,0,0,NA,NA,NA,NA,NA,"Plants >3m apart but may have been weed-whacked, hence no follicles present."
+2019,AS067,MW054,1,43.67876,-79.431977,12,14,2.99,South,9/14/2019,x,x,x,x,x,x,x,x,x,Milkweed present but no one home. Could return.
+2019,AS067,MW054,2,43.67876,-79.431977,12,14,2.99,South,9/14/2019,x,x,x,x,x,x,x,x,x,Milkweed present but no one home. Could return.
+2019,AS067,MW054,3,43.67876,-79.431977,12,14,2.99,South,9/14/2019,x,x,x,x,x,x,x,x,x,Milkweed present but no one home. Could return.
+2019,AS067,MW054,4,43.67876,-79.431977,12,14,2.99,South,9/14/2019,x,x,x,x,x,x,x,x,x,Milkweed present but no one home. Could return.
+2019,AS067,MW054,5,43.67876,-79.431977,12,14,2.99,South,9/14/2019,x,x,x,x,x,x,x,x,x,Milkweed present but no one home. Could return.
+2019,AS068,MW055,1,43.674579,-79.446438,5,4,3.51,South,9/14/2019,x,x,x,x,x,x,x,x,x,"Milkweed present but no one home. Could return. 97 Auburn has 3 plants w/many pods, though they look intentionally planted."
+2019,AS068,MW055,2,43.674579,-79.446438,5,4,3.51,South,9/14/2019,x,x,x,x,x,x,x,x,x,"Milkweed present but no one home. Could return. 97 Auburn has 3 plants w/many pods, though they look intentionally planted."
+2019,AS068,MW055,3,43.674579,-79.446438,5,4,3.51,South,9/14/2019,x,x,x,x,x,x,x,x,x,"Milkweed present but no one home. Could return. 97 Auburn has 3 plants w/many pods, though they look intentionally planted."
+2019,AS068,MW055,4,43.674579,-79.446438,5,4,3.51,South,9/14/2019,x,x,x,x,x,x,x,x,x,"Milkweed present but no one home. Could return. 97 Auburn has 3 plants w/many pods, though they look intentionally planted."
+2019,AS068,MW055,5,43.674579,-79.446438,5,4,3.51,South,9/14/2019,x,x,x,x,x,x,x,x,x,"Milkweed present but no one home. Could return. 97 Auburn has 3 plants w/many pods, though they look intentionally planted."
+2019,AS069,MW056,1,43.671068,-79.452408,1600,30,3.72,South,9/14/2019,94,8,0,4,11,"11,10,10,10.2,10.2,10,10.2",3.1,,,
+2019,AS069,MW056,2,43.671068,-79.452408,1600,30,3.72,South,9/14/2019,110,21,7,7,9,"9,9.8,9,9.2,8.2,8,8,8,8,9,9,9,7.7,8,9,9,9,8.2,9.2,8.8",2.6,,,
+2019,AS069,MW056,3,43.671068,-79.452408,1600,30,3.72,South,9/14/2019,116,5,1,3,9,"8.4,8,7,9",3.5,,,
+2019,AS069,MW056,4,43.671068,-79.452408,1600,30,3.72,South,9/14/2019,114,19,10,8,9.6,see notes,3,,,So many pods + private property that we'd been told to leave last year so I sampled what I thought was enough pods and then got out of there.
+2019,AS069,MW056,5,43.671068,-79.452408,1600,30,3.72,South,9/14/2019,97,7,0,2,12.2,see notes,2.9,,,So many pods + private property that we'd been told to leave last year so I sampled what I thought was enough pods and then got out of there.
+2019,AS070,MW057,1,43.67024,-79.462135,30000,170,4.17,South,9/14/2019,89,2,0,2,10,9.4,2.3,,,Plant 2 has underripe seeds but couldn't reach other pods because they were on other side of fence. Plants 4 & 5 <3m apart.
+2019,AS070,MW057,2,43.67024,-79.462135,30000,170,4.17,South,9/14/2019,138,10,0,3,11.2,"11,10,10.4",2.5,,,Plant 2 has underripe seeds but couldn't reach other pods because they were on other side of fence. Plants 4 & 5 <3m apart.
+2019,AS070,MW057,3,43.67024,-79.462135,30000,170,4.17,South,9/14/2019,103,8,0,3,8.6,"8.2,7.8,8,8,8,8.4,8.4",1.8,,,Plant 2 has underripe seeds but couldn't reach other pods because they were on other side of fence. Plants 4 & 5 <3m apart.
+2019,AS070,MW057,4,43.67024,-79.462135,30000,170,4.17,South,9/14/2019,44,5,4,2,7.6,"8,8,8,7",2.4,,,Plant 2 has underripe seeds but couldn't reach other pods because they were on other side of fence. Plants 4 & 5 <3m apart.
+2019,AS070,MW057,5,43.67024,-79.462135,30000,170,4.17,South,9/14/2019,116,6,1,3,8.4,"8,7,7.4,8,8.4",2.4,,,Plant 2 has underripe seeds but couldn't reach other pods because they were on other side of fence. Plants 4 & 5 <3m apart.
+2019,AS071,MW058,1,43.671812,-79.474258,2,10,4.79,South,9/14/2019,x,x,x,x,x,x,x,x,x,No plants present
+2019,AS071,MW058,2,43.671812,-79.474258,2,10,4.79,South,9/14/2019,x,x,x,x,x,x,x,x,x,No plants present
+2019,AS071,MW058,3,43.671812,-79.474258,2,10,4.79,South,9/14/2019,x,x,x,x,x,x,x,x,x,No plants present
+2019,AS071,MW058,4,43.671812,-79.474258,2,10,4.79,South,9/14/2019,x,x,x,x,x,x,x,x,x,No plants present
+2019,AS071,MW058,5,43.671812,-79.474258,2,10,4.79,South,9/14/2019,x,x,x,x,x,x,x,x,x,No plants present
+2019,AS072,MW059,1,43.670454,-79.482484,250,36,5.17,South,9/14/2019,40,0,0,0,NA,NA,NA,NA,NA,"No one home at house with milkweed w/follicles, so I sampled house #55 (which had plants <3m apart with no pods)."
+2019,AS072,MW059,2,43.670454,-79.482484,250,36,5.17,South,9/14/2019,65,0,0,0,NA,NA,NA,NA,NA,"No one home at house with milkweed w/follicles, so I sampled house #55 (which had plants <3m apart with no pods)."
+2019,AS072,MW059,3,43.670454,-79.482484,250,36,5.17,South,9/14/2019,69,0,0,0,NA,NA,NA,NA,NA,"No one home at house with milkweed w/follicles, so I sampled house #55 (which had plants <3m apart with no pods)."
+2019,AS072,MW059,4,43.670454,-79.482484,250,36,5.17,South,9/14/2019,31,0,0,0,NA,NA,NA,NA,NA,"No one home at house with milkweed w/follicles, so I sampled house #55 (which had plants <3m apart with no pods)."
+2019,AS072,MW059,5,43.670454,-79.482484,250,36,5.17,South,9/14/2019,79,0,0,0,NA,NA,NA,NA,NA,"No one home at house with milkweed w/follicles, so I sampled house #55 (which had plants <3m apart with no pods)."
+2019,AS073,MW060,1,43.646988,-79.583587,1,5,10.15,North,9/18/2019,x,x,x,x,x,x,x,x,x,Not visiting- see notes
+2019,AS073,MW060,2,43.646988,-79.583587,1,5,10.15,North,9/18/2019,x,x,x,x,x,x,x,x,x,Not visiting- see notes
+2019,AS073,MW060,3,43.646988,-79.583587,1,5,10.15,North,9/18/2019,x,x,x,x,x,x,x,x,x,Not visiting- see notes
+2019,AS073,MW060,4,43.646988,-79.583587,1,5,10.15,North,9/18/2019,x,x,x,x,x,x,x,x,x,Not visiting- see notes
+2019,AS073,MW060,5,43.646988,-79.583587,1,5,10.15,North,9/18/2019,x,x,x,x,x,x,x,x,x,Not visiting- see notes
+2019,AS074,MW061,1,43.654607,-79.607519,9000,265,11.33,North,9/18/2019,106,6,6,5,10,"10,10.2,10.4,10.4,9.8",2.8,,,
+2019,AS074,MW061,2,43.654607,-79.607519,9000,265,11.33,North,9/18/2019,85,2,0,3,10.6,10,2.5,,,
+2019,AS074,MW061,3,43.654607,-79.607519,9000,265,11.33,North,9/18/2019,121,5,2,4,10,"9,10,10,10",3.1,,,
+2019,AS074,MW061,4,43.654607,-79.607519,9000,265,11.33,North,9/18/2019,88,3,0,2,9.4,"9,10.2",2.5,,,
+2019,AS074,MW061,5,43.654607,-79.607519,9000,265,11.33,North,9/18/2019,118,9,0,5,9.8,"8.2,9.4,9.4,8.4,8,10.6,8.4,8.4",2.8,,,
+2019,AS075,MW062,1,43.651476,-79.617876,6000,100,11.85,North,9/18/2019,159,6,0,5,9.8,"9.4,10.4,10,8,8.2",3.1,,,
+2019,AS075,MW062,2,43.651476,-79.617876,6000,100,11.85,North,9/18/2019,125,4,0,3,9.8,"10,10,8.4",2.3,,,
+2019,AS075,MW062,3,43.651476,-79.617876,6000,100,11.85,North,9/18/2019,146,9,0,3,9.6,"10,9.2,8.2,10.4,8,9,9",2.613,,,
+2019,AS075,MW062,4,43.651476,-79.617876,6000,100,11.85,North,9/18/2019,100,2,0,3,10,9,1.735,,,
+2019,AS075,MW062,5,43.651476,-79.617876,6000,100,11.85,North,9/18/2019,139,4,0,3,9.4,"9,9,9.2",2.794,,,
+2019,AS076,MW063,1,43.637760,-79.635241,60,36,12.78,North,x,x,x,x,x,x,x,x,x,x,Didn't visit- a few plants (without pods) scattered around industrial building across from waypoint but was getting suspicious looks from workers
+2019,AS076,MW063,2,43.637760,-79.635241,60,36,12.78,North,x,x,x,x,x,x,x,x,x,x,Didn't visit- a few plants (without pods) scattered around industrial building across from waypoint but was getting suspicious looks from workers
+2019,AS076,MW063,3,43.637760,-79.635241,60,36,12.78,North,x,x,x,x,x,x,x,x,x,x,Didn't visit- a few plants (without pods) scattered around industrial building across from waypoint but was getting suspicious looks from workers
+2019,AS076,MW063,4,43.637760,-79.635241,60,36,12.78,North,x,x,x,x,x,x,x,x,x,x,Didn't visit- a few plants (without pods) scattered around industrial building across from waypoint but was getting suspicious looks from workers
+2019,AS076,MW063,5,43.637760,-79.635241,60,36,12.78,North,x,x,x,x,x,x,x,x,x,x,Didn't visit- a few plants (without pods) scattered around industrial building across from waypoint but was getting suspicious looks from workers
+2019,AS077,MW064,1,43.628807,-79.652009,1250,200,13.69,North,9/21/2019,82,4,1,5,8,"7.6,6.4,7.2",2.38,,,Plants >3 m apart
+2019,AS077,MW064,2,43.628807,-79.652009,1250,200,13.69,North,9/21/2019,94,19,1,6,8,"8.4,7.6,7.6,8.6,8,8,8,8,8,8,8,8.6,9,9,8,7.2,7.6",2.613,,,Plants >3 m apart
+2019,AS077,MW064,3,43.628807,-79.652009,1250,200,13.69,North,9/21/2019,114,3,0,4,8.6,"7,9.6",2.544,,,Plants >3 m apart
+2019,AS077,MW064,4,43.628807,-79.652009,1250,200,13.69,North,9/21/2019,86,1,0,2,8.8,NA,2.496,,,Plants >3 m apart
+2019,AS077,MW064,5,43.628807,-79.652009,1250,200,13.69,North,9/21/2019,96,3,1,3,9.2,"8.8,9",missing,,,Plants >3 m apart
+2019,AS078,MW065,1,43.626304,-79.673743,1,2,14.79,North,9/21/2019,11,0,0,0,NA,NA,NA,NA,NA,Very small plants- <3 m apart
+2019,AS078,MW065,2,43.626304,-79.673743,1,2,14.79,North,9/21/2019,31,0,0,0,NA,NA,NA,NA,NA,Very small plants- <3 m apart
+2019,AS078,MW065,3,43.626304,-79.673743,1,2,14.79,North,9/21/2019,22,0,0,0,NA,NA,NA,NA,NA,Very small plants- <3 m apart
+2019,AS078,MW065,4,43.626304,-79.673743,1,2,14.79,North,9/21/2019,21,0,0,0,NA,NA,NA,NA,NA,Very small plants- <3 m apart
+2019,AS078,MW065,5,43.626304,-79.673743,1,2,14.79,North,9/21/2019,14,0,0,0,NA,NA,NA,NA,NA,Very small plants- <3 m apart
+2019,AS079,MW066,1,43.618104,-79.701542,20000,50,16.25,North,9/21/2019,100,6,0,5,8.8,"8,8,8,8,7.6",2.728,,,"At Brunel x Hurontario intersection, across the street from the MExican restaurant. >5 plants that are >3 m apart are visible, but since they're on private property (that will be developed eventually), I sampled the 5 plants accessible from the buffer strip that are close together."
+2019,AS079,MW066,2,43.618104,-79.701542,20000,50,16.25,North,9/21/2019,113,11,0,6,7.8,"9,9,9,9,9,8,8,9.2,7,9,7.8",2.275,,,"At Brunel x Hurontario intersection, across the street from the MExican restaurant. >5 plants that are >3 m apart are visible, but since they're on private property (that will be developed eventually), I sampled the 5 plants accessible from the buffer strip that are close together."
+2019,AS079,MW066,3,43.618104,-79.701542,20000,50,16.25,North,9/21/2019,84,5,0,3,8.6,"7,8,7.6,7",2.595,,,"At Brunel x Hurontario intersection, across the street from the MExican restaurant. >5 plants that are >3 m apart are visible, but since they're on private property (that will be developed eventually), I sampled the 5 plants accessible from the buffer strip that are close together."
+2019,AS079,MW066,4,43.618104,-79.701542,20000,50,16.25,North,9/21/2019,101,7,0,5,8.2,"9,9,6.7,2,9.2",2.502,,,"At Brunel x Hurontario intersection, across the street from the MExican restaurant. >5 plants that are >3 m apart are visible, but since they're on private property (that will be developed eventually), I sampled the 5 plants accessible from the buffer strip that are close together."
+2019,AS079,MW066,5,43.618104,-79.701542,20000,50,16.25,North,9/21/2019,80,2,3,4,11,11,2.686,,,"At Brunel x Hurontario intersection, across the street from the MExican restaurant. >5 plants that are >3 m apart are visible, but since they're on private property (that will be developed eventually), I sampled the 5 plants accessible from the buffer strip that are close together."
+2019,AS080,MW067,1,43.613475,-79.705867,64,24,16.52,North,9/21/2019,x,x,x,x,x,x,x,x,x,Plants with pods present but no one was home. Good one to return to.
+2019,AS080,MW067,2,43.613475,-79.705867,64,24,16.52,North,9/21/2019,x,x,x,x,x,x,x,x,x,Plants with pods present but no one was home. Good one to return to.
+2019,AS080,MW067,3,43.613475,-79.705867,64,24,16.52,North,9/21/2019,x,x,x,x,x,x,x,x,x,Plants with pods present but no one was home. Good one to return to.
+2019,AS080,MW067,4,43.613475,-79.705867,64,24,16.52,North,9/21/2019,x,x,x,x,x,x,x,x,x,Plants with pods present but no one was home. Good one to return to.
+2019,AS080,MW067,5,43.613475,-79.705867,64,24,16.52,North,9/21/2019,x,x,x,x,x,x,x,x,x,Plants with pods present but no one was home. Good one to return to.
+2019,AS081,MW068,1,43.595802,-79.719547,180,36,17.45,North,9/21/2019,129,3,0,4,8,"7,7.2",2.741,,,Plants <3 m apart
+2019,AS081,MW068,2,43.595802,-79.719547,180,36,17.45,North,9/21/2019,126,4,0,5,9.4,"5.8,8,8",2.622,,,Plants <3 m apart
+2019,AS081,MW068,3,43.595802,-79.719547,180,36,17.45,North,9/21/2019,109,2,0,3,7.8,forgot to measure,2.352,,,Plants <3 m apart
+2019,AS081,MW068,4,43.595802,-79.719547,180,36,17.45,North,9/21/2019,136,3,0,7,8.2,"10.2,5.4",2.594,,,Plants <3 m apart
+2019,AS081,MW068,5,43.595802,-79.719547,180,36,17.45,North,9/21/2019,138,4,0,10,7.6,"7.2,9,8.4",2.476,,,Plants <3 m apart
+2019,AS082,MW069,1,43.553597,-79.699608,1000,24,17.45,South,x,x,x,x,x,x,x,x,x,x,No flowering plants seen in July so didn't return.
+2019,AS082,MW069,2,43.553597,-79.699608,1000,24,17.45,South,x,x,x,x,x,x,x,x,x,x,No flowering plants seen in July so didn't return.
+2019,AS082,MW069,3,43.553597,-79.699608,1000,24,17.45,South,x,x,x,x,x,x,x,x,x,x,No flowering plants seen in July so didn't return.
+2019,AS082,MW069,4,43.553597,-79.699608,1000,24,17.45,South,x,x,x,x,x,x,x,x,x,x,No flowering plants seen in July so didn't return.
+2019,AS082,MW069,5,43.553597,-79.699608,1000,24,17.45,South,x,x,x,x,x,x,x,x,x,x,No flowering plants seen in July so didn't return.
+2019,AS083,MW070,1,43.571026,-79.733337,1000,24,18.59,North,9/21/2019,x,x,x,x,x,x,x,x,x,Only a few plants left- without pods- very defoliated- and no one home anyway.
+2019,AS083,MW070,2,43.571026,-79.733337,1000,24,18.59,North,9/21/2019,x,x,x,x,x,x,x,x,x,Only a few plants left- without pods- very defoliated- and no one home anyway.
+2019,AS083,MW070,3,43.571026,-79.733337,1000,24,18.59,North,9/21/2019,x,x,x,x,x,x,x,x,x,Only a few plants left- without pods- very defoliated- and no one home anyway.
+2019,AS083,MW070,4,43.571026,-79.733337,1000,24,18.59,North,9/21/2019,x,x,x,x,x,x,x,x,x,Only a few plants left- without pods- very defoliated- and no one home anyway.
+2019,AS083,MW070,5,43.571026,-79.733337,1000,24,18.59,North,9/21/2019,x,x,x,x,x,x,x,x,x,Only a few plants left- without pods- very defoliated- and no one home anyway.
+2019,AS084,MW071,1,43.564655,-79.720469,5,11,18.13,North,9/21/2019,x,x,x,x,x,x,x,x,x,No one home and no follicles present anyway.
+2019,AS084,MW071,2,43.564655,-79.720469,5,11,18.13,North,9/21/2019,x,x,x,x,x,x,x,x,x,No one home and no follicles present anyway.
+2019,AS084,MW071,3,43.564655,-79.720469,5,11,18.13,North,9/21/2019,x,x,x,x,x,x,x,x,x,No one home and no follicles present anyway.
+2019,AS084,MW071,4,43.564655,-79.720469,5,11,18.13,North,9/21/2019,x,x,x,x,x,x,x,x,x,No one home and no follicles present anyway.
+2019,AS084,MW071,5,43.564655,-79.720469,5,11,18.13,North,9/21/2019,x,x,x,x,x,x,x,x,x,No one home and no follicles present anyway.
+2019,AS085,MW072,1,43.578900,-79.713398,8000,175,17.47,North,9/21/2019,129,3,0,4,10.4,"11,11",3.115,,,"Plants >3 m apart. By railroad tracks, so some plants were dirty/very eaten/mutated (like #3, w/small, round pods)"
+2019,AS085,MW072,2,43.578900,-79.713398,8000,175,17.47,North,9/21/2019,126,4,0,5,11.6,11.6,2.673,,,"Plants >3 m apart. By railroad tracks, so some plants were dirty/very eaten/mutated (like #3, w/small, round pods)"
+2019,AS085,MW072,3,43.578900,-79.713398,8000,175,17.47,North,9/21/2019,109,2,0,3,5,4.6,2.377,,,"Plants >3 m apart. By railroad tracks, so some plants were dirty/very eaten/mutated (like #3, w/small, round pods)"
+2019,AS085,MW072,4,43.578900,-79.713398,8000,175,17.47,North,9/21/2019,136,3,0,7,10.4,"9.8,9,9,9",2.212,,,"Plants >3 m apart. By railroad tracks, so some plants were dirty/very eaten/mutated (like #3, w/small, round pods)"
+2019,AS085,MW072,5,43.578900,-79.713398,8000,175,17.47,North,9/21/2019,138,4,0,10,9,"10,9.2,8.4,10,9.4",2.633,,,"Plants >3 m apart. By railroad tracks, so some plants were dirty/very eaten/mutated (like #3, w/small, round pods)"
+2019,AS086,MW073,1,43.554564,-79.756834,300,46,20.08,North,9/21/2019,117,1,3,2,7,NA,2.632,,,Use pod as leaf (no leaf tissue left). Plants <3 m apart (one patch)
+2019,AS086,MW073,2,43.554564,-79.756834,300,46,20.08,North,9/21/2019,114,6,2,3,5.8,"5.2,5.6,6,6,6",2.18,,,Use pod as leaf (no leaf tissue left). Plants <3 m apart (one patch)
+2019,AS086,MW073,3,43.554564,-79.756834,300,46,20.08,North,9/21/2019,107,5,3,6,5.2,"6.2,5.4,6,6.8",2.027,,,Use pod as leaf (no leaf tissue left). Plants <3 m apart (one patch)
+2019,AS086,MW073,4,43.554564,-79.756834,300,46,20.08,North,9/21/2019,107,3,3,4,5.6,"6,6",1.973,,,Use pod as leaf (no leaf tissue left). Plants <3 m apart (one patch)
+2019,AS086,MW073,5,43.554564,-79.756834,300,46,20.08,North,9/21/2019,98,4,2,4,5.8,"6,4.4,6.2",2.227,,,Use pod as leaf (no leaf tissue left). Plants <3 m apart (one patch)
+2019,AS087,MW074,1,43.568721,-79.651832,4000,120,14.84,South,9/21/2019,87,4,0,2,6.8,"6,7,6.8",1.896,,,"Plants 1 & 2 < 3m apart but in a different patch than plants 3-5, which are also <3 m apart."
+2019,AS087,MW074,2,43.568721,-79.651832,4000,120,14.84,South,9/21/2019,97,4,0,4,5.8,"6,6,6.6",2.256,,,"Plants 1 & 2 < 3m apart but in a different patch than plants 3-5, which are also <3 m apart."
+2019,AS087,MW074,3,43.568721,-79.651832,4000,120,14.84,South,9/21/2019,102,4,0,4,8.2,"7,7,7",2.095,,,"Plants 1 & 2 < 3m apart but in a different patch than plants 3-5, which are also <3 m apart."
+2019,AS087,MW074,4,43.568721,-79.651832,4000,120,14.84,South,9/21/2019,86,1,0,3,7.4,NA,2.07,,,"Plants 1 & 2 < 3m apart but in a different patch than plants 3-5, which are also <3 m apart."
+2019,AS087,MW074,5,43.568721,-79.651832,4000,120,14.84,South,9/21/2019,55,0,0,0,NA,NA,NA,NA,NA,"Plants 1 & 2 < 3m apart but in a different patch than plants 3-5, which are also <3 m apart."
+2019,AS088,MW075,1,43.573691,-79.636480,NA,NA,14,South,9/19/2019,x,x,x,x,x,x,x,x,x,Housekeeper answered. Homeowner not home until 5 on weekdays so I could return but only 2 plants so not a big deal if I don't.
+2019,AS088,MW075,2,43.573691,-79.636480,NA,NA,14,South,9/19/2019,x,x,x,x,x,x,x,x,x,Housekeeper answered. Homeowner not home until 5 on weekdays so I could return but only 2 plants so not a big deal if I don't.
+2019,AS089,MW076,1,43.579335,-79.630017,6,7,13.55,South,9/19/2019,x,x,x,x,x,x,x,x,x,No plants
+2019,AS089,MW076,2,43.579335,-79.630017,6,7,13.55,South,9/19/2019,x,x,x,x,x,x,x,x,x,No plants
+2019,AS089,MW076,3,43.579335,-79.630017,6,7,13.55,South,9/19/2019,x,x,x,x,x,x,x,x,x,No plants
+2019,AS089,MW076,4,43.579335,-79.630017,6,7,13.55,South,9/19/2019,x,x,x,x,x,x,x,x,x,No plants
+2019,AS089,MW076,5,43.579335,-79.630017,6,7,13.55,South,9/19/2019,x,x,x,x,x,x,x,x,x,No plants
+2019,AS090,MW077,1,43.589966,-79.618300,4,30,12.73,South,9/19/2019,x,x,x,x,x,x,x,x,x,No one home. Very strange: patch that had lots of pods had only two total this year (from a brief glance.) I wonder if they have been harvested/removed. Could return but seems like a low potential return
+2019,AS090,MW077,2,43.589966,-79.618300,4,30,12.73,South,9/19/2019,x,x,x,x,x,x,x,x,x,No one home. Very strange: patch that had lots of pods had only two total this year (from a brief glance.) I wonder if they have been harvested/removed. Could return but seems like a low potential return
+2019,AS090,MW077,3,43.589966,-79.618300,4,30,12.73,South,9/19/2019,x,x,x,x,x,x,x,x,x,No one home. Very strange: patch that had lots of pods had only two total this year (from a brief glance.) I wonder if they have been harvested/removed. Could return but seems like a low potential return
+2019,AS090,MW077,4,43.589966,-79.618300,4,30,12.73,South,9/19/2019,x,x,x,x,x,x,x,x,x,No one home. Very strange: patch that had lots of pods had only two total this year (from a brief glance.) I wonder if they have been harvested/removed. Could return but seems like a low potential return
+2019,AS090,MW077,5,43.589966,-79.618300,4,30,12.73,South,9/19/2019,x,x,x,x,x,x,x,x,x,No one home. Very strange: patch that had lots of pods had only two total this year (from a brief glance.) I wonder if they have been harvested/removed. Could return but seems like a low potential return
+2019,AS091,MW078,1,43.591194,-79.608405,9,15,12.24,South,9/19/2019,x,x,x,x,x,x,x,x,x,Plants have been removed from house
+2019,AS091,MW078,2,43.591194,-79.608405,9,15,12.24,South,9/19/2019,x,x,x,x,x,x,x,x,x,Plants have been removed from house
+2019,AS091,MW078,3,43.591194,-79.608405,9,15,12.24,South,9/19/2019,x,x,x,x,x,x,x,x,x,Plants have been removed from house
+2019,AS091,MW078,4,43.591194,-79.608405,9,15,12.24,South,9/19/2019,x,x,x,x,x,x,x,x,x,Plants have been removed from house
+2019,AS091,MW078,5,43.591194,-79.608405,9,15,12.24,South,9/19/2019,x,x,x,x,x,x,x,x,x,Plants have been removed from house
+2019,AS092,MW079,1,43.601609,-79.583684,15000,12,10.82,South,9/19/2019,71,5,1,4,8,"6.8,6,7,8",2.995,,,Plants <3 m apart (one patch)
+2019,AS092,MW079,2,43.601609,-79.583684,15000,12,10.82,South,9/19/2019,103,9,0,5,8,"8,8,8,8.4,8.8,8",2.614,,,Plants <3 m apart (one patch)
+2019,AS092,MW079,3,43.601609,-79.583684,15000,12,10.82,South,9/19/2019,114,11,4,6,7.2,"7,7,7,7.8,6.4,6,7.4,7.2,7.2,7.2",2.355,,,Plants <3 m apart (one patch)
+2019,AS092,MW079,4,43.601609,-79.583684,15000,12,10.82,South,9/19/2019,97,10,1,5,7,"6,6,6.6,7.4,7.4,7.2,8,7.4,7.4",2.417,,,Plants <3 m apart (one patch)
+2019,AS092,MW079,5,43.601609,-79.583684,15000,12,10.82,South,9/19/2019,117,9,0,6,7.4,"6.2,6.8,7,7,7.2,8,7.6,7.8",2.838,,,Plants <3 m apart (one patch)
+2019,AS093,MW080,1,43.633829,-79.553119,8800,44,8.75,South,9/19/2019,108,14,0,6,10,"9,7,9,9,9.8,8.6,8.6,9,9",2.812,,,Big spider web entangling some pods and didn't want to disassemble it. Plants in pop <3m apart and all from house #43.
+2019,AS093,MW080,2,43.633829,-79.553119,8800,44,8.75,South,9/19/2019,80,6,0,2,7,"4.2,2.2,2,2,2",2.128,,,pod not developed nearly enough; seeds are still white. Plant still growing; pods probably don't reflect final lengths/dimensions. Plants in pop <3m apart and all from house #43.
+2019,AS093,MW080,3,43.633829,-79.553119,8800,44,8.75,South,9/19/2019,61,0,0,0,NA,NA,NA,NA,NA,Plants in pop <3m apart and all from house #43.
+2019,AS093,MW080,4,43.633829,-79.553119,8800,44,8.75,South,9/19/2019,46,0,0,0,NA,NA,NA,NA,NA,Plants in pop <3m apart and all from house #43.
+2019,AS093,MW080,5,43.633829,-79.553119,8800,44,8.75,South,x,x,x,x,x,x,x,x,x,x,x
+2018,AS001,MW001,1,43.550556,-79.663,15,40,15.89,South,9/16/2018,72,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS001,MW001,2,43.550556,-79.663,15,40,15.89,South,9/16/2018,121,nothing written,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS001,MW001,3,43.550556,-79.663,15,40,15.89,South,9/16/2018,84,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS001,MW001,4,43.550556,-79.663,15,40,15.89,South,9/16/2018,118,11,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS001,MW001,5,43.550556,-79.663,15,40,15.89,South,9/16/2018,94,7,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS002,MW002,1,43.550225,-79.654062,10,25,15.51,South,9/16/2018,86,3,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS002,MW002,2,43.550225,-79.654062,10,25,15.51,South,9/16/2018,100,11,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS002,MW002,3,43.550225,-79.654062,10,25,15.51,South,9/16/2018,100,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS002,MW002,4,43.550225,-79.654062,10,25,15.51,South,9/16/2018,85,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS002,MW002,5,43.550225,-79.654062,10,25,15.51,South,9/16/2018,86,5,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS003,MW003,1,43.565106,-79.671002,3,20,15.82,South,9/14/2018,149,5,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS003,MW003,2,43.565106,-79.671002,3,20,15.82,South,9/14/2018,138,2,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS003,MW003,3,43.565106,-79.671002,3,20,15.82,South,9/14/2018,155,7,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS003,MW003,4,43.565106,-79.671002,3,20,15.82,South,9/14/2018,113,3,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS003,MW003,5,43.565106,-79.671002,3,20,15.82,South,9/14/2018,161,9,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS004,MW003,1,43.562538,-79.674057,25,30,16.03,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS004,MW003,2,43.562538,-79.674057,25,30,16.03,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS004,MW003,3,43.562538,-79.674057,25,30,16.03,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS004,MW003,4,43.562538,-79.674057,25,30,16.03,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS004,MW003,5,43.562538,-79.674057,25,30,16.03,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW003, all plants collected from AS003. No pods at AS004"
+2018,AS005,MW004,1,43.567334,-79.686386,20,20,16.47,South,9/16/2018,130,1,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 1."
+2018,AS005,MW004,2,43.567334,-79.686386,20,20,16.47,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS005,MW004,3,43.567334,-79.686386,20,20,16.47,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS005,MW004,4,43.567334,-79.686386,20,20,16.47,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS005,MW004,5,43.567334,-79.686386,20,20,16.47,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS006,MW004,1,43.569004,-79.684245,1,2,16.33,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS006,MW004,2,43.569004,-79.684245,1,2,16.33,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS007,MW004,1,43.566504,-79.680149,400,10,16.21,South,9/16/2018,82,7,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 3."
+2018,AS007,MW004,2,43.566504,-79.680149,400,10,16.21,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS007,MW004,3,43.566504,-79.680149,400,10,16.21,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS007,MW004,4,43.566504,-79.680149,400,10,16.21,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS007,MW004,5,43.566504,-79.680149,400,10,16.21,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS008,MW004,1,43.566922,-79.679797,20,25,16.18,South,9/16/2018,76,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 2."
+2018,AS008,MW004,2,43.566922,-79.679797,20,25,16.18,South,9/16/2018,60,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 4."
+2018,AS008,MW004,3,43.566922,-79.679797,20,25,16.18,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS008,MW004,4,43.566922,-79.679797,20,25,16.18,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS008,MW004,5,43.566922,-79.679797,20,25,16.18,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS009,MW004,1,43.563919,-79.682622,15,5,16.39,South,9/16/2018,111,5,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"One plant sampled from AS005, one 90 m NW of AS008, one from AS007, one from AS008, and one from AS009 to combine into sampled population MW004. One plant left at AS006 had no pods. Plant 5."
+2018,AS009,MW004,2,43.563919,-79.682622,15,5,16.39,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS009,MW004,3,43.563919,-79.682622,15,5,16.39,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS009,MW004,4,43.563919,-79.682622,15,5,16.39,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS009,MW004,5,43.563919,-79.682622,15,5,16.39,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS010,MW005,1,43.493329,-79.747541,9,15,21.53,Rural,9/14/2018,80,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS010,MW005,2,43.493329,-79.747541,9,15,21.53,Rural,9/14/2018,94,5,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS010,MW005,3,43.493329,-79.747541,9,15,21.53,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS010,MW005,4,43.493329,-79.747541,9,15,21.53,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS010,MW005,5,43.493329,-79.747541,9,15,21.53,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS011,MW005,1,43.493262,-79.747925,4,5,21.55,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS011,MW005,2,43.493262,-79.747925,4,5,21.55,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS011,MW005,3,43.493262,-79.747925,4,5,21.55,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS011,MW005,4,43.493262,-79.747925,4,5,21.55,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS011,MW005,5,43.493262,-79.747925,4,5,21.55,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS012,MW005,1,43.492717,-79.748081,30,30,21.58,Rural,9/14/2018,114,5,Did_not_measure,9,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS012,MW005,2,43.492717,-79.748081,30,30,21.58,Rural,9/14/2018,101,6,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS012,MW005,3,43.492717,-79.748081,30,30,21.58,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS012,MW005,4,43.492717,-79.748081,30,30,21.58,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS012,MW005,5,43.492717,-79.748081,30,30,21.58,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS013,MW005,1,43.492005,-79.749026,60,20,21.64,Rural,9/14/2018,127,4,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS013,MW005,2,43.492005,-79.749026,60,20,21.64,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS013,MW005,3,43.492005,-79.749026,60,20,21.64,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS013,MW005,4,43.492005,-79.749026,60,20,21.64,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS013,MW005,5,43.492005,-79.749026,60,20,21.64,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW005, collected 2 plants from AS010, 2 plants from AS012, and 1 plant from AS013. Plants at AS011 had no see/leaves. "
+2018,AS014,MW006,1,43.438669,-79.780878,300,100,25.05,Rural,9/14/2018,87,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS014,MW006,2,43.438669,-79.780878,300,100,25.05,Rural,9/14/2018,112,2,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS014,MW006,3,43.438669,-79.780878,300,100,25.05,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS014,MW006,4,43.438669,-79.780878,300,100,25.05,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS014,MW006,5,43.438669,-79.780878,300,100,25.05,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS015,MW006,1,43.434924,-79.777459,10,15,25.07,Rural,9/14/2018,103,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS015,MW006,2,43.434924,-79.777459,10,15,25.07,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS015,MW006,3,43.434924,-79.777459,10,15,25.07,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS015,MW006,4,43.434924,-79.777459,10,15,25.07,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS015,MW006,5,43.434924,-79.777459,10,15,25.07,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS016,MW006,1,43.436081,-79.777321,200,60,25.01,Rural,9/14/2018,151,7,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS016,MW006,2,43.436081,-79.777321,200,60,25.01,Rural,9/14/2018,163,13,Did_not_measure,9,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS016,MW006,3,43.436081,-79.777321,200,60,25.01,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS016,MW006,4,43.436081,-79.777321,200,60,25.01,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS016,MW006,5,43.436081,-79.777321,200,60,25.01,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW006, collected 2 plants from AS014, 1 from AS015, and 2 from AS016"
+2018,AS017,MW007,1,43.434493,-79.904435,1,2,30.37,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS017,MW007,2,43.434493,-79.904435,1,2,30.37,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS018,MW007,1,43.434819,-79.902274,1,3,30.27,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS018,MW007,2,43.434819,-79.902274,1,3,30.27,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS018,MW007,3,43.434819,-79.902274,1,3,30.27,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS019,MW007,1,43.434125,-79.903894,36,50,30.36,Rural,9/13/2018,99,5,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS019,MW007,2,43.434125,-79.903894,36,50,30.36,Rural,9/13/2018,136,11,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS019,MW007,3,43.434125,-79.903894,36,50,30.36,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS019,MW007,4,43.434125,-79.903894,36,50,30.36,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS019,MW007,5,43.434125,-79.903894,36,50,30.36,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS020,MW007,1,43.433302,-79.902403,900,300,30.32,Rural,9/13/2018,74,5,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS020,MW007,2,43.433302,-79.902403,900,300,30.32,Rural,9/13/2018,141,10,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS020,MW007,3,43.433302,-79.902403,900,300,30.32,Rural,9/13/2018,139,8,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS020,MW007,4,43.433302,-79.902403,900,300,30.32,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS020,MW007,5,43.433302,-79.902403,900,300,30.32,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"For MW007, collected 2 plants from AS019 and 3 from AS020. Plants at AS017 and AS018 had no pods."
+2018,AS021,MW008,1,43.457451,-79.866815,21,25,27.94,Rural,9/13/2018,126,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants less than 3 m apart
+2018,AS021,MW008,2,43.457451,-79.866815,21,25,27.94,Rural,9/13/2018,115,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants less than 3 m apart
+2018,AS021,MW008,3,43.457451,-79.866815,21,25,27.94,Rural,9/13/2018,109,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants less than 3 m apart
+2018,AS021,MW008,4,43.457451,-79.866815,21,25,27.94,Rural,9/13/2018,95,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants less than 3 m apart
+2018,AS021,MW008,5,43.457451,-79.866815,21,25,27.94,Rural,9/13/2018,73,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants less than 3 m apart
+2018,AS022,MW009,1,43.516263,-79.77922,21,25,22.16,Rural,9/14/2018,109,5,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS022,MW009,2,43.516263,-79.77922,21,25,22.16,Rural,9/14/2018,83,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS022,MW009,3,43.516263,-79.77922,21,25,22.16,Rural,9/14/2018,30,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS022,MW009,4,43.516263,-79.77922,21,25,22.16,Rural,9/14/2018,47,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS022,MW009,5,43.516263,-79.77922,21,25,22.16,Rural,9/14/2018,63,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS023,MW010,1,43.525816,-79.791571,2,1,22.44,Rural,9/13/2018,35,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS023,MW010,2,43.525816,-79.791571,2,1,22.44,Rural,9/13/2018,42,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS024,MW011,1,43.589594,-79.638468,1000,100,13.68,South,9/19/2018,124,4,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants >3 m apart
+2018,AS024,MW011,2,43.589594,-79.638468,1000,100,13.68,South,9/19/2018,123,2,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants >3 m apart
+2018,AS024,MW011,3,43.589594,-79.638468,1000,100,13.68,South,9/19/2018,155,6,Did_not_measure,9,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants >3 m apart
+2018,AS024,MW011,4,43.589594,-79.638468,1000,100,13.68,South,9/19/2018,137,4,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants >3 m apart
+2018,AS024,MW011,5,43.589594,-79.638468,1000,100,13.68,South,9/19/2018,127,4,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants >3 m apart
+2018,AS025,MW012,1,43.534585,-79.645432,20,15,15.68,South,9/16/2018,130,9,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+2018,AS025,MW012,2,43.534585,-79.645432,20,15,15.68,South,9/16/2018,84,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+2018,AS025,MW012,3,43.534585,-79.645432,20,15,15.68,South,9/16/2018,137,12,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+2018,AS025,MW012,4,43.534585,-79.645432,20,15,15.68,South,9/16/2018,97,5,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+2018,AS025,MW012,5,43.534585,-79.645432,20,15,15.68,South,9/16/2018,134,10,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 4&5 <3 m apart; 1,2,3 >3 m apart."
+2018,AS026,MW013,1,43.615384,-79.570454,6,15,9.89,South,9/10/2018,128,12,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS026,MW013,2,43.615384,-79.570454,6,15,9.89,South,9/10/2018,79,6,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS026,MW013,3,43.615384,-79.570454,6,15,9.89,South,9/10/2018,91,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS026,MW013,4,43.615384,-79.570454,6,15,9.89,South,9/10/2018,115,11,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS026,MW013,5,43.615384,-79.570454,6,15,9.89,South,9/10/2018,107,8,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS027,MW014,1,43.648581,-79.521463,4000,50,7.05,South,9/10/2018,85,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+2018,AS027,MW014,2,43.648581,-79.521463,4000,50,7.05,South,9/10/2018,82,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+2018,AS027,MW014,3,43.648581,-79.521463,4000,50,7.05,South,9/10/2018,91,5,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+2018,AS027,MW014,4,43.648581,-79.521463,4000,50,7.05,South,9/10/2018,82,2,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+2018,AS027,MW014,5,43.648581,-79.521463,4000,50,7.05,South,9/10/2018,79,1,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Sixth plant surveyed because plant #3 had immature seeds. Plant #6 data: height=48cm, pods=3, peduncles=3, leaf/seeds collected. ROW mowed; only fraction of original population left though new young plants present. >5m btwn surveyed plants."
+2018,AS028,MW015,1,43.661177,-79.500382,12,25,5.98,South,9/10/2018,114,5,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS028,MW015,2,43.661177,-79.500382,12,25,5.98,South,9/10/2018,78,5,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS028,MW015,3,43.661177,-79.500382,12,25,5.98,South,9/10/2018,123,2,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS028,MW015,4,43.661177,-79.500382,12,25,5.98,South,9/10/2018,137,7,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS028,MW015,5,43.661177,-79.500382,12,25,5.98,South,9/10/2018,123,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Dense patch. <3m between plants
+2018,AS029,MW016,1,43.711948,-79.535894,100,15,8.65,North,9/12/2018,88,2,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Original sampled plants mown; crossed ramp and sampled from there!
+2018,AS029,MW016,2,43.711948,-79.535894,100,15,8.65,North,9/12/2018,72,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Original sampled plants mown; crossed ramp and sampled from there!
+2018,AS029,MW016,3,43.711948,-79.535894,100,15,8.65,North,9/12/2018,129,0,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Original sampled plants mown; crossed ramp and sampled from there!
+2018,AS029,MW016,4,43.711948,-79.535894,100,15,8.65,North,9/12/2018,88,0,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Original sampled plants mown; crossed ramp and sampled from there!
+2018,AS029,MW016,5,43.711948,-79.535894,100,15,8.65,North,9/12/2018,97,4,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Original sampled plants mown; crossed ramp and sampled from there!
+2018,AS030,MW017,1,43.501061,-79.844567,8000,80,25.57,Rural,9/13/2018,117,7,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,collected from corner; nobody answered. Plants less than 3m apart
+2018,AS030,MW017,2,43.501061,-79.844567,8000,80,25.57,Rural,9/13/2018,118,5,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,collected from corner; nobody answered. Plants less than 3m apart
+2018,AS030,MW017,3,43.501061,-79.844567,8000,80,25.57,Rural,9/13/2018,113,5,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,collected from corner; nobody answered. Plants less than 3m apart
+2018,AS030,MW017,4,43.501061,-79.844567,8000,80,25.57,Rural,9/13/2018,105,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,collected from corner; nobody answered. Plants less than 3m apart
+2018,AS030,MW017,5,43.501061,-79.844567,8000,80,25.57,Rural,9/13/2018,120,6,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,collected from corner; nobody answered. Plants less than 3m apart
+2018,AS031,MW018,1,43.484111,-79.837702,12,30,25.78,Rural,9/13/2018,102,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1, 2 are <3 m apart"
+2018,AS031,MW018,2,43.484111,-79.837702,12,30,25.78,Rural,9/13/2018,118,3,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1, 2 are <3 m apart"
+2018,AS031,MW018,3,43.484111,-79.837702,12,30,25.78,Rural,9/13/2018,90,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS031,MW018,4,43.484111,-79.837702,12,30,25.78,Rural,9/13/2018,87,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS031,MW018,5,43.484111,-79.837702,12,30,25.78,Rural,9/13/2018,105,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS032,MW019,1,43.41401,-79.953028,18,20,33.19,Rural,9/13/2018,105,1,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS032,MW019,2,43.41401,-79.953028,18,20,33.19,Rural,9/13/2018,118,2,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS032,MW019,3,43.41401,-79.953028,18,20,33.19,Rural,9/13/2018,123,1,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS032,MW019,4,43.41401,-79.953028,18,20,33.19,Rural,9/13/2018,104,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS032,MW019,5,43.41401,-79.953028,18,20,33.19,Rural,9/13/2018,92,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS033,MW020,1,43.387612,-79.959232,2400,60,34.41,Rural,9/13/2018,99,1,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS033,MW020,2,43.387612,-79.959232,2400,60,34.41,Rural,9/13/2018,136,3,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS033,MW020,3,43.387612,-79.959232,2400,60,34.41,Rural,9/13/2018,108,1,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS033,MW020,4,43.387612,-79.959232,2400,60,34.41,Rural,9/13/2018,123,1,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS033,MW020,5,43.387612,-79.959232,2400,60,34.41,Rural,9/13/2018,144,3,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all plants < 3 m apart
+2018,AS034,MW021,1,43.399222,-79.930576,1500,60,32.77,Rural,9/13/2018,120,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1, 2 < 3m apart"
+2018,AS034,MW021,2,43.399222,-79.930576,1500,60,32.77,Rural,9/13/2018,113,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1, 2 < 3m apart"
+2018,AS034,MW021,3,43.399222,-79.930576,1500,60,32.77,Rural,9/13/2018,133,1,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 3, 4 < 3m apart"
+2018,AS034,MW021,4,43.399222,-79.930576,1500,60,32.77,Rural,9/13/2018,86,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 3, 4 < 3m apart"
+2018,AS034,MW021,5,43.399222,-79.930576,1500,60,32.77,Rural,9/13/2018,152,6,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS035,MW022,1,43.377146,-79.973861,30,13,35.42,Rural,9/13/2018,35,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only 4 plants
+2018,AS035,MW022,2,43.377146,-79.973861,30,13,35.42,Rural,9/13/2018,40,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only 4 plants
+2018,AS035,MW022,3,43.377146,-79.973861,30,13,35.42,Rural,9/13/2018,33,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only 4 plants
+2018,AS035,MW022,4,43.377146,-79.973861,30,13,35.42,Rural,9/13/2018,53,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only 4 plants
+2018,AS035,MW022,5,43.377146,-79.973861,30,13,35.42,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only 4 plants
+2018,AS036,MW023,1,43.371308,-79.981819,600,20,35.98,Rural,9/13/2018,90,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants 1 and 2 are less than 3 m apart
+2018,AS036,MW023,2,43.371308,-79.981819,600,20,35.98,Rural,9/13/2018,56,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants 1 and 2 are less than 3 m apart
+2018,AS036,MW023,3,43.371308,-79.981819,600,20,35.98,Rural,9/13/2018,67,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 3, 4, 5 are less than 3 m apart"
+2018,AS036,MW023,4,43.371308,-79.981819,600,20,35.98,Rural,9/13/2018,113,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 3, 4, 5 are less than 3 m apart"
+2018,AS036,MW023,5,43.371308,-79.981819,600,20,35.98,Rural,9/13/2018,100,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 3, 4, 5 are less than 3 m apart"
+2018,AS037,MW024,1,43.363349,-80.01471,2,2,37.66,Rural,9/13/2018,54,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,< 3m apart. Lots of herbivory
+2018,AS037,MW024,2,43.363349,-80.01471,2,2,37.66,Rural,9/13/2018,63,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,< 3m apart. Lots of herbivory
+2018,AS038,MW025,1,43.726774,-79.432109,3,12,5.5,North,9/10/2018,70,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants all less than 3 m apart from each other
+2018,AS038,MW025,2,43.726774,-79.432109,3,12,5.5,North,9/10/2018,50,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants all less than 3 m apart from each other
+2018,AS038,MW025,3,43.726774,-79.432109,3,12,5.5,North,9/10/2018,64,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants all less than 3 m apart from each other
+2018,AS038,MW025,4,43.726774,-79.432109,3,12,5.5,North,9/10/2018,30,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants all less than 3 m apart from each other
+2018,AS038,MW025,5,43.726774,-79.432109,3,12,5.5,North,9/10/2018,69,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants all less than 3 m apart from each other
+2018,AS039,MW026,1,43.719453,-79.445163,160,8,5.42,North,9/10/2018,77,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,3m apart from plant 2 only
+2018,AS039,MW026,2,43.719453,-79.445163,160,8,5.42,North,9/10/2018,105,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,3m apart from other plants
+2018,AS039,MW026,3,43.719453,-79.445163,160,8,5.42,North,9/10/2018,69,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,3m apart from plant 2 only
+2018,AS039,MW026,4,43.719453,-79.445163,160,8,5.42,North,9/10/2018,55,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,3m apart from plant 2 only
+2018,AS039,MW026,5,43.719453,-79.445163,160,8,5.42,North,9/10/2018,38,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,3m apart from plant 2 only
+2018,AS040,MW027,1,43.726466,-79.445593,48,60,5.82,North,9/10/2018,99,4,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,most of the plants from this site have been mowed or removed; only 20 plants remain
+2018,AS040,MW027,2,43.726466,-79.445593,48,60,5.82,North,9/10/2018,70,4,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,most of the plants from this site have been mowed or removed; only 20 plants remain
+2018,AS040,MW027,3,43.726466,-79.445593,48,60,5.82,North,9/10/2018,79,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,most of the plants from this site have been mowed or removed; only 20 plants remain
+2018,AS040,MW027,4,43.726466,-79.445593,48,60,5.82,North,9/10/2018,79,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,most of the plants from this site have been mowed or removed; only 20 plants remain
+2018,AS040,MW027,5,43.726466,-79.445593,48,60,5.82,North,9/10/2018,75,3,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,most of the plants from this site have been mowed or removed; only 20 plants remain
+2018,AS041,MW028,1,43.713472,-79.463271,4000,18,5.7,North,9/10/2018,97,2,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+2018,AS041,MW028,2,43.713472,-79.463271,4000,18,5.7,North,9/10/2018,85,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+2018,AS041,MW028,3,43.713472,-79.463271,4000,18,5.7,North,9/10/2018,56,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+2018,AS041,MW028,4,43.713472,-79.463271,4000,18,5.7,North,9/10/2018,112,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+2018,AS041,MW028,5,43.713472,-79.463271,4000,18,5.7,North,9/10/2018,78,5,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,plants 1 and 2 are less than 3 m apart; plants 4 and 5 are less than 3 m apart
+2018,AS042,MW029,1,43.713584,-79.475768,9,19,6.17,North,9/10/2018,114,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS042,MW029,2,43.713584,-79.475768,9,19,6.17,North,9/10/2018,145,7,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS042,MW029,3,43.713584,-79.475768,9,19,6.17,North,9/10/2018,110,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS042,MW029,4,43.713584,-79.475768,9,19,6.17,North,9/10/2018,114,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS042,MW029,5,43.713584,-79.475768,9,19,6.17,North,9/10/2018,126,4,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS043,MW030,1,43.71387,-79.505919,2,10,7.4,North,9/10/2018,155,5,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS043,MW030,2,43.71387,-79.505919,2,10,7.4,North,9/10/2018,146,1,Did_not_measure,8,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS043,MW030,3,43.71387,-79.505919,2,10,7.4,North,9/10/2018,153,4,Did_not_measure,8,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS043,MW030,4,43.71387,-79.505919,2,10,7.4,North,9/10/2018,143,8,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS043,MW030,5,43.71387,-79.505919,2,10,7.4,North,9/10/2018,153,3,Did_not_measure,8,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS044,MW031,1,43.713092,-79.515599,6000,240,7.79,North,9/12/2018,89,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS044,MW031,2,43.713092,-79.515599,6000,240,7.79,North,9/12/2018,97,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS044,MW031,3,43.713092,-79.515599,6000,240,7.79,North,9/12/2018,88,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS044,MW031,4,43.713092,-79.515599,6000,240,7.79,North,9/12/2018,84,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS044,MW031,5,43.713092,-79.515599,6000,240,7.79,North,9/12/2018,73,2,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS045,MW032,1,43.66963,-79.498027,6000,27,5.93,South,9/9/2018,103,4,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only 1 plant found. Rest of original population must've been weeded or covered up by overgrown plants around garden.
+2018,AS045,MW032,2,43.66963,-79.498027,6000,27,5.93,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,NA
+2018,AS045,MW032,3,43.66963,-79.498027,6000,27,5.93,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,NA
+2018,AS045,MW032,4,43.66963,-79.498027,6000,27,5.93,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,NA
+2018,AS045,MW032,5,43.66963,-79.498027,6000,27,5.93,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,NA
+2018,AS046,MW033,1,43.358912,-80.043033,80,25,39.03,Rural,9/13/2018,81,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,may have been mown; only saw 3 plants
+2018,AS046,MW033,2,43.358912,-80.043033,80,25,39.03,Rural,9/13/2018,57,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,may have been mown; only saw 3 plants
+2018,AS046,MW033,3,43.358912,-80.043033,80,25,39.03,Rural,9/13/2018,41,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,may have been mown; only saw 3 plants
+2018,AS046,MW033,4,43.358912,-80.043033,80,25,39.03,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,may have been mown; only saw 3 plants
+2018,AS046,MW033,5,43.358912,-80.043033,80,25,39.03,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,may have been mown; only saw 3 plants
+2018,AS047,MW034,1,43.357422,-80.052572,18850,980,39.49,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+2018,AS047,MW034,2,43.357422,-80.052572,18850,980,39.49,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+2018,AS047,MW034,3,43.357422,-80.052572,18850,980,39.49,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+2018,AS047,MW034,4,43.357422,-80.052572,18850,980,39.49,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+2018,AS047,MW034,5,43.357422,-80.052572,18850,980,39.49,Rural,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered door; lots of plants in their field, but mown from previous visit. No pods"
+2018,AS048,MW035,1,43.349551,-80.098407,8000,170,41.74,Rural,9/13/2018,84,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS048,MW035,2,43.349551,-80.098407,8000,170,41.74,Rural,9/13/2018,108,10,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS048,MW035,3,43.349551,-80.098407,8000,170,41.74,Rural,9/13/2018,89,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS048,MW035,4,43.349551,-80.098407,8000,170,41.74,Rural,9/13/2018,120,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS048,MW035,5,43.349551,-80.098407,8000,170,41.74,Rural,9/13/2018,97,3,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,all less than 3 m apart
+2018,AS049,MW036,1,43.321018,-80.049313,1800,170,40.74,Rural,9/14/2018,94,4,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 1, 2, 3 are less than 3 m apart"
+2018,AS049,MW036,2,43.321018,-80.049313,1800,170,40.74,Rural,9/14/2018,73,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 1, 2, 3 are less than 3 m apart"
+2018,AS049,MW036,3,43.321018,-80.049313,1800,170,40.74,Rural,9/14/2018,82,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 1, 2, 3 are less than 3 m apart"
+2018,AS049,MW036,4,43.321018,-80.049313,1800,170,40.74,Rural,9/14/2018,93,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants 4 and 5 are less than 3 m apart
+2018,AS049,MW036,5,43.321018,-80.049313,1800,170,40.74,Rural,9/14/2018,90,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants 4 and 5 are less than 3 m apart
+2018,AS050,MW037,1,43.702158,-79.543737,70,30,8.73,North,9/12/2018,63,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+2018,AS050,MW037,2,43.702158,-79.543737,70,30,8.73,North,9/12/2018,70,0,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+2018,AS050,MW037,3,43.702158,-79.543737,70,30,8.73,North,9/12/2018,61,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+2018,AS050,MW037,4,43.702158,-79.543737,70,30,8.73,North,9/12/2018,90,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+2018,AS050,MW037,5,43.702158,-79.543737,70,30,8.73,North,9/12/2018,46,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"all less than 3 m apart, taken from house 62 with permission; no access to house 64 because nobody answered (no pods though)"
+2018,AS051,MW038,1,43.701032,-79.549473,16,12,8.97,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,nobody answered door
+2018,AS051,MW038,2,43.701032,-79.549473,16,12,8.97,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,nobody answered door
+2018,AS051,MW038,3,43.701032,-79.549473,16,12,8.97,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,nobody answered door
+2018,AS051,MW038,4,43.701032,-79.549473,16,12,8.97,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,nobody answered door
+2018,AS051,MW038,5,43.701032,-79.549473,16,12,8.97,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,nobody answered door
+2018,AS052,MW039,1,43.701432,-79.56251,10000,480,9.6,North,9/12/2018,78,1,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Sampled plants growing along ditch adjacent to Ronson Dr 
+2018,AS052,MW039,2,43.701432,-79.56251,10000,480,9.6,North,9/12/2018,94,3,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Sampled plants growing along ditch adjacent to Ronson Dr 
+2018,AS052,MW039,3,43.701432,-79.56251,10000,480,9.6,North,9/12/2018,102,5,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Sampled plants growing along ditch adjacent to Ronson Dr 
+2018,AS052,MW039,4,43.701432,-79.56251,10000,480,9.6,North,9/12/2018,131,9,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Sampled plants growing along ditch adjacent to Ronson Dr 
+2018,AS052,MW039,5,43.701432,-79.56251,10000,480,9.6,North,9/12/2018,98,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Sampled plants growing along ditch adjacent to Ronson Dr 
+2018,AS053,MW040,1,43.690086,-79.572325,2000,150,9.85,North,9/12/2018,85,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS053,MW040,2,43.690086,-79.572325,2000,150,9.85,North,9/12/2018,62,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS053,MW040,3,43.690086,-79.572325,2000,150,9.85,North,9/12/2018,82,6,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS053,MW040,4,43.690086,-79.572325,2000,150,9.85,North,9/12/2018,69,2,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS053,MW040,5,43.690086,-79.572325,2000,150,9.85,North,9/12/2018,96,1,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS054,MW041,1,43.675131,-79.571575,50,5,9.62,North,9/12/2018,125,10,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1, 2, 3 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+2018,AS054,MW041,2,43.675131,-79.571575,50,5,9.62,North,9/12/2018,123,5,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1, 2, 3 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+2018,AS054,MW041,3,43.675131,-79.571575,50,5,9.62,North,9/12/2018,75,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1, 2, 3 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+2018,AS054,MW041,4,43.675131,-79.571575,50,5,9.62,North,9/12/2018,61,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 4, 5 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+2018,AS054,MW041,5,43.675131,-79.571575,50,5,9.62,North,9/12/2018,77,0,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 4, 5 < 3m apart. Climbed down into grassy area behind school, accessed through park."
+2018,AS055,MW042,1,43.664067,-79.577284,10,11,9.83,North,9/12/2018,84,7,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+2018,AS055,MW042,2,43.664067,-79.577284,10,11,9.83,North,9/12/2018,106,7,Did_not_measure,10,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+2018,AS055,MW042,3,43.664067,-79.577284,10,11,9.83,North,9/12/2018,73,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+2018,AS055,MW042,4,43.664067,-79.577284,10,11,9.83,North,9/12/2018,96,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+2018,AS055,MW042,5,43.664067,-79.577284,10,11,9.83,North,9/12/2018,102,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 1,2 are 3 m apart from plants 4, 5 but otherwise all are < 3m apart"
+2018,AS056,MW043,1,43.32296,-80.038276,4800,102,40.2,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+2018,AS056,MW043,2,43.32296,-80.038276,4800,102,40.2,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+2018,AS056,MW043,3,43.32296,-80.038276,4800,102,40.2,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+2018,AS056,MW043,4,43.32296,-80.038276,4800,102,40.2,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+2018,AS056,MW043,5,43.32296,-80.038276,4800,102,40.2,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue."
+2018,AS057,MW044,1,43.330042,-79.995566,450,17,38.18,Rural,9/14/2018,103,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+2018,AS057,MW044,2,43.330042,-79.995566,450,17,38.18,Rural,9/14/2018,60,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+2018,AS057,MW044,3,43.330042,-79.995566,450,17,38.18,Rural,9/14/2018,44,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+2018,AS057,MW044,4,43.330042,-79.995566,450,17,38.18,Rural,9/14/2018,34,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+2018,AS057,MW044,5,43.330042,-79.995566,450,17,38.18,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"May have been mown; didn't see site originally so hard to say, but only found 4 plants; plants less than 3 m apart"
+2018,AS058,MW045,1,43.335538,-79.962974,430,50,36.64,Rural,9/14/2018,124,8,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+2018,AS058,MW045,2,43.335538,-79.962974,430,50,36.64,Rural,9/14/2018,117,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+2018,AS058,MW045,3,43.335538,-79.962974,430,50,36.64,Rural,9/14/2018,101,6,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+2018,AS058,MW045,4,43.335538,-79.962974,430,50,36.64,Rural,9/14/2018,85,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+2018,AS058,MW045,5,43.335538,-79.962974,430,50,36.64,Rural,9/14/2018,123,7,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"All seeds completely white/unripe, but collected anyway. Plants all less than 3 m apart"
+2018,AS059,MW046,1,43.343046,-79.959704,6000,430,36.19,Rural,9/14/2018,160,6,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure, Plants less than 3 m apart
+2018,AS059,MW046,2,43.343046,-79.959704,6000,430,36.19,Rural,9/14/2018,166,5,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure, Plants less than 3 m apart
+2018,AS059,MW046,3,43.343046,-79.959704,6000,430,36.19,Rural,9/14/2018,150,2,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure, Plants less than 3 m apart
+2018,AS059,MW046,4,43.343046,-79.959704,6000,430,36.19,Rural,9/14/2018,170,6,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure, Plants less than 3 m apart
+2018,AS059,MW046,5,43.343046,-79.959704,6000,430,36.19,Rural,9/14/2018,155,8,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure, Plants less than 3 m apart
+2018,AS060,MW047,1,43.519441,-79.750471,2000,240,20.77,Rural,9/14/2018,90,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+2018,AS060,MW047,2,43.519441,-79.750471,2000,240,20.77,Rural,9/14/2018,71,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+2018,AS060,MW047,3,43.519441,-79.750471,2000,240,20.77,Rural,9/14/2018,104,7,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+2018,AS060,MW047,4,43.519441,-79.750471,2000,240,20.77,Rural,9/14/2018,81,4,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+2018,AS060,MW047,5,43.519441,-79.750471,2000,240,20.77,Rural,9/14/2018,82,5,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All accessible plants had lost topmost leaves; took leaf sample from highest leaf. Remaining leaves very yellow 
+2018,AS061,MW048,1,43.530493,-79.738194,1,1,19.88,Rural,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Couldn't find plant; didn't visit site originally so maybe just missed it
+2018,AS062,MW049,1,43.534939,-79.732912,40,72,19.51,South,9/14/2018,92,4,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+2018,AS062,MW049,2,43.534939,-79.732912,40,72,19.51,South,9/14/2018,102,15,Did_not_measure,8,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+2018,AS062,MW049,3,43.534939,-79.732912,40,72,19.51,South,9/14/2018,93,9,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+2018,AS062,MW049,4,43.534939,-79.732912,40,72,19.51,South,9/14/2018,96,7,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+2018,AS062,MW049,5,43.534939,-79.732912,40,72,19.51,South,9/14/2018,86,9,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Some pods not ripe (but seed collected was red). Plants quite closely clustered, tried to take from plants furthest apart from each other. ~1-2m apart"
+2018,AS063,MW050,1,43.535065,-79.721652,1000,60,19,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+2018,AS063,MW050,2,43.535065,-79.721652,1000,60,19,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+2018,AS063,MW050,3,43.535065,-79.721652,1000,60,19,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+2018,AS063,MW050,4,43.535065,-79.721652,1000,60,19,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+2018,AS063,MW050,5,43.535065,-79.721652,1000,60,19,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Couldn't find site; was a site I didn't see originally, so likely just missed it. Might want to revisit if want more tissue/seed."
+2018,AS064,MW051,1,43.669676,-79.422881,900,25,2.29,South,9/8/2018,53,8,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS064,MW051,2,43.669676,-79.422881,900,25,2.29,South,9/8/2018,104,3,Did_not_measure,9,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS064,MW051,3,43.669676,-79.422881,900,25,2.29,South,9/8/2018,117,2,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS064,MW051,4,43.669676,-79.422881,900,25,2.29,South,9/8/2018,111,2,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS064,MW051,5,43.669676,-79.422881,900,25,2.29,South,9/8/2018,122,7,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS065,MW052,1,43.680726,-79.411251,1,2,2.27,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants removed from site (garden)
+2018,AS065,MW052,2,43.680726,-79.411251,1,2,2.27,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Plants removed from site (garden)
+2018,AS066,MW053,1,43.691138,-79.427943,75,20,3.36,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS066,MW053,2,43.691138,-79.427943,75,20,3.36,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS066,MW053,3,43.691138,-79.427943,75,20,3.36,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS066,MW053,4,43.691138,-79.427943,75,20,3.36,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS066,MW053,5,43.691138,-79.427943,75,20,3.36,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS067,MW054,1,43.67876,-79.431977,12,14,2.99,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS067,MW054,2,43.67876,-79.431977,12,14,2.99,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS067,MW054,3,43.67876,-79.431977,12,14,2.99,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS067,MW054,4,43.67876,-79.431977,12,14,2.99,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS067,MW054,5,43.67876,-79.431977,12,14,2.99,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS068,MW055,1,43.674579,-79.446438,5,4,3.51,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS068,MW055,2,43.674579,-79.446438,5,4,3.51,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS068,MW055,3,43.674579,-79.446438,5,4,3.51,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS068,MW055,4,43.674579,-79.446438,5,4,3.51,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS068,MW055,5,43.674579,-79.446438,5,4,3.51,South,9/8/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS069,MW056,1,43.671068,-79.452408,1600,30,3.72,South,9/9/2018,55,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+2018,AS069,MW056,2,43.671068,-79.452408,1600,30,3.72,South,9/9/2018,104,8,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+2018,AS069,MW056,3,43.671068,-79.452408,1600,30,3.72,South,9/9/2018,78,2,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+2018,AS069,MW056,4,43.671068,-79.452408,1600,30,3.72,South,9/9/2018,92,16,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+2018,AS069,MW056,5,43.671068,-79.452408,1600,30,3.72,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants. Site is being developed and was recently mowed. No 5th plant with pods/peduncles. Return if we need more leaf tissue
+2018,AS070,MW057,1,43.67024,-79.462135,30000,170,4.17,South,9/9/2018,57,5,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS070,MW057,2,43.67024,-79.462135,30000,170,4.17,South,9/9/2018,93,2,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS070,MW057,3,43.67024,-79.462135,30000,170,4.17,South,9/9/2018,112,4,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS070,MW057,4,43.67024,-79.462135,30000,170,4.17,South,9/9/2018,79,7,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS070,MW057,5,43.67024,-79.462135,30000,170,4.17,South,9/9/2018,95,12,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,>3 m between plants
+2018,AS071,MW058,1,43.671812,-79.474258,2,10,4.79,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS071,MW058,2,43.671812,-79.474258,2,10,4.79,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS071,MW058,3,43.671812,-79.474258,2,10,4.79,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS071,MW058,4,43.671812,-79.474258,2,10,4.79,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS071,MW058,5,43.671812,-79.474258,2,10,4.79,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,All young plants; no plants with pods/peduncles. Return if we need more leaf tissue
+2018,AS072,MW059,1,43.670454,-79.482484,250,36,5.17,South,9/9/2018,77,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+2018,AS072,MW059,2,43.670454,-79.482484,250,36,5.17,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+2018,AS072,MW059,3,43.670454,-79.482484,250,36,5.17,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+2018,AS072,MW059,4,43.670454,-79.482484,250,36,5.17,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+2018,AS072,MW059,5,43.670454,-79.482484,250,36,5.17,South,9/9/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Most people not home; return to house #55 to collect material from garden. One pod collected from #65 because owner was friendly the first time but since they weren't home, we didn't do any more collection. Return if we need more leaf tissue"
+2018,AS073,MW060,1,43.646988,-79.583587,1,5,10.15,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,None of the gardens had milkweed; might have missed it
+2018,AS073,MW060,2,43.646988,-79.583587,1,5,10.15,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,None of the gardens had milkweed; might have missed it
+2018,AS073,MW060,3,43.646988,-79.583587,1,5,10.15,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,None of the gardens had milkweed; might have missed it
+2018,AS073,MW060,4,43.646988,-79.583587,1,5,10.15,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,None of the gardens had milkweed; might have missed it
+2018,AS073,MW060,5,43.646988,-79.583587,1,5,10.15,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,None of the gardens had milkweed; might have missed it
+2018,AS074,MW061,1,43.654607,-79.607519,9000,265,11.33,North,9/12/2018,95,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS074,MW061,2,43.654607,-79.607519,9000,265,11.33,North,9/12/2018,84,4,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS074,MW061,3,43.654607,-79.607519,9000,265,11.33,North,9/12/2018,71,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS074,MW061,4,43.654607,-79.607519,9000,265,11.33,North,9/12/2018,94,7,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS074,MW061,5,43.654607,-79.607519,9000,265,11.33,North,9/12/2018,70,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS075,MW062,1,43.651476,-79.617876,6000,100,11.85,North,9/12/2018,110,1,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS075,MW062,2,43.651476,-79.617876,6000,100,11.85,North,9/12/2018,104,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS075,MW062,3,43.651476,-79.617876,6000,100,11.85,North,9/12/2018,110,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS075,MW062,4,43.651476,-79.617876,6000,100,11.85,North,9/12/2018,97,7,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS075,MW062,5,43.651476,-79.617876,6000,100,11.85,North,9/12/2018,120,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS076,MW063,1,43.63776,-79.635241,60,36,12.78,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No milkweed; may have been mown
+2018,AS076,MW063,2,43.63776,-79.635241,60,36,12.78,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No milkweed; may have been mown
+2018,AS076,MW063,3,43.63776,-79.635241,60,36,12.78,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No milkweed; may have been mown
+2018,AS076,MW063,4,43.63776,-79.635241,60,36,12.78,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No milkweed; may have been mown
+2018,AS076,MW063,5,43.63776,-79.635241,60,36,12.78,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No milkweed; may have been mown
+2018,AS077,MW064,1,43.628807,-79.652009,1250,200,13.69,North,9/12/2018,64,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"some pods at this location already opening on their own, many very brown"
+2018,AS077,MW064,2,43.628807,-79.652009,1250,200,13.69,North,9/12/2018,84,6,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"some pods at this location already opening on their own, many very brown"
+2018,AS077,MW064,3,43.628807,-79.652009,1250,200,13.69,North,9/12/2018,89,6,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"some pods at this location already opening on their own, many very brown"
+2018,AS077,MW064,4,43.628807,-79.652009,1250,200,13.69,North,9/12/2018,94,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"some pods at this location already opening on their own, many very brown"
+2018,AS077,MW064,5,43.628807,-79.652009,1250,200,13.69,North,9/12/2018,99,4,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"some pods at this location already opening on their own, many very brown"
+2018,AS078,MW065,1,43.626304,-79.673743,1,2,14.79,North,9/12/2018,38,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS078,MW065,2,43.626304,-79.673743,1,2,14.79,North,9/12/2018,42,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS079,MW066,1,43.618104,-79.701542,20000,50,16.25,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"No milkweed seen, may have been mown?"
+2018,AS079,MW066,2,43.618104,-79.701542,20000,50,16.25,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"No milkweed seen, may have been mown?"
+2018,AS079,MW066,3,43.618104,-79.701542,20000,50,16.25,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"No milkweed seen, may have been mown?"
+2018,AS079,MW066,4,43.618104,-79.701542,20000,50,16.25,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"No milkweed seen, may have been mown?"
+2018,AS079,MW066,5,43.618104,-79.701542,20000,50,16.25,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"No milkweed seen, may have been mown?"
+2018,AS080,MW067,1,43.613475,-79.705867,64,24,16.52,North,9/28/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+2018,AS080,MW067,2,43.613475,-79.705867,64,24,16.52,North,9/28/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+2018,AS080,MW067,3,43.613475,-79.705867,64,24,16.52,North,9/28/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+2018,AS080,MW067,4,43.613475,-79.705867,64,24,16.52,North,9/28/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+2018,AS080,MW067,5,43.613475,-79.705867,64,24,16.52,North,9/28/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"First visit in early Sept nobody answered; revisited and was able to collect but forgot to measure height, count pods/peduncles"
+2018,AS081,MW068,1,43.595802,-79.719547,180,36,17.45,North,9/12/2018,99,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS081,MW068,2,43.595802,-79.719547,180,36,17.45,North,9/12/2018,112,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS081,MW068,3,43.595802,-79.719547,180,36,17.45,North,9/12/2018,86,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS081,MW068,4,43.595802,-79.719547,180,36,17.45,North,9/12/2018,90,2,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS081,MW068,5,43.595802,-79.719547,180,36,17.45,North,9/12/2018,93,4,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS082,MW069,1,43.553597,-79.699608,1000,24,17.45,South,9/14/2018,89,3,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only found 4 plants
+2018,AS082,MW069,2,43.553597,-79.699608,1000,24,17.45,South,9/14/2018,88,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only found 4 plants
+2018,AS082,MW069,3,43.553597,-79.699608,1000,24,17.45,South,9/14/2018,94,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only found 4 plants
+2018,AS082,MW069,4,43.553597,-79.699608,1000,24,17.45,South,9/14/2018,82,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Only found 4 plants
+2018,AS082,MW069,5,43.553597,-79.699608,1000,24,17.45,South,9/14/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS083,MW070,1,43.571026,-79.733337,1000,24,18.59,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS083,MW070,2,43.571026,-79.733337,1000,24,18.59,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS083,MW070,3,43.571026,-79.733337,1000,24,18.59,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS083,MW070,4,43.571026,-79.733337,1000,24,18.59,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS083,MW070,5,43.571026,-79.733337,1000,24,18.59,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS084,MW071,1,43.564655,-79.720469,5,11,18.13,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS084,MW071,2,43.564655,-79.720469,5,11,18.13,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS084,MW071,3,43.564655,-79.720469,5,11,18.13,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS084,MW071,4,43.564655,-79.720469,5,11,18.13,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS084,MW071,5,43.564655,-79.720469,5,11,18.13,North,9/13/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Nobody answered door. Milkweed still present.
+2018,AS085,MW072,1,43.5789,-79.713398,8000,175,17.47,North,9/12/2018,71,9,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS085,MW072,2,43.5789,-79.713398,8000,175,17.47,North,9/12/2018,63,3,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS085,MW072,3,43.5789,-79.713398,8000,175,17.47,North,9/12/2018,104,10,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,
+2018,AS085,MW072,4,43.5789,-79.713398,8000,175,17.47,North,9/12/2018,74,18,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 4, 5 < 3m apart"
+2018,AS085,MW072,5,43.5789,-79.713398,8000,175,17.47,North,9/12/2018,55,6,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"plants 4, 5 < 3m apart"
+2018,AS086,MW073,1,43.554564,-79.756834,300,46,20.08,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered, milkweed still present"
+2018,AS086,MW073,2,43.554564,-79.756834,300,46,20.08,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered, milkweed still present"
+2018,AS086,MW073,3,43.554564,-79.756834,300,46,20.08,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered, milkweed still present"
+2018,AS086,MW073,4,43.554564,-79.756834,300,46,20.08,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered, milkweed still present"
+2018,AS086,MW073,5,43.554564,-79.756834,300,46,20.08,North,9/12/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"nobody answered, milkweed still present"
+2018,AS087,MW074,1,43.568721,-79.651832,4000,120,14.84,South,9/16/2018,62,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 2&3, 4&5 < 3m apart"
+2018,AS087,MW074,2,43.568721,-79.651832,4000,120,14.84,South,9/16/2018,72,1,Did_not_measure,1,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 2&3, 4&5 < 3m apart"
+2018,AS087,MW074,3,43.568721,-79.651832,4000,120,14.84,South,9/16/2018,78,1,Did_not_measure,2,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 2&3, 4&5 < 3m apart"
+2018,AS087,MW074,4,43.568721,-79.651832,4000,120,14.84,South,9/16/2018,28,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 2&3, 4&5 < 3m apart"
+2018,AS087,MW074,5,43.568721,-79.651832,4000,120,14.84,South,9/16/2018,61,0,Did_not_measure,0,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Plants 2&3, 4&5 < 3m apart"
+2018,AS088,MW075,1,43.573691,-79.63648,NA,NA,14,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS089,MW076,1,43.579335,-79.630017,6,7,13.55,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS089,MW076,2,43.579335,-79.630017,6,7,13.55,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS089,MW076,3,43.579335,-79.630017,6,7,13.55,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS089,MW076,4,43.579335,-79.630017,6,7,13.55,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS089,MW076,5,43.579335,-79.630017,6,7,13.55,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS090,MW077,1,43.589966,-79.6183,4,30,12.73,South,9/16/2018,101,2,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+2018,AS090,MW077,2,43.589966,-79.6183,4,30,12.73,South,9/16/2018,99,5,Did_not_measure,6,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+2018,AS090,MW077,3,43.589966,-79.6183,4,30,12.73,South,9/16/2018,104,1,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+2018,AS090,MW077,4,43.589966,-79.6183,4,30,12.73,South,9/16/2018,96,2,Did_not_measure,11,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+2018,AS090,MW077,5,43.589966,-79.6183,4,30,12.73,South,9/16/2018,121,2,Did_not_measure,8,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,"Nice homeowner. Collected material/data from 6th plant in case seeds from #3 aren't mature enough. Height:121, Pods:4, peduncles:7."
+2018,AS091,MW078,1,43.591194,-79.608405,9,15,12.24,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS091,MW078,2,43.591194,-79.608405,9,15,12.24,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS091,MW078,3,43.591194,-79.608405,9,15,12.24,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS091,MW078,4,43.591194,-79.608405,9,15,12.24,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS091,MW078,5,43.591194,-79.608405,9,15,12.24,South,9/16/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Very small plants w/o pods. No one home- did not sample.
+2018,AS092,MW079,1,43.601609,-79.583684,15000,12,10.82,South,9/16/2018,87,6,Did_not_measure,5,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS092,MW079,2,43.601609,-79.583684,15000,12,10.82,South,9/16/2018,63,4,Did_not_measure,3,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS092,MW079,3,43.601609,-79.583684,15000,12,10.82,South,9/16/2018,98,6,Did_not_measure,4,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS092,MW079,4,43.601609,-79.583684,15000,12,10.82,South,9/16/2018,112,35,Did_not_measure,8,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS092,MW079,5,43.601609,-79.583684,15000,12,10.82,South,9/16/2018,94,24,Did_not_measure,7,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,<3 m between plants
+2018,AS093,MW080,1,43.633829,-79.553119,8800,44,8.75,South,9/10/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+2018,AS093,MW080,2,43.633829,-79.553119,8800,44,8.75,South,9/10/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+2018,AS093,MW080,3,43.633829,-79.553119,8800,44,8.75,South,9/10/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+2018,AS093,MW080,4,43.633829,-79.553119,8800,44,8.75,South,9/10/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.
+2018,AS093,MW080,5,43.633829,-79.553119,8800,44,8.75,South,9/10/2018,NA,NA,Did_not_measure,NA,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,Did_not_measure,No data/material collected because no one home at 36 or 57 Lynnford Drive. There are plants with pods at both houses.

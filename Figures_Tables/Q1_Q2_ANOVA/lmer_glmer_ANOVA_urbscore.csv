@@ -1,0 +1,299 @@
+Pollinaria- Q1
+p ~ (1|Patch_ID/Plant_Num/Inflor) + Urb_score * Year
+AIC: "","x"
+"1",8671.38308184373
+
+"","R2m","R2c"
+"delta",0.0997395782258128,0.326585518261848
+"lognormal",0.121984374662369,0.399423487923342
+"trigamma",0.0740662500365318,0.242521224614846
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",25.3810303870256,1,4.70522318097186e-07
+"as.factor(Year)",46.6785500716926,1,8.36395125027776e-12
+"Urb_score:as.factor(Year)",16.9143562335058,1,3.91047108965358e-05
+
+Pollinaria- Q3
+p ~ (1|Patch_ID/Plant_Num/Inflor) + Urb_score * Year * Transect_ID
+AIC: "","x"
+"1",5044.50447172969
+
+"","R2m","R2c"
+"delta",0.0588101401838494,0.248139388517141
+"lognormal",0.0769958356848271,0.324870839033403
+"trigamma",0.0390292644405858,0.164677346156376
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.189450918600704,1,0.663374006563233
+"as.factor(Year)",91.3220452587978,1,1.22092813267836e-21
+"Transect_ID",1.89768778636985,1,0.168337357792932
+"Urb_score:as.factor(Year)",0.58789557000496,1,0.443234044442654
+"Urb_score:Transect_ID",0.523832849049093,1,0.469211261439884
+"as.factor(Year):Transect_ID",8.04650162861298,1,0.00455916112490577
+"Urb_score:as.factor(Year):Transect_ID",12.5994053670239,1,0.000385869496279905
+
+Pollinaria- Q3
+p ~ (1|Patch_ID/Plant_Num/Inflor) + Urb_score:Year:Transect_ID + Transect_ID:Year + Year + Transect_ID + Urb_score
+AIC: "","x"
+"1",5044.50447171519
+
+"","R2m","R2c"
+"delta",0.0588101381949506,0.24813929969682
+"lognormal",0.0769958358935841,0.324870734615033
+"trigamma",0.0390292615698458,0.164677280667521
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"as.factor(Year)",91.0711545755596,1,1.38597462211942e-21
+"Transect_ID",2.14498134784186,1,0.143036774813694
+"Urb_score",0.189458124227381,1,0.663367999118147
+"as.factor(Year):Transect_ID",10.0021893911384,1,0.00156354231532768
+"Urb_score:as.factor(Year):Transect_ID",13.6506978524585,3,0.0034213101282095
+
+
+Follicles- Q1
+p ~ (1|Patch_ID) + Urb_score * Year
+AIC: "","x"
+"1",2458.46230974897
+
+"","R2m","R2c"
+"delta",0.0449312437136907,0.635515683164785
+"lognormal",0.0468134076478876,0.66213735217736
+"trigamma",0.042752094964522,0.604693406913757
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",3.80766131692279,1,0.0510186387911069
+"as.factor(Year)",2.38013452780774,1,0.122886964082808
+"Urb_score:as.factor(Year)",0.17342379347825,1,0.677086728577002
+
+Follicles- Q1
+p ~ (1|Patch_ID) + Urb_score + Year
+AIC: "","x"
+"1",2456.63365994641
+
+"","R2m","R2c"
+"delta",0.0441482990053422,0.634713423730528
+"lognormal",0.046001907001171,0.661362465795419
+"trigamma",0.0420026389365529,0.60386559314348
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",3.81785620734498,1,0.0507090795791647
+"as.factor(Year)",2.38078589376441,1,0.12283573762851
+
+Follicles- Q3
+p ~ (1|Patch_ID) + Urb_score * Year * Transect_ID
+AIC: "","x"
+"1",1847.90489704189
+
+"","R2m","R2c"
+"delta",0.0840210732475993,0.628074469262321
+"lognormal",0.0873593641621595,0.653028867169462
+"trigamma",0.0802024169407979,0.599529243160272
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.166776996992729,1,0.682992222546313
+"as.factor(Year)",1.05553082533055,1,0.304236717894552
+"Transect_ID",1.42002196791716,1,0.233399787297462
+"Urb_score:as.factor(Year)",1.32021464652339,1,0.250553531983834
+"Urb_score:Transect_ID",2.55873209486614,1,0.109686520342234
+"as.factor(Year):Transect_ID",9.44951127396624,1,0.00211205370663512
+"Urb_score:as.factor(Year):Transect_ID",1.78131883803846,1,0.181987464086566
+
+Follicles- Q3
+p ~ (1|Patch_ID) + Urb_score + Year + Transect_ID + Urb_score:Year + Urb_score:Transect_ID + Year:Transect_ID
+AIC: "","x"
+"1",1847.66748327794
+
+"","R2m","R2c"
+"delta",0.0814167262666115,0.630613726918153
+"lognormal",0.084628585930311,0.655491204627475
+"trigamma",0.0777405567991849,0.602139934923064
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.166830014814283,1,0.682944578521944
+"as.factor(Year)",1.06690272610604,1,0.301646096037862
+"Transect_ID",1.41830560768291,1,0.23368249315066
+"Urb_score:as.factor(Year)",1.32715711821085,1,0.249311599752693
+"Urb_score:Transect_ID",2.51461764806777,1,0.112794988337881
+"as.factor(Year):Transect_ID",9.4657842940188,1,0.00209339910296427
+
+Follicles- Q3
+p ~ (1|Patch_ID) + Urb_score + Year + Transect_ID + Year:Transect_ID
+AIC: "","x"
+"1",1847.48944344467
+
+"","R2m","R2c"
+"delta",0.0381887189664741,0.620455489695452
+"lognormal",0.0397383610062175,0.645632660772222
+"trigamma",0.0364191805002213,0.59170564195697
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.164675574765381,1,0.684887806947425
+"as.factor(Year)",0.980868987091888,1,0.32198436138414
+"Transect_ID",1.35252817325899,1,0.244836623998987
+"as.factor(Year):Transect_ID",10.1112310198935,1,0.00147368495959103
+
+
+Peduncles- Q1
+p ~ (1|Patch_ID) + Urb_score * Year
+AIC: "","x"
+"1",2612.5900164199
+
+"","R2m","R2c"
+"delta",0.00464794419693406,0.62318543941359
+"lognormal",0.00475046336017608,0.636930967992749
+"trigamma",0.00453764418226284,0.608396672552844
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.0710486566019254,1,0.78981601245115
+"as.factor(Year)",1.71266634185664,1,0.190639791424384
+"Urb_score:as.factor(Year)",2.64166254518115,1,0.104094559601293
+
+Peduncles- Q1
+p ~ (1|Patch_ID) + Urb_score + Year
+AIC: "","x"
+"1",2613.21934096137
+
+"","R2m","R2c"
+"delta",0.00257817229403945,0.627924616055945
+"lognormal",0.00263430796098346,0.641596691888253
+"trigamma",0.00251774133252096,0.613206403313873
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.0708977199202941,1,0.790034157890767
+"as.factor(Year)",1.71571159763621,1,0.190245993681754
+
+Peduncles- Q3
+p ~ (1|Patch_ID) + Urb_score * Year * Transect_ID
+AIC: "","x"
+"1",1866.79830737736
+
+"","R2m","R2c"
+"delta",0.0670863591511148,0.618824395420357
+"lognormal",0.0685751915556517,0.632557825349748
+"trigamma",0.0654860293277567,0.604062480361261
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.0524910338236653,1,0.818784028990928
+"as.factor(Year)",0.000284782465419365,1,0.986535938975361
+"Transect_ID",1.18200535493508,1,0.276948122993074
+"Urb_score:as.factor(Year)",4.1890992324017,1,0.0406847090266768
+"Urb_score:Transect_ID",2.08152690872913,1,0.149090972553135
+"as.factor(Year):Transect_ID",1.01111425858846,1,0.314636045071204
+"Urb_score:as.factor(Year):Transect_ID",2.87734034152905,1,0.089834288860664
+
+Peduncles- Q3
+p ~ (1|Patch_ID) + Urb_score:Year:Transect_ID + Urb_score:Year + Urb_score + Transect_ID + Year
+AIC: "","x"
+"1",1865.8896364988
+
+"","R2m","R2c"
+"delta",0.062637770872011,0.613603433624738
+"lognormal",0.0640473455157285,0.627411713026996
+"trigamma",0.0611235896616146,0.598770421898829
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.0475933214044427,1,0.827305278706816
+"Transect_ID",1.20882845341021,1,0.271564267868858
+"as.factor(Year)",0.0064890266264806,1,0.935796256455938
+"Urb_score:as.factor(Year)",4.60372882588929,1,0.0319024964301263
+"Urb_score:as.factor(Year):Transect_ID",5.10747590976937,2,0.0777903450677747
+
+Peduncles- Q3
+p ~ (1|Patch_ID) + Urb_score:Year + Urb_score + Transect_ID + Year
+AIC: "","x"
+"1",1866.89090278079
+
+"","R2m","R2c"
+"delta",0.0248942883493441,0.616748216438185
+"lognormal",0.0254498380175829,0.63051178590524
+"trigamma",0.0242972837824118,0.601957614807241
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.0451927142236134,1,0.83165006317342
+"Transect_ID",1.13392527791555,1,0.28693961614023
+"as.factor(Year)",0.00490873542325496,1,0.94414401897526
+"Urb_score:as.factor(Year)",4.60825110245111,1,0.0318184676954984
+
+
+Height- Q1
+p ~ (1|Patch_ID) + Urb_score * Year
+AIC: "","x"
+"1",4406.70752854033
+
+"","R2m","R2c"
+"1",0.0192431643288232,0.465401673685409
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.490526261108804,1,0.483692645313503
+"as.factor(Year)",6.41126479579498,1,0.0113398612224501
+"Urb_score:as.factor(Year)",7.15652119642921,1,0.00746919204978117
+
+Height- Q3
+p ~ (1|Patch_ID) + Urb_score + Year + Transect_ID + Urb_score:Year + Urb_score:Transect_ID + Year:Transect_ID
+AIC: "","x"
+"1",3148.75682186862
+
+"","R2m","R2c"
+"1",0.0520010032978977,0.478982375523945
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",1.27882236723545,1,0.258118111035586
+"as.factor(Year)",13.518405433677,1,0.000236235057470774
+"Transect_ID",0.0613739146021379,1,0.804337443929894
+"Urb_score:as.factor(Year)",2.68194622249285,1,0.101491622976843
+"Urb_score:Transect_ID",0.427397755313054,1,0.513268600355762
+"as.factor(Year):Transect_ID",0.692725721942496,1,0.405238806179204
+
+Height- Q3
+p ~ (1|Patch_ID) + Urb_score + Year + Transect_ID
+AIC: "","x"
+"1",3146.78541659745
+
+"","R2m","R2c"
+"1",0.0380401988416255,0.468204025777148
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",1.23417998506252,1,0.266595667966869
+"as.factor(Year)",13.6019045723835,1,0.000225956168001799
+"Transect_ID",0.0474473817157723,1,0.827566089090313
+
+
+Follicles per Inflorescence- Q1
+p ~ (1|Patch_ID) + Urb_score * Year
+AIC: "","x"
+"1",573.067118953016
+
+"","R2m","R2c"
+"1",0.0235910909263254,0.191743840388076
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",4.67437425092183,1,0.0306158544242983
+"as.factor(Year)",0.321359315658764,1,0.570791888944816
+"Urb_score:as.factor(Year)",0.0356928264138785,1,0.850151244974671
+
+Follicles per Inflorescence- Q1
+p ~ (1|Patch_ID) + Urb_score + Year
+AIC: "","x"
+"1",571.102803898902
+
+"","R2m","R2c"
+"1",0.0236309785377157,0.191889089419763
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",4.67228309496206,1,0.0306531521997921
+"as.factor(Year)",0.321096131930011,1,0.570949653300733
+
+Follicles per Inflorescence- Q3
+p ~ (1|Patch_ID) + Urb_score + Year + Transect_ID
+AIC: "","x"
+"1",393.705603686551
+
+"","R2m","R2c"
+"1",0.00834609786957873,0.200195501727051
+
+Main Effect"","Chisq","Df","Pr(>Chisq)"
+"Urb_score",0.658236244381193,1,0.417183306709044
+"as.factor(Year)",0.139126130750818,1,0.709151306559352
+"Transect_ID",0.422082881221731,1,0.515899552622402
+
+
