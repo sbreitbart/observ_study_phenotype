@@ -175,11 +175,6 @@ long_Transect_Data_18_19$Inflor <- as.factor(as.character(long_Transect_Data_18_
 # make pollinia removed an integer
 long_Transect_Data_18_19$Pollinia_removed <- as.integer(as.character(long_Transect_Data_18_19$Pollinia_removed))
 
-<!-- # separate 2018-2019 -->
-<!-- long_Transect_Data_18 <- filter(long_Transect_Data_18_19, Year == "2018") -->
-<!-- long_Transect_Data_19 <- filter(long_Transect_Data_18_19, Year == "2019") -->
-
-
 
 ## SummarySE
 #------------------
@@ -207,9 +202,9 @@ long_sum <- long_summary_pop %>% filter(!is.na(Pollinia_removed))
 
 
 
-## Adjusting long table from previous chunk for pods/peds analyses (removing sterile pops)
-### Remove sterile populations
-#### For population-level table
+# Remove sterile populations
+#-----------------------------
+## For population-level table
 
 # First, find populations that are "sterile"- no plants w/pods or flowers per year
 No_flowers <- AvgVars_byPatch[is.na(AvgVars_byPatch$Average_Pollinia) & (is.na(AvgVars_byPatch$Total_Pods) | (AvgVars_byPatch$Total_Pods == 0)),]
@@ -219,13 +214,14 @@ No_flowers <- AvgVars_byPatch[is.na(AvgVars_byPatch$Average_Pollinia) & (is.na(A
 sterile_pops_bothyears <- No_flowers[duplicated(No_flowers[c("Patch_ID")]),]
 sterile_pops_bothyears_list <- sterile_pops_bothyears$Patch_ID
 
-# Populations that were sterile for any given year
-sterile_pops_18 <- No_flowers[which(No_flowers$Year == "2018"),]
-sterile_pops_19 <- No_flowers[which(No_flowers$Year == "2019"),]
 
 # New dataframe with all records for fertile populations (i.e. all populations - sterile)
 fertile_pops_all <- AvgVars_byPatch %>% 
-  filter(!Patch_ID %in% sterile_pops_bothyears_list)
+  filter(!Patch_ID %in% sterile_pops_bothyears_list) %>%
+  dplyr::mutate(pods_per_ped = Total_Pods / Peduncles) %>%
+  dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
+write.csv(.,
+          here::here("./clean_data/fertile_pops_all.csv"))
 
 
 # check that fertile_pops_all has no populations in common with sterile_pops_bothyears
@@ -246,6 +242,7 @@ write.csv(.,
 
 
 fertile <- anti_join(Transect_Data_18_19, sterile_pops_bothyears, by = "Patch_ID") %>%
+dplyr::mutate(., pods_per_ped = Total_Pods / Peduncles) %>%
 dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
 write.csv(.,
           here::here("./clean_data/fertile.csv"))
@@ -284,34 +281,14 @@ urb_scores <- dplyr::inner_join(urb_scores, Pops_patches, by = "Pop_ID") %>% dpl
 #===============================================================#
 
 
-## Pods------------------------
-### gradient
-urb_scores_pods_all <- dplyr::left_join(fertile_pops_all_notNApods, urb_scores, by = "Patch_ID")
-
-
-
 ## Peduncles------------------------
 ### gradient
-urb_scores_peds_all <- dplyr::left_join(fertile_pops_all_notNApeds, urb_scores, by = "Patch_ID")
+fertile_pops_all_notNApeds <- fertile_pops_all %>%
+filter( !is.na(Peduncles)) %>%
+dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
+write.csv(.,
+          here::here("./clean_data/fertile_pops_all_notNApeds.csv"))
 
-### urban subs
-urb_scores_peds <- dplyr::left_join(fertile_pops_all_notNApeds_urban, urb_scores, by = "Patch_ID")
-
-
-## Height------------------------
-### gradient
-urb_scores_height_all <- dplyr::left_join(fertile_pops_all_height_18_19_sept, urb_scores, by = "Patch_ID")
-
-### urban subs
-urb_scores_height <- dplyr::left_join(fertile_pops_all_height_18_19_urban_sept, urb_scores, by = "Patch_ID")
-
-
-## Pods/ped------------------------
-### gradient
-urb_scores_podperped_all <- dplyr::left_join(fertile_pops_all_podsperped, urb_scores, by = "Patch_ID")
-
-### urban subs
-urb_scores_podperped <- dplyr::left_join(fertile_pops_all_podsperped_urban, urb_scores, by = "Patch_ID")
 
 
 #===============================================================#
@@ -336,34 +313,6 @@ filter( !is.na(Viable_Pods)) %>%
 dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
 write.csv(.,
           here::here("./clean_data/fertile_pops_all_notNApods.csv"))
-
-
-
-## Peduncles------------------------
-### gradient
-urb_scores_peds_long <- dplyr::left_join(fertile, urb_scores, by = "Patch_ID")
-
-### urban subs
-urb_scores_peds_all_long <- dplyr::left_join((fertile %>% filter(Transect_ID != 'Rural')), urb_scores, by = "Patch_ID")
-
-
-## Height------------------------
-### gradient
-urb_scores_height_long <- dplyr::left_join(fertile, urb_scores, by = "Patch_ID")
-
-### urban subs
-urb_scores_height_all_long <- dplyr::left_join((fertile %>% filter(Transect_ID != 'Rural')), urb_scores, by = "Patch_ID")
-
-
-## Pods/ped------------------------
-### gradient
-urb_scores_podsperped_long <- dplyr::left_join(fertile, urb_scores, by = "Patch_ID")
-
-### urban subs
-urb_scores_podsperped_all_long <- dplyr::left_join((fertile %>% filter(Transect_ID != 'Rural')), urb_scores, by = "Patch_ID")
-
-
-
 
 
 
