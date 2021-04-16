@@ -124,15 +124,6 @@ long_Transect_Data_18_19 <-
            header=T,
            na.strings=c("","NA"))
 
-urb_scores_poll_long <-
-  read.csv(here::here("./clean_data/urb_scores_poll_long.csv"),
-           header=T,
-           na.strings=c("","NA"))
-
-urb_scores_poll_all_long <-
-  read.csv(here::here("./clean_data/urb_scores_poll_all_long.csv"),
-           header=T,
-           na.strings=c("","NA"))
 
 AvgVars_notNA_Poll_18_19 <-
   read.csv(here::here("./clean_data/AvgVars_notNA_Poll_18_19.csv"),
@@ -144,16 +135,6 @@ fertile_long <-
            header=T,
            na.strings=c("","NA"))
 
-fertile_pops_all_notNApods <-
-  read.csv(here::here("./clean_data/fertile_pops_all_notNApods.csv"),
-           header=T,
-           na.strings=c("","NA"))
-
-
-fertile_pops_all_notNApeds <-
-  read.csv(here::here("./clean_data/fertile_pops_all_notNApeds.csv"),
-           header=T,
-           na.strings=c("","NA"))
 
 fertile <-
   read.csv(here::here("./clean_data/fertile.csv"),
@@ -449,7 +430,7 @@ i<-0
 ```{r}
 ## No transect yet
 u_poll_glmer_gradient_1 <- glmer(Pollinia_removed ~ (1|Patch_ID/Plant_Num/Inflor) + Urb_score * as.factor(Year),
-                                 urb_scores_poll_long,
+                                 long_Transect_Data_18_19,
                                  family = "poisson",
              glmerControl(optimizer="bobyqa",
                           optCtrl = list(maxfun = 100000)))
@@ -458,7 +439,7 @@ u_poll_glmer_gradient_1_anova <- car::Anova(u_poll_glmer_gradient_1)
 # interaction and main effects sig
 
 u_poll_glmer_gradient_1.1 <- glmer(Pollinia_removed ~ (1|Patch_ID/Plant_Num/Inflor) + Urb_score + as.factor(Year),
-                                   urb_scores_poll_long,
+                                   long_Transect_Data_18_19,
                                    family = "poisson",
                                    glmerControl(optimizer="bobyqa",
                                                 optCtrl = list(maxfun = 100000)))
@@ -472,7 +453,7 @@ AIC(u_poll_glmer_gradient_1, u_poll_glmer_gradient_1.1)
 ## add transect
 # FULL MODEL
 u_poll_glmer_subtr_1 <- glmer((Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + Urb_score * as.factor(Year) *Transect_ID,
-                              urb_scores_poll_all_long,
+                              (long_Transect_Data_18_19 %>% filter(Transect_ID != 'Rural')),
                               family = "poisson",
                               glmerControl(optimizer="bobyqa",
                                            optCtrl = list(maxfun = 100000)))
@@ -483,7 +464,7 @@ AIC(u_poll_glmer_subtr_1)
 
 # looking at full model minus 3-way interaxn
 u_poll_glmer_subtr_1.1 <- glmer((Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + Urb_score:as.factor(Year) + Urb_score:Transect_ID + Transect_ID:as.factor(Year) + as.factor(Year) + Transect_ID + Urb_score,
-                                urb_scores_poll_all_long,
+                                (long_Transect_Data_18_19 %>% filter(Transect_ID != 'Rural')),
                                 family = "poisson",
                                 glmerControl(optimizer="bobyqa",
                                              optCtrl = list(maxfun = 100000)))
@@ -906,57 +887,57 @@ y2.1 <- car::Anova(y2)
 ```{r}
 
 allpod_lm <- lm(Viable_Pods ~ City_dist * Year ,
-                data = fertile_pops_all_notNApods)
+                data = fertile_pops_all)
 
 par(mfrow=c(2,2))
 plot(allpod_lm)
 summary(allpod_lm)
 
-qplot(fertile_pops_all_notNApods$Viable_Pods)
+qplot(fertile_pops_all$Viable_Pods)
 #looks like 15 may be an outlier that could be removed
 
-summary(fertile_pops_all_notNApods$Viable_Pods)
-sd(fertile_pops_all_notNApods$Viable_Pods)
+summary(fertile_pops_all$Viable_Pods)
+sd(fertile_pops_all$Viable_Pods)
 # so, planst with 12 and 15 pods are (12-3.89)/2.6 = 3.11 and (15-3.89)/2.6 = 4.27 standard deviations from the mean, respectively
 
-gg_reshist(lm((Viable_Pods) ~ City_dist * Year, data = fertile_pops_all_notNApods), bins=20)
-ggqqplot(fertile_pops_all_notNApods$Viable_Pods)
+gg_reshist(lm((Viable_Pods) ~ City_dist * Year, data = fertile_pops_all), bins=20)
+ggqqplot(fertile_pops_all$Viable_Pods)
 ## Most data points fall within the envelope but some don't. (towards one end)
 
 
 
 # try  transformations
-gg_reshist(lm((Viable_Pods)^(1/2) ~ City_dist * Year, data = fertile_pops_all_notNApods), bins=20)
-plot(lm((Viable_Pods)^(1/2) ~ City_dist * Year , data = fertile_pops_all_notNApods))
-ggqqplot((fertile_pops_all_notNApods$Viable_Pods)^(1/2))
-shapiro.test((fertile_pops_all_notNApods$Viable_Pods)^(1/2))
+gg_reshist(lm((Viable_Pods)^(1/2) ~ City_dist * Year, data = fertile_pops_all), bins=20)
+plot(lm((Viable_Pods)^(1/2) ~ City_dist * Year , data = fertile_pops_all))
+ggqqplot((fertile_pops_all$Viable_Pods)^(1/2))
+shapiro.test((fertile_pops_all$Viable_Pods)^(1/2))
 ##### GOING WITH THIS ONE. LOOKS GOOD.
 
-# gg_reshist(lm((Viable_Pods)^(1/3) ~ City_dist * Year, data = fertile_pops_all_notNApods), bins=20)
-# plot(lm((Viable_Pods)^(1/3) ~ City_dist * Year, data = fertile_pops_all_notNApods))
-# ggqqplot((fertile_pops_all_notNApods$Viable_Pods)^(1/3))
-# shapiro.test((fertile_pops_all_notNApods$Viable_Pods)^(1/3))
+# gg_reshist(lm((Viable_Pods)^(1/3) ~ City_dist * Year, data = fertile_pops_all), bins=20)
+# plot(lm((Viable_Pods)^(1/3) ~ City_dist * Year, data = fertile_pops_all))
+# ggqqplot((fertile_pops_all$Viable_Pods)^(1/3))
+# shapiro.test((fertile_pops_all$Viable_Pods)^(1/3))
 # 
-# gg_reshist(lm(log(Viable_Pods + 1) ~ City_dist * Year, data = fertile_pops_all_notNApods), bins=20)
-# plot(lm(log(Viable_Pods + 1) ~ City_dist * Year, data = fertile_pops_all_notNApods))
-# ggqqplot(log(fertile_pops_all_notNApods$Viable_Pods + 1))
-# shapiro.test(log(fertile_pops_all_notNApods$Viable_Pods + 1))
+# gg_reshist(lm(log(Viable_Pods + 1) ~ City_dist * Year, data = fertile_pops_all), bins=20)
+# plot(lm(log(Viable_Pods + 1) ~ City_dist * Year, data = fertile_pops_all))
+# ggqqplot(log(fertile_pops_all$Viable_Pods + 1))
+# shapiro.test(log(fertile_pops_all$Viable_Pods + 1))
 
 
 ### NOT USING THIS ANYMORE
 # add log(pods) col to df
-# fertile_pops_all_notNApods$Viable_Pods_log <- log(fertile_pops_all_notNApods$Viable_Pods +1)
+# fertile_pops_all$Viable_Pods_log <- log(fertile_pops_all$Viable_Pods +1)
 
 
 # add sqrt(pods) col to df
-fertile_pops_all_notNApods$Viable_Pods_sqrt <- sqrt(fertile_pops_all_notNApods$Viable_Pods)
+fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
 ```
 
 ######### Urb_score: USE SQRT TRANSFORMATION
 ```{r}
 
 diag_urb_pods_1 <- lm(Viable_Pods ~ Urb_score * Year ,
-                      data = fertile_pops_all_notNApods)
+                      data = fertile_pops_all)
 
 par(mfrow=c(2,2))
 plot(diag_urb_pods_1)
@@ -965,25 +946,25 @@ summary(diag_urb_pods_1)
 gg_reshist(diag_urb_pods_1, bins=20)
 #looks like 98 & 76 may be outliers
 
-summary(fertile_pops_all_notNApods$Viable_Pods)
-sd(fertile_pops_all_notNApods$Viable_Pods)
+summary(fertile_pops_all$Viable_Pods)
+sd(fertile_pops_all$Viable_Pods)
 # so, planst with 12 and 15 pods are (12-3.89)/2.6 = 3.11 and (15-3.89)/2.6 = 4.27 standard deviations from the mean, respectively
 
-ggqqplot(fertile_pops_all_notNApods$Viable_Pods)
+ggqqplot(fertile_pops_all$Viable_Pods)
 ## Most data points fall within the envelope but some don't. (towards one end)
 
 
 
 # try  transformations
-gg_reshist(lm((Viable_Pods)^(1/2) ~ Urb_score * Year, data = fertile_pops_all_notNApods), bins=20)
-plot(lm((Viable_Pods)^(1/2) ~ Urb_score * Year , data = fertile_pops_all_notNApods))
-ggqqplot((fertile_pops_all_notNApods$Viable_Pods)^(1/2))
-shapiro.test((fertile_pops_all_notNApods$Viable_Pods)^(1/2))
+gg_reshist(lm((Viable_Pods)^(1/2) ~ Urb_score * Year, data = fertile_pops_all), bins=20)
+plot(lm((Viable_Pods)^(1/2) ~ Urb_score * Year , data = fertile_pops_all))
+ggqqplot((fertile_pops_all$Viable_Pods)^(1/2))
+shapiro.test((fertile_pops_all$Viable_Pods)^(1/2))
 ##### GOING WITH THIS ONE. LOOKS GOOD.
 
 
 # add sqrt(pods) col to df
-fertile_pops_all_notNApods$Viable_Pods_sqrt <- sqrt(fertile_pops_all_notNApods$Viable_Pods)
+fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
 ```
 
 
@@ -992,12 +973,12 @@ fertile_pops_all_notNApods$Viable_Pods_sqrt <- sqrt(fertile_pops_all_notNApods$V
 ```{r}
 # ANOVA
 lm.pods.gr.1 <- lm(Viable_Pods_sqrt ~ Year * City_dist,
-                   data = fertile_pops_all_notNApods)
+                   data = fertile_pops_all)
 lm.pods.gr.1_anova <- car::Anova((lm.pods.gr.1), REML = F)
 # Interaction and both main effects not significant.
 
 lm.pods.gr.2 <- lm(Viable_Pods_sqrt ~ Year + City_dist,
-                   data = fertile_pops_all_notNApods)
+                   data = fertile_pops_all)
 lm.pods.gr.2_anova <- car::Anova((lm.pods.gr.2), REML = F)
 # both main effects not significant.
 
@@ -1008,12 +989,12 @@ AIC(lm.pods.gr.1, lm.pods.gr.2)
 ######### urb_score
 ```{r}
 u_pod_glm_gradient_1 <- lm(Viable_Pods_sqrt 	~ Year * Urb_score,
-                           data = fertile_pops_all_notNApods)
+                           data = fertile_pops_all)
 u_pod_glm_gradient_1_anova <- car::Anova(u_pod_glm_gradient_1, REML = F)
 # Interaction and both main effects not significant.
 
 u_pod_glm_gradient_2 <- lm(Viable_Pods_sqrt 	~ Year + Urb_score,
-                           data = fertile_pops_all_notNApods)
+                           data = fertile_pops_all)
 u_pod_glm_gradient_2_anova <- car::Anova(u_pod_glm_gradient_2, REML = F)
 # both main effects not significant.
 
@@ -1027,7 +1008,7 @@ AIC(u_pod_glm_gradient_1, u_pod_glm_gradient_2)
 ```{r}
 
 urbpods_lm <- lm(Viable_Pods ~ City_dist * Year * Transect_ID,
-                 data = (fertile_pops_all_notNApods %>%
+                 data = (fertile_pops_all %>%
                            dplyr::filter(Transect_ID != "Rural")))
 
 par(mfrow=c(2,2))
@@ -1040,12 +1021,12 @@ ncvTest(urbpods_lm)
 # low p-value (0.001) indicates heteroscedasticity... so maybe it's not ok?
 
 summary(urbpods_lm)
-summary((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
-sd((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
+summary((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
+sd((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
 
-qplot((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
+qplot((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
 
-ggqqplot((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
+ggqqplot((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
 ## Almost all data points fall within the envelope but some along one end don't.
 
 # Histogram
@@ -1053,28 +1034,28 @@ gg_reshist(urbpods_lm, bins=20)
 
 
 # try log transformation
-gg_reshist(lm(log(Viable_Pods+1) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))), bins=20)
+gg_reshist(lm(log(Viable_Pods+1) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))), bins=20)
 par(mfrow=c(2,2))
-plot(lm(log(Viable_Pods+1) ~ City_dist* Transect_ID * Year, data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-summary(lm(log(Viable_Pods+1) ~ City_dist* Transect_ID * Year, data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-ggqqplot(log((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods+1))
-shapiro.test(log((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods+1))
+plot(lm(log(Viable_Pods+1) ~ City_dist* Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
+summary(lm(log(Viable_Pods+1) ~ City_dist* Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
+ggqqplot(log((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods+1))
+shapiro.test(log((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods+1))
 # still not good (too strong?)
 
 
 # try sq rt & cube root
-gg_reshist(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))), bins=20)
-plot(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-summary(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
+gg_reshist(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))), bins=20)
+plot(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
+summary(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
 
 par(mfrow=c(2,2))
-plot(lm(Viable_Pods^(1/2) ~ City_dist, (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-ggqqplot((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods^(1/2))
-shapiro.test((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods^(1/2))
+plot(lm(Viable_Pods^(1/2) ~ City_dist, (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
+ggqqplot((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods^(1/2))
+shapiro.test((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods^(1/2))
 # still not great but better than log & cube root. going with sq rt
 
 # add sqrt(pods) col to df
-fertile_pops_all_notNApods$Viable_Pods_sqrt <- sqrt(fertile_pops_all_notNApods$Viable_Pods)
+fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
 ```
 
 
@@ -1082,7 +1063,7 @@ fertile_pops_all_notNApods$Viable_Pods_sqrt <- sqrt(fertile_pops_all_notNApods$V
 ```{r}
 
 diag_urb_pods_2 <- lm(Viable_Pods ~ Urb_score * Year * Transect_ID,
-                      data = fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))
+                      data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 
 par(mfrow=c(2,2))
 plot(diag_urb_pods_2)
@@ -1097,43 +1078,43 @@ summary(diag_urb_pods_2)
 
 gg_reshist(diag_urb_pods_2, bins = 20)
 
-ggqqplot(fertile_pops_all_notNApods$Viable_Pods %>%
+ggqqplot(fertile_pops_all$Viable_Pods %>%
            filter(Transect_ID != "Rural"))
 ## Almost all data points fall within the envelope but some along one end don't
 
 
 # try log transformation
-gg_reshist(lm(log(Viable_Pods+1) ~ Urb_score * Transect_ID * Year, fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))), bins=20)
+gg_reshist(lm(log(Viable_Pods+1) ~ Urb_score * Transect_ID * Year, fertile_pops_all %>% filter(Transect_ID != "Rural"))), bins=20)
 par(mfrow=c(2,2))
-plot(lm(log(Viable_Pods+1) ~ Urb_score* Transect_ID * Year,  fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))))
-summary(lm(log(Viable_Pods+1) ~ Urb_score* Transect_ID * Year, fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))))
-ggqqplot(log( fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))$Viable_Pods+1))
-shapiro.test(log( fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))$Viable_Pods+1))
+plot(lm(log(Viable_Pods+1) ~ Urb_score* Transect_ID * Year,  fertile_pops_all %>% filter(Transect_ID != "Rural"))))
+summary(lm(log(Viable_Pods+1) ~ Urb_score* Transect_ID * Year, fertile_pops_all %>% filter(Transect_ID != "Rural"))))
+ggqqplot(log( fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods+1))
+shapiro.test(log( fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods+1))
 # still not good (too strong?)
 
 
 # try sq rt
 gg_reshist(lm(Viable_Pods^(1/2) ~ Urb_score * Transect_ID * Year,
-              fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural")), bins=20)
+              fertile_pops_all %>% filter(Transect_ID != "Rural")), bins=20)
 plot(lm(Viable_Pods^(1/2) ~ Urb_score * Transect_ID * Year,
-        fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural")))
+        fertile_pops_all %>% filter(Transect_ID != "Rural")))
 summary(lm(Viable_Pods^(1/2) ~ Urb_score * Transect_ID * Year,
-           fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural")))
-ggqqplot(fertile_pops_all_notNApods$Viable_Pods^(1/2) %>% filter(Transect_ID != "Rural"))
-shapiro.test( fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/2)
+           fertile_pops_all %>% filter(Transect_ID != "Rural")))
+ggqqplot(fertile_pops_all$Viable_Pods^(1/2) %>% filter(Transect_ID != "Rural"))
+shapiro.test( fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/2)
 
 
 # try cube root
 gg_reshist(lm(Viable_Pods^(1/3) ~ Urb_score * Transect_ID * Year,
-              fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))), bins=20)
+              fertile_pops_all %>% filter(Transect_ID != "Rural"))), bins=20)
 plot(lm(Viable_Pods^(1/3) ~ Urb_score * Transect_ID * Year,
-        fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))))
-ggqqplot(fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/3))
-shapiro.test(fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/3))
+        fertile_pops_all %>% filter(Transect_ID != "Rural"))))
+ggqqplot(fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/3))
+shapiro.test(fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/3))
 # still not great but better than log & cube root. going with sq rt
 
 # add sqrt(pods) col to df
-fertile_pops_all_notNApods$Viable_Pods_sqrt <- sqrt(fertile_pops_all_notNApods$Viable_Pods)
+fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
 
 ```
 
@@ -1141,17 +1122,17 @@ fertile_pops_all_notNApods$Viable_Pods_sqrt <- sqrt(fertile_pops_all_notNApods$V
 ######### City_dist, not urb_scores
 ```{r}
 lm.pods.subt.1 <- lm(Viable_Pods_sqrt ~ Year * City_dist * Transect_ID,
-                     data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South")))
+                     data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South")))
 lm.pods.subt.1_anova <- car::Anova(lm.pods.subt.1, REML = F)
 # 3-way interaction not significant, so let's look at lower-level interactions and main effects.
 
 lm.pods.subt.2 <- lm(Viable_Pods_sqrt 	~ Year + City_dist + Transect_ID + Year:City_dist + Year:Transect_ID + City_dist:Transect_ID,
-                     data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South")))
+                     data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South")))
 lm.pods.subt.2_anova <- car::Anova(lm.pods.subt.2, REML = F)
 # Nothing significant
 
 lm.pods.subt.3 <- lm(Viable_Pods_sqrt 	~ Year + City_dist + Transect_ID,
-                     data = (fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South")))
+                     data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South")))
 lm.pods.subt.3_anova <- car::Anova(lm.pods.subt.3, REML = F)
 # Nothing significant
 
@@ -1161,19 +1142,19 @@ AIC(lm.pods.subt.1, lm.pods.subt.2, lm.pods.subt.3)
 ######### urb_scores, not city_dist
 ```{r}
 u_pod_glm_subtr_1 <- lm(Viable_Pods_sqrt 	~ Year * Urb_score * Transect_ID,
-                        data = fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural"))
+                        data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 u_pod_glm_subtr_1_anova <- car::Anova(u_pod_glm_subtr_1,
                                       REML = F)
 # 3-way interaction not significant, so let's look at lower-level interactions and main effects.
 
 u_pod_glm_subtr_2 <- lm(Viable_Pods_sqrt 	~ Year + Urb_score + Transect_ID + Year:Urb_score + Year:Transect_ID + Urb_score:Transect_ID,
-                        data = fertile_pops_all_notNApods %>%
+                        data = fertile_pops_all %>%
                           filter(Transect_ID != "Rural"))
 u_pod_glm_subtr_2_anova <- car::Anova(u_pod_glm_subtr_2, REML = F)
 # Nothing significant
 
 u_pod_glm_subtr_3 <- lm(Viable_Pods_sqrt 	~ Year + Urb_score + Transect_ID,
-                        data = fertile_pops_all_notNApods %>%
+                        data = fertile_pops_all %>%
                           filter(Transect_ID != "Rural"))
 u_pod_glm_subtr_3_anova <- car::Anova(u_pod_glm_subtr_3, REML = F)
 # nothing sig
@@ -1606,7 +1587,7 @@ fertile_pops_all$Peduncles_sq <- (fertile_pops_all$Peduncles)^2
 ######### Urb_score: Use Squaring transformation
 ```{r}
 
-diag_urb_peds_1 <- lm(Peduncles ~ Urb_score * Year, data = fertile_pops_all_notNApeds)
+diag_urb_peds_1 <- lm(Peduncles ~ Urb_score * Year, data = fertile_pops_all)
 
 par(mfrow=c(2,2))
 plot(diag_urb_peds_1)
@@ -1614,53 +1595,53 @@ summary(diag_urb_peds_1)
 
 ## Histogram
 gg_reshist(diag_urb_peds_1, bins=20)
-hist(fertile_pops_all_notNApeds$Peduncles)
+hist(fertile_pops_all$Peduncles)
 
 
-ggqqplot(fertile_pops_all_notNApeds$Peduncles)
+ggqqplot(fertile_pops_all$Peduncles)
 ## Most data points fall within the envelope but several don't. (towards one end)
 
 bptest(diag_urb_peds_1)
 # homoskedastic?
 
 # Shapiro-Wilk normality test
-shapiro.test(fertile_pops_all_notNApeds$Peduncles)
+shapiro.test(fertile_pops_all$Peduncles)
 ## From the output, the p-value < 0.05 implying that the distribution of the data are significantly different from normal distribution. We cannot assume the normality. But the biological background for peduncle production backs this up; that distribution would be expected to not be normal anyway.
 # looks left-skewed.
 
-hist(fertile_pops_all_notNApeds$Peduncles^(1/2), breaks = 12)
-hist(log(fertile_pops_all_notNApeds$Peduncles + 1), breaks = 12)
-hist(fertile_pops_all_notNApeds$Peduncles^(2), breaks = 12)
+hist(fertile_pops_all$Peduncles^(1/2), breaks = 12)
+hist(log(fertile_pops_all$Peduncles + 1), breaks = 12)
+hist(fertile_pops_all$Peduncles^(2), breaks = 12)
 
-qplot((fertile_pops_all_notNApeds$Peduncles)^2, bins = 20)
-plot(lm((Peduncles^2) ~ Urb_score * Year, data = fertile_pops_all_notNApeds), bins=20)
-gg_reshist(lm((Peduncles^2) ~ Urb_score* Year, data = fertile_pops_all_notNApeds), bins=20)
-ggqqplot((fertile_pops_all_notNApeds$Peduncles)^2)
+qplot((fertile_pops_all$Peduncles)^2, bins = 20)
+plot(lm((Peduncles^2) ~ Urb_score * Year, data = fertile_pops_all), bins=20)
+gg_reshist(lm((Peduncles^2) ~ Urb_score* Year, data = fertile_pops_all), bins=20)
+ggqqplot((fertile_pops_all$Peduncles)^2)
 
 ## tried squaring, cubing, log transformations. Squaring looks best.
 
 
 # add sq(pods) col to df
-fertile_pops_all_notNApeds$Peduncles_sq <- (fertile_pops_all_notNApeds$Peduncles)^2
+fertile_pops_all$Peduncles_sq <- (fertile_pops_all$Peduncles)^2
 
 
 
 # ----------------
 # try negative binomial
 
-summary(glm.nb(Peduncles ~ Urb_score * Year, data = fertile_pops_all_notNApeds))
+summary(glm.nb(Peduncles ~ Urb_score * Year, data = fertile_pops_all))
 # AIC is lower than lm
 
 
 
 # --------------
 # Export residuals, then look at spatial pattern
-fertile_pops_all_notNApeds$residuals <- residuals(lm((Peduncles ~ Urb_score * Year),data = fertile_pops_all_notNApeds))
+fertile_pops_all$residuals <- residuals(lm((Peduncles ~ Urb_score * Year),data = fertile_pops_all))
 
 # new df with site coordinates and residuals
 sites1 <- dplyr::rename(sites, Patch_ID = Pop_ID)
-fertile_pops_all_notNApeds <- as.data.frame(fertile_pops_all_notNApeds)
-sites_pedresids <- dplyr::full_join(sites1, fertile_pops_all_notNApeds, by = 'Patch_ID')
+fertile_pops_all <- as.data.frame(fertile_pops_all)
+sites_pedresids <- dplyr::full_join(sites1, fertile_pops_all, by = 'Patch_ID')
 
 
 # look at mapped out residuals
@@ -1694,12 +1675,12 @@ AIC(lm.peds.gr.1, lm.peds.gr.2)
 ######### urb_score, not city_dist
 ```{r}
 u_ped_glm_gradient_1 <- lm(Peduncles_sq 	~ Year * Urb_score,
-                           data = fertile_pops_all_notNApeds)
+                           data = fertile_pops_all)
 u_ped_glm_gradient_1_anova <- car::Anova(u_ped_glm_gradient_1, REML = F)
 # Nothing significant
 
 u_ped_glm_gradient_2 <- lm(Peduncles_sq 	~ Year + Urb_score,
-                           data = fertile_pops_all_notNApeds)
+                           data = fertile_pops_all)
 u_ped_glm_gradient_2_anova <- car::Anova(u_ped_glm_gradient_2, REML = F)
 # Nothing significant
 
@@ -1713,7 +1694,7 @@ AIC(u_ped_glm_gradient_1, u_ped_glm_gradient_2)
 ```{r}
 
 urbpeds_lm <- lm(Peduncles ~ City_dist * as.factor(Year) * Transect_ID,
-                 data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+                 data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 
 par(mfrow=c(2,2))
 plot(urbpeds_lm)
@@ -1722,28 +1703,28 @@ summary(urbpeds_lm)
 ## Histogram
 gg_reshist(urbpeds_lm, bins=20)
 
-qplot(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles, bins = 15)
+qplot(fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles, bins = 15)
 
-summary(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)
-sd(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)
+summary(fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)
+sd(fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)
 
-ggqqplot(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)
+ggqqplot(fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)
 ## Most data points fall within the envelope but several don't. (towards one end)
 
 # Shapiro-Wilk normality test
-shapiro.test(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)
+shapiro.test(fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)
 ## From the output, the p-value < 0.05 implying that the distribution of the data are significantly different from normal distribution. We cannot assume the normality.
 
-qplot((fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)^2)
-plot(lm((Peduncles^2) ~ City_dist * as.factor(Year) * Transect_ID, data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")), bins=20)
-gg_reshist(lm((Peduncles^2) ~ City_dist * as.factor(Year) * Transect_ID, data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")), bins=20)
-ggqqplot((fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)^2)
-shapiro.test((fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)^2)
+qplot((fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)^2)
+plot(lm((Peduncles^2) ~ City_dist * as.factor(Year) * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != "Rural")), bins=20)
+gg_reshist(lm((Peduncles^2) ~ City_dist * as.factor(Year) * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != "Rural")), bins=20)
+ggqqplot((fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)^2)
+shapiro.test((fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)^2)
 # looks really good!
 
 
 # add squared peduncles col to df
-fertile_pops_all_notNApeds$Peduncles_sq <- (fertile_pops_all_notNApeds$Peduncles)^2
+fertile_pops_all$Peduncles_sq <- (fertile_pops_all$Peduncles)^2
 
 ```
 
@@ -1752,7 +1733,7 @@ fertile_pops_all_notNApeds$Peduncles_sq <- (fertile_pops_all_notNApeds$Peduncles
 ```{r}
 
 diag_urb_peds_2 <- lm(Peduncles ~ Urb_score * as.factor(Year) * Transect_ID,
-                      data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+                      data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 
 par(mfrow=c(2,2))
 plot(diag_urb_peds_2)
@@ -1761,24 +1742,24 @@ summary(diag_urb_peds_2)
 ## Histogram
 gg_reshist(diag_urb_peds_2, bins=20)
 
-ggqqplot(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)
+ggqqplot(fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)
 ## Most data points fall within the envelope but several don't. (towards one end)
 # Looks left-skewed
 
 # Shapiro-Wilk normality test
-shapiro.test(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)
+shapiro.test(fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)
 ## From the output, the p-value < 0.05 implying that the distribution of the data are significantly different from normal distribution. We cannot assume the normality.
 
-qplot((fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)^2, bins = 15)
-plot(lm((Peduncles^2) ~ Urb_score * as.factor(Year) * Transect_ID, data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")), bins=20)
-gg_reshist(lm((Peduncles^2) ~ Urb_score * as.factor(Year) * Transect_ID, data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")), bins=20)
-ggqqplot((fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)^2)
-shapiro.test((fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural")$Peduncles)^2)
+qplot((fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)^2, bins = 15)
+plot(lm((Peduncles^2) ~ Urb_score * as.factor(Year) * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != "Rural")), bins=20)
+gg_reshist(lm((Peduncles^2) ~ Urb_score * as.factor(Year) * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != "Rural")), bins=20)
+ggqqplot((fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)^2)
+shapiro.test((fertile_pops_all %>% filter(Transect_ID != "Rural")$Peduncles)^2)
 # looks really good!
 
 
 # add squared peduncles col to df
-fertile_pops_all_notNApeds$Peduncles_sq <- (fertile_pops_all_notNApeds$Peduncles)^2
+fertile_pops_all$Peduncles_sq <- (fertile_pops_all$Peduncles)^2
 
 ```
 
@@ -1788,16 +1769,16 @@ fertile_pops_all_notNApeds$Peduncles_sq <- (fertile_pops_all_notNApeds$Peduncles
 ######### City_dist, not urb_score
 ```{r}
 lm.peds.subt.1 <- lm(Peduncles_sq	~ Year * City_dist * Transect_ID,
-                     data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+                     data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 lm.peds.subt.1_anova <- car::Anova(lm.peds.subt.1, REML = F)
 # 3-way interaction not significant, so let's look at lower-level interactions and main effects.
 
 lm.peds.subt.2 <- lm(Peduncles_sq	~ Year + City_dist + Transect_ID + Year:City_dist + Year:Transect_ID + City_dist:Transect_ID,
-                     data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+                     data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 lm.peds.subt.2_anova <- car::Anova(lm.peds.subt.2, REML = F)
 # Only city_dist significant. look at main effects and no interactions
 
-lm.peds.subt.3 <- lm(Peduncles_sq	~ Year + City_dist + Transect_ID, data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+lm.peds.subt.3 <- lm(Peduncles_sq	~ Year + City_dist + Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 lm.peds.subt.3_anova <- car::Anova(lm.peds.subt.3, REML = F)
 # City_dist is sig
 
@@ -1808,17 +1789,17 @@ AIC(lm.peds.subt.1, lm.peds.subt.2, lm.peds.subt.3)
 ######### Urb_score, not city_dist
 ```{r}
 u_ped_glm_subtr_1 <- lm(Peduncles_sq 	~ Year * Urb_score * Transect_ID,
-                        data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+                        data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 u_ped_glm_subtr_1_anova <- car::Anova(u_ped_glm_subtr_1, REML = F)
 # 3-way interaction not significant, so let's look at lower-level interactions and main effects.
 
 u_ped_glm_subtr_2 <- lm(Peduncles_sq 	~ Year + Urb_score + Transect_ID + Year:Urb_score + Year:Transect_ID + Urb_score:Transect_ID,
-                        data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+                        data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 u_ped_glm_subtr_2_anova <- car::Anova(u_ped_glm_subtr_2, REML = F)
 # nothing sig
 
 u_ped_glm_subtr_3 <- lm(Peduncles_sq 	~ Year + Urb_score + Transect_ID,
-                        data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"))
+                        data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
 u_ped_glm_subtr_3_anova <- car::Anova(u_ped_glm_subtr_3, REML = F)
 # nothing sig
 
@@ -4154,7 +4135,7 @@ midpoint = 35.25 # km; midpoint of urban and rural terminii
 
 
 # 2018
-inf.1 <- lm(Peduncles_sq	~ City_dist, data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural") %>% filter(Year == '2018'))
+inf.1 <- lm(Peduncles_sq	~ City_dist, data = fertile_pops_all %>% filter(Transect_ID != "Rural") %>% filter(Year == '2018'))
 coeffs.inf.1 = coefficients(inf.1)
 
 rural_mean = coeffs.inf.1[1] + coeffs.inf.1[2]*rural_terminus 
@@ -4178,7 +4159,7 @@ central_mean_2018
 
 
 # 2019
-inf.2 <- lm(Peduncles_sq	~ City_dist, data = fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural") %>% filter(Year == '2019'))
+inf.2 <- lm(Peduncles_sq	~ City_dist, data = fertile_pops_all %>% filter(Transect_ID != "Rural") %>% filter(Year == '2019'))
 coeffs.inf.2 = coefficients(inf.2)
 
 rural_mean = coeffs.inf.2[1] + coeffs.inf.2[2]*rural_terminus 
@@ -4287,7 +4268,7 @@ Q1_reg_poll
 
 
 # PODS --------
-Q1_reg_pod <- ggplot(fertile_pops_all_notNApods, aes(x = City_dist, y = Viable_Pods_sqrt, shape=Year)) +
+Q1_reg_pod <- ggplot(fertile_pops_all, aes(x = City_dist, y = Viable_Pods_sqrt, shape=Year)) +
   labs(x = "Distance to urban center (km)",
        y = expression(Follicles^{0.5})) +
   geom_point(aes(shape=Year, color=Year),  size=2) +
@@ -4403,7 +4384,7 @@ Q1_reg_poll_u
 
 
 # PODS --------
-Q1_reg_pod_u <- ggplot(fertile_pops_all_notNApods, aes(x = Urb_score, y = Viable_Pods_sqrt, shape=Year)) + labs(
+Q1_reg_pod_u <- ggplot(fertile_pops_all, aes(x = Urb_score, y = Viable_Pods_sqrt, shape=Year)) + labs(
   # x = "Urbanization Score",
     y = expression(Follicles^{0.5})) +
   scale_x_reverse() +
@@ -4431,7 +4412,7 @@ Q1_reg_pod_u
 
 
 # PEDUNCLES --------
-Q1_reg_ped_u <- ggplot(fertile_pops_all_notNApeds, aes(x = Urb_score, y = Peduncles_sq, shape=Year)) + 
+Q1_reg_ped_u <- ggplot(fertile_pops_all, aes(x = Urb_score, y = Peduncles_sq, shape=Year)) + 
   labs(
     # x = "Urbanization Score",
        y = expression(Inflorescences^{2})) +
@@ -4566,7 +4547,7 @@ Q2_reg_poll_subtr <- ggplot(AvgVars_notNA_Poll_18_19 %>% filter(Transect_ID == "
 Q2_reg_poll_subtr
 
 # PODS-----
-Q2_reg_pod_subtr <- ggplot((fertile_pops_all_notNApods %>% filter(Transect_ID == "North" | Transect_ID == "South")),
+Q2_reg_pod_subtr <- ggplot((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South")),
                            aes(x = City_dist, y = Viable_Pods_sqrt,
                                group=interaction(Year,Transect_ID),
                                color=interaction(Year,Transect_ID),
@@ -4611,7 +4592,7 @@ Q2_reg_pod_subtr
 
 
 # PEDUNCLES----
-Q2_reg_ped_subtr <- ggplot(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"),
+Q2_reg_ped_subtr <- ggplot(fertile_pops_all %>% filter(Transect_ID != "Rural"),
                            aes(x = City_dist,
                                y = Peduncles_sq,
                                group=interaction(Year,Transect_ID),
@@ -4742,7 +4723,7 @@ Q2_reg_poll_subtr_u <- ggplot(AvgVars_notNA_Poll_18_19 %>% filter(Transect_ID ==
 Q2_reg_poll_subtr_u
 
 # PODS-----
-Q2_reg_pod_subtr_u <- ggplot(data = fertile_pops_all_notNApods %>% filter(Transect_ID != "Rural")), aes(Urb_score, Viable_Pods_sqrt,
+Q2_reg_pod_subtr_u <- ggplot(data = fertile_pops_all %>% filter(Transect_ID != "Rural")), aes(Urb_score, Viable_Pods_sqrt,
                                  group=interaction(Year,Transect_ID),
                                  color=interaction(Year,Transect_ID),
                                  linetype=interaction(Year,Transect_ID),
@@ -4780,7 +4761,7 @@ Q2_reg_pod_subtr_u
 
 
 # PEDUNCLES----
-Q2_reg_ped_subtr_u <- ggplot(fertile_pops_all_notNApeds %>% filter(Transect_ID != "Rural"), aes(Urb_score, Peduncles_sq,
+Q2_reg_ped_subtr_u <- ggplot(fertile_pops_all %>% filter(Transect_ID != "Rural"), aes(Urb_score, Peduncles_sq,
                                  group=interaction(Year,Transect_ID),
                                  color=interaction(Year,Transect_ID),
                                  linetype=interaction(Year,Transect_ID),

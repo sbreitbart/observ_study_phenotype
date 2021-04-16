@@ -12,10 +12,24 @@ library(Rmisc)
 #-------------------
 # Import data
 #-------------------
+
 Transect_Data <- read.csv(here::here("./raw_data/Transect_Milkweed_Data_2018_and_2019_endofseason.csv"),
 header = T,
 na.strings=c("","NA")) %>%
   as.data.frame()
+  
+
+# Import urb_index values for each of these rows
+urb_scores <- read.csv(here::here("./Figures_Tables/UrbanizationScore/Urbanization_Scores_Table.csv"),  header=T, na.strings=c("","NA"))
+
+Pops_patches_all <- Transect_Data[,c(2,3)] %>% dplyr::distinct()
+Pops_patches <- Pops_patches_all %>% group_by(Patch_ID) %>%
+  dplyr::summarise(
+    Pop_ID = first(Pop_ID))
+
+urb_scores <- dplyr::inner_join(urb_scores, Pops_patches, by = "Pop_ID") %>% dplyr::select(., -Patch_ID.y) %>% dplyr::rename(., Patch_ID = Patch_ID.x)
+
+
 
 
 #-------------------
@@ -175,6 +189,10 @@ long_Transect_Data_18_19$Inflor <- as.factor(as.character(long_Transect_Data_18_
 # make pollinia removed an integer
 long_Transect_Data_18_19$Pollinia_removed <- as.integer(as.character(long_Transect_Data_18_19$Pollinia_removed))
 
+long_Transect_Data_18_19 <- long_Transect_Data_18_19 %>% dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
+write.csv(.,
+          here::here("./clean_data/long_Transect_Data_18_19.csv"))
+
 
 ## SummarySE
 #------------------
@@ -259,65 +277,3 @@ dplyr::left_join(AvgVars_notNA_Poll_18_19, urb_scores, by = "Patch_ID") %>%
 write.csv(.,
           here::here("./clean_data/AvgVars_notNA_Poll_18_19.csv"))
 
-
-
-#-------------------------------------------------------------
-## Add dataframe with urbanization scores, add to existing dfs
-#-------------------------------------------------------------
-
-# Import urb_index values for each of these rows
-urb_scores <- read.csv(here::here("./Figures_Tables/UrbanizationScore/Urbanization_Scores_Table.csv"),  header=T, na.strings=c("","NA"))
-
-Pops_patches_all <- Transect_Data[,c(2,3)] %>% dplyr::distinct()
-Pops_patches <- Pops_patches_all %>% group_by(Patch_ID) %>%
-  dplyr::summarise(
-    Pop_ID = first(Pop_ID))
-
-urb_scores <- dplyr::inner_join(urb_scores, Pops_patches, by = "Pop_ID") %>% dplyr::select(., -Patch_ID.y) %>% dplyr::rename(., Patch_ID = Patch_ID.x)
-
-
-#===============================================================#
-#                            (g)lm datasets                     #
-#===============================================================#
-
-
-## Peduncles------------------------
-### gradient
-fertile_pops_all_notNApeds <- fertile_pops_all %>%
-filter( !is.na(Peduncles)) %>%
-dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
-write.csv(.,
-          here::here("./clean_data/fertile_pops_all_notNApeds.csv"))
-
-
-
-#===============================================================#
-#                            (g)lmer datasets                   #
-#===============================================================#
-
-# Pollen removal------------------------
-### gradient
-urb_scores_poll_long <- dplyr::left_join(long_Transect_Data_18_19, urb_scores, by = "Patch_ID") %>%
-write.csv(.,
-          here::here("./clean_data/urb_scores_poll_long.csv"))
-
-### urban subs
-urb_scores_poll_all_long <- dplyr::left_join((long_Transect_Data_18_19 %>% filter(Transect_ID != 'Rural')), urb_scores, by = "Patch_ID") %>%
-write.csv(.,
-          here::here("./clean_data/urb_scores_poll_all_long.csv"))
-
-# Pods------------------------
-### gradient
-fertile_pops_all_notNApods <- fertile_pops_all %>%
-filter( !is.na(Viable_Pods)) %>%
-dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
-write.csv(.,
-          here::here("./clean_data/fertile_pops_all_notNApods.csv"))
-
-
-
-#-------------------
-# Export to new csv
-#-------------------
-write.csv(long_Transect_Data_18_19,
-          here::here("./clean_data/long_Transect_Data_18_19.csv"))
