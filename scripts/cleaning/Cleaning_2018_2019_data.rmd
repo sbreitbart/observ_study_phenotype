@@ -144,7 +144,7 @@ Transect_Data_18_19$Average_pod_length <- rowMeans(Transect_Data_18_19[,35:54], 
 #-------------------------------------------------------------
 
 # make summary table for several variables PER POPULATION
-AvgVars_byPatch <- Transect_Data_18_19[,c("Patch_ID","Average_Pollinia", "City_dist", "Transect_ID", "Year", "Height_July", "Area_sq_m_2018", "Plants_present_2018", "Height_Sept", "Viable_Pods", "Total_Pods", "Peduncles", "Average_pod_length")] %>% group_by(Patch_ID, Year) %>%
+AvgVars_byPatch <- Transect_Data_18_19[,c("Patch_ID","Average_Pollinia", "City_dist", "Transect_ID", "Year", "Height_July", "Area_sq_m_2018", "Plants_present_2018", "Height_Sept", "Viable_Pods", "Total_Pods", "Peduncles", "Urb_score", "Average_pod_length")] %>% group_by(Patch_ID, Year) %>%
     dplyr::summarise(
       Average_Pollinia = mean(Average_Pollinia,na.rm = TRUE),
       City_dist = mean(City_dist),
@@ -157,6 +157,7 @@ AvgVars_byPatch <- Transect_Data_18_19[,c("Patch_ID","Average_Pollinia", "City_d
       Viable_Pods = mean(Viable_Pods,na.rm = TRUE),
       Total_Pods = mean(Total_Pods,na.rm = TRUE),
       nPlants = n(),
+      Urb_score = first(Urb_score),
       Average_pod_length = mean(Average_pod_length, na.rm = TRUE)
       )
 # Check column types are correct
@@ -244,8 +245,7 @@ sterile_pops_bothyears_list <- sterile_pops_bothyears$Patch_ID
 # New dataframe with all records for fertile populations (i.e. all populations - sterile)
 fertile_pops_all <- AvgVars_byPatch %>% 
   filter(!Patch_ID %in% sterile_pops_bothyears_list) %>%
-  dplyr::mutate(pods_per_ped = Total_Pods / Peduncles) %>%
-  dplyr::left_join(., urb_scores, by = "Patch_ID")
+  dplyr::mutate(pods_per_ped = Total_Pods / Peduncles)
 write.csv(fertile_pops_all,
           here::here("./clean_data/fertile_pops_all.csv"))
 

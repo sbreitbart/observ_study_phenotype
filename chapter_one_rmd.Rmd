@@ -122,29 +122,34 @@ require(scales)
 long_Transect_Data_18_19 <-
   read.csv(here::here("./clean_data/long_Transect_Data_18_19.csv"),
            header=T,
-           na.strings=c("","NA"))
+           na.strings=c("","NA")) %>%
+  dplyr::select(-1)
 
 
 AvgVars_notNA_Poll_18_19 <-
   read.csv(here::here("./clean_data/AvgVars_notNA_Poll_18_19.csv"),
            header=T,
-           na.strings=c("","NA"))
+           na.strings=c("","NA")) %>%
+  dplyr::select(-1)
 
 fertile_long <-
   read.csv(here::here("./clean_data/fertile_long.csv"),
            header=T,
-           na.strings=c("","NA"))
+           na.strings=c("","NA")) %>%
+  dplyr::select(-1)
 
 
 fertile <-
   read.csv(here::here("./clean_data/fertile.csv"),
            header=T,
-           na.strings=c("","NA"))
+           na.strings=c("","NA")) %>%
+  dplyr::select(-1)
 
 fertile_pops_all <-
   read.csv(here::here("./clean_data/fertile_pops_all.csv"),
            header=T,
-           na.strings=c("","NA"))
+           na.strings=c("","NA")) %>%
+  dplyr::select(-1)
 ```
 
 ## Variable key
