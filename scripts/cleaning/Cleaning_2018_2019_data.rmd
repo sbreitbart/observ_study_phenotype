@@ -22,12 +22,15 @@ na.strings=c("","NA")) %>%
 # Import urb_index values for each of these rows
 urb_scores <- read.csv(here::here("./Figures_Tables/UrbanizationScore/Urbanization_Scores_Table.csv"),  header=T, na.strings=c("","NA"))
 
-Pops_patches_all <- Transect_Data[,c(2,3)] %>% dplyr::distinct()
-Pops_patches <- Pops_patches_all %>% group_by(Patch_ID) %>%
+Pops_patches <- Transect_Data[,c(2,3)] %>%
+dplyr::distinct() %>% 
+group_by(Patch_ID) %>%
   dplyr::summarise(
     Pop_ID = first(Pop_ID))
 
-urb_scores <- dplyr::inner_join(urb_scores, Pops_patches, by = "Pop_ID") %>% dplyr::select(., -Patch_ID.y) %>% dplyr::rename(., Patch_ID = Patch_ID.x)
+urb_scores <- dplyr::inner_join(urb_scores, Pops_patches, by = "Pop_ID") %>%
+dplyr::select(., -Patch_ID.y) %>%
+dplyr::rename(., Patch_ID = Patch_ID.x)
 
 
 
@@ -42,8 +45,8 @@ urb_scores <- dplyr::inner_join(urb_scores, Pops_patches, by = "Pop_ID") %>% dpl
 #----------------------------------------
 
 # Ref lat and longs are for Yonge & Dundas intersection in downtown Toronto
-Transect_Data$Ref_Lat <- "43.656327"
-Transect_Data$Ref_Long <- "-79.380904"
+Transect_Data <- Transect_Data %>%
+mutate(., Ref_Lat = "43.656327", Ref_Long = "-79.380904")
 
 # Make lat/long cols numeric
 Transect_Data$Latitude <- as.numeric(as.character(Transect_Data$Latitude))
@@ -52,7 +55,8 @@ Transect_Data$Ref_Lat <- as.numeric(as.character(Transect_Data$Ref_Lat))
 Transect_Data$Ref_Long <- as.numeric(as.character(Transect_Data$Ref_Long))
 
 # Find distances from Yonge/Dundas to sample sites (in meters)
-Transect_Data <- Transect_Data %>% mutate(CTD_m = distHaversine(cbind(Longitude, Latitude), cbind(Ref_Long, Ref_Lat)))
+Transect_Data <- Transect_Data %>%
+mutate(CTD_m = distHaversine(cbind(Longitude, Latitude), cbind(Ref_Long, Ref_Lat)))
 
 # convert to km
 Transect_Data$City_dist <- Transect_Data$CTD / 1000
@@ -60,6 +64,8 @@ Transect_Data$City_dist <- Transect_Data$CTD / 1000
 # drop ref lat, long, and city_dist (in m) cols
 Transect_Data <- Transect_Data[,-c(39:41)]
 
+# Join with urbanization score values
+Transect_Data <-  Transect_Data %>% dplyr::left_join(., urb_scores[, c('Patch_ID', 'Urb_score')], by = "Patch_ID")
 
 
 ## More cleaning
@@ -76,9 +82,12 @@ colnames(Transect_Data_18_19)[1] <- "Year"
 # Replace x's (which denote no data) with NA
 Transect_Data_18_19[Transect_Data_18_19 == "x"] <- NA
 
+
 # Convert appropriate column types to character and then numeric.
 to_char_num <- c(5:14, 21:23,25,28:29,31,33:54, 56)
+
 Transect_Data_18_19[to_char_num] <- lapply(Transect_Data_18_19[to_char_num], as.character)
+
 Transect_Data_18_19[to_char_num] <- lapply(Transect_Data_18_19[to_char_num], as.numeric)
 
 # Convert appropriate column types to integer.
@@ -110,7 +119,7 @@ Transect_Data_18_19[,c("Pop_ID", "City_dist", "Transect_ID")] %>%
 Transect_Data_18_19$Average_Pollinia <- NA
 
 # Move this new column after columns for pollinia removed per flower
-Transect_Data_18_19 = Transect_Data_18_19[, c(1:13, 58, 14:57)]
+Transect_Data_18_19 = Transect_Data_18_19[, c(1:13, 59, 14:58)]
 
 # Make the column numeric
 Transect_Data_18_19$Average_Pollinia <- as.numeric(as.character(Transect_Data_18_19$Average_Pollinia))
@@ -179,7 +188,7 @@ long_Transect_Data_18_19$Pollinia_removed <- as.numeric(as.character(long_Transe
 long_Transect_Data_18_19$Flower <- as.numeric(as.character(long_Transect_Data_18_19$Flower))
 
 # reorder columns so new cols are near beginning of df
-long_Transect_Data_18_19 <- long_Transect_Data_18_19[,c(1:4, 50:53, 49, 5:48)]
+long_Transect_Data_18_19 <- long_Transect_Data_18_19[,c(1:4, 50:54, 49, 5:48)]
 
 # make patch ID, plant, and inflor cols factors
 long_Transect_Data_18_19$Patch_ID <- as.factor(as.character(long_Transect_Data_18_19$Patch_ID))
@@ -189,8 +198,7 @@ long_Transect_Data_18_19$Inflor <- as.factor(as.character(long_Transect_Data_18_
 # make pollinia removed an integer
 long_Transect_Data_18_19$Pollinia_removed <- as.integer(as.character(long_Transect_Data_18_19$Pollinia_removed))
 
-long_Transect_Data_18_19 <- long_Transect_Data_18_19 %>% dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
-write.csv(.,
+write.csv(long_Transect_Data_18_19,
           here::here("./clean_data/long_Transect_Data_18_19.csv"))
 
 
@@ -237,8 +245,8 @@ sterile_pops_bothyears_list <- sterile_pops_bothyears$Patch_ID
 fertile_pops_all <- AvgVars_byPatch %>% 
   filter(!Patch_ID %in% sterile_pops_bothyears_list) %>%
   dplyr::mutate(pods_per_ped = Total_Pods / Peduncles) %>%
-  dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
-write.csv(.,
+  dplyr::left_join(., urb_scores, by = "Patch_ID")
+write.csv(fertile_pops_all,
           here::here("./clean_data/fertile_pops_all.csv"))
 
 
@@ -254,26 +262,20 @@ sterile_list <- as.list(sterile_pops_bothyears %>% dplyr::select(Patch_ID))
 
 ## THIS LISTS EACH ROW AS A FLOWER... BE CAREFUL
 fertile_long <- long_Transect_Data_18_19 %>%
-filter(., Patch_ID != sterile_list) %>%
-write.csv(.,
+filter(., Patch_ID != sterile_list) 
+write.csv(fertile_long,
           here::here("./clean_data/fertile_long.csv"))
 
 
 fertile <- anti_join(Transect_Data_18_19, sterile_pops_bothyears, by = "Patch_ID") %>%
-dplyr::mutate(., pods_per_ped = Total_Pods / Peduncles) %>%
-dplyr::left_join(., urb_scores, by = "Patch_ID") %>%
-write.csv(.,
+dplyr::mutate(., pods_per_ped = Total_Pods / Peduncles)
+write.csv(fertile,
           here::here("./clean_data/fertile.csv"))
-
-
-## Dataframes excluding "empty" populations (for pollen removal dataset, pops w/o any flowers... for follicle dataset, pops w/o any follicles... etc.)
-#--------------------------------------------------------------------------
 
 
 # Make new data frames of 2018 & 2019 pollinia removal data that excludes empty pops & adds urb_score measurements
 AvgVars_notNA_Poll_18_19 <- AvgVars_byPatch %>%
-filter( !is.na(Average_Pollinia)) %>%
-dplyr::left_join(AvgVars_notNA_Poll_18_19, urb_scores, by = "Patch_ID") %>%
-write.csv(.,
+filter( !is.na(Average_Pollinia))
+write.csv(AvgVars_notNA_Poll_18_19,
           here::here("./clean_data/AvgVars_notNA_Poll_18_19.csv"))
 
