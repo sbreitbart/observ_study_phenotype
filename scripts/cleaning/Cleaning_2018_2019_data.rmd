@@ -81,24 +81,29 @@ colnames(Transect_Data_18_19)[1] <- "Year"
 
 # Replace x's (which denote no data) with NA
 Transect_Data_18_19[Transect_Data_18_19 == "x"] <- NA
+Transect_Data_18_19[Transect_Data_18_19 == "Did_not_measure"] <- NA
 
 
 # Convert appropriate column types to character and then numeric.
-to_char_num <- c(5:14, 21:23,25,28:29,31,33:54, 56)
+to_char_num <- c(5:14, 21:23,25,28, 33:54, 56, 58)
 
 Transect_Data_18_19[to_char_num] <- lapply(Transect_Data_18_19[to_char_num], as.character)
 
 Transect_Data_18_19[to_char_num] <- lapply(Transect_Data_18_19[to_char_num], as.numeric)
 
 # Convert appropriate column types to integer.
-to_int <- c(1,18,24,30:32,55)
+to_int <- c(18,24,29:32,55)
 Transect_Data_18_19[to_int] <- lapply(Transect_Data_18_19[to_int], as.integer)
+
+# Convert appropriate column types to factor
+to_fac <- c(1:4)
+Transect_Data_18_19[to_fac] <- lapply(Transect_Data_18_19[to_fac], as.factor)
 
 # check column types are correct
 colnames(Transect_Data_18_19)[14] <- "Height_July"
 colnames(Transect_Data_18_19)[28] <- "Height_Sept"
 
-# str(Transect_Data_18_19)
+str(Transect_Data_18_19)
 
 # Export csv of pop IDs and city distances
 Transect_Data_18_19[,c("Pop_ID", "City_dist", "Transect_ID")] %>%
