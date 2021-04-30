@@ -472,40 +472,6 @@ poll_glmer_subtr_01_anova <- car::Anova(poll_glmer_subtr_01) %T>%
 poll_glmer_subtr_03_anova <- car::Anova(poll_glmer_subtr_03) %T>%
   print()
 
-
-
-
-# EXPORT -----
-
-# i<-0
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/glmer_pollen_citydist.csv')
-# for (x in poll_glmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in poll_glmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# sink()
-# i<-0
-
-
 ```
 
 ####### Urb_score, not city_dist
@@ -664,34 +630,6 @@ u_poll_glmer_subtr_01_anova <- car::Anova(u_poll_glmer_subtr_01) %T>%
   print()
 
 
-# EXPORT-----
-# i<-0
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/glmer_pollen_urbscore.csv')
-# for (x in u_poll_glmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in u_poll_glmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 
@@ -862,40 +800,6 @@ plot(simulateResiduals(pods_glmer_subtr_01)) # looks good
 summary(pods_glmer_subtr_01)
 pods_glmer_subtr_01_anova <- car::Anova(pods_glmer_subtr_01) %T>%
   print()
-
-
-
-
-
-
-# EXPORT--------
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/glmer_pods_citydist.csv')
-# i<-0
-# for (x in pods_glmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in pods_glmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 ####### urb_score, not dist
@@ -1079,38 +983,6 @@ u_pods_glmer_subtr_01_anova <- car::Anova(u_pods_glmer_subtr_06) %T>%
   print()
 
 
-
-
-# EXPORT--------
-
-
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/glmer_pods_urbscore.csv')
-# i<-0
-# for (x in u_pods_glmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in u_pods_glmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 
@@ -1524,36 +1396,6 @@ peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06) %T>%
   print()
 
 
-
-# 
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/glmer_peds_citydist.csv')
-# i<-0
-# for (x in peds_glmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in peds_glmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
-
 ```
 
 
@@ -1868,35 +1710,6 @@ u_peds_glmer_subtr_06_anova <- car::Anova(u_peds_glmer_subtr_06) %T>%
   print()
 
 
-
-
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/glmer_peds_urbscore.csv')
-# i<-0
-# for (x in u_peds_glmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in u_peds_glmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 ##### Height (Sept)
@@ -2065,35 +1878,6 @@ height_lmer_subtr_08_anova <- car::Anova(height_lmer_subtr_08) %T>%
   print()
 
 
-
-
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/lmer_height_citydist.csv')
-# i<-0
-# for (x in height_lmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in height_lmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 ####### urb-score, not City_dist
@@ -2257,34 +2041,6 @@ u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09) %T>%
   print()
 
 
-
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/lmer_height_urbscore.csv')
-# i<-0
-# for (x in u_height_lmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in u_height_lmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 
@@ -2460,34 +2216,6 @@ podsperped_lmer_subtr_08_anova <- car::Anova(podsperped_lmer_subtr_08) %T>%
   print()
 
 
-
-# sink('Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/lmer_podperped_citydist.csv')
-# i<-0
-# for (x in podperped_lmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in podperped_lmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 
@@ -2663,35 +2391,6 @@ summary(u_podsperped_lmer_subtr_09)
 u_podsperped_lmer_subtr_09_anova <- car::Anova(u_podsperped_lmer_subtr_09) %T>%
   print()
 
-
-
-# sink('~/R_Projects/Chapter1/Figures_Tables/Q1_Q2_ANOVA/model_selection_confirmation/lmer_podperped_urbscore.csv')
-# i<-0
-# for (x in u_podperped_lmer_gradient_list) {
-#     i<-i+1
-#     cat('Q1 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# 
-# i<-0
-# 
-# for (x in u_podperped_lmer_subtr_list) {
-#     i<-i+1
-#     cat('Q2 Model ', i)
-#     cat('\n')
-#     write.csv(car::Anova(x))
-#     write.csv(r.squaredGLMM(x)[1,])
-#     cat('AIC: ', AIC(x)[1])
-#     cat('\n')
-#     cat('\n')
-# }
-# i<-0
-# sink()
 ```
 
 
