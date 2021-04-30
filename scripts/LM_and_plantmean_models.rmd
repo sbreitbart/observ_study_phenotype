@@ -1680,6 +1680,112 @@ v2 <- car::Anova(glmer(as.numeric(Pods_per_plant) ~ (1|Patch_ID) + Transect_ID:Y
 ```
 
 
+# Plant density (plants per sq m of patch, as observed in 2018)
+###### LM
+####### Without transect
+######## Diagnostics- can't transform data and assume normality. Go with non-parametric tests?
+```{r}
+# Removing rows with NA and only keeping data from 2018, since I only quantified patch size and plant density in that year.
+density_18 <- AvgVars_byPatch[!is.na(AvgVars_byPatch$density_sqm_18),] %>% filter(Year == '2018')
+
+density_lm <- lm(density_sqm_18 ~ City_dist * Year, data = density_18)
+
+par(mfrow=c(2,2))
+plot(density_lm)
+summary(density_lm)
+
+ggqqplot(density_18$density_sqm_18)
+gg_reshist(density_lm, bins=20)
+# major right skew
+
+## try transformation.
+##################################
+
+## tried square, cube + roots: not strong enough
+par(mfrow=c(2,2))
+plot(lm(log(density_sqm_18^(1/10) ~ City_dist , data = density_18 )))
+ggqqplot(density_18$density_sqm_18^(1/10))
+gg_reshist(lm(density_sqm_18^(1/10) ~ City_dist , data = density_18 ), bins=20)
+
+## tried log(x): makes it into a bimodal distribution... looks much better but not enough, I don't think
+par(mfrow=c(2,2))
+plot(lm(log(density_sqm_18) ~ City_dist , data = density_18 ))
+ggqqplot(log(density_18$density_sqm_18))
+gg_reshist(lm(log(density_sqm_18) ~ City_dist , data = density_18 ), bins=20)
+
+# tried reciprocal transformation (1/x): still have ~20 data points not fitting
+par(mfrow=c(2,2))
+plot(lm((1/(density_sqm_18)) ~ City_dist , data = density_18 ))
+ggqqplot((1/(density_18$density_sqm_18)))
+gg_reshist(lm((1/(density_sqm_18)) ~ City_dist , data = density_18 ), bins=20)
+
+# go with a non-parametric test: Kruskal-Wallace rank sum test
+```
+
+
+######## Kruskal-Wallace rank sum test
+```{r}
+kruskal.test(density_sqm_18 ~  City_dist , data = density_18)
+# Plant density does not significantly change along the gradient.
+
+# same insignificant results if using ANOVA with log-transformed data too.
+car::Anova(lm(log(density_sqm_18) ~  City_dist , data = density_18))
+
+```
+
+####### With transects
+######## Diagnostics- WHICH TEST TO USE?
+```{r}
+
+# First, remove rural points to avoid collinearity.
+density_18_urban <- subset(density_18, Transect_ID == "North" | Transect_ID == "South")
+
+urbdensity_lm <- lm(density_sqm_18 ~ City_dist * Transect_ID, data = density_18_urban)
+
+par(mfrow=c(2,2))
+plot(urbdensity_lm)
+
+ggqqplot(density_18_urban$density_sqm_18)
+## Data points don't fit in envelope towards right margin.
+
+# Histogram
+gg_reshist(urbdensity_lm, bins=20)
+# very right-skewed
+
+## try transformation.
+##################################
+
+## tried square, cube + roots: not strong enough
+par(mfrow=c(2,2))
+plot(lm(log(density_sqm_18^(1/10) ~ City_dist* Transect_ID, data = density_18_urban )))
+ggqqplot(density_18_urban$density_sqm_18^(1/10))
+gg_reshist(lm(density_sqm_18^(1/10) ~ City_dist* Transect_ID, data = density_18_urban ), bins=20)
+
+## tried log(x): makes it into a bimodal distribution...
+par(mfrow=c(2,2))
+plot(lm(log(density_sqm_18) ~ City_dist* Transect_ID , data = density_18_urban ))
+ggqqplot(log(density_18_urban$density_sqm_18))
+gg_reshist(lm(log(density_sqm_18) ~ City_dist* Transect_ID , data = density_18_urban ), bins=20)
+
+# tried reciprocal transformation (1/x): still have ~20 data points not fitting
+par(mfrow=c(2,2))
+plot(lm(1/(density_sqm_18) ~ City_dist* Transect_ID , data = density_18_urban ))
+ggqqplot(1/(density_18_urban$density_sqm_18))
+gg_reshist(lm(1/(density_sqm_18) ~ City_dist* Transect_ID, data = density_18_urban ), bins=20)
+
+# go with a non-parametric test?
+```
+
+
+######### ANOVA
+```{r}
+# car::Anova(lm(density_sqm_18	~ City_dist * Transect_ID, data = density_18_urban))
+# # 3-way interaction not significant, so let's look at lower-level interactions and main effects.
+# 
+
+
+```
+
 # Export ANOVAs
 ###### xtableList
 ```{r}
