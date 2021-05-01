@@ -2775,6 +2775,76 @@ best_mods_Q1.urbscore_list <- list(
 )
 
 
+
+lapply(best_mods_Q1.urbscore_list, tidy_sb) %>%
+  lapply(., as.data.frame) %>%
+  purrr::reduce(full_join, by = "Predictor") %>%
+  dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Year x Urbanization Score"),
+                replacement = c("Urbanization Score x Year")) %>%
+  arrange(factor(Predictor, levels = c("Urbanization Score",
+                                       "Year",
+                                       "Subtransect",
+                                       "Urbanization Score x Year",
+                                       "Subtransect x Urbanization Score",
+                                       "Year x Subtransect",
+                                       "Year x Subtransect x Urbanization Score"
+                                       ))) %>%
+  dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
+  replace(., is.na(.), "-") %>%
+  dplyr::rename('X2' = 2,
+                'p' = 3,
+                'X2 ' = 4,
+                'p ' = 5,
+                'X2  ' = 6,
+                'p  ' = 7,
+                'X2   ' = 8,
+                'p   ' = 9) %>%
+  flextable::flextable() %>%
+  add_header_row(
+    values = c(" ",
+               "Pollen Removed",
+               "Follicles",
+               "Inflorescences",
+               "Follicles per Inflorescence"),
+    colwidths = c(1, 2, 2, 2, 2)) %>%
+  align(j = 1, align = "left", part = "all") %>%
+  align(j = 2:9, align = "center", part = "body") %>%
+  align(j = 2:9, align = "center", part = "header") %>%
+  display(i = 2, col_key = "X2", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  display(i = 2, col_key = "X2 ", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  display(i = 2, col_key = "X2  ", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  display(i = 2, col_key = "X2   ", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  width(j = 1, width = 2.2) %>%
+  width(j = 2:9, width = 0.8) %>%
+  # bold(bold = TRUE, part = "header") %>%
+  fontsize(size = 12, part = "header") %>%
+  fontsize(size = 12, part = "body") %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("QUESTION 1 (All sites)") %>%
+  add_footer_lines("Predictor: Urbanization Score") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Urbscore_ANOVA.png"))
+
+
+
+
+
+
+
 ## URBAN SITES
 
 best_mods_Q2.urbscore_list <- list(
@@ -2808,6 +2878,8 @@ tidy_sb <- function(model){
                                              p.value < 0.01 ~ "**",
                                              p.value <= 0.05 ~ "*", 
                                              p.value <= 0.1 ~ "Marginal")) %>%
+      mutate_if(is.numeric, round, 3))      %>%
+      dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "< 0.001")) %>%
       dplyr::mutate(., AIC = AIC(model)) %>%
       dplyr::select(., -df) %>%
       dplyr::rename(., Chi_sq = statistic,
@@ -2828,29 +2900,87 @@ tidy_sb <- function(model){
                 str_replace_all,
                 pattern = c("Transect_ID"),
                 replacement = c("Subtransect")) %>%
-      mutate_if(is.numeric, round, 3))
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c(":"),
+                replacement = c(" x ")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Year x Urbanization Score"),
+                replacement = c("Urbanization Score x Year"))
 }
 
-test1 <- lapply(best_mods_Q2.urbscore_list, tidy_sb) %>%
+lapply(best_mods_Q2.urbscore_list, tidy_sb) %>%
   lapply(., as.data.frame) %>%
-  # as.data.frame() %>%
-  # list() %>%
-  # purrr::flatten() %>%
-  # rbindlist(fill = TRUE) %>%
   purrr::reduce(full_join, by = "Predictor") %>%
   dplyr::mutate_if(.,
                 is.character,
                 str_replace_all,
-                pattern = c("Year:Urbanization Score"),
-                replacement = c("Urbanization Score:Year")) %>%
+                pattern = c("Year x Urbanization Score"),
+                replacement = c("Urbanization Score x Year")) %>%
   arrange(factor(Predictor, levels = c("Urbanization Score",
                                        "Year",
                                        "Subtransect",
-                                       "Urbanization Score:Year",
-                                       "Subtransect:Urbanization Score",
-                                       "Year:Subtransect",
-                                       "Year:Subtransect:Urbanization Score"
-                                       )))
+                                       "Urbanization Score x Year",
+                                       "Subtransect x Urbanization Score",
+                                       "Year x Subtransect",
+                                       "Year x Subtransect x Urbanization Score"
+                                       ))) %>%
+  dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
+  replace(., is.na(.), "-") %>%
+  dplyr::rename('X2' = 2,
+                'p' = 3,
+                'X2 ' = 4,
+                'p ' = 5,
+                'X2  ' = 6,
+                'p  ' = 7,
+                'X2   ' = 8,
+                'p   ' = 9) %>%
+  flextable::flextable() %>%
+  add_header_row(
+    values = c(" ",
+               "Pollen Removed",
+               "Follicles",
+               "Inflorescences",
+               "Follicles per Inflorescence"),
+    colwidths = c(1, 2, 2, 2, 2)) %>%
+  align(j = 1, align = "left", part = "all") %>%
+  align(j = 2:9, align = "center", part = "body") %>%
+  align(j = 2:9, align = "center", part = "header") %>%
+  display(i = 2, col_key = "X2", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  display(i = 2, col_key = "X2 ", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  display(i = 2, col_key = "X2  ", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  display(i = 2, col_key = "X2   ", 
+    pattern = "{{val}}{{pow}}", part = "header",
+    formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
+    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  width(j = 1, width = 3.3) %>%
+  width(j = 2:9, width = 0.8) %>%
+  # bold(bold = TRUE, part = "header") %>%
+  fontsize(size = 12, part = "header") %>%
+  fontsize(size = 12, part = "body") %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("QUESTION 2 (Urban sites only)") %>%
+  add_footer_lines("Predictor: Urbanization Score") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Urbscore_ANOVA.png"))
+
+# WOULD HAVE TO BOLD AND ITALICIZE VALUES MANUALLY- DO LAST, IF EVER
+# %>%
+#   bold(j = c(3,5,7,9), ~ p  == "< 0.001" | p <= 0.05, ~ p) 
+# 
+# %>%
+#   italic(., ~ p > 0.05 & p <= 0.1, ~ p, italic = TRUE)
   
 
 
