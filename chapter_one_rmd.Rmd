@@ -2038,338 +2038,6 @@ u_peds_glmer_subtr_06_anova <- car::Anova(u_peds_glmer_subtr_06) %T>%
 
 ```
 
-##### Height (Sept)
-###### LMER
-####### City_dist, not urb-score
-######## All sites
-```{r}
-height_lmer_gradient_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
-                                  
-                                  City_dist:Year +
-                                  City_dist +
-                                  Year,
-                                
-                                fertile,
-                                REML = F) 
-
-
-# all main effects and secondary interactions
-height_lmer_gradient_02 <- update(height_lmer_gradient_01,
-                                 . ~ . -City_dist:Year)
-
-height_lmer_gradient_list <- list(height_lmer_gradient_01,
-                                 height_lmer_gradient_02)
-
-formulas_height <- data.frame(matrix(ncol = 0, nrow = 2))
-formulas_height$Model <- NA
-formulas_height$Formula <- NA
-formulas_height$r.squaredGLMM_R2m <- NA
-formulas_height$r.squaredGLMM_R2c <- NA
-
-for (i in 1:length(height_lmer_gradient_list)) {
-  formulas_height[i, 1] <- toString(i)
-  formulas_height[i, 2] <- toString(formula(height_lmer_gradient_list[[i]]))
-  formulas_height[i, 3] <- r.squaredGLMM(height_lmer_gradient_list[[i]])[1,1] %>%
-    round(digits = 3)
-  formulas_height[i, 4] <- r.squaredGLMM(height_lmer_gradient_list[[i]])[1,2] %>%
-    round(digits = 3)
-}
-
-glance_height <- do.call(rbind,
-                       lapply(height_lmer_gradient_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ "")) 
-
-bound_height <- bind_cols(formulas_height,
-                        glance_height %>%
-                          dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC
-
-# check residuals
-library(effects)
-library(sjPlot)
-plot_model(height_lmer_gradient_01, type='diag') # looks fine
-plot_model(height_lmer_gradient_02, type='diag') # looks fine
-
-
-summary(height_lmer_gradient_01)
-height_lmer_gradient_01_anova <- car::Anova(height_lmer_gradient_01) %T>%
-  print() # year sig
-
-summary(height_lmer_gradient_02)
-height_lmer_gradient_02_anova <- car::Anova(height_lmer_gradient_02) %T>%
-  print() # year sig
-
-```
-
-######## Urban sites
-```{r}
-# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
-
-## all main effects and secondary and tertiary interactions (full model)
-height_lmer_subtr_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
-                               
-                               City_dist:Year:Transect_ID + 
-                               
-                               Year:Transect_ID + 
-                               City_dist:Transect_ID +
-                               City_dist:Year +
-                               
-                               City_dist +
-                               Year +
-                               Transect_ID,
-                             
-                             fertile %>%
-                               filter(Transect_ID != 'Rural'),
-                           REML = F)
-
-# all main effects and secondary interactions
-height_lmer_subtr_02 <- update(height_lmer_subtr_01,
-                              . ~ . -City_dist:Year:Transect_ID)
-
-# all main effects and 2/3 secondary interactions
-height_lmer_subtr_03 <- update(height_lmer_subtr_02,
-                              . ~ . -City_dist:Transect_ID)
-height_lmer_subtr_04 <- update(height_lmer_subtr_02,
-                              . ~ . -City_dist:Year)
-height_lmer_subtr_05 <- update(height_lmer_subtr_02,
-                              . ~ . -Year:Transect_ID)
-
-# all main effects and 1/3 secondary interactions
-height_lmer_subtr_06 <- update(height_lmer_subtr_03,
-                              . ~ . -City_dist:Year)
-height_lmer_subtr_07 <- update(height_lmer_subtr_04,
-                              . ~ . -Year:Transect_ID)
-height_lmer_subtr_08 <- update(height_lmer_subtr_05,
-                              . ~ . -City_dist:Transect_ID)
-
-# all main effects
-height_lmer_subtr_09 <- update(height_lmer_subtr_08,
-                              . ~ . -City_dist:Year)
-
-height_lmer_subtr_list <- list(height_lmer_subtr_01,
-                               height_lmer_subtr_02,
-                               height_lmer_subtr_03,
-                               height_lmer_subtr_04,
-                               height_lmer_subtr_05,
-                               height_lmer_subtr_06,
-                               height_lmer_subtr_07,
-                               height_lmer_subtr_08,
-                               height_lmer_subtr_09)
-
-formulas_height <- data.frame(matrix(ncol = 0, nrow = 9))
-formulas_height$Model <- NA
-formulas_height$Formula <- NA
-formulas_height$r.squaredGLMM_R2m <- NA
-formulas_height$r.squaredGLMM_R2c <- NA
-
-for (i in 1:length(height_lmer_subtr_list)) {
-  formulas_height[i, 1] <- toString(i)
-  formulas_height[i, 2] <- toString(formula(height_lmer_subtr_list[[i]]))
-  formulas_height[i, 3] <- r.squaredGLMM(height_lmer_subtr_list[[i]])[1,1] %>%
-    round(digits = 3)
-  formulas_height[i, 4] <- r.squaredGLMM(height_lmer_subtr_list[[i]])[1,2] %>%
-    round(digits = 3)
-}
-
-glance_height <- do.call(rbind,
-                       lapply(height_lmer_subtr_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ "")) 
-
-bound_height <- bind_cols(formulas_height,
-                        glance_height %>%
-                          dplyr::select(AIC, BestModels)) # Models 1, 8 lowest AIC (1 is lowest)
-
-# check residuals
-library(effects)
-library(sjPlot)
-plot_model(height_lmer_subtr_01, type='diag') # looks fine
-plot_model(height_lmer_subtr_08, type='diag') # looks fine
-
-
-summary(height_lmer_subtr_01)
-height_lmer_subtr_01_anova <- car::Anova(height_lmer_subtr_01) %T>%
-  print()
-
-summary(height_lmer_subtr_08)
-height_lmer_subtr_08_anova <- car::Anova(height_lmer_subtr_08) %T>%
-  print()
-
-
-```
-
-####### urb-score, not City_dist
-######## All sites
-```{r}
-u_height_lmer_gradient_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
-                                  
-                                  Urb_score:Year +
-                                  Urb_score +
-                                  Year,
-                                
-                                fertile,
-                                REML = F) 
-
-
-# all main effects and secondary interactions
-u_height_lmer_gradient_02 <- update(u_height_lmer_gradient_01,
-                                 . ~ . -Urb_score:Year)
-
-u_height_lmer_gradient_list <- list(u_height_lmer_gradient_01,
-                                 u_height_lmer_gradient_02)
-
-formulas_height <- data.frame(matrix(ncol = 0, nrow = 2))
-formulas_height$Model <- NA
-formulas_height$Formula <- NA
-formulas_height$r.squaredGLMM_R2m <- NA
-formulas_height$r.squaredGLMM_R2c <- NA
-
-for (i in 1:length(u_height_lmer_gradient_list)) {
-  formulas_height[i, 1] <- toString(i)
-  formulas_height[i, 2] <- toString(formula(u_height_lmer_gradient_list[[i]]))
-  formulas_height[i, 3] <- r.squaredGLMM(u_height_lmer_gradient_list[[i]])[1,1] %>%
-    round(digits = 3)
-  formulas_height[i, 4] <- r.squaredGLMM(u_height_lmer_gradient_list[[i]])[1,2] %>%
-    round(digits = 3)
-}
-
-glance_height <- do.call(rbind,
-                       lapply(u_height_lmer_gradient_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ "")) 
-
-bound_height <- bind_cols(formulas_height,
-                        glance_height %>%
-                          dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (1 best)
-
-# check residuals
-plot(simulateResiduals(u_height_lmer_gradient_01)) # looks good
-plot(simulateResiduals(u_height_lmer_gradient_02)) # looks good
-
-
-summary(u_height_lmer_gradient_01)
-u_height_lmer_gradient_01_anova <- car::Anova(u_height_lmer_gradient_01) %T>%
-  print() # year sig, interaxn marg sig
-
-summary(u_height_lmer_gradient_02)
-u_height_lmer_gradient_02_anova <- car::Anova(u_height_lmer_gradient_02) %T>%
-  print() # year sig
-
-```
-
-
-######## Urban sites
-```{r}
-# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
-
-## all main effects and secondary and tertiary interactions (full model)
-u_height_lmer_subtr_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
-                               
-                               Year:Transect_ID:Urb_score + 
-                               
-                               Year:Transect_ID + 
-                               Urb_score:Transect_ID +
-                               Urb_score:Year +
-                               
-                               Urb_score +
-                               Year +
-                               Transect_ID,
-                             
-                             fertile %>%
-                               filter(Transect_ID != 'Rural'),
-                           REML = F)
-
-# all main effects and secondary interactions
-u_height_lmer_subtr_02 <- update(u_height_lmer_subtr_01,
-                              . ~ . -Year:Transect_ID:Urb_score)
-
-# all main effects and 2/3 secondary interactions
-u_height_lmer_subtr_03 <- update(u_height_lmer_subtr_02,
-                              . ~ . -Transect_ID:Urb_score)
-u_height_lmer_subtr_04 <- update(u_height_lmer_subtr_02,
-                              . ~ . -Urb_score:Year)
-u_height_lmer_subtr_05 <- update(u_height_lmer_subtr_02,
-                              . ~ . -Year:Transect_ID)
-
-# all main effects and 1/3 secondary interactions
-u_height_lmer_subtr_06 <- update(u_height_lmer_subtr_03,
-                              . ~ . -Urb_score:Year)
-u_height_lmer_subtr_07 <- update(u_height_lmer_subtr_04,
-                              . ~ . -Year:Transect_ID)
-u_height_lmer_subtr_08 <- update(u_height_lmer_subtr_05,
-                              . ~ . -Transect_ID:Urb_score)
-
-# all main effects
-u_height_lmer_subtr_09 <- update(u_height_lmer_subtr_08,
-                              . ~ . -Urb_score:Year)
-
-u_height_lmer_subtr_list <- list(u_height_lmer_subtr_01,
-                               u_height_lmer_subtr_02,
-                               u_height_lmer_subtr_03,
-                               u_height_lmer_subtr_04,
-                               u_height_lmer_subtr_05,
-                               u_height_lmer_subtr_06,
-                               u_height_lmer_subtr_07,
-                               u_height_lmer_subtr_08,
-                               u_height_lmer_subtr_09)
-
-formulas_height <- data.frame(matrix(ncol = 0, nrow = 9))
-formulas_height$Model <- NA
-formulas_height$Formula <- NA
-formulas_height$r.squaredGLMM_R2m <- NA
-formulas_height$r.squaredGLMM_R2c <- NA
-
-for (i in 1:length(u_height_lmer_subtr_list)) {
-  formulas_height[i, 1] <- toString(i)
-  formulas_height[i, 2] <- toString(formula(u_height_lmer_subtr_list[[i]]))
-  formulas_height[i, 3] <- r.squaredGLMM(u_height_lmer_subtr_list[[i]])[1,1] %>%
-    round(digits = 3)
-  formulas_height[i, 4] <- r.squaredGLMM(u_height_lmer_subtr_list[[i]])[1,2] %>%
-    round(digits = 3)
-}
-
-glance_height <- do.call(rbind,
-                       lapply(u_height_lmer_subtr_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ "")) 
-
-bound_height <- bind_cols(formulas_height,
-                        glance_height %>%
-                          dplyr::select(AIC, BestModels)) # Models 1, 9 lowest AIC (1 is lowest)
-
-# check residuals
-plot(simulateResiduals(u_height_lmer_subtr_01)) # looks good
-plot(simulateResiduals(u_height_lmer_subtr_09)) # looks good
-
-
-summary(u_height_lmer_subtr_01)
-u_height_lmer_subtr_01_anova <- car::Anova(u_height_lmer_subtr_01) %T>%
-  print()
-
-summary(u_height_lmer_subtr_09)
-u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09) %T>%
-  print()
-
-
-```
-
-
 ##### Pods per peduncle (i.e. follicles per inflorescence)
 ###### LMER
 ####### City_dist, not urb-score
@@ -2720,7 +2388,340 @@ u_podsperped_lmer_subtr_09_anova <- car::Anova(u_podsperped_lmer_subtr_09) %T>%
 ```
 
 
-#### Combine best models into one df
+##### Height (Sept)
+###### LMER
+####### City_dist, not urb-score
+######## All sites
+```{r}
+height_lmer_gradient_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
+                                  
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year,
+                                
+                                fertile,
+                                REML = F) 
+
+
+# all main effects and secondary interactions
+height_lmer_gradient_02 <- update(height_lmer_gradient_01,
+                                 . ~ . -City_dist:Year)
+
+height_lmer_gradient_list <- list(height_lmer_gradient_01,
+                                 height_lmer_gradient_02)
+
+formulas_height <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_height$Model <- NA
+formulas_height$Formula <- NA
+formulas_height$r.squaredGLMM_R2m <- NA
+formulas_height$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(height_lmer_gradient_list)) {
+  formulas_height[i, 1] <- toString(i)
+  formulas_height[i, 2] <- toString(formula(height_lmer_gradient_list[[i]]))
+  formulas_height[i, 3] <- r.squaredGLMM(height_lmer_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_height[i, 4] <- r.squaredGLMM(height_lmer_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_height <- do.call(rbind,
+                       lapply(height_lmer_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_height <- bind_cols(formulas_height,
+                        glance_height %>%
+                          dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (2 is best)
+
+# check residuals
+library(effects)
+library(sjPlot)
+plot_model(height_lmer_gradient_01, type='diag') # looks fine
+plot_model(height_lmer_gradient_02, type='diag') # looks fine
+
+
+summary(height_lmer_gradient_01)
+height_lmer_gradient_01_anova <- car::Anova(height_lmer_gradient_01) %T>%
+  print() # year sig
+
+summary(height_lmer_gradient_02)
+height_lmer_gradient_02_anova <- car::Anova(height_lmer_gradient_02) %T>%
+  print() # year sig
+
+```
+
+######## Urban sites
+```{r}
+# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
+
+## all main effects and secondary and tertiary interactions (full model)
+height_lmer_subtr_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
+                               
+                               City_dist:Year:Transect_ID + 
+                               
+                               Year:Transect_ID + 
+                               City_dist:Transect_ID +
+                               City_dist:Year +
+                               
+                               City_dist +
+                               Year +
+                               Transect_ID,
+                             
+                             fertile %>%
+                               filter(Transect_ID != 'Rural'),
+                           REML = F)
+
+# all main effects and secondary interactions
+height_lmer_subtr_02 <- update(height_lmer_subtr_01,
+                              . ~ . -City_dist:Year:Transect_ID)
+
+# all main effects and 2/3 secondary interactions
+height_lmer_subtr_03 <- update(height_lmer_subtr_02,
+                              . ~ . -City_dist:Transect_ID)
+height_lmer_subtr_04 <- update(height_lmer_subtr_02,
+                              . ~ . -City_dist:Year)
+height_lmer_subtr_05 <- update(height_lmer_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+height_lmer_subtr_06 <- update(height_lmer_subtr_03,
+                              . ~ . -City_dist:Year)
+height_lmer_subtr_07 <- update(height_lmer_subtr_04,
+                              . ~ . -Year:Transect_ID)
+height_lmer_subtr_08 <- update(height_lmer_subtr_05,
+                              . ~ . -City_dist:Transect_ID)
+
+# all main effects
+height_lmer_subtr_09 <- update(height_lmer_subtr_08,
+                              . ~ . -City_dist:Year)
+
+height_lmer_subtr_list <- list(height_lmer_subtr_01,
+                               height_lmer_subtr_02,
+                               height_lmer_subtr_03,
+                               height_lmer_subtr_04,
+                               height_lmer_subtr_05,
+                               height_lmer_subtr_06,
+                               height_lmer_subtr_07,
+                               height_lmer_subtr_08,
+                               height_lmer_subtr_09)
+
+formulas_height <- data.frame(matrix(ncol = 0, nrow = 9))
+formulas_height$Model <- NA
+formulas_height$Formula <- NA
+formulas_height$r.squaredGLMM_R2m <- NA
+formulas_height$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(height_lmer_subtr_list)) {
+  formulas_height[i, 1] <- toString(i)
+  formulas_height[i, 2] <- toString(formula(height_lmer_subtr_list[[i]]))
+  formulas_height[i, 3] <- r.squaredGLMM(height_lmer_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_height[i, 4] <- r.squaredGLMM(height_lmer_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_height <- do.call(rbind,
+                       lapply(height_lmer_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_height <- bind_cols(formulas_height,
+                        glance_height %>%
+                          dplyr::select(AIC, BestModels)) # Models 1, 8 lowest AIC (1 is lowest)
+
+# check residuals
+library(effects)
+library(sjPlot)
+plot_model(height_lmer_subtr_01, type='diag') # looks fine
+plot_model(height_lmer_subtr_08, type='diag') # looks fine
+
+
+summary(height_lmer_subtr_01)
+height_lmer_subtr_01_anova <- car::Anova(height_lmer_subtr_01) %T>%
+  print()
+
+summary(height_lmer_subtr_08)
+height_lmer_subtr_08_anova <- car::Anova(height_lmer_subtr_08) %T>%
+  print()
+
+
+```
+
+####### urb-score, not City_dist
+######## All sites
+```{r}
+u_height_lmer_gradient_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
+                                  
+                                  Urb_score:Year +
+                                  Urb_score +
+                                  Year,
+                                
+                                fertile,
+                                REML = F) 
+
+
+# all main effects and secondary interactions
+u_height_lmer_gradient_02 <- update(u_height_lmer_gradient_01,
+                                 . ~ . -Urb_score:Year)
+
+u_height_lmer_gradient_list <- list(u_height_lmer_gradient_01,
+                                 u_height_lmer_gradient_02)
+
+formulas_height <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_height$Model <- NA
+formulas_height$Formula <- NA
+formulas_height$r.squaredGLMM_R2m <- NA
+formulas_height$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(u_height_lmer_gradient_list)) {
+  formulas_height[i, 1] <- toString(i)
+  formulas_height[i, 2] <- toString(formula(u_height_lmer_gradient_list[[i]]))
+  formulas_height[i, 3] <- r.squaredGLMM(u_height_lmer_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_height[i, 4] <- r.squaredGLMM(u_height_lmer_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_height <- do.call(rbind,
+                       lapply(u_height_lmer_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_height <- bind_cols(formulas_height,
+                        glance_height %>%
+                          dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (1 best)
+
+# check residuals
+plot(simulateResiduals(u_height_lmer_gradient_01)) # looks good
+plot(simulateResiduals(u_height_lmer_gradient_02)) # looks good
+
+
+summary(u_height_lmer_gradient_01)
+u_height_lmer_gradient_01_anova <- car::Anova(u_height_lmer_gradient_01) %T>%
+  print() # year sig, interaxn marg sig
+
+summary(u_height_lmer_gradient_02)
+u_height_lmer_gradient_02_anova <- car::Anova(u_height_lmer_gradient_02) %T>%
+  print() # year sig
+
+```
+
+
+######## Urban sites
+```{r}
+# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
+
+## all main effects and secondary and tertiary interactions (full model)
+u_height_lmer_subtr_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
+                               
+                               Year:Transect_ID:Urb_score + 
+                               
+                               Year:Transect_ID + 
+                               Urb_score:Transect_ID +
+                               Urb_score:Year +
+                               
+                               Urb_score +
+                               Year +
+                               Transect_ID,
+                             
+                             fertile %>%
+                               filter(Transect_ID != 'Rural'),
+                           REML = F)
+
+# all main effects and secondary interactions
+u_height_lmer_subtr_02 <- update(u_height_lmer_subtr_01,
+                              . ~ . -Year:Transect_ID:Urb_score)
+
+# all main effects and 2/3 secondary interactions
+u_height_lmer_subtr_03 <- update(u_height_lmer_subtr_02,
+                              . ~ . -Transect_ID:Urb_score)
+u_height_lmer_subtr_04 <- update(u_height_lmer_subtr_02,
+                              . ~ . -Urb_score:Year)
+u_height_lmer_subtr_05 <- update(u_height_lmer_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+u_height_lmer_subtr_06 <- update(u_height_lmer_subtr_03,
+                              . ~ . -Urb_score:Year)
+u_height_lmer_subtr_07 <- update(u_height_lmer_subtr_04,
+                              . ~ . -Year:Transect_ID)
+u_height_lmer_subtr_08 <- update(u_height_lmer_subtr_05,
+                              . ~ . -Transect_ID:Urb_score)
+
+# all main effects
+u_height_lmer_subtr_09 <- update(u_height_lmer_subtr_08,
+                              . ~ . -Urb_score:Year)
+
+u_height_lmer_subtr_list <- list(u_height_lmer_subtr_01,
+                               u_height_lmer_subtr_02,
+                               u_height_lmer_subtr_03,
+                               u_height_lmer_subtr_04,
+                               u_height_lmer_subtr_05,
+                               u_height_lmer_subtr_06,
+                               u_height_lmer_subtr_07,
+                               u_height_lmer_subtr_08,
+                               u_height_lmer_subtr_09)
+
+formulas_height <- data.frame(matrix(ncol = 0, nrow = 9))
+formulas_height$Model <- NA
+formulas_height$Formula <- NA
+formulas_height$r.squaredGLMM_R2m <- NA
+formulas_height$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(u_height_lmer_subtr_list)) {
+  formulas_height[i, 1] <- toString(i)
+  formulas_height[i, 2] <- toString(formula(u_height_lmer_subtr_list[[i]]))
+  formulas_height[i, 3] <- r.squaredGLMM(u_height_lmer_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_height[i, 4] <- r.squaredGLMM(u_height_lmer_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_height <- do.call(rbind,
+                       lapply(u_height_lmer_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_height <- bind_cols(formulas_height,
+                        glance_height %>%
+                          dplyr::select(AIC, BestModels)) # Models 1, 9 lowest AIC (1 is lowest)
+
+# check residuals
+plot(simulateResiduals(u_height_lmer_subtr_01)) # looks good
+plot(simulateResiduals(u_height_lmer_subtr_09)) # looks good
+
+
+summary(u_height_lmer_subtr_01)
+u_height_lmer_subtr_01_anova <- car::Anova(u_height_lmer_subtr_01) %T>%
+  print()
+
+summary(u_height_lmer_subtr_09)
+u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09) %T>%
+  print()
+
+
+```
+
+
+#### Combine models into one df
+##### Best models: Inflors, pollen, pods, pods/inflor
 ```{r}
 # tidy anovas
 tidy_sb <- function(model){
@@ -3039,6 +3040,122 @@ make_Q1Q2_Anova(best_mods_Q2.urbscore_list) %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Urbscore_ANOVA.png"))
 
 ```
+##### Best models: height
+```{r}
+# make_anova function tweaked to handle one model- height- instead of a list
+make_Q1Q2_Anova.height <- function(anova){
+  return(
+    tidy_sb(anova) %>%
+    as.data.frame() %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'p' = 3) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Height"),
+      colwidths = c(1, 2)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:3, align = "center", part = "body") %>%
+    align(j = 2:3, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) 
+    )
+}
+
+
+# CITY_DIST-----
+## ALL SITES
+# Height: height_lmer_gradient_02
+
+
+make_Q1Q2_Anova.height(height_lmer_gradient_02) %>%
+  width(j = 1, width = 1.8) %>%
+  width(j = 2:3, width = 1) %>%
+  italic(i = 2, j = 2:3, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q1_Dist_ANOVA_HEIGHT.png"))
+
+
+
+
+
+## URBAN SITES
+# Height: height_lmer_subtr_01
+
+make_Q1Q2_Anova.height(height_lmer_subtr_01) %>%
+  width(j = 1, width = 3.3) %>%
+  width(j = 2:3, width = 1) %>%
+  italic(i = 2, j = 2:3, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q2_Dist_ANOVA_HEIGHT.png"))
+
+
+
+
+# URB_SCORE-----
+## ALL SITES
+# Height: u_height_lmer_gradient_01
+
+make_Q1Q2_Anova.height(u_height_lmer_gradient_01) %>%
+  width(j = 1, width = 2) %>%
+  width(j = 2:3, width = 1) %>%
+  italic(i = 2, j = 2:3, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q1_Urbscore_ANOVA_HEIGHT.png"))
+
+
+
+
+
+
+## URBAN SITES
+# Height: 
+
+make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
+  width(j = 1, width = 3.2) %>%
+  width(j = 2:3, width = 1) %>%
+  italic(i = 2, j = 2:3, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q2_Urbscore_ANOVA_HEIGHT.png"))
+
+```
+##### AIC<2 from best models: Inflors, pollen, pods, pods/inflor
+```{r}
+
+```
+##### AIC<2 from best models: height
+```{r}
+
+```
+
 
 #### Comparing yearly means for variables
 ##### Pollinia- yearly differences (lm)
