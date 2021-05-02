@@ -381,7 +381,7 @@ poll_glmer_gradient_list <- list(poll_glmer_gradient_01,
 ## all main effects and secondary and tertiary interactions (full model)
 poll_glmer_subtr_01 <- glmer((Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) +
                                
-                               Year:Transect_ID:City_dist + 
+                               City_dist:Year:Transect_ID + 
                                
                                Year:Transect_ID + 
                                City_dist:Transect_ID +
@@ -399,27 +399,27 @@ poll_glmer_subtr_01 <- glmer((Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) 
 
 # all main effects and secondary interactions
 poll_glmer_subtr_02 <- update(poll_glmer_subtr_01,
-                              . ~ . -Year:Transect_ID:City_dist)
+                              . ~ . -City_dist:Year:Transect_ID)
 
 # all main effects and 2/3 secondary interactions
 poll_glmer_subtr_03 <- update(poll_glmer_subtr_02,
-                              . ~ . -Transect_ID:City_dist)
+                              . ~ . -City_dist:Transect_ID)
 poll_glmer_subtr_04 <- update(poll_glmer_subtr_02,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 poll_glmer_subtr_05 <- update(poll_glmer_subtr_02,
                               . ~ . -Year:Transect_ID)
 
 # all main effects and 1/3 secondary interactions
 poll_glmer_subtr_06 <- update(poll_glmer_subtr_03,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 poll_glmer_subtr_07 <- update(poll_glmer_subtr_04,
                               . ~ . -Year:Transect_ID)
 poll_glmer_subtr_08 <- update(poll_glmer_subtr_05,
-                              . ~ . -Transect_ID:City_dist)
+                              . ~ . -City_dist:Transect_ID)
 
 # all main effects
 poll_glmer_subtr_09 <- update(poll_glmer_subtr_08,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 
 poll_glmer_subtr_list <- list(poll_glmer_subtr_01,
                                poll_glmer_subtr_02,
@@ -755,7 +755,7 @@ pods_glmer_gradient_01_anova <- car::Anova(pods_glmer_gradient_01) %T>%
 ## all main effects and secondary and tertiary interactions (full model)
 pods_glmer_subtr_01 <- glmer(Viable_Pods ~ (1|Patch_ID) +
                                
-                               Year:Transect_ID:City_dist + 
+                               City_dist:Year:Transect_ID + 
                                
                                Year:Transect_ID + 
                                City_dist:Transect_ID +
@@ -775,7 +775,7 @@ pods_glmer_subtr_01 <- glmer(Viable_Pods ~ (1|Patch_ID) +
 
 ## Hurdle Poisson model
 pods_glmer_subtr_01 <- glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
-                               Year:Transect_ID:City_dist + 
+                               City_dist:Year:Transect_ID + 
                                  
                                Year:Transect_ID + 
                                City_dist:Transect_ID +
@@ -799,16 +799,16 @@ pods_glmer_subtr_02 <- glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -817,16 +817,16 @@ pods_glmer_subtr_03 <- glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist +
+                                # City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist +
+                                # City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -834,16 +834,16 @@ pods_glmer_subtr_04 <- glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                # Year:City_dist +
+                                City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                # Year:City_dist +
+                                City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -851,16 +851,16 @@ pods_glmer_subtr_05 <- glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist ,
+                                City_dist:Transect_ID +
+                                City_dist:Year ,
                                 # Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist ,
+                                City_dist:Transect_ID +
+                                City_dist:Year ,
                                 # Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -869,16 +869,16 @@ pods_glmer_subtr_06 <- glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                # Year:City_dist +
+                                # City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                # Year:City_dist +
+                                # City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -886,16 +886,16 @@ pods_glmer_subtr_07 <- glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist ,
-                                # Year:City_dist +
+                                City_dist:Transect_ID ,
+                                # City_dist:Year +
                                 # Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist ,
-                                # Year:City_dist +
+                                City_dist:Transect_ID ,
+                                # City_dist:Year +
                                 # Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -903,16 +903,16 @@ pods_glmer_subtr_08 <-  glmmTMB(Viable_Pods_minus1^2 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist,
+                                # City_dist:Transect_ID +
+                                City_dist:Year,
                                 # Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist, 
+                                # City_dist:Transect_ID +
+                                City_dist:Year, 
                                 # Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -1494,7 +1494,7 @@ plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
 ## all main effects and secondary and tertiary interactions (full model)
 # peds_glmer_subtr_01 <- glmer(Peduncles ~ (1|Patch_ID) +
 #                                
-#                                Year:Transect_ID:City_dist + 
+#                                City_dist:Year:Transect_ID + 
 #                                
 #                                Year:Transect_ID + 
 #                                City_dist:Transect_ID +
@@ -1516,19 +1516,19 @@ peds_glmer_subtr_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID +
-                                Year:Transect_ID:City_dist,
+                                City_dist:Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID +
-                                Year:Transect_ID:City_dist,
+                                City_dist:Year:Transect_ID,
                               family = truncated_poisson)
 
 # all main effects and secondary interactions
@@ -1536,16 +1536,16 @@ peds_glmer_subtr_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -1554,16 +1554,16 @@ peds_glmer_subtr_03 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist +
+                                # City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist +
+                                # City_dist:Transect_ID +
+                                City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -1571,16 +1571,16 @@ peds_glmer_subtr_04 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                # Year:City_dist +
+                                City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                # Year:City_dist +
+                                City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -1588,16 +1588,16 @@ peds_glmer_subtr_05 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist ,
+                                City_dist:Transect_ID +
+                                City_dist:Year ,
                                 # Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist +
-                                Year:City_dist ,
+                                City_dist:Transect_ID +
+                                City_dist:Year ,
                                 # Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -1606,16 +1606,16 @@ peds_glmer_subtr_06 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                # Year:City_dist +
+                                # City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                # Year:City_dist +
+                                # City_dist:Transect_ID +
+                                # City_dist:Year +
                                 Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -1623,16 +1623,16 @@ peds_glmer_subtr_07 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist ,
-                                # Year:City_dist +
+                                City_dist:Transect_ID ,
+                                # City_dist:Year +
                                 # Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                Transect_ID:City_dist ,
-                                # Year:City_dist +
+                                City_dist:Transect_ID ,
+                                # City_dist:Year +
                                 # Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -1640,16 +1640,16 @@ peds_glmer_subtr_08 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                 City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist,
+                                # City_dist:Transect_ID +
+                                City_dist:Year,
                                 # Year:Transect_ID,
                               fertile %>%
                                   filter(Transect_ID != 'Rural'),
                               zi = ~City_dist +
                                 Year +
                                 Transect_ID +
-                                # Transect_ID:City_dist +
-                                Year:City_dist, 
+                                # City_dist:Transect_ID +
+                                City_dist:Year, 
                                 # Year:Transect_ID,
                               family = truncated_poisson)
 
@@ -2112,7 +2112,7 @@ height_lmer_gradient_02_anova <- car::Anova(height_lmer_gradient_02) %T>%
 ## all main effects and secondary and tertiary interactions (full model)
 height_lmer_subtr_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
                                
-                               Year:Transect_ID:City_dist + 
+                               City_dist:Year:Transect_ID + 
                                
                                Year:Transect_ID + 
                                City_dist:Transect_ID +
@@ -2128,27 +2128,27 @@ height_lmer_subtr_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
 
 # all main effects and secondary interactions
 height_lmer_subtr_02 <- update(height_lmer_subtr_01,
-                              . ~ . -Year:Transect_ID:City_dist)
+                              . ~ . -City_dist:Year:Transect_ID)
 
 # all main effects and 2/3 secondary interactions
 height_lmer_subtr_03 <- update(height_lmer_subtr_02,
-                              . ~ . -Transect_ID:City_dist)
+                              . ~ . -City_dist:Transect_ID)
 height_lmer_subtr_04 <- update(height_lmer_subtr_02,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 height_lmer_subtr_05 <- update(height_lmer_subtr_02,
                               . ~ . -Year:Transect_ID)
 
 # all main effects and 1/3 secondary interactions
 height_lmer_subtr_06 <- update(height_lmer_subtr_03,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 height_lmer_subtr_07 <- update(height_lmer_subtr_04,
                               . ~ . -Year:Transect_ID)
 height_lmer_subtr_08 <- update(height_lmer_subtr_05,
-                              . ~ . -Transect_ID:City_dist)
+                              . ~ . -City_dist:Transect_ID)
 
 # all main effects
 height_lmer_subtr_09 <- update(height_lmer_subtr_08,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 
 height_lmer_subtr_list <- list(height_lmer_subtr_01,
                                height_lmer_subtr_02,
@@ -2444,7 +2444,7 @@ podsperped_lmer_gradient_02_anova <- car::Anova(podsperped_lmer_gradient_02) %T>
 ## all main effects and secondary and tertiary interactions (full model)
 podsperped_lmer_subtr_01 <- lmer(pods_per_ped ~ (1|Patch_ID) +
                                
-                               Year:Transect_ID:City_dist + 
+                               City_dist:Year:Transect_ID + 
                                
                                Year:Transect_ID + 
                                City_dist:Transect_ID +
@@ -2460,27 +2460,27 @@ podsperped_lmer_subtr_01 <- lmer(pods_per_ped ~ (1|Patch_ID) +
 
 # all main effects and secondary interactions
 podsperped_lmer_subtr_02 <- update(podsperped_lmer_subtr_01,
-                              . ~ . -Year:Transect_ID:City_dist)
+                              . ~ . -City_dist:Year:Transect_ID)
 
 # all main effects and 2/3 secondary interactions
 podsperped_lmer_subtr_03 <- update(podsperped_lmer_subtr_02,
-                              . ~ . -Transect_ID:City_dist)
+                              . ~ . -City_dist:Transect_ID)
 podsperped_lmer_subtr_04 <- update(podsperped_lmer_subtr_02,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 podsperped_lmer_subtr_05 <- update(podsperped_lmer_subtr_02,
                               . ~ . -Year:Transect_ID)
 
 # all main effects and 1/3 secondary interactions
 podsperped_lmer_subtr_06 <- update(podsperped_lmer_subtr_03,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 podsperped_lmer_subtr_07 <- update(podsperped_lmer_subtr_04,
                               . ~ . -Year:Transect_ID)
 podsperped_lmer_subtr_08 <- update(podsperped_lmer_subtr_05,
-                              . ~ . -Transect_ID:City_dist)
+                              . ~ . -City_dist:Transect_ID)
 
 # all main effects
 podsperped_lmer_subtr_09 <- update(podsperped_lmer_subtr_08,
-                              . ~ . -Year:City_dist)
+                              . ~ . -City_dist:Year)
 
 podsperped_lmer_subtr_list <- list(podsperped_lmer_subtr_01,
                                podsperped_lmer_subtr_02,
@@ -2722,144 +2722,7 @@ u_podsperped_lmer_subtr_09_anova <- car::Anova(u_podsperped_lmer_subtr_09) %T>%
 
 #### Combine best models into one df
 ```{r}
-# CITY_DIST-----
-## ALL SITES
-
-best_mods_Q1.dist_list <- list(
-  
-### Pollinia
-  poll_glmer_gradient_01, #2018 data
-  poll_glmer_gradient_02,  #2019 data
-### Pods
-  pods_glmer_gradient_01,
-### Peduncles
-  peds_glmer_gradient_01,
-### Pods/Peduncle
-  podsperped_lmer_gradient_02
-
-)
-
-
-
-## URBAN SITES
-best_mods_Q2.dist_list <- list(
-  
-### Pollinia
-  poll_glmer_subtr_01,
-### Pods
-  pods_glmer_subtr_03,
-### Peduncles
-  peds_glmer_subtr_01,
-### Pods/Peduncle
-  podsperped_lmer_subtr_08
-
-)
-
-
-
-
-# URB_SCORE-----
-## ALL SITES
-
-best_mods_Q1.urbscore_list <- list(
-  
-### Pollinia
-  u_poll_glmer_gradient_1,
-### Pods
-  u_pods_glmer_gradient_1,
-### Peduncles
-  u_peds_glmer_gradient_01,
-### Pods/Peduncle
-  u_podsperped_lmer_gradient_02
-
-)
-
-
-
-lapply(best_mods_Q1.urbscore_list, tidy_sb) %>%
-  lapply(., as.data.frame) %>%
-  purrr::reduce(full_join, by = "Predictor") %>%
-  dplyr::mutate_if(.,
-                is.character,
-                str_replace_all,
-                pattern = c("Year x Urbanization Score"),
-                replacement = c("Urbanization Score x Year")) %>%
-  arrange(factor(Predictor, levels = c("Urbanization Score",
-                                       "Year",
-                                       "Subtransect",
-                                       "Urbanization Score x Year",
-                                       "Subtransect x Urbanization Score",
-                                       "Year x Subtransect",
-                                       "Year x Subtransect x Urbanization Score"
-                                       ))) %>%
-  dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
-  replace(., is.na(.), "-") %>%
-  dplyr::rename('X2' = 2,
-                'p' = 3,
-                'X2 ' = 4,
-                'p ' = 5,
-                'X2  ' = 6,
-                'p  ' = 7,
-                'X2   ' = 8,
-                'p   ' = 9) %>%
-  flextable::flextable() %>%
-  add_header_row(
-    values = c(" ",
-               "Pollen Removed",
-               "Follicles",
-               "Inflorescences",
-               "Follicles per Inflorescence"),
-    colwidths = c(1, 2, 2, 2, 2)) %>%
-  align(j = 1, align = "left", part = "all") %>%
-  align(j = 2:9, align = "center", part = "body") %>%
-  align(j = 2:9, align = "center", part = "header") %>%
-  display(i = 2, col_key = "X2", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  display(i = 2, col_key = "X2 ", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  display(i = 2, col_key = "X2  ", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  display(i = 2, col_key = "X2   ", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  width(j = 1, width = 2.2) %>%
-  width(j = 2:9, width = 0.8) %>%
-  # bold(bold = TRUE, part = "header") %>%
-  fontsize(size = 12, part = "header") %>%
-  fontsize(size = 12, part = "body") %>%
-  italic(i = 2, j = 2:9, part = "header") %>%
-  add_footer_lines("QUESTION 1 (All sites)") %>%
-  add_footer_lines("Predictor: Urbanization Score") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Urbscore_ANOVA.png"))
-
-
-
-
-
-
-
-## URBAN SITES
-
-best_mods_Q2.urbscore_list <- list(
-  
-### Pollinia
-  u_poll_glmer_subtr_01,
-### Pods
-  u_pods_glmer_subtr_03,
-### Peduncles
-  u_peds_glmer_subtr_06,
-### Pods/Peduncle
-  u_podsperped_lmer_subtr_09
-
-)
-
+# tidy anovas
 tidy_sb <- function(model){
   
   return(
@@ -2876,15 +2739,15 @@ tidy_sb <- function(model){
                     .before = term) %>%
       dplyr::mutate(Significance = case_when(p.value < 0.001 ~ "***",
                                              p.value < 0.01 ~ "**",
-                                             p.value <= 0.05 ~ "*", 
-                                             p.value <= 0.1 ~ "Marginal")) %>%
+                                             p.value <= 0.05 ~ "*")) %>%
       mutate_if(is.numeric, round, 3))      %>%
-      dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "< 0.001")) %>%
+      dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
       dplyr::mutate(., AIC = AIC(model)) %>%
       dplyr::select(., -df) %>%
       dplyr::rename(., Chi_sq = statistic,
                     Predictor = term,
                     p = p.value) %>%
+      unite("p", p:Significance, sep = "", na.rm = TRUE) %>%
       dplyr::mutate_if(.,
                 is.character,
                 str_replace_all,
@@ -2905,87 +2768,275 @@ tidy_sb <- function(model){
                 str_replace_all,
                 pattern = c(":"),
                 replacement = c(" x ")) %>%
-        dplyr::mutate_if(.,
-                is.character,
-                str_replace_all,
-                pattern = c("Year x Urbanization Score"),
-                replacement = c("Urbanization Score x Year"))
+    dplyr::mutate_if(.,
+          is.character,
+          str_replace_all,
+          pattern = c("Year x Urbanization Score"),
+          replacement = c("Urbanization Score x Year")) # %>%
+        # dplyr::mutate_if(.,
+        #         is.character,
+        #         str_replace_all,
+        #         pattern = c("Year x Distance to City Center"),
+        #         replacement = c("Distance to City Center x Year")) %>%
+        # dplyr::mutate_if(.,
+        #         is.character,
+        #         str_replace_all,
+        #         pattern = c("Subtransect x Distance to City Center"),
+        #         replacement = c("Distance to City Center x Subtransect")) %>%
+        # dplyr::mutate_if(.,
+        #         is.character,
+        #         str_replace_all,
+        #         pattern = c("Distance to City Center x Year x Subtransect"),
+        #         replacement = c("Year x Subtransect x Distance to City Center"))
 }
 
-lapply(best_mods_Q2.urbscore_list, tidy_sb) %>%
-  lapply(., as.data.frame) %>%
-  purrr::reduce(full_join, by = "Predictor") %>%
-  dplyr::mutate_if(.,
-                is.character,
-                str_replace_all,
-                pattern = c("Year x Urbanization Score"),
-                replacement = c("Urbanization Score x Year")) %>%
-  arrange(factor(Predictor, levels = c("Urbanization Score",
-                                       "Year",
-                                       "Subtransect",
-                                       "Urbanization Score x Year",
-                                       "Subtransect x Urbanization Score",
-                                       "Year x Subtransect",
-                                       "Year x Subtransect x Urbanization Score"
-                                       ))) %>%
-  dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
-  replace(., is.na(.), "-") %>%
-  dplyr::rename('X2' = 2,
-                'p' = 3,
-                'X2 ' = 4,
-                'p ' = 5,
-                'X2  ' = 6,
-                'p  ' = 7,
-                'X2   ' = 8,
-                'p   ' = 9) %>%
-  flextable::flextable() %>%
-  add_header_row(
-    values = c(" ",
-               "Pollen Removed",
-               "Follicles",
-               "Inflorescences",
-               "Follicles per Inflorescence"),
-    colwidths = c(1, 2, 2, 2, 2)) %>%
-  align(j = 1, align = "left", part = "all") %>%
-  align(j = 2:9, align = "center", part = "body") %>%
-  align(j = 2:9, align = "center", part = "header") %>%
-  display(i = 2, col_key = "X2", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  display(i = 2, col_key = "X2 ", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  display(i = 2, col_key = "X2  ", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  display(i = 2, col_key = "X2   ", 
-    pattern = "{{val}}{{pow}}", part = "header",
-    formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
-    fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  width(j = 1, width = 3.3) %>%
-  width(j = 2:9, width = 0.8) %>%
-  # bold(bold = TRUE, part = "header") %>%
-  fontsize(size = 12, part = "header") %>%
-  fontsize(size = 12, part = "body") %>%
+# combine anovas into publication-quality tables
+make_Q1Q2_Anova <- function(anova_list){
+  return(
+    lapply(anova_list, tidy_sb) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'p' = 3,
+                  'X2 ' = 4,
+                  'p ' = 5,
+                  'X2  ' = 6,
+                  'p  ' = 7,
+                  'X2   ' = 8,
+                  'p   ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Inflorescences",
+                 "Pollinaria Removed",
+                 "Follicles",
+                 "Follicles per Inflorescence"),
+      colwidths = c(1, 2, 2, 2, 2)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2  ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2   ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body")
+    )
+  }
+
+# for City dist/all sites because pollinaria was analyzed per year, so an extra column is needed
+make_Q1Q2_Anova.1 <- function(anova_list){
+  return(
+    lapply(anova_list, tidy_sb) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'p' = 3,
+                  'X2 ' = 4,
+                  'p ' = 5,
+                  'X2  ' = 6,
+                  'p  ' = 7,
+                  'X2   ' = 8,
+                  'p   ' = 9,
+                  'X2    ' = 10,
+                  'p    ' = 11) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Inflorescences",
+                 "Pollinaria Removed- 2018",
+                 "Pollinaria Removed- 2019",
+                 "Follicles",
+                 "Follicles per Inflorescence"),
+      colwidths = c(1, 2, 2, 2, 2, 2)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2  ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2   ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2    ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2    ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body")
+    )
+  }
+
+
+
+
+# CITY_DIST-----
+## ALL SITES
+
+best_mods_Q1.dist_list <- list(
+### Peduncles
+  peds_glmer_gradient_01,  
+### Pollinia
+  poll_glmer_gradient_01, #2018 data
+  poll_glmer_gradient_02,  #2019 data
+### Pods
+  pods_glmer_gradient_01,
+### Pods/Peduncle
+  podsperped_lmer_gradient_02
+
+)
+
+make_Q1Q2_Anova.1(best_mods_Q1.dist_list) %>%
+  width(j = 1, width = 2.4) %>%
+  width(j = 2:11, width = 0.8) %>%
+  italic(i = 2, j = 2:11, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Pollinaria removed was analyzed on a yearly basis due to issues with model convergence. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Dist_ANOVA.png"))
+
+
+
+
+
+## URBAN SITES
+best_mods_Q2.dist_list <- list(
+### Peduncles
+  peds_glmer_subtr_01,  
+### Pollinia
+  poll_glmer_subtr_01,
+### Pods
+  pods_glmer_subtr_03,
+### Pods/Peduncle
+  podsperped_lmer_subtr_08
+
+)
+
+
+make_Q1Q2_Anova(best_mods_Q2.dist_list) %>%
+  width(j = 1, width = 3.7) %>%
+  width(j = 2:9, width = 0.9) %>%
   italic(i = 2, j = 2:9, part = "header") %>%
-  add_footer_lines("QUESTION 2 (Urban sites only)") %>%
-  add_footer_lines("Predictor: Urbanization Score") %>%
+  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Dist_ANOVA.png"))
+
+
+
+
+
+# URB_SCORE-----
+## ALL SITES
+
+best_mods_Q1.urbscore_list <- list(
+### Peduncles
+  u_peds_glmer_gradient_01,  
+### Pollinia
+  u_poll_glmer_gradient_1,
+### Pods
+  u_pods_glmer_gradient_1,
+### Pods/Peduncle
+  u_podsperped_lmer_gradient_02
+
+)
+
+
+make_Q1Q2_Anova(best_mods_Q1.urbscore_list) %>%
+  width(j = 1, width = 2.4) %>%
+  width(j = 2:9, width = 0.8) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Urbscore_ANOVA.png"))
+
+
+
+
+
+
+
+
+
+
+## URBAN SITES
+
+best_mods_Q2.urbscore_list <- list(
+### Peduncles
+  u_peds_glmer_subtr_06,  
+### Pollinia
+  u_poll_glmer_subtr_01,
+### Pods
+  u_pods_glmer_subtr_03,
+### Pods/Peduncle
+  u_podsperped_lmer_subtr_09
+
+)
+
+
+make_Q1Q2_Anova(best_mods_Q2.urbscore_list) %>%
+  width(j = 1, width = 3.3) %>%
+  width(j = 2:9, width = 0.9) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Urbscore_ANOVA.png"))
-
-# WOULD HAVE TO BOLD AND ITALICIZE VALUES MANUALLY- DO LAST, IF EVER
-# %>%
-#   bold(j = c(3,5,7,9), ~ p  == "< 0.001" | p <= 0.05, ~ p) 
-# 
-# %>%
-#   italic(., ~ p > 0.05 & p <= 0.1, ~ p, italic = TRUE)
-  
-
-
-
-
 
 ```
 
