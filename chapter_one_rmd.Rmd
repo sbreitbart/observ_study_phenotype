@@ -317,6 +317,732 @@ write.csv(corr_df_spread,"corr_df_spread.csv", row.names = FALSE)
 ## Questions 1-2 (Traits along urb-rural gradient and urban subtransects)
 ### Model Selection
 #### Linear Models
+##### Peduncles
+###### GLMER (be sure to indicate that model is zero-inflated and minus 1, so results need to be explained with that in mind!!)
+####### City_dist, not urb_score
+######## All sites 
+```{r}
+# OLD- BEFORE ZERO-INFLATED MODEL -----
+# peds_glmer_gradient_01 <- glmer(Peduncles ~ (1|Patch_ID) +
+#                                   
+#                                   City_dist:Year +
+#                                   City_dist +
+#                                   Year,
+#                                 
+#                                 fertile,
+#                                 family = "poisson",
+#                                 glmerControl(optimizer="bobyqa",
+#                                              optCtrl = list(maxfun = 100000))) # not converging, but I don't get error messages when I use glmmTMB yet I get nearly identical ANOVA results, so I'll stick with this
+# 
+# # # the glmmTMB anova, for reference:
+# # glmmTMB::Anova.glmmTMB(glmmTMB::glmmTMB(Peduncles ~ (1|Patch_ID) + City_dist:Year +
+# #                                   City_dist +
+# #                                   Year,
+# #                                 data = fertile,
+# #                                 family = "poisson"), type = "II")
+# 
+# 
+# # all main effects and secondary interactions
+# peds_glmer_gradient_02 <- update(peds_glmer_gradient_01,
+#                                  . ~ . -City_dist:Year)
+# 
+# peds_glmer_gradient_list <- list(peds_glmer_gradient_01,
+#                                  peds_glmer_gradient_02)
+# 
+# formulas_peds <- data.frame(matrix(ncol = 0, nrow = 2))
+# formulas_peds$Model <- NA
+# formulas_peds$Formula <- NA
+# formulas_peds$r.squaredGLMM_R2m <- NA
+# formulas_peds$r.squaredGLMM_R2c <- NA
+# 
+# for (i in 1:length(peds_glmer_gradient_list)) {
+#   formulas_peds[i, 1] <- toString(i)
+#   formulas_peds[i, 2] <- toString(formula(peds_glmer_gradient_list[[i]]))
+#   formulas_peds[i, 3] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,1] %>%
+#     round(digits = 3)
+#   formulas_peds[i, 4] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,2] %>%
+#     round(digits = 3)
+# }
+# 
+# glance_peds <- do.call(rbind,
+#                        lapply(peds_glmer_gradient_list,
+#                               broom.mixed::glance)) %>%
+#   as.data.frame() %>%
+#   mutate(BestModels = case_when(
+#     AIC == min(AIC, na.rm=T) ~ "*",
+#     AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+#     TRUE ~ "")) 
+# 
+# bound_peds <- bind_cols(formulas_peds,
+#                         glance_peds %>%
+#                           dplyr::select(AIC, BestModels)) # Model 1 lowest AIC
+# 
+# 
+# summary(peds_glmer_gradient_01)
+# peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01) %T>%
+#   print() # interaction sig
+# 
+# # check residuals
+# plot(simulateResiduals(peds_glmer_gradient_01)) # not normal... looks underdispersed
+# testDispersion(simulateResiduals(peds_glmer_gradient_01)) # yup
+# 
+# # try generalized Poisson distribution w/glmmTMB
+# peds_glmer_gradient_01.1 <- glmmTMB(Peduncles ~ (1|Patch_ID) +
+#                                   
+#                                   City_dist:Year +
+#                                   City_dist +
+#                                   Year,
+#                                 
+#                                 fertile,
+#                                 family = "genpois")
+# 
+# # check residuals
+# plot(simulateResiduals(peds_glmer_gradient_01.1)) # didn't help. try negbin
+# 
+# 
+# peds_glmer_gradient_01.2 <- glmmTMB(Peduncles ~ (1|Patch_ID) +
+#                                   City_dist:Year +
+#                                   City_dist +
+#                                   Year,
+#                                 fertile,
+#                                 family = nbinom1())
+# # check residuals
+# plot(simulateResiduals(peds_glmer_gradient_01.2)) # didn't help. tried 'compois' (Conway-Maxwell Poisson distribution) which didn't help either.
+# 
+# ## Hurdle Poisson model
+# m1 <- glmmTMB(Peduncles ~ (1|Patch_ID) +
+#                                   City_dist:Year +
+#                                   City_dist +
+#                                   Year,
+#                                 fertile,
+#               zi = ~City_dist:Year + City_dist + Year,
+#               family = truncated_poisson)
+# 
+# # check residuals
+# plot(simulateResiduals(m1)) # didn't help
+
+# hist(AvgVars_byPatch$Peduncles, breaks = 16)
+
+# GOING TO SUBTRACT 1 AND THEN USE ZERO-INFLATED MODEL OR HURDLE MODEL TO DEAL WITH ONE-INFLATION-----
+
+fertile$Peduncles_minus1 <- fertile$Peduncles - 1
+
+## Hurdle Poisson model
+peds_glmer_gradient_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year,
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson)
+
+# check residuals
+plot(simulateResiduals(peds_glmer_gradient_01)) # BETTER! will stick with this one
+
+
+# all main effects and secondary interactions
+peds_glmer_gradient_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                  City_dist +
+                                  Year,
+                                fertile,
+              zi = ~City_dist + Year,
+              family = truncated_poisson)
+
+peds_glmer_gradient_list <- list(peds_glmer_gradient_01,
+                                 peds_glmer_gradient_02)
+
+formulas_peds <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_peds$Model <- NA
+formulas_peds$Formula <- NA
+# formulas_peds$r.squaredGLMM_R2m <- NA
+# formulas_peds$r.squaredGLMM_R2c <- NA
+
+# COMMENTING OUT R-SQ BC r.squaredGLMM cannot (yet) handle 'glmmTMB' object with zero-inflation
+
+for (i in 1:length(peds_glmer_gradient_list)) {
+  formulas_peds[i, 1] <- toString(i)
+  formulas_peds[i, 2] <- toString(formula(peds_glmer_gradient_list[[i]]))
+  # formulas_peds[i, 3] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,1] %>%
+  #   round(digits = 3)
+  # formulas_peds[i, 4] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,2] %>%
+  #   round(digits = 3)
+}
+
+glance_peds <- do.call(rbind,
+                       lapply(peds_glmer_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ ""))
+
+bound_peds <- bind_cols(formulas_peds,
+                        glance_peds %>%
+                          dplyr::select(AIC, BestModels)) # Model 1 lowest AIC
+
+
+summary(peds_glmer_gradient_01)
+peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01) %T>%
+  print() # year marg sig
+
+# check residuals
+plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
+
+
+```
+
+######## Urban sites
+```{r}
+# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
+
+## all main effects and secondary and tertiary interactions (full model)
+# peds_glmer_subtr_01 <- glmer(Peduncles ~ (1|Patch_ID) +
+#                                
+#                                City_dist:Year:Transect_ID + 
+#                                
+#                                Year:Transect_ID + 
+#                                City_dist:Transect_ID +
+#                                City_dist:Year +
+#                                
+#                                City_dist +
+#                                Year +
+#                                Transect_ID,
+#                              
+#                              fertile %>%
+#                                filter(Transect_ID != 'Rural'),
+#                              family = "poisson",
+#                              glmerControl(optimizer="bobyqa",
+#                                           optCtrl = list(maxfun = 100000)))
+# THIS MODEL IS ALSO ONE-INFLATED AND NEEDS THE SAME TREATMENT AS THE MODELS ABOVE
+
+# Full model
+peds_glmer_subtr_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
+                                Year:Transect_ID +
+                                City_dist:Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
+                                Year:Transect_ID +
+                                City_dist:Year:Transect_ID,
+                              family = truncated_poisson)
+
+# all main effects and secondary interactions
+peds_glmer_subtr_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                City_dist:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+# all main effects and 2/3 secondary interactions
+peds_glmer_subtr_03 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                # City_dist:Transect_ID +
+                                City_dist:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                # City_dist:Transect_ID +
+                                City_dist:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+peds_glmer_subtr_04 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                # City_dist:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                # City_dist:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+peds_glmer_subtr_05 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                City_dist:Year ,
+                                # Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID +
+                                City_dist:Year ,
+                                # Year:Transect_ID,
+                              family = truncated_poisson)
+
+# all main effects and 1/3 secondary interactions
+peds_glmer_subtr_06 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                # City_dist:Transect_ID +
+                                # City_dist:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                # City_dist:Transect_ID +
+                                # City_dist:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+peds_glmer_subtr_07 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID ,
+                                # City_dist:Year +
+                                # Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                City_dist:Transect_ID ,
+                                # City_dist:Year +
+                                # Year:Transect_ID,
+                              family = truncated_poisson)
+
+peds_glmer_subtr_08 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID +
+                                # City_dist:Transect_ID +
+                                City_dist:Year,
+                                # Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID +
+                                # City_dist:Transect_ID +
+                                City_dist:Year, 
+                                # Year:Transect_ID,
+                              family = truncated_poisson)
+
+# all main effects
+peds_glmer_subtr_09 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                City_dist +
+                                Year +
+                                Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~City_dist +
+                                Year +
+                                Transect_ID,
+                              family = truncated_poisson)
+
+peds_glmer_subtr_list <- list(peds_glmer_subtr_01,
+                               peds_glmer_subtr_02,
+                               peds_glmer_subtr_03,
+                               peds_glmer_subtr_04,
+                               peds_glmer_subtr_05,
+                               peds_glmer_subtr_06,
+                               peds_glmer_subtr_07,
+                               peds_glmer_subtr_08,
+                               peds_glmer_subtr_09)
+
+formulas_peds <- data.frame(matrix(ncol = 0, nrow = 9))
+formulas_peds$Model <- NA
+formulas_peds$Formula <- NA
+# formulas_peds$r.squaredGLMM_R2m <- NA
+# formulas_peds$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(peds_glmer_subtr_list)) {
+  formulas_peds[i, 1] <- toString(i)
+  formulas_peds[i, 2] <- toString(formula(peds_glmer_subtr_list[[i]]))
+  # formulas_peds[i, 3] <- r.squaredGLMM(peds_glmer_subtr_list[[i]])[1,1] %>%
+  #   round(digits = 3)
+  # formulas_peds[i, 4] <- r.squaredGLMM(peds_glmer_subtr_list[[i]])[1,2] %>%
+  #   round(digits = 3)
+}
+
+glance_peds <- do.call(rbind,
+                       lapply(peds_glmer_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_peds <- bind_cols(formulas_peds,
+                        glance_peds %>%
+                          dplyr::select(AIC, BestModels)) # Models 1, 3, 6 lowest AIC but best is 1
+
+# check residuals
+plot(simulateResiduals(peds_glmer_subtr_01)) # looks good
+plot(simulateResiduals(peds_glmer_subtr_03)) # looks good
+plot(simulateResiduals(peds_glmer_subtr_06)) # looks good
+
+
+summary(peds_glmer_subtr_01)
+peds_glmer_subtr_01_anova <- car::Anova(peds_glmer_subtr_01) %T>%
+  print()
+
+summary(peds_glmer_subtr_03)
+peds_glmer_subtr_03_anova <- car::Anova(peds_glmer_subtr_03) %T>%
+  print()
+
+summary(peds_glmer_subtr_06)
+peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06) %T>%
+  print()
+
+
+```
+
+
+####### urb_score, not City_dist
+######## All sites
+```{r}
+# u_peds_glmer_gradient_1 <- glmer(as.numeric(Peduncles) ~ (1|Patch_ID) + Urb_score * Year,
+#                                  fertile,
+#                                  family = "poisson",
+#                                  glmerControl(optimizer="bobyqa",
+#                                               optCtrl = list(maxfun = 100000)))
+# plot(simulateResiduals(u_peds_glmer_gradient_1)) # trying zero-inflated model like for city_dist models
+
+
+## Hurdle Poisson model
+u_peds_glmer_gradient_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                  Urb_score:Year +
+                                  Urb_score +
+                                  Year,
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson)
+
+# check residuals
+plot(simulateResiduals(u_peds_glmer_gradient_01)) # BETTER! will stick with this one
+
+
+# all main effects and secondary interactions
+u_peds_glmer_gradient_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                  Urb_score +
+                                  Year,
+                                fertile,
+              zi = ~Urb_score + Year,
+              family = truncated_poisson)
+
+u_peds_glmer_gradient_list <- list(u_peds_glmer_gradient_01,
+                                 u_peds_glmer_gradient_02)
+
+formulas_u_peds <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_u_peds$Model <- NA
+formulas_u_peds$Formula <- NA
+# formulas_u_peds$r.squaredGLMM_R2m <- NA
+# formulas_u_peds$r.squaredGLMM_R2c <- NA
+
+# COMMENTING OUT R-SQ BC r.squaredGLMM cannot (yet) handle 'glmmTMB' object with zero-inflation
+
+for (i in 1:length(u_peds_glmer_gradient_list)) {
+  formulas_u_peds[i, 1] <- toString(i)
+  formulas_u_peds[i, 2] <- toString(formula(u_peds_glmer_gradient_list[[i]]))
+  # formulas_u_peds[i, 3] <- r.squaredGLMM(u_peds_glmer_gradient_list[[i]])[1,1] %>%
+  #   round(digits = 3)
+  # formulas_u_peds[i, 4] <- r.squaredGLMM(u_peds_glmer_gradient_list[[i]])[1,2] %>%
+  #   round(digits = 3)
+}
+
+glance_u_peds <- do.call(rbind,
+                       lapply(u_peds_glmer_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ ""))
+
+bound_u_peds <- bind_cols(formulas_u_peds,
+                        glance_u_peds %>%
+                          dplyr::select(AIC, BestModels)) # Model 1 lowest AIC
+
+
+summary(u_peds_glmer_gradient_01)
+u_peds_glmer_gradient_01_anova <- car::Anova(u_peds_glmer_gradient_01) %T>%
+  print() # year marg sig
+
+# check residuals
+plot(simulateResiduals(u_peds_glmer_gradient_01)) # again, fine
+
+
+```
+
+######## Urban sites
+```{r}
+# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
+
+## all main effects and secondary and tertiary interactions (full model)
+# u_peds_glmer_subtr_01 <- glmer(Peduncles ~ (1|Patch_ID) +
+#                                
+#                                Year:Transect_ID:Urb_score + 
+#                                
+#                                Year:Transect_ID + 
+#                                Urb_score:Transect_ID +
+#                                Urb_score:Year +
+#                                
+#                                Urb_score +
+#                                Year +
+#                                Transect_ID,
+#                              
+#                              fertile %>%
+#                                filter(Transect_ID != 'Rural'),
+#                              family = "poisson",
+#                              glmerControl(optimizer="bobyqa",
+#                                           optCtrl = list(maxfun = 100000)))
+# THIS MODEL IS ALSO ONE-INFLATED AND NEEDS THE SAME TREATMENT AS THE MODELS ABOVE
+
+# Full model
+u_peds_glmer_subtr_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                Urb_score:Year +
+                                Year:Transect_ID +
+                                Year:Transect_ID:Urb_score,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                Urb_score:Year +
+                                Year:Transect_ID +
+                                Year:Transect_ID:Urb_score,
+                              family = truncated_poisson)
+
+# all main effects and secondary interactions
+u_peds_glmer_subtr_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                Urb_score:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                Urb_score:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+# all main effects and 2/3 secondary interactions
+u_peds_glmer_subtr_03 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                # Transect_ID:Urb_score +
+                                Urb_score:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                # Transect_ID:Urb_score +
+                                Urb_score:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+u_peds_glmer_subtr_04 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                # Urb_score:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                # Urb_score:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+u_peds_glmer_subtr_05 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                Urb_score:Year ,
+                                # Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score +
+                                Urb_score:Year ,
+                                # Year:Transect_ID,
+                              family = truncated_poisson)
+
+# all main effects and 1/3 secondary interactions
+u_peds_glmer_subtr_06 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                # Transect_ID:Urb_score +
+                                # Urb_score:Year +
+                                Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                # Transect_ID:Urb_score +
+                                # Urb_score:Year +
+                                Year:Transect_ID,
+                              family = truncated_poisson)
+
+u_peds_glmer_subtr_07 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score ,
+                                # Urb_score:Year +
+                                # Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                Transect_ID:Urb_score ,
+                                # Urb_score:Year +
+                                # Year:Transect_ID,
+                              family = truncated_poisson)
+
+u_peds_glmer_subtr_08 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID +
+                                # Transect_ID:Urb_score +
+                                Urb_score:Year,
+                                # Year:Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID +
+                                # Transect_ID:Urb_score +
+                                Urb_score:Year, 
+                                # Year:Transect_ID,
+                              family = truncated_poisson)
+
+# all main effects
+u_peds_glmer_subtr_09 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                Urb_score +
+                                Year +
+                                Transect_ID,
+                              fertile %>%
+                                  filter(Transect_ID != 'Rural'),
+                              zi = ~Urb_score +
+                                Year +
+                                Transect_ID,
+                              family = truncated_poisson)
+
+u_peds_glmer_subtr_list <- list(u_peds_glmer_subtr_01,
+                               u_peds_glmer_subtr_02,
+                               u_peds_glmer_subtr_03,
+                               u_peds_glmer_subtr_04,
+                               u_peds_glmer_subtr_05,
+                               u_peds_glmer_subtr_06,
+                               u_peds_glmer_subtr_07,
+                               u_peds_glmer_subtr_08,
+                               u_peds_glmer_subtr_09)
+
+formulas_u_peds <- data.frame(matrix(ncol = 0, nrow = 9))
+formulas_u_peds$Model <- NA
+formulas_u_peds$Formula <- NA
+# formulas_u_peds$r.squaredGLMM_R2m <- NA
+# formulas_u_peds$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(u_peds_glmer_subtr_list)) {
+  formulas_u_peds[i, 1] <- toString(i)
+  formulas_u_peds[i, 2] <- toString(formula(u_peds_glmer_subtr_list[[i]]))
+  # formulas_u_peds[i, 3] <- r.squaredGLMM(u_peds_glmer_subtr_list[[i]])[1,1] %>%
+  #   round(digits = 3)
+  # formulas_u_peds[i, 4] <- r.squaredGLMM(u_peds_glmer_subtr_list[[i]])[1,2] %>%
+  #   round(digits = 3)
+}
+
+glance_u_peds <- do.call(rbind,
+                       lapply(u_peds_glmer_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_u_peds <- bind_cols(formulas_u_peds,
+                        glance_u_peds %>%
+                          dplyr::select(AIC, BestModels)) # Models 3,4,6 lowest AIC but best is 6
+
+# check residuals
+plot(simulateResiduals(u_peds_glmer_subtr_03)) # looks good
+plot(simulateResiduals(u_peds_glmer_subtr_04)) # looks good
+plot(simulateResiduals(u_peds_glmer_subtr_06)) # looks good
+
+
+summary(u_peds_glmer_subtr_03)
+u_peds_glmer_subtr_03_anova <- car::Anova(u_peds_glmer_subtr_03) %T>%
+  print()
+
+summary(u_peds_glmer_subtr_04)
+u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04) %T>%
+  print()
+
+summary(u_peds_glmer_subtr_06)
+u_peds_glmer_subtr_06_anova <- car::Anova(u_peds_glmer_subtr_06) %T>%
+  print()
+
+
+```
+
 ##### Pollinia
 ###### GLMER- no transformations needed
 ####### City_dist, not Urb_score
@@ -1312,732 +2038,6 @@ u_pods_glmer_subtr_03_anova <- car::Anova(u_pods_glmer_subtr_03) %T>%
 ```
 
 
-##### Peduncles
-###### GLMER (be sure to indicate that model is zero-inflated and minus 1, so results need to be explained with that in mind!!)
-####### City_dist, not urb_score
-######## All sites 
-```{r}
-# OLD- BEFORE ZERO-INFLATED MODEL -----
-# peds_glmer_gradient_01 <- glmer(Peduncles ~ (1|Patch_ID) +
-#                                   
-#                                   City_dist:Year +
-#                                   City_dist +
-#                                   Year,
-#                                 
-#                                 fertile,
-#                                 family = "poisson",
-#                                 glmerControl(optimizer="bobyqa",
-#                                              optCtrl = list(maxfun = 100000))) # not converging, but I don't get error messages when I use glmmTMB yet I get nearly identical ANOVA results, so I'll stick with this
-# 
-# # # the glmmTMB anova, for reference:
-# # glmmTMB::Anova.glmmTMB(glmmTMB::glmmTMB(Peduncles ~ (1|Patch_ID) + City_dist:Year +
-# #                                   City_dist +
-# #                                   Year,
-# #                                 data = fertile,
-# #                                 family = "poisson"), type = "II")
-# 
-# 
-# # all main effects and secondary interactions
-# peds_glmer_gradient_02 <- update(peds_glmer_gradient_01,
-#                                  . ~ . -City_dist:Year)
-# 
-# peds_glmer_gradient_list <- list(peds_glmer_gradient_01,
-#                                  peds_glmer_gradient_02)
-# 
-# formulas_peds <- data.frame(matrix(ncol = 0, nrow = 2))
-# formulas_peds$Model <- NA
-# formulas_peds$Formula <- NA
-# formulas_peds$r.squaredGLMM_R2m <- NA
-# formulas_peds$r.squaredGLMM_R2c <- NA
-# 
-# for (i in 1:length(peds_glmer_gradient_list)) {
-#   formulas_peds[i, 1] <- toString(i)
-#   formulas_peds[i, 2] <- toString(formula(peds_glmer_gradient_list[[i]]))
-#   formulas_peds[i, 3] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,1] %>%
-#     round(digits = 3)
-#   formulas_peds[i, 4] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,2] %>%
-#     round(digits = 3)
-# }
-# 
-# glance_peds <- do.call(rbind,
-#                        lapply(peds_glmer_gradient_list,
-#                               broom.mixed::glance)) %>%
-#   as.data.frame() %>%
-#   mutate(BestModels = case_when(
-#     AIC == min(AIC, na.rm=T) ~ "*",
-#     AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-#     TRUE ~ "")) 
-# 
-# bound_peds <- bind_cols(formulas_peds,
-#                         glance_peds %>%
-#                           dplyr::select(AIC, BestModels)) # Model 1 lowest AIC
-# 
-# 
-# summary(peds_glmer_gradient_01)
-# peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01) %T>%
-#   print() # interaction sig
-# 
-# # check residuals
-# plot(simulateResiduals(peds_glmer_gradient_01)) # not normal... looks underdispersed
-# testDispersion(simulateResiduals(peds_glmer_gradient_01)) # yup
-# 
-# # try generalized Poisson distribution w/glmmTMB
-# peds_glmer_gradient_01.1 <- glmmTMB(Peduncles ~ (1|Patch_ID) +
-#                                   
-#                                   City_dist:Year +
-#                                   City_dist +
-#                                   Year,
-#                                 
-#                                 fertile,
-#                                 family = "genpois")
-# 
-# # check residuals
-# plot(simulateResiduals(peds_glmer_gradient_01.1)) # didn't help. try negbin
-# 
-# 
-# peds_glmer_gradient_01.2 <- glmmTMB(Peduncles ~ (1|Patch_ID) +
-#                                   City_dist:Year +
-#                                   City_dist +
-#                                   Year,
-#                                 fertile,
-#                                 family = nbinom1())
-# # check residuals
-# plot(simulateResiduals(peds_glmer_gradient_01.2)) # didn't help. tried 'compois' (Conway-Maxwell Poisson distribution) which didn't help either.
-# 
-# ## Hurdle Poisson model
-# m1 <- glmmTMB(Peduncles ~ (1|Patch_ID) +
-#                                   City_dist:Year +
-#                                   City_dist +
-#                                   Year,
-#                                 fertile,
-#               zi = ~City_dist:Year + City_dist + Year,
-#               family = truncated_poisson)
-# 
-# # check residuals
-# plot(simulateResiduals(m1)) # didn't help
-
-# hist(AvgVars_byPatch$Peduncles, breaks = 16)
-
-# GOING TO SUBTRACT 1 AND THEN USE ZERO-INFLATED MODEL OR HURDLE MODEL TO DEAL WITH ONE-INFLATION-----
-
-fertile$Peduncles_minus1 <- fertile$Peduncles - 1
-
-## Hurdle Poisson model
-peds_glmer_gradient_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                  City_dist:Year +
-                                  City_dist +
-                                  Year,
-                                fertile,
-              zi = ~City_dist:Year + City_dist + Year,
-              family = truncated_poisson)
-
-# check residuals
-plot(simulateResiduals(peds_glmer_gradient_01)) # BETTER! will stick with this one
-
-
-# all main effects and secondary interactions
-peds_glmer_gradient_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                  City_dist +
-                                  Year,
-                                fertile,
-              zi = ~City_dist + Year,
-              family = truncated_poisson)
-
-peds_glmer_gradient_list <- list(peds_glmer_gradient_01,
-                                 peds_glmer_gradient_02)
-
-formulas_peds <- data.frame(matrix(ncol = 0, nrow = 2))
-formulas_peds$Model <- NA
-formulas_peds$Formula <- NA
-# formulas_peds$r.squaredGLMM_R2m <- NA
-# formulas_peds$r.squaredGLMM_R2c <- NA
-
-# COMMENTING OUT R-SQ BC r.squaredGLMM cannot (yet) handle 'glmmTMB' object with zero-inflation
-
-for (i in 1:length(peds_glmer_gradient_list)) {
-  formulas_peds[i, 1] <- toString(i)
-  formulas_peds[i, 2] <- toString(formula(peds_glmer_gradient_list[[i]]))
-  # formulas_peds[i, 3] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,1] %>%
-  #   round(digits = 3)
-  # formulas_peds[i, 4] <- r.squaredGLMM(peds_glmer_gradient_list[[i]])[1,2] %>%
-  #   round(digits = 3)
-}
-
-glance_peds <- do.call(rbind,
-                       lapply(peds_glmer_gradient_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ ""))
-
-bound_peds <- bind_cols(formulas_peds,
-                        glance_peds %>%
-                          dplyr::select(AIC, BestModels)) # Model 1 lowest AIC
-
-
-summary(peds_glmer_gradient_01)
-peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01) %T>%
-  print() # year marg sig
-
-# check residuals
-plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
-
-
-```
-
-######## Urban sites
-```{r}
-# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
-
-## all main effects and secondary and tertiary interactions (full model)
-# peds_glmer_subtr_01 <- glmer(Peduncles ~ (1|Patch_ID) +
-#                                
-#                                City_dist:Year:Transect_ID + 
-#                                
-#                                Year:Transect_ID + 
-#                                City_dist:Transect_ID +
-#                                City_dist:Year +
-#                                
-#                                City_dist +
-#                                Year +
-#                                Transect_ID,
-#                              
-#                              fertile %>%
-#                                filter(Transect_ID != 'Rural'),
-#                              family = "poisson",
-#                              glmerControl(optimizer="bobyqa",
-#                                           optCtrl = list(maxfun = 100000)))
-# THIS MODEL IS ALSO ONE-INFLATED AND NEEDS THE SAME TREATMENT AS THE MODELS ABOVE
-
-# Full model
-peds_glmer_subtr_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                City_dist:Year +
-                                Year:Transect_ID +
-                                City_dist:Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                City_dist:Year +
-                                Year:Transect_ID +
-                                City_dist:Year:Transect_ID,
-                              family = truncated_poisson)
-
-# all main effects and secondary interactions
-peds_glmer_subtr_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                City_dist:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                City_dist:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-# all main effects and 2/3 secondary interactions
-peds_glmer_subtr_03 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                # City_dist:Transect_ID +
-                                City_dist:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                # City_dist:Transect_ID +
-                                City_dist:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-peds_glmer_subtr_04 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                # City_dist:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                # City_dist:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-peds_glmer_subtr_05 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                City_dist:Year ,
-                                # Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID +
-                                City_dist:Year ,
-                                # Year:Transect_ID,
-                              family = truncated_poisson)
-
-# all main effects and 1/3 secondary interactions
-peds_glmer_subtr_06 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                # City_dist:Transect_ID +
-                                # City_dist:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                # City_dist:Transect_ID +
-                                # City_dist:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-peds_glmer_subtr_07 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID ,
-                                # City_dist:Year +
-                                # Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                City_dist:Transect_ID ,
-                                # City_dist:Year +
-                                # Year:Transect_ID,
-                              family = truncated_poisson)
-
-peds_glmer_subtr_08 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID +
-                                # City_dist:Transect_ID +
-                                City_dist:Year,
-                                # Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID +
-                                # City_dist:Transect_ID +
-                                City_dist:Year, 
-                                # Year:Transect_ID,
-                              family = truncated_poisson)
-
-# all main effects
-peds_glmer_subtr_09 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                City_dist +
-                                Year +
-                                Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~City_dist +
-                                Year +
-                                Transect_ID,
-                              family = truncated_poisson)
-
-peds_glmer_subtr_list <- list(peds_glmer_subtr_01,
-                               peds_glmer_subtr_02,
-                               peds_glmer_subtr_03,
-                               peds_glmer_subtr_04,
-                               peds_glmer_subtr_05,
-                               peds_glmer_subtr_06,
-                               peds_glmer_subtr_07,
-                               peds_glmer_subtr_08,
-                               peds_glmer_subtr_09)
-
-formulas_peds <- data.frame(matrix(ncol = 0, nrow = 9))
-formulas_peds$Model <- NA
-formulas_peds$Formula <- NA
-# formulas_peds$r.squaredGLMM_R2m <- NA
-# formulas_peds$r.squaredGLMM_R2c <- NA
-
-for (i in 1:length(peds_glmer_subtr_list)) {
-  formulas_peds[i, 1] <- toString(i)
-  formulas_peds[i, 2] <- toString(formula(peds_glmer_subtr_list[[i]]))
-  # formulas_peds[i, 3] <- r.squaredGLMM(peds_glmer_subtr_list[[i]])[1,1] %>%
-  #   round(digits = 3)
-  # formulas_peds[i, 4] <- r.squaredGLMM(peds_glmer_subtr_list[[i]])[1,2] %>%
-  #   round(digits = 3)
-}
-
-glance_peds <- do.call(rbind,
-                       lapply(peds_glmer_subtr_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ "")) 
-
-bound_peds <- bind_cols(formulas_peds,
-                        glance_peds %>%
-                          dplyr::select(AIC, BestModels)) # Models 1, 3, 6 lowest AIC but best is 1
-
-# check residuals
-plot(simulateResiduals(peds_glmer_subtr_01)) # looks good
-plot(simulateResiduals(peds_glmer_subtr_03)) # looks good
-plot(simulateResiduals(peds_glmer_subtr_06)) # looks good
-
-
-summary(peds_glmer_subtr_01)
-peds_glmer_subtr_01_anova <- car::Anova(peds_glmer_subtr_01) %T>%
-  print()
-
-summary(peds_glmer_subtr_03)
-peds_glmer_subtr_03_anova <- car::Anova(peds_glmer_subtr_03) %T>%
-  print()
-
-summary(peds_glmer_subtr_06)
-peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06) %T>%
-  print()
-
-
-```
-
-
-####### urb_score, not City_dist
-######## All sites
-```{r}
-# u_peds_glmer_gradient_1 <- glmer(as.numeric(Peduncles) ~ (1|Patch_ID) + Urb_score * Year,
-#                                  fertile,
-#                                  family = "poisson",
-#                                  glmerControl(optimizer="bobyqa",
-#                                               optCtrl = list(maxfun = 100000)))
-# plot(simulateResiduals(u_peds_glmer_gradient_1)) # trying zero-inflated model like for city_dist models
-
-
-## Hurdle Poisson model
-u_peds_glmer_gradient_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                  Urb_score:Year +
-                                  Urb_score +
-                                  Year,
-                                fertile,
-              zi = ~City_dist:Year + City_dist + Year,
-              family = truncated_poisson)
-
-# check residuals
-plot(simulateResiduals(u_peds_glmer_gradient_01)) # BETTER! will stick with this one
-
-
-# all main effects and secondary interactions
-u_peds_glmer_gradient_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                  Urb_score +
-                                  Year,
-                                fertile,
-              zi = ~Urb_score + Year,
-              family = truncated_poisson)
-
-u_peds_glmer_gradient_list <- list(u_peds_glmer_gradient_01,
-                                 u_peds_glmer_gradient_02)
-
-formulas_u_peds <- data.frame(matrix(ncol = 0, nrow = 2))
-formulas_u_peds$Model <- NA
-formulas_u_peds$Formula <- NA
-# formulas_u_peds$r.squaredGLMM_R2m <- NA
-# formulas_u_peds$r.squaredGLMM_R2c <- NA
-
-# COMMENTING OUT R-SQ BC r.squaredGLMM cannot (yet) handle 'glmmTMB' object with zero-inflation
-
-for (i in 1:length(u_peds_glmer_gradient_list)) {
-  formulas_u_peds[i, 1] <- toString(i)
-  formulas_u_peds[i, 2] <- toString(formula(u_peds_glmer_gradient_list[[i]]))
-  # formulas_u_peds[i, 3] <- r.squaredGLMM(u_peds_glmer_gradient_list[[i]])[1,1] %>%
-  #   round(digits = 3)
-  # formulas_u_peds[i, 4] <- r.squaredGLMM(u_peds_glmer_gradient_list[[i]])[1,2] %>%
-  #   round(digits = 3)
-}
-
-glance_u_peds <- do.call(rbind,
-                       lapply(u_peds_glmer_gradient_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ ""))
-
-bound_u_peds <- bind_cols(formulas_u_peds,
-                        glance_u_peds %>%
-                          dplyr::select(AIC, BestModels)) # Model 1 lowest AIC
-
-
-summary(u_peds_glmer_gradient_01)
-u_peds_glmer_gradient_01_anova <- car::Anova(u_peds_glmer_gradient_01) %T>%
-  print() # year marg sig
-
-# check residuals
-plot(simulateResiduals(u_peds_glmer_gradient_01)) # again, fine
-
-
-```
-
-######## Urban sites
-```{r}
-# GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
-
-## all main effects and secondary and tertiary interactions (full model)
-# u_peds_glmer_subtr_01 <- glmer(Peduncles ~ (1|Patch_ID) +
-#                                
-#                                Year:Transect_ID:Urb_score + 
-#                                
-#                                Year:Transect_ID + 
-#                                Urb_score:Transect_ID +
-#                                Urb_score:Year +
-#                                
-#                                Urb_score +
-#                                Year +
-#                                Transect_ID,
-#                              
-#                              fertile %>%
-#                                filter(Transect_ID != 'Rural'),
-#                              family = "poisson",
-#                              glmerControl(optimizer="bobyqa",
-#                                           optCtrl = list(maxfun = 100000)))
-# THIS MODEL IS ALSO ONE-INFLATED AND NEEDS THE SAME TREATMENT AS THE MODELS ABOVE
-
-# Full model
-u_peds_glmer_subtr_01 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                Urb_score:Year +
-                                Year:Transect_ID +
-                                Year:Transect_ID:Urb_score,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                Urb_score:Year +
-                                Year:Transect_ID +
-                                Year:Transect_ID:Urb_score,
-                              family = truncated_poisson)
-
-# all main effects and secondary interactions
-u_peds_glmer_subtr_02 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                Urb_score:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                Urb_score:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-# all main effects and 2/3 secondary interactions
-u_peds_glmer_subtr_03 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                # Transect_ID:Urb_score +
-                                Urb_score:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                # Transect_ID:Urb_score +
-                                Urb_score:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-u_peds_glmer_subtr_04 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                # Urb_score:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                # Urb_score:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-u_peds_glmer_subtr_05 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                Urb_score:Year ,
-                                # Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score +
-                                Urb_score:Year ,
-                                # Year:Transect_ID,
-                              family = truncated_poisson)
-
-# all main effects and 1/3 secondary interactions
-u_peds_glmer_subtr_06 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                # Transect_ID:Urb_score +
-                                # Urb_score:Year +
-                                Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                # Transect_ID:Urb_score +
-                                # Urb_score:Year +
-                                Year:Transect_ID,
-                              family = truncated_poisson)
-
-u_peds_glmer_subtr_07 <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score ,
-                                # Urb_score:Year +
-                                # Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                Transect_ID:Urb_score ,
-                                # Urb_score:Year +
-                                # Year:Transect_ID,
-                              family = truncated_poisson)
-
-u_peds_glmer_subtr_08 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID +
-                                # Transect_ID:Urb_score +
-                                Urb_score:Year,
-                                # Year:Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID +
-                                # Transect_ID:Urb_score +
-                                Urb_score:Year, 
-                                # Year:Transect_ID,
-                              family = truncated_poisson)
-
-# all main effects
-u_peds_glmer_subtr_09 <-  glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
-                                Urb_score +
-                                Year +
-                                Transect_ID,
-                              fertile %>%
-                                  filter(Transect_ID != 'Rural'),
-                              zi = ~Urb_score +
-                                Year +
-                                Transect_ID,
-                              family = truncated_poisson)
-
-u_peds_glmer_subtr_list <- list(u_peds_glmer_subtr_01,
-                               u_peds_glmer_subtr_02,
-                               u_peds_glmer_subtr_03,
-                               u_peds_glmer_subtr_04,
-                               u_peds_glmer_subtr_05,
-                               u_peds_glmer_subtr_06,
-                               u_peds_glmer_subtr_07,
-                               u_peds_glmer_subtr_08,
-                               u_peds_glmer_subtr_09)
-
-formulas_u_peds <- data.frame(matrix(ncol = 0, nrow = 9))
-formulas_u_peds$Model <- NA
-formulas_u_peds$Formula <- NA
-# formulas_u_peds$r.squaredGLMM_R2m <- NA
-# formulas_u_peds$r.squaredGLMM_R2c <- NA
-
-for (i in 1:length(u_peds_glmer_subtr_list)) {
-  formulas_u_peds[i, 1] <- toString(i)
-  formulas_u_peds[i, 2] <- toString(formula(u_peds_glmer_subtr_list[[i]]))
-  # formulas_u_peds[i, 3] <- r.squaredGLMM(u_peds_glmer_subtr_list[[i]])[1,1] %>%
-  #   round(digits = 3)
-  # formulas_u_peds[i, 4] <- r.squaredGLMM(u_peds_glmer_subtr_list[[i]])[1,2] %>%
-  #   round(digits = 3)
-}
-
-glance_u_peds <- do.call(rbind,
-                       lapply(u_peds_glmer_subtr_list,
-                              broom.mixed::glance)) %>%
-  as.data.frame() %>%
-  mutate(BestModels = case_when(
-    AIC == min(AIC, na.rm=T) ~ "*",
-    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
-    TRUE ~ "")) 
-
-bound_u_peds <- bind_cols(formulas_u_peds,
-                        glance_u_peds %>%
-                          dplyr::select(AIC, BestModels)) # Models 3,4,6 lowest AIC but best is 6
-
-# check residuals
-plot(simulateResiduals(u_peds_glmer_subtr_03)) # looks good
-plot(simulateResiduals(u_peds_glmer_subtr_04)) # looks good
-plot(simulateResiduals(u_peds_glmer_subtr_06)) # looks good
-
-
-summary(u_peds_glmer_subtr_03)
-u_peds_glmer_subtr_03_anova <- car::Anova(u_peds_glmer_subtr_03) %T>%
-  print()
-
-summary(u_peds_glmer_subtr_04)
-u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04) %T>%
-  print()
-
-summary(u_peds_glmer_subtr_06)
-u_peds_glmer_subtr_06_anova <- car::Anova(u_peds_glmer_subtr_06) %T>%
-  print()
-
-
-```
-
 ##### Pods per peduncle (i.e. follicles per inflorescence)
 ###### LMER
 ####### City_dist, not urb-score
@@ -2741,9 +2741,9 @@ tidy_sb <- function(model){
       dplyr::mutate(Significance = case_when(p.value < 0.001 ~ "***",
                                              p.value < 0.01 ~ "**",
                                              p.value <= 0.05 ~ "*")) %>%
+      dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
       mutate_if(is.numeric, round, 3))      %>%
       dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
-      dplyr::mutate(., AIC = AIC(model)) %>%
       dplyr::select(., -df) %>%
       dplyr::rename(., Chi_sq = statistic,
                     Predictor = term,
@@ -3150,6 +3150,214 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
 ##### AIC<2 from best models: Inflors, pollen, pods, pods/inflor
 ```{r}
 
+# CITY_DIST-----
+## ALL SITES-----
+### Peduncles- NONE- only one best model
+### Pollinia-  NONE because each model analyzed year separately
+### Pods-      NONE- only one best model
+### ****Pods/Peduncle:  podsperped_lmer_gradient_01
+
+
+height_lmer_gradient_02 %>%
+  tidy_sb() %>%
+    as.data.frame() %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance",
+                                 # "AIC",
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'p' = 3) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Follicles per Inflorescence"),
+      colwidths = c(1, 3)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:4, align = "center", part = "body") %>%
+    align(j = 2:4, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+  width(j = 1, width = 1.8) %>%
+  width(j = 2:4, width = 1) %>%
+  italic(i = 2, j = 2:3, part = "header") %>%
+  merge_at(i = 1:2, j = 4 ) %>%
+  fix_border_issues() %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2), p-values (p), and AIC obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q1_Dist_ANOVA_altmodels.png"))
+
+
+
+
+## URBAN SITES-----
+alt_best_mods_Q2.dist_list <- list(
+### Peduncles
+  peds_glmer_subtr_03,
+  peds_glmer_subtr_06,  
+### Pollinia
+  poll_glmer_subtr_03,
+### Pods
+  pods_glmer_subtr_02,
+  pods_glmer_subtr_08,
+### Pods/Peduncle
+  podsperped_lmer_subtr_03,
+  podsperped_lmer_subtr_05
+
+)
+
+
+
+lapply(alt_best_mods_Q2.dist_list, tidy_sb) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 # "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'p' = 3,
+                  'AIC' = 4,
+                  'X2 ' = 5,
+                  'p ' = 6,
+                  'AIC ' = 7,
+                  'X2  ' = 8,
+                  'p  ' = 9,
+                  'AIC  ' = 10,
+                  'X2   ' = 11,
+                  'p   ' = 12,
+                  'AIC   ' = 13,
+                  'X2    ' = 14,
+                  'p    ' = 15,
+                  'AIC    ' = 16,
+                  'X2     ' = 17,
+                  'p     ' = 18,
+                  'AIC     ' = 19,
+                  'X2      ' = 20,
+                  'p      ' = 21,
+                  'AIC      ' = 22) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Inflorescences, Alt. Model 1",
+                 "Inflorescences, Alt. Model 2",
+                 "Pollinaria Removed, Alt. Model 1",
+                 "Follicles, Alt. Model 1",
+                 "Follicles, Alt. Model 2",
+                 "Follicles per Inflorescence, Alt. Model 1",
+                 "Follicles per Inflorescence, Alt. Model 2"),
+      colwidths = c(1, 3, 3, 3, 3, 3, 3, 3)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:22, align = "center", part = "body") %>%
+    align(j = 2:22, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2  ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2   ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2    ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2    ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2     ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2     ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2      ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2      ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 1.8) %>%
+  width(j = 2:22, width = 1) %>%
+  italic(i = 2, j = 2:22, part = "header") %>%
+  merge_at(i = 1:6, j = 4 ) %>%
+  merge_at(i = 1:6, j = 7 ) %>%
+  merge_at(i = 1:6, j = 10 ) %>%
+  merge_at(i = 1:6, j = 13 ) %>%
+  merge_at(i = 1:6, j = 16) %>%
+  merge_at(i = 1:6, j = 19) %>%
+  merge_at(i = 1:6, j = 22) %>%
+  fix_border_issues() %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2), p-values (p), and AIC values obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q2_Dist_ANOVA_altmodels.png"))
+
+
+
+
+# URB_SCORE-----
+## ALL SITES
+
+alt_best_mods_Q1.urbscore_list <- list(
+### Peduncles- NONE- only 1 best model
+### Pollinia
+  u_poll_glmer_gradient_1.1,
+### Pods-      NONE- only 1 best model
+### Pods/Peduncle
+  u_podsperped_lmer_gradient_01
+
+)
+
+
+
+
+## URBAN SITES
+
+alt_best_mods_Q2.urbscore_list <- list(
+### Peduncles
+  u_peds_glmer_subtr_03,
+  u_peds_glmer_subtr_04,  
+### Pollinia- NONE- only one best model
+### Pods
+  u_pods_glmer_subtr_02,
+### Pods/Peduncle
+  u_podsperped_lmer_subtr_06,
+  u_podsperped_lmer_subtr_07,
+  u_podsperped_lmer_subtr_08
+
+)
 ```
 ##### AIC<2 from best models: height
 ```{r}
