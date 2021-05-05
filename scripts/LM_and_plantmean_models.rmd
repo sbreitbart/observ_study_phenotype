@@ -1813,73 +1813,186 @@ u_podsperped_lm_gradient_02_anova <- car::Anova(u_podsperped_lm_gradient_02) %T>
 
 ### With transect
 #### Diagnostics
-##### City_dist- USE SQRT TRANSFORMATION
+##### City_dist- No transformation necessary
 ```{r}
-lm(pods_per_ped_sqrt ~ City_dist * Year * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural'))
+
+podsperped_lm_subtr_01 <- lm(pods_per_ped ~ City_dist * Year * Transect_ID,
+                 data = (fertile_pops_all %>%
+                           dplyr::filter(Transect_ID != "Rural")))
 
 par(mfrow=c(2,2))
-plot(lm(pods_per_ped_sqrt ~ City_dist * Year * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural')))
-
-summary(lm(pods_per_ped_sqrt ~ City_dist * Year * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural')))
-
-ggqqplot(fertile_pops_all %>% filter(Transect_ID != 'Rural')$pods_per_ped_sqrt)
+plot(podsperped_lm_subtr_01)
 
 # Histogram
-gg_reshist(lm(pods_per_ped_sqrt ~ City_dist * Year * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural')) , bins=20)
+gg_reshist(podsperped_lm_subtr_01, bins=15) # looks good
 
-# I think it looks normal enough.
+
+
+# all main effects and secondary interactions
+podsperped_lm_subtr_02 <- update(podsperped_lm_subtr_01,
+                              . ~ . -City_dist:Year:Transect_ID)
+
+# all main effects and 2/3 secondary interactions
+podsperped_lm_subtr_03 <- update(podsperped_lm_subtr_02,
+                              . ~ . -City_dist:Transect_ID)
+podsperped_lm_subtr_04 <- update(podsperped_lm_subtr_02,
+                              . ~ . -City_dist:Year)
+podsperped_lm_subtr_05 <- update(podsperped_lm_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+podsperped_lm_subtr_06 <- update(podsperped_lm_subtr_03,
+                              . ~ . -City_dist:Year)
+podsperped_lm_subtr_07 <- update(podsperped_lm_subtr_04,
+                              . ~ . -Year:Transect_ID)
+podsperped_lm_subtr_08 <- update(podsperped_lm_subtr_05,
+                              . ~ . -City_dist:Transect_ID)
+
+# all main effects
+podsperped_lm_subtr_09 <- update(podsperped_lm_subtr_08,
+                              . ~ . -City_dist:Year)
 ```
-
 
 ##### Urb_score- No transformation necessary
 ```{r}
 
-diag_urb_podperped_2 <- lm(pods_per_ped ~ Urb_score * Year * Transect_ID, data = urb_scores_podperped)
+u_podsperped_lm_subtr_01 <- lm(pods_per_ped ~ Urb_score * Year * Transect_ID,
+                 data = (fertile_pops_all %>%
+                           dplyr::filter(Transect_ID != "Rural")))
 
 par(mfrow=c(2,2))
-plot(diag_urb_podperped_2)
-
-ggqqplot(urb_scores_podperped$pods_per_ped)
-bptest(diag_urb_podperped_2)
-# homoskedastic ?
+plot(u_podsperped_lm_subtr_01)
 
 # Histogram
-gg_reshist(diag_urb_podperped_2, bins=20)
-shapiro.test((urb_scores_podperped$pods_per_ped))
+gg_reshist(u_podsperped_lm_subtr_01, bins=15) # looks good
 
-# Slight right skew but overall looks close to normal
 
+
+# all main effects and secondary interactions
+u_podsperped_lm_subtr_02 <- update(u_podsperped_lm_subtr_01,
+                              . ~ . -Urb_score:Year:Transect_ID)
+
+# all main effects and 2/3 secondary interactions
+u_podsperped_lm_subtr_03 <- update(u_podsperped_lm_subtr_02,
+                              . ~ . -Urb_score:Transect_ID)
+u_podsperped_lm_subtr_04 <- update(u_podsperped_lm_subtr_02,
+                              . ~ . -Urb_score:Year)
+u_podsperped_lm_subtr_05 <- update(u_podsperped_lm_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+u_podsperped_lm_subtr_06 <- update(u_podsperped_lm_subtr_03,
+                              . ~ . -Urb_score:Year)
+u_podsperped_lm_subtr_07 <- update(u_podsperped_lm_subtr_04,
+                              . ~ . -Year:Transect_ID)
+u_podsperped_lm_subtr_08 <- update(u_podsperped_lm_subtr_05,
+                              . ~ . -Urb_score:Transect_ID)
+
+# all main effects
+u_podsperped_lm_subtr_09 <- update(u_podsperped_lm_subtr_08,
+                              . ~ . -Urb_score:Year)
 ```
 
 #### ANOVA
-##### City_dist, not urb_score
+##### City_dist, not urb_scores
 ```{r}
-lm.podperped.subt.1 <- lm(pods_per_ped 	~ Year * City_dist * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural'))
-lm.podperped.subt.1_anova <- car::Anova(lm.podperped.subt.1, REML = F)
-# nothing sig
+podsperped_lm_subtr_list <- list(podsperped_lm_subtr_01,
+                             podsperped_lm_subtr_02,
+                             podsperped_lm_subtr_03,
+                             podsperped_lm_subtr_04,
+                             podsperped_lm_subtr_05,
+                             podsperped_lm_subtr_06,
+                             podsperped_lm_subtr_07,
+                             podsperped_lm_subtr_08)
 
-lm.podperped.subt.2 <- lm(pods_per_ped 	~ Year + City_dist + Transect_ID + Year:City_dist + Year:Transect_ID + City_dist:Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural'))
-lm.podperped.subt.2_anova <- car::Anova(lm.podperped.subt.2, REML = F)
-# Nothing significant
 
-lm.podperped.subt.3 <- lm(pods_per_ped 	~ Year + City_dist + Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural'))
-lm.podperped.subt.3_anova <- car::Anova(lm.podperped.subt.3, REML = F)
-# Nothing significant
+formulas_podsperped <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_podsperped$Model <- NA
+formulas_podsperped$Formula <- NA
+formulas_podsperped$r.squaredGLMM_R2m <- NA
+formulas_podsperped$r.squaredGLMM_R2c <- NA
 
-AIC(lm.podperped.subt.1, lm.podperped.subt.2, lm.podperped.subt.3)
+for (i in 1:length(podsperped_lm_subtr_list)) {
+  formulas_podsperped[i, 1] <- toString(i)
+  formulas_podsperped[i, 2] <- toString(formula(podsperped_lm_subtr_list[[i]]))
+  formulas_podsperped[i, 3] <- r.squaredGLMM(podsperped_lm_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_podsperped[i, 4] <- r.squaredGLMM(podsperped_lm_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_podsperped <- do.call(rbind,
+                       lapply(podsperped_lm_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_podsperped <- bind_cols(formulas_podsperped,
+                        glance_podsperped %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 3,5,8 lowest AIC (8 is best)
+
+# check residuals
+plot(podsperped_lm_subtr_08) # looks good
+
+
+summary(podsperped_lm_subtr_08)
+podsperped_lm_subtr_08_anova <- car::Anova(podsperped_lm_subtr_08) %T>%
+  print() # City_dist:year interaxn marg sig
+
 ```
 
 ##### urb_score, not City_dist
 ```{r}
-u_podperped_glm_subtr_1 <- lm(pods_per_ped 	~ Year * Urb_score * Transect_ID, data = urb_scores_podperped)
-u_podperped_glm_subtr_1_anova <- car::Anova(u_podperped_glm_subtr_1, REML = F)
-# 3-way interaction IS significant but no 2-way interaxns are, or main effects
+u_podsperped_lm_subtr_list <- list(u_podsperped_lm_subtr_01,
+                             u_podsperped_lm_subtr_02,
+                             u_podsperped_lm_subtr_03,
+                             u_podsperped_lm_subtr_04,
+                             u_podsperped_lm_subtr_05,
+                             u_podsperped_lm_subtr_06,
+                             u_podsperped_lm_subtr_07,
+                             u_podsperped_lm_subtr_08)
 
-u_podperped_glm_subtr_2 <- lm(pods_per_ped 	~ Year:Urb_score:Transect_ID + Year + Urb_score + Transect_ID, data = urb_scores_podperped)
-u_podperped_glm_subtr_2_anova <- car::Anova(u_podperped_glm_subtr_2, REML = F)
-# nothing sig now
 
-AIC(u_podperped_glm_subtr_1, u_podperped_glm_subtr_2)
+formulas_u_podsperped <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_u_podsperped$Model <- NA
+formulas_u_podsperped$Formula <- NA
+formulas_u_podsperped$r.squaredGLMM_R2m <- NA
+formulas_u_podsperped$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(u_podsperped_lm_subtr_list)) {
+  formulas_u_podsperped[i, 1] <- toString(i)
+  formulas_u_podsperped[i, 2] <- toString(formula(u_podsperped_lm_subtr_list[[i]]))
+  formulas_u_podsperped[i, 3] <- r.squaredGLMM(u_podsperped_lm_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_u_podsperped[i, 4] <- r.squaredGLMM(u_podsperped_lm_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_u_podsperped <- do.call(rbind,
+                       lapply(u_podsperped_lm_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_u_podsperped <- bind_cols(formulas_u_podsperped,
+                        glance_u_podsperped %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 3,4,5,6,7,8 lowest AIC (7 is best)
+
+# check residuals
+plot(u_podsperped_lm_subtr_07) # looks good
+
+
+summary(u_podsperped_lm_subtr_07)
+u_podsperped_lm_subtr_07_anova <- car::Anova(u_podsperped_lm_subtr_07) %T>%
+  print() # nothing sig
 
 ```
 
@@ -1947,10 +2060,10 @@ v2 <- car::Anova(glmer(as.numeric(Pods_per_plant) ~ (1|Patch_ID) + Transect_ID:Y
 
 
 # Height
-###### LM
-####### Without transect
-######## Diagnostics
-######### City_dist- NO TRANSFORMATION NEEDED
+## LM
+### Without transect
+#### Diagnostics
+##### City_dist- NO TRANSFORMATION NEEDED
 ```{r}
 
 allheight_lm_sept <- lm(Height_Sept ~ City_dist * Year, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
@@ -1972,7 +2085,7 @@ shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept)))$Height_Sept)
 ```
 
 
-######### Urb_score- NO TRANSFORMATION NEEDED
+##### Urb_score- NO TRANSFORMATION NEEDED
 ```{r}
 diag_urb_height_1 <- lm(Height_Sept ~ Urb_score * Year, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
 
@@ -1994,8 +2107,8 @@ shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept)))$Height_Sept)
 
 
 
-######## ANOVA
-######### City_dist, not urb_score
+#### ANOVA
+##### City_dist, not urb_score
 ```{r}
 lm.height.gr.1 <- lm(Height_Sept	~ Year * City_dist, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
 lm.height.gr.1_anova <- car::Anova(lm.height.gr.1, REML = F)
@@ -2009,7 +2122,7 @@ AIC(lm.height.gr.1, lm.height.gr.2)
 
 ```
 
-######### urb_score
+##### urb_score
 ```{r}
 u_height_glm_gradient_1 <- lm(Height_Sept 	~ Year * Urb_score, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
 u_height_glm_gradient_1_anova <- car::Anova(u_height_glm_gradient_1, REML = F)
@@ -2024,9 +2137,9 @@ AIC(u_height_glm_gradient_1, u_height_glm_gradient_2)
 ```
 
 
-####### With transect
-######## Diagnostics
-######### City_dist: NO TRANSFORMATION NEEDED
+### With transect
+#### Diagnostics
+##### City_dist: NO TRANSFORMATION NEEDED
 ```{r}
 
 urbheight_lm_sept <- lm(Height_Sept ~ City_dist * Year * Transect_ID,
@@ -2056,7 +2169,7 @@ shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "
 ```
 
 
-######### Urb_score: NO TRANSFORMATION NEEDED
+##### Urb_score: NO TRANSFORMATION NEEDED
 ```{r}
 diag_urb_height_2 <- lm(Height_Sept ~ Urb_score * Year * Transect_ID,
                         data = (fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
@@ -2084,8 +2197,8 @@ shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "
 
 
 
-######## ANOVA
-######### City_dist, not urb_score
+#### ANOVA
+##### City_dist, not urb_score
 ```{r}
 lm.height.subt.1 <- lm(Height_Sept 	~ Year * City_dist * Transect_ID,
                        data = (fertile_pops_all %>%
@@ -2109,7 +2222,7 @@ AIC(lm.height.subt.1, lm.height.subt.2, lm.height.subt.3)
 ```
 
 
-######### urb_score, not city_dist
+##### urb_score, not city_dist
 ```{r}
 u_height_glm_subtr_1 <- lm(Height_Sept 	~ Year * Urb_score * Transect_ID, 
                            data = (fertile_pops_all %>% 
