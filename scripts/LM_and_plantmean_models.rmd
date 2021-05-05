@@ -1281,12 +1281,12 @@ y2.1 <- car::Anova(y2)
 ##### City_dist: USE SQRT TRANSFORMATION
 ```{r}
 
-allpod_lm <- lm(Viable_Pods ~ City_dist * Year ,
+pods_lm_gradient_01 <- lm(Viable_Pods ~ City_dist * Year ,
                 data = fertile_pops_all)
 
 par(mfrow=c(2,2))
-plot(allpod_lm)
-summary(allpod_lm)
+plot(pods_lm_gradient_01)
+summary(pods_lm_gradient_01)
 
 qplot(fertile_pops_all$Viable_Pods)
 #looks like 15 may be an outlier that could be removed
@@ -1295,34 +1295,21 @@ summary(fertile_pops_all$Viable_Pods)
 sd(fertile_pops_all$Viable_Pods)
 # so, planst with 12 and 15 pods are (12-3.89)/2.6 = 3.11 and (15-3.89)/2.6 = 4.27 standard deviations from the mean, respectively
 
-gg_reshist(lm((Viable_Pods) ~ City_dist * Year, data = fertile_pops_all), bins=20)
+gg_reshist(pods_lm_gradient_01, bins=20)
 ggqqplot(fertile_pops_all$Viable_Pods)
 ## Most data points fall within the envelope but some don't. (towards one end)
 
 
 
 # try  transformations
-gg_reshist(lm((Viable_Pods)^(1/2) ~ City_dist * Year, data = fertile_pops_all), bins=20)
-plot(lm((Viable_Pods)^(1/2) ~ City_dist * Year , data = fertile_pops_all))
+gg_reshist(update(pods_lm_gradient_01, Viable_Pods^(1/2) ~ .), bins=20)
+plot(update(pods_lm_gradient_01, Viable_Pods^(1/2) ~ .)) # better
 ggqqplot((fertile_pops_all$Viable_Pods)^(1/2))
 shapiro.test((fertile_pops_all$Viable_Pods)^(1/2))
-##### GOING WITH THIS ONE. LOOKS GOOD.
+##### GOING WITH THIS ONE. LOOKS good enough
 
-# gg_reshist(lm((Viable_Pods)^(1/3) ~ City_dist * Year, data = fertile_pops_all), bins=20)
-# plot(lm((Viable_Pods)^(1/3) ~ City_dist * Year, data = fertile_pops_all))
-# ggqqplot((fertile_pops_all$Viable_Pods)^(1/3))
-# shapiro.test((fertile_pops_all$Viable_Pods)^(1/3))
-# 
-# gg_reshist(lm(log(Viable_Pods + 1) ~ City_dist * Year, data = fertile_pops_all), bins=20)
-# plot(lm(log(Viable_Pods + 1) ~ City_dist * Year, data = fertile_pops_all))
-# ggqqplot(log(fertile_pops_all$Viable_Pods + 1))
-# shapiro.test(log(fertile_pops_all$Viable_Pods + 1))
-
-
-### NOT USING THIS ANYMORE
-# add log(pods) col to df
-# fertile_pops_all$Viable_Pods_log <- log(fertile_pops_all$Viable_Pods +1)
-
+pods_lm_gradient_01 <- update(pods_lm_gradient_01, Viable_Pods^(1/2) ~ .)
+pods_lm_gradient_02 <- update(pods_lm_gradient_01, . ~ . - City_dist:Year)
 
 # add sqrt(pods) col to df
 fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
@@ -1331,329 +1318,502 @@ fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
 ##### Urb_score: USE SQRT TRANSFORMATION
 ```{r}
 
-diag_urb_pods_1 <- lm(Viable_Pods ~ Urb_score * Year ,
+u_pods_lm_gradient_01 <- lm(Viable_Pods ~ Urb_score * Year ,
                       data = fertile_pops_all)
 
 par(mfrow=c(2,2))
-plot(diag_urb_pods_1)
-summary(diag_urb_pods_1)
+plot(u_pods_lm_gradient_01)
+summary(u_pods_lm_gradient_01)
 
-gg_reshist(diag_urb_pods_1, bins=20)
+gg_reshist(u_pods_lm_gradient_01, bins=20)
 #looks like 98 & 76 may be outliers
-
-summary(fertile_pops_all$Viable_Pods)
-sd(fertile_pops_all$Viable_Pods)
-# so, planst with 12 and 15 pods are (12-3.89)/2.6 = 3.11 and (15-3.89)/2.6 = 4.27 standard deviations from the mean, respectively
-
-ggqqplot(fertile_pops_all$Viable_Pods)
-## Most data points fall within the envelope but some don't. (towards one end)
 
 
 
 # try  transformations
-gg_reshist(lm((Viable_Pods)^(1/2) ~ Urb_score * Year, data = fertile_pops_all), bins=20)
-plot(lm((Viable_Pods)^(1/2) ~ Urb_score * Year , data = fertile_pops_all))
+gg_reshist(update(u_pods_lm_gradient_01, Viable_Pods^(1/2) ~ .), bins=20)
+plot(update(u_pods_lm_gradient_01, Viable_Pods^(1/2) ~ .))
 ggqqplot((fertile_pops_all$Viable_Pods)^(1/2))
 shapiro.test((fertile_pops_all$Viable_Pods)^(1/2))
-##### GOING WITH THIS ONE. LOOKS GOOD.
+##### GOING WITH THIS ONE. good enough
+
+u_pods_lm_gradient_01 <- update(u_pods_lm_gradient_01, Viable_Pods^(1/2) ~ .)
+u_pods_lm_gradient_02 <- update(u_pods_lm_gradient_01, . ~ . - Urb_score:Year)
 
 
-# add sqrt(pods) col to df
-fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
+# add sqrt(pods) col to df- already did for chunk above
+# fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
 ```
 
 
 #### ANOVA
 ##### City_dist, not urb_score
 ```{r}
-# ANOVA
-lm.pods.gr.1 <- lm(Viable_Pods_sqrt ~ Year * City_dist,
-                   data = fertile_pops_all)
-lm.pods.gr.1_anova <- car::Anova((lm.pods.gr.1), REML = F)
-# Interaction and both main effects not significant.
+pods_lm_gradient_list <- list(pods_lm_gradient_01,
+                                 pods_lm_gradient_02)
 
-lm.pods.gr.2 <- lm(Viable_Pods_sqrt ~ Year + City_dist,
-                   data = fertile_pops_all)
-lm.pods.gr.2_anova <- car::Anova((lm.pods.gr.2), REML = F)
-# both main effects not significant.
 
-AIC(lm.pods.gr.1, lm.pods.gr.2)
+formulas_pods <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_pods$Model <- NA
+formulas_pods$Formula <- NA
+formulas_pods$r.squaredGLMM_R2m <- NA
+formulas_pods$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(pods_lm_gradient_list)) {
+  formulas_pods[i, 1] <- toString(i)
+  formulas_pods[i, 2] <- toString(formula(pods_lm_gradient_list[[i]]))
+  formulas_pods[i, 3] <- r.squaredGLMM(pods_lm_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_pods[i, 4] <- r.squaredGLMM(pods_lm_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_pods <- do.call(rbind,
+                       lapply(pods_lm_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_pods <- bind_cols(formulas_pods,
+                        glance_pods %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 1, 2 lowest AIC (1 is best though)
+
+# check residuals
+plot(pods_lm_gradient_01) # looks good
+
+
+summary(pods_lm_gradient_01)
+pods_lm_gradient_01_anova <- car::Anova(pods_lm_gradient_01) %T>%
+  print() # nothing sig
 
 ```
 
 ##### urb_score
 ```{r}
-u_pod_glm_gradient_1 <- lm(Viable_Pods_sqrt 	~ Year * Urb_score,
-                           data = fertile_pops_all)
-u_pod_glm_gradient_1_anova <- car::Anova(u_pod_glm_gradient_1, REML = F)
-# Interaction and both main effects not significant.
+u_pods_lm_gradient_list <- list(u_pods_lm_gradient_01,
+                                 u_pods_lm_gradient_02)
 
-u_pod_glm_gradient_2 <- lm(Viable_Pods_sqrt 	~ Year + Urb_score,
-                           data = fertile_pops_all)
-u_pod_glm_gradient_2_anova <- car::Anova(u_pod_glm_gradient_2, REML = F)
-# both main effects not significant.
 
-AIC(u_pod_glm_gradient_1, u_pod_glm_gradient_2)
+formulas_u_pods <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_u_pods$Model <- NA
+formulas_u_pods$Formula <- NA
+formulas_u_pods$r.squaredGLMM_R2m <- NA
+formulas_u_pods$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(u_pods_lm_gradient_list)) {
+  formulas_u_pods[i, 1] <- toString(i)
+  formulas_u_pods[i, 2] <- toString(formula(u_pods_lm_gradient_list[[i]]))
+  formulas_u_pods[i, 3] <- r.squaredGLMM(u_pods_lm_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_u_pods[i, 4] <- r.squaredGLMM(u_pods_lm_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_u_pods <- do.call(rbind,
+                       lapply(u_pods_lm_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_u_pods <- bind_cols(formulas_u_pods,
+                        glance_u_pods %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 1, 2 lowest AIC (2 is best though)
+
+# check residuals
+plot(u_pods_lm_gradient_02) # looks good
+
+
+summary(u_pods_lm_gradient_02)
+u_pods_lm_gradient_02_anova <- car::Anova(u_pods_lm_gradient_02) %T>%
+  print() # nothing sig
+
 ```
 
 
 ### With transect- USE SQRT TRANSFORMATION
 #### Diagnostics
-##### City_dist: USE SQRT TRANSFORMATION
+##### City_dist: USE SQUARING TRANSFORMATION
 ```{r}
 
-urbpods_lm <- lm(Viable_Pods ~ City_dist * Year * Transect_ID,
+pods_lm_subtr_01 <- lm(Viable_Pods ~ City_dist * Year * Transect_ID,
                  data = (fertile_pops_all %>%
                            dplyr::filter(Transect_ID != "Rural")))
 
 par(mfrow=c(2,2))
-plot(urbpods_lm)
+plot(pods_lm_subtr_01)
 # FANNING EFFECT IN RESIDS VS. FITTED PLOT- Heteroscedastic
 library(lmtest)
-bptest(urbpods_lm)
-# high p-value (0.31) indicates homoscedasticity... so maybe it's ok?
-ncvTest(urbpods_lm)
-# low p-value (0.001) indicates heteroscedasticity... so maybe it's not ok?
+bptest(pods_lm_subtr_01)
+# high p-value (0.23) indicates homoscedasticity... so maybe it's ok?
+ncvTest(pods_lm_subtr_01)
+# low p-value (0.031) indicates heteroscedasticity... so maybe it's not ok?
 
-summary(urbpods_lm)
-summary((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
-sd((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
-
-qplot((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
-
-ggqqplot((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods)
-## Almost all data points fall within the envelope but some along one end don't.
 
 # Histogram
-gg_reshist(urbpods_lm, bins=20)
+gg_reshist(pods_lm_subtr_01, bins=15)
 
 
-# try log transformation
-gg_reshist(lm(log(Viable_Pods+1) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))), bins=20)
+# try squaring transformation
+gg_reshist(update(pods_lm_subtr_01, Viable_Pods^2 ~ .), bins=15)
 par(mfrow=c(2,2))
-plot(lm(log(Viable_Pods+1) ~ City_dist* Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-summary(lm(log(Viable_Pods+1) ~ City_dist* Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-ggqqplot(log((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods+1))
-shapiro.test(log((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods+1))
-# still not good (too strong?)
+plot(update(pods_lm_subtr_01, Viable_Pods^2 ~ .))
+summary(update(pods_lm_subtr_01, Viable_Pods^2 ~ .))
 
 
-# try sq rt & cube root
-gg_reshist(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))), bins=20)
-plot(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-summary(lm(Viable_Pods^(1/2) ~ City_dist * Transect_ID * Year, data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
+# try cubing
+# gg_reshist(update(pods_lm_subtr_01, Viable_Pods^3 ~ .), bins=15)
+# par(mfrow=c(2,2))
+# plot(update(pods_lm_subtr_01, Viable_Pods^3 ~ .))
+# summary(update(pods_lm_subtr_01, Viable_Pods^3 ~ .)) # too much. going with sq rt
 
-par(mfrow=c(2,2))
-plot(lm(Viable_Pods^(1/2) ~ City_dist, (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))))
-ggqqplot((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods^(1/2))
-shapiro.test((fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South"))$Viable_Pods^(1/2))
-# still not great but better than log & cube root. going with sq rt
+# # add square(pods) col to df
+fertile_pops_all$Viable_Pods_squared <- (fertile_pops_all$Viable_Pods)^2
 
-# add sqrt(pods) col to df
-fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
+# Full model
+pods_lm_subtr_01 <- update(pods_lm_subtr_01, Viable_Pods^2 ~ .)
+
+# all main effects and secondary interactions
+pods_lm_subtr_02 <- update(pods_lm_subtr_01,
+                              . ~ . -City_dist:Year:Transect_ID)
+
+# all main effects and 2/3 secondary interactions
+pods_lm_subtr_03 <- update(pods_lm_subtr_02,
+                              . ~ . -City_dist:Transect_ID)
+pods_lm_subtr_04 <- update(pods_lm_subtr_02,
+                              . ~ . -City_dist:Year)
+pods_lm_subtr_05 <- update(pods_lm_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+pods_lm_subtr_06 <- update(pods_lm_subtr_03,
+                              . ~ . -City_dist:Year)
+pods_lm_subtr_07 <- update(pods_lm_subtr_04,
+                              . ~ . -Year:Transect_ID)
+pods_lm_subtr_08 <- update(pods_lm_subtr_05,
+                              . ~ . -City_dist:Transect_ID)
+
+# all main effects
+pods_lm_subtr_09 <- update(pods_lm_subtr_08,
+                              . ~ . -City_dist:Year)
 ```
 
-
-##### Urb_score: USE SQRT TRANSFORMATION
+##### Urb_score: USE SQUARING TRANSFORMATION
 ```{r}
 
-diag_urb_pods_2 <- lm(Viable_Pods ~ Urb_score * Year * Transect_ID,
-                      data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
+u_pods_lm_subtr_01 <- lm(Viable_Pods ~ Urb_score * Year * Transect_ID,
+                 data = (fertile_pops_all %>%
+                           dplyr::filter(Transect_ID != "Rural")))
 
 par(mfrow=c(2,2))
-plot(diag_urb_pods_2)
-# FANNING EFFECT IN RESIDS VS. FITTED PLOT- Heteroscedastic
-library(lmtest)
-bptest(diag_urb_pods_2)
-# high p-value (0.23) indicates homoscedasticity... so maybe it's ok?
-ncvTest(diag_urb_pods_2)
-# low p-value (0.003) indicates heteroscedasticity... so maybe it's not ok?
-
-summary(diag_urb_pods_2)
-
-gg_reshist(diag_urb_pods_2, bins = 20)
-
-ggqqplot(fertile_pops_all$Viable_Pods %>%
-           filter(Transect_ID != "Rural"))
-## Almost all data points fall within the envelope but some along one end don't
+plot(u_pods_lm_subtr_01) # has a tail
 
 
-# try log transformation
-gg_reshist(lm(log(Viable_Pods+1) ~ Urb_score * Transect_ID * Year, fertile_pops_all %>% filter(Transect_ID != "Rural"))), bins=20)
+# Histogram
+gg_reshist(u_pods_lm_subtr_01, bins=20) # left skewed
+
+
+# try squaring transformation
+gg_reshist(update(u_pods_lm_subtr_01, Viable_Pods^2 ~ .), bins=20)
 par(mfrow=c(2,2))
-plot(lm(log(Viable_Pods+1) ~ Urb_score* Transect_ID * Year,  fertile_pops_all %>% filter(Transect_ID != "Rural"))))
-summary(lm(log(Viable_Pods+1) ~ Urb_score* Transect_ID * Year, fertile_pops_all %>% filter(Transect_ID != "Rural"))))
-ggqqplot(log( fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods+1))
-shapiro.test(log( fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods+1))
-# still not good (too strong?)
+plot(update(u_pods_lm_subtr_01, Viable_Pods^2 ~ .))
+summary(update(u_pods_lm_subtr_01, Viable_Pods^2 ~ .))
 
 
-# try sq rt
-gg_reshist(lm(Viable_Pods^(1/2) ~ Urb_score * Transect_ID * Year,
-              fertile_pops_all %>% filter(Transect_ID != "Rural")), bins=20)
-plot(lm(Viable_Pods^(1/2) ~ Urb_score * Transect_ID * Year,
-        fertile_pops_all %>% filter(Transect_ID != "Rural")))
-summary(lm(Viable_Pods^(1/2) ~ Urb_score * Transect_ID * Year,
-           fertile_pops_all %>% filter(Transect_ID != "Rural")))
-ggqqplot(fertile_pops_all$Viable_Pods^(1/2) %>% filter(Transect_ID != "Rural"))
-shapiro.test( fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/2)
+# # try cubing
+# gg_reshist(update(u_pods_lm_subtr_01, Viable_Pods^3 ~ .), bins=20)
+# par(mfrow=c(2,2))
+# plot(update(u_pods_lm_subtr_01, Viable_Pods^3 ~ .))
+# summary(update(u_pods_lm_subtr_01, Viable_Pods^3 ~ .)) # too much. going with sq rt
+
+# add square(pods) col to df- already done
+# fertile_pops_all$Viable_Pods_squared <- (fertile_pops_all$Viable_Pods)^2
 
 
-# try cube root
-gg_reshist(lm(Viable_Pods^(1/3) ~ Urb_score * Transect_ID * Year,
-              fertile_pops_all %>% filter(Transect_ID != "Rural"))), bins=20)
-plot(lm(Viable_Pods^(1/3) ~ Urb_score * Transect_ID * Year,
-        fertile_pops_all %>% filter(Transect_ID != "Rural"))))
-ggqqplot(fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/3))
-shapiro.test(fertile_pops_all %>% filter(Transect_ID != "Rural"))$Viable_Pods^(1/3))
-# still not great but better than log & cube root. going with sq rt
 
-# add sqrt(pods) col to df
-fertile_pops_all$Viable_Pods_sqrt <- sqrt(fertile_pops_all$Viable_Pods)
+# Full model
+u_pods_lm_subtr_01 <- update(u_pods_lm_subtr_01, Viable_Pods^2 ~ .)
 
+# all main effects and secondary interactions
+u_pods_lm_subtr_02 <- update(u_pods_lm_subtr_01,
+                              . ~ . -Urb_score:Year:Transect_ID)
+
+# all main effects and 2/3 secondary interactions
+u_pods_lm_subtr_03 <- update(u_pods_lm_subtr_02,
+                              . ~ . -Urb_score:Transect_ID)
+u_pods_lm_subtr_04 <- update(u_pods_lm_subtr_02,
+                              . ~ . -Urb_score:Year)
+u_pods_lm_subtr_05 <- update(u_pods_lm_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+u_pods_lm_subtr_06 <- update(u_pods_lm_subtr_03,
+                              . ~ . -Urb_score:Year)
+u_pods_lm_subtr_07 <- update(u_pods_lm_subtr_04,
+                              . ~ . -Year:Transect_ID)
+u_pods_lm_subtr_08 <- update(u_pods_lm_subtr_05,
+                              . ~ . -Urb_score:Transect_ID)
+
+# all main effects
+u_pods_lm_subtr_09 <- update(u_pods_lm_subtr_08,
+                              . ~ . -Urb_score:Year)
 ```
 
 #### ANOVA
 ##### City_dist, not urb_scores
 ```{r}
-lm.pods.subt.1 <- lm(Viable_Pods_sqrt ~ Year * City_dist * Transect_ID,
-                     data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South")))
-lm.pods.subt.1_anova <- car::Anova(lm.pods.subt.1, REML = F)
-# 3-way interaction not significant, so let's look at lower-level interactions and main effects.
+pods_lm_subtr_list <- list(pods_lm_subtr_01,
+                             pods_lm_subtr_02,
+                             pods_lm_subtr_03,
+                             pods_lm_subtr_04,
+                             pods_lm_subtr_05,
+                             pods_lm_subtr_06,
+                             pods_lm_subtr_07,
+                             pods_lm_subtr_08)
 
-lm.pods.subt.2 <- lm(Viable_Pods_sqrt 	~ Year + City_dist + Transect_ID + Year:City_dist + Year:Transect_ID + City_dist:Transect_ID,
-                     data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South")))
-lm.pods.subt.2_anova <- car::Anova(lm.pods.subt.2, REML = F)
-# Nothing significant
 
-lm.pods.subt.3 <- lm(Viable_Pods_sqrt 	~ Year + City_dist + Transect_ID,
-                     data = (fertile_pops_all %>% filter(Transect_ID == "North" | Transect_ID == "South")))
-lm.pods.subt.3_anova <- car::Anova(lm.pods.subt.3, REML = F)
-# Nothing significant
+formulas_pods <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_pods$Model <- NA
+formulas_pods$Formula <- NA
+formulas_pods$r.squaredGLMM_R2m <- NA
+formulas_pods$r.squaredGLMM_R2c <- NA
 
-AIC(lm.pods.subt.1, lm.pods.subt.2, lm.pods.subt.3)
+for (i in 1:length(pods_lm_subtr_list)) {
+  formulas_pods[i, 1] <- toString(i)
+  formulas_pods[i, 2] <- toString(formula(pods_lm_subtr_list[[i]]))
+  formulas_pods[i, 3] <- r.squaredGLMM(pods_lm_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_pods[i, 4] <- r.squaredGLMM(pods_lm_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_pods <- do.call(rbind,
+                       lapply(pods_lm_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_pods <- bind_cols(formulas_pods,
+                        glance_pods %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 3,5,8 lowest AIC (8 is best)
+
+# check residuals
+plot(pods_lm_subtr_08) # looks good
+
+
+summary(pods_lm_subtr_08)
+pods_lm_subtr_08_anova <- car::Anova(pods_lm_subtr_08) %T>%
+  print() # City_dist sig
+
 ```
 
 ##### urb_scores, not city_dist
 ```{r}
-u_pod_glm_subtr_1 <- lm(Viable_Pods_sqrt 	~ Year * Urb_score * Transect_ID,
-                        data = fertile_pops_all %>% filter(Transect_ID != "Rural"))
-u_pod_glm_subtr_1_anova <- car::Anova(u_pod_glm_subtr_1,
-                                      REML = F)
-# 3-way interaction not significant, so let's look at lower-level interactions and main effects.
+u_pods_lm_subtr_list <- list(u_pods_lm_subtr_01,
+                             u_pods_lm_subtr_02,
+                             u_pods_lm_subtr_03,
+                             u_pods_lm_subtr_04,
+                             u_pods_lm_subtr_05,
+                             u_pods_lm_subtr_06,
+                             u_pods_lm_subtr_07,
+                             u_pods_lm_subtr_08)
 
-u_pod_glm_subtr_2 <- lm(Viable_Pods_sqrt 	~ Year + Urb_score + Transect_ID + Year:Urb_score + Year:Transect_ID + Urb_score:Transect_ID,
-                        data = fertile_pops_all %>%
-                          filter(Transect_ID != "Rural"))
-u_pod_glm_subtr_2_anova <- car::Anova(u_pod_glm_subtr_2, REML = F)
-# Nothing significant
 
-u_pod_glm_subtr_3 <- lm(Viable_Pods_sqrt 	~ Year + Urb_score + Transect_ID,
-                        data = fertile_pops_all %>%
-                          filter(Transect_ID != "Rural"))
-u_pod_glm_subtr_3_anova <- car::Anova(u_pod_glm_subtr_3, REML = F)
-# nothing sig
+formulas_u_pods <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_u_pods$Model <- NA
+formulas_u_pods$Formula <- NA
+formulas_u_pods$r.squaredGLMM_R2m <- NA
+formulas_u_pods$r.squaredGLMM_R2c <- NA
 
-AIC(u_pod_glm_subtr_1, u_pod_glm_subtr_2, u_pod_glm_subtr_3)
+for (i in 1:length(u_pods_lm_subtr_list)) {
+  formulas_u_pods[i, 1] <- toString(i)
+  formulas_u_pods[i, 2] <- toString(formula(u_pods_lm_subtr_list[[i]]))
+  formulas_u_pods[i, 3] <- r.squaredGLMM(u_pods_lm_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_u_pods[i, 4] <- r.squaredGLMM(u_pods_lm_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_u_pods <- do.call(rbind,
+                       lapply(u_pods_lm_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_u_pods <- bind_cols(formulas_u_pods,
+                        glance_u_pods %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 3,4,6,7,8 lowest AIC (6 is best)
+
+# check residuals
+plot(u_pods_lm_subtr_06) # looks good
+
+
+summary(u_pods_lm_subtr_06)
+u_pods_lm_subtr_06_anova <- car::Anova(u_pods_lm_subtr_06) %T>%
+  print() # nothing sig
+
 ```
 
 
 # Pods per peduncle
-###### LM
-####### Without transect
-######## Diagnostics
-######### City_dist: USE SQRT TRANSFORMATION
+## LM
+### Without transect
+#### Diagnostics
+##### City_dist: USE SQRT TRANSFORMATION
 ```{r}
-lm(pods_per_ped ~ City_dist * Year , data = fertile_pops_all)
+podsperped_lm_gradient_01 <- lm(pods_per_ped ~ City_dist * Year ,
+                                data = fertile_pops_all)
 
 par(mfrow=c(2,2))
-plot(lm(pods_per_ped ~ City_dist * Year , data = fertile_pops_all))
-summary(lm(pods_per_ped ~ City_dist * Year , data = fertile_pops_all))
+plot(podsperped_lm_gradient_01)
+summary(podsperped_lm_gradient_01)
 
 qplot(fertile_pops_all$pods_per_ped)
 
-lmtest::bptest(lm(pods_per_ped ~ City_dist * Year , data = fertile_pops_all)) 
+lmtest::bptest(podsperped_lm_gradient_01) 
 # plot is heteroskedastic
 ## Felipe says it's not a big deal, esp. since dist_city is not normally distributed (b/c of my study design)
 
-gg_reshist(lm((pods_per_ped) ~ City_dist * Year, data = fertile_pops_all), bins=20)
+gg_reshist(podsperped_lm_gradient_01, bins=20)
 ggqqplot(fertile_pops_all$pods_per_ped)
-## Most data points fall within the envelope but some don't. (towards one end)
+## Most data points fall within the envelope. I think it's fine
 
-
-
-# try  transformations
-gg_reshist(lm((pods_per_ped)^(1/2) ~ City_dist * Year, data = fertile_pops_all), bins=20)
-plot(lm((pods_per_ped)^(1/2) ~ City_dist * Year , data = fertile_pops_all))
-ggqqplot((fertile_pops_all$pods_per_ped)^(1/2))
-shapiro.test((fertile_pops_all$pods_per_ped)^(1/2))
-##### GOING WITH THIS ONE. LOOKS GOOD.
-
-
-
-# add sqrt(pods) col to df
-fertile_pops_all$pods_per_ped_sqrt <- sqrt(fertile_pops_all$pods_per_ped)
+# Reduced model
+podsperped_lm_gradient_02 <- update(podsperped_lm_gradient_01, . ~ . - City_dist:Year)
 ```
 
-######### Urb_score: No transformation necessary
+##### Urb_score: No transformation necessary
 ```{r}
-diag_urb_podperped_1 <- lm(pods_per_ped ~ Urb_score * Year , data = fertile_pops_all)
+u_podsperped_lm_gradient_01 <- lm(pods_per_ped ~ Urb_score * Year ,
+                                data = fertile_pops_all)
 
 par(mfrow=c(2,2))
-plot(diag_urb_podperped_1)
-summary(diag_urb_podperped_1)
+plot(u_podsperped_lm_gradient_01)
+summary(u_podsperped_lm_gradient_01)
 
-qplot(fertile_pops_all$pods_per_ped, bins = 20)
+lmtest::bptest(u_podsperped_lm_gradient_01) 
+# plot is heteroskedastic
+## Felipe says it's not a big deal, esp. since urb)score is not normally distributed (b/c of my study design)
 
-lmtest::bptest(diag_urb_podperped_1)
-# Marginally homoskedastic
+gg_reshist(u_podsperped_lm_gradient_01, bins=20)
+# looks fine
 
-gg_reshist(diag_urb_podperped_1, bins=20)
-ggqqplot(fertile_pops_all$pods_per_ped)
-## Most data points fall within the envelope but some don't. (towards one end). Looks very normal except for those 3 potential outliers
-# Good enough.
-
-
-# try squaring trnasformation
-gg_reshist(lm(pods_per_ped^(1/2) ~ Urb_score * Year , data = fertile_pops_all), bins=20)
-plot(lm(pods_per_ped^(1/2) ~ Urb_score * Year , data = fertile_pops_all))
-lmtest::bptest(lm(pods_per_ped^(1/2) ~ Urb_score * Year , data = fertile_pops_all))
-# now it's heteroskedastic? doesn't look like it
+# Reduced model
+u_podsperped_lm_gradient_02 <- update(u_podsperped_lm_gradient_01, . ~ . - Urb_score:Year)
 
 ```
 
 
-######## ANOVA
-######### City_dist, not urb_score
+#### ANOVA
+##### City_dist, not urb_score
 ```{r}
-lm.podperped.gr.1 <- lm(pods_per_ped_sqrt	~ Year * City_dist, data = fertile_pops_all)
-lm.podperped.gr.1_anova <- car::Anova(lm.podperped.gr.1, REML = F)
-# Interaction  not significant but city_dist is
+pods_per_ped_lm_gradient_list <- list(podsperped_lm_gradient_01,
+                                 podsperped_lm_gradient_02)
 
-lm.podperped.gr.2 <- lm(pods_per_ped_sqrt	~ Year + City_dist, data = fertile_pops_all)
-lm.podperped.gr.2_anova <- car::Anova(lm.podperped.gr.2, REML = F)
-# city_dist sig
 
-AIC(lm.podperped.gr.1, lm.podperped.gr.2)
+formulas_pods_per_ped <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_pods_per_ped$Model <- NA
+formulas_pods_per_ped$Formula <- NA
+formulas_pods_per_ped$r.squaredGLMM_R2m <- NA
+formulas_pods_per_ped$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(pods_per_ped_lm_gradient_list)) {
+  formulas_pods_per_ped[i, 1] <- toString(i)
+  formulas_pods_per_ped[i, 2] <- toString(formula(pods_per_ped_lm_gradient_list[[i]]))
+  formulas_pods_per_ped[i, 3] <- r.squaredGLMM(pods_per_ped_lm_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_pods_per_ped[i, 4] <- r.squaredGLMM(pods_per_ped_lm_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_pods_per_ped <- do.call(rbind,
+                       lapply(pods_per_ped_lm_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_pods_per_ped <- bind_cols(formulas_pods_per_ped,
+                        glance_pods_per_ped %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 1, 2 lowest AIC (2 is best though)
+
+# check residuals
+plot(podsperped_lm_gradient_02) # looks good
+
+
+summary(podsperped_lm_gradient_02)
+podsperped_lm_gradient_02_anova <- car::Anova(podsperped_lm_gradient_02) %T>%
+  print() # city_dist and year marg sig
+
 ```
 
-######### Urb_score
+##### urb_score
 ```{r}
-u_podperped_glm_gradient_1 <- lm(pods_per_ped 	~ Year * Urb_score, data = fertile_pops_all)
-u_podperped_glm_gradient_1_anova <- car::Anova(u_podperped_glm_gradient_1, REML = F)
-# Interaction  not significant.
+u_podsperped_lm_gradient_list <- list(u_podsperped_lm_gradient_01,
+                                 u_podsperped_lm_gradient_02)
 
-u_podperped_glm_gradient_2 <- lm(pods_per_ped 	~ Year + Urb_score, data = fertile_pops_all)
-u_podperped_glm_gradient_2_anova <- car::Anova(u_podperped_glm_gradient_2, REML = F)# Urb_score sig
-# urb_score sig
 
-AIC(u_podperped_glm_gradient_1, u_podperped_glm_gradient_2)
+formulas_u_pods_per_ped <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_u_pods_per_ped$Model <- NA
+formulas_u_pods_per_ped$Formula <- NA
+formulas_u_pods_per_ped$r.squaredGLMM_R2m <- NA
+formulas_u_pods_per_ped$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(u_podsperped_lm_gradient_list)) {
+  formulas_u_pods_per_ped[i, 1] <- toString(i)
+  formulas_u_pods_per_ped[i, 2] <- toString(formula(u_podsperped_lm_gradient_list[[i]]))
+  formulas_u_pods_per_ped[i, 3] <- r.squaredGLMM(u_podsperped_lm_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_u_pods_per_ped[i, 4] <- r.squaredGLMM(u_podsperped_lm_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_u_pods_per_ped <- do.call(rbind,
+                       lapply(u_podsperped_lm_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_u_pods_per_ped <- bind_cols(formulas_u_pods_per_ped,
+                        glance_u_pods_per_ped %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 1, 2 lowest AIC (2 is best though)
+
+# check residuals
+plot(u_podsperped_lm_gradient_02) # looks good
+
+
+summary(u_podsperped_lm_gradient_02)
+u_podsperped_lm_gradient_02_anova <- car::Anova(u_podsperped_lm_gradient_02) %T>%
+  print() # year, urb_score sig
+
 ```
 
 
-####### With transect
-######## Diagnostics
-######### City_dist- USE SQRT TRANSFORMATION
+### With transect
+#### Diagnostics
+##### City_dist- USE SQRT TRANSFORMATION
 ```{r}
 lm(pods_per_ped_sqrt ~ City_dist * Year * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural'))
 
@@ -1671,7 +1831,7 @@ gg_reshist(lm(pods_per_ped_sqrt ~ City_dist * Year * Transect_ID, data = fertile
 ```
 
 
-######### Urb_score- No transformation necessary
+##### Urb_score- No transformation necessary
 ```{r}
 
 diag_urb_podperped_2 <- lm(pods_per_ped ~ Urb_score * Year * Transect_ID, data = urb_scores_podperped)
@@ -1691,8 +1851,8 @@ shapiro.test((urb_scores_podperped$pods_per_ped))
 
 ```
 
-######## ANOVA
-######### City_dist, not urb_score
+#### ANOVA
+##### City_dist, not urb_score
 ```{r}
 lm.podperped.subt.1 <- lm(pods_per_ped 	~ Year * City_dist * Transect_ID, data = fertile_pops_all %>% filter(Transect_ID != 'Rural'))
 lm.podperped.subt.1_anova <- car::Anova(lm.podperped.subt.1, REML = F)
@@ -1709,7 +1869,7 @@ lm.podperped.subt.3_anova <- car::Anova(lm.podperped.subt.3, REML = F)
 AIC(lm.podperped.subt.1, lm.podperped.subt.2, lm.podperped.subt.3)
 ```
 
-######### urb_score, not City_dist
+##### urb_score, not City_dist
 ```{r}
 u_podperped_glm_subtr_1 <- lm(pods_per_ped 	~ Year * Urb_score * Transect_ID, data = urb_scores_podperped)
 u_podperped_glm_subtr_1_anova <- car::Anova(u_podperped_glm_subtr_1, REML = F)
@@ -1724,7 +1884,7 @@ AIC(u_podperped_glm_subtr_1, u_podperped_glm_subtr_2)
 ```
 
 
-###### plant-level means
+## plant-level means
 The point of this is to test whether the complicated glmer model is better than the simple lmer. Additionally, is the lm better than lmer? The simpler model will make the regression results easier to interpret if, in fact, the simplest model provides the same conclusions/results as the most complicated.
 The lm uses population-level means while lmer and glmer use plant-level data.
 ```{r}
