@@ -2742,7 +2742,7 @@ make_Q1Q2_Anova.lm(best_mods_Q2.urbscore_list_lm) %>%
 ## Best models: height
 ```{r}
 # make_anova function tweaked to handle one model- height- instead of a list
-make_Q1Q2_Anova.height <- function(anova){
+make_Q1Q2_Anova.height_lm <- function(anova){
   return(
     tidy_sb(anova) %>%
     as.data.frame() %>%
@@ -2760,16 +2760,17 @@ make_Q1Q2_Anova.height <- function(anova){
                                          ))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
     replace(., is.na(.), "-") %>%
-    dplyr::rename('X2' = 2,
-                  'p' = 3) %>%
+    dplyr::rename('SS' = 2,
+                  'X2' = 3,
+                  'p' = 4) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
                  "Height"),
-      colwidths = c(1, 2)) %>%
+      colwidths = c(1, 3)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:3, align = "center", part = "body") %>%
-    align(j = 2:3, align = "center", part = "header") %>%
+    align(j = 2:4, align = "center", part = "body") %>%
+    align(j = 2:4, align = "center", part = "header") %>%
     display(i = 2, col_key = "X2", 
       pattern = "{{val}}{{pow}}", part = "header",
       formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
@@ -2780,69 +2781,65 @@ make_Q1Q2_Anova.height <- function(anova){
 
 # CITY_DIST-----
 ## ALL SITES
-# Height: height_lmer_gradient_02
+# Height: height_lm_gradient_02
 
-
-make_Q1Q2_Anova.height(height_lmer_gradient_02) %>%
+make_Q1Q2_Anova.height_lm(height_lm_gradient_02) %>%
   width(j = 1, width = 1.8) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q1_Dist_ANOVA_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Height/Q1_Dist_ANOVA_HEIGHT_lm.png"))
 
 
 
 
 
 ## URBAN SITES
-# Height: height_lmer_subtr_01
+# Height:  height_lm_subtr_08
 
-make_Q1Q2_Anova.height(height_lmer_subtr_01) %>%
-  width(j = 1, width = 3.3) %>%
+make_Q1Q2_Anova.height_lm(height_lm_subtr_08) %>%
+  width(j = 1, width = 2.5) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q2_Dist_ANOVA_HEIGHT.png"))
-
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Height/Q2_Dist_ANOVA_HEIGHT_lm.png"))
 
 
 
 # URB_SCORE-----
 ## ALL SITES
-# Height: u_height_lmer_gradient_01
+# Height: 
 
-make_Q1Q2_Anova.height(u_height_lmer_gradient_01) %>%
-  width(j = 1, width = 2) %>%
+make_Q1Q2_Anova.height_lm(u_height_lm_gradient_02) %>%
+  width(j = 1, width = 1.7) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q1_Urbscore_ANOVA_HEIGHT.png"))
-
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Height/Q1_Urbscore_ANOVA_HEIGHT_lm.png"))
 
 
 
 
 
 ## URBAN SITES
-# Height: 
+# Height: u_height_lm_subtr_07
 
-make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
-  width(j = 1, width = 3.2) %>%
+make_Q1Q2_Anova.height_lm(u_height_lm_subtr_07) %>%
+  width(j = 1, width = 2.5) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q2_Urbscore_ANOVA_HEIGHT.png"))
-
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Height/Q2_Urbscore_ANOVA_HEIGHT_lm.png"))
 ```
