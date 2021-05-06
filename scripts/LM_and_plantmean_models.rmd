@@ -2063,186 +2063,316 @@ v2 <- car::Anova(glmer(as.numeric(Pods_per_plant) ~ (1|Patch_ID) + Transect_ID:Y
 ## LM
 ### Without transect
 #### Diagnostics
-##### City_dist- NO TRANSFORMATION NEEDED
+##### City_dist: USE SQRT TRANSFORMATION
 ```{r}
-
-allheight_lm_sept <- lm(Height_Sept ~ City_dist * Year, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
+height_lm_gradient_01 <- lm(Height_Sept ~ City_dist * Year ,
+                                data = fertile_pops_all)
 
 par(mfrow=c(2,2))
-plot(allheight_lm_sept)
-summary(allheight_lm_sept)
+plot(height_lm_gradient_01)
+summary(height_lm_gradient_01)
 
-ggqqplot((fertile_pops_all %>% filter(!is.na(Height_Sept)))$Height_Sept)
-# all data points within envelope
+qplot(fertile_pops_all$Height_Sept)
 
-# Histogram
-gg_reshist(allheight_lm_sept, bins=20)
-# looks normal!
+gg_reshist(height_lm_gradient_01, bins=20) # looks fine
 
-# Shapiro-Wilk normality test
-shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept)))$Height_Sept)
-## From the output, the p-value > 0.05 implying that the distribution of the data are NOT significantly different from normal distribution. We can assume normality!
+# Reduced model
+height_lm_gradient_02 <- update(height_lm_gradient_01, . ~ . - City_dist:Year)
 ```
 
-
-##### Urb_score- NO TRANSFORMATION NEEDED
+##### Urb_score: No transformation necessary
 ```{r}
-diag_urb_height_1 <- lm(Height_Sept ~ Urb_score * Year, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
+u_height_lm_gradient_01 <- lm(Height_Sept ~ Urb_score * Year ,
+                                data = fertile_pops_all)
 
 par(mfrow=c(2,2))
-plot(diag_urb_height_1)
-summary(diag_urb_height_1)
+plot(u_height_lm_gradient_01)
+summary(u_height_lm_gradient_01)
 
-ggqqplot((fertile_pops_all %>% filter(!is.na(Height_Sept)))$Height_Sept)
-# all data points within envelope
+gg_reshist(u_height_lm_gradient_01, bins=20)
+# looks fine
 
-# Histogram
-gg_reshist(diag_urb_height_1, bins=20)
-# looks normal!
+# Reduced model
+u_height_lm_gradient_02 <- update(u_height_lm_gradient_01, . ~ . - Urb_score:Year)
 
-# Shapiro-Wilk normality test
-shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept)))$Height_Sept)
-## From the output, the p-value > 0.05 implying that the distribution of the data are NOT significantly different from normal distribution. We can assume normality!
 ```
-
 
 
 #### ANOVA
 ##### City_dist, not urb_score
 ```{r}
-lm.height.gr.1 <- lm(Height_Sept	~ Year * City_dist, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
-lm.height.gr.1_anova <- car::Anova(lm.height.gr.1, REML = F)
-# No effects or interactions significant,
+Height_Sept_lm_gradient_list <- list(height_lm_gradient_01,
+                                 height_lm_gradient_02)
 
-lm.height.gr.2 <- lm(Height_Sept ~ Year + City_dist, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
-lm.height.gr.2_anova <- car::Anova(lm.height.gr.2, REML = F)
-# No effects or interactions significant,
 
-AIC(lm.height.gr.1, lm.height.gr.2)
+formulas_Height_Sept <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_Height_Sept$Model <- NA
+formulas_Height_Sept$Formula <- NA
+formulas_Height_Sept$r.squaredGLMM_R2m <- NA
+formulas_Height_Sept$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(Height_Sept_lm_gradient_list)) {
+  formulas_Height_Sept[i, 1] <- toString(i)
+  formulas_Height_Sept[i, 2] <- toString(formula(Height_Sept_lm_gradient_list[[i]]))
+  formulas_Height_Sept[i, 3] <- r.squaredGLMM(Height_Sept_lm_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_Height_Sept[i, 4] <- r.squaredGLMM(Height_Sept_lm_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_Height_Sept <- do.call(rbind,
+                       lapply(Height_Sept_lm_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_Height_Sept <- bind_cols(formulas_Height_Sept,
+                        glance_Height_Sept %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 1, 2 lowest AIC (2 is best though)
+
+# check residuals
+plot(height_lm_gradient_02) # looks good
+
+
+summary(height_lm_gradient_02)
+height_lm_gradient_02_anova <- car::Anova(height_lm_gradient_02) %T>%
+  print() #  year marg sig
 
 ```
 
 ##### urb_score
 ```{r}
-u_height_glm_gradient_1 <- lm(Height_Sept 	~ Year * Urb_score, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
-u_height_glm_gradient_1_anova <- car::Anova(u_height_glm_gradient_1, REML = F)
-# No interactions significant,
+u_height_lm_gradient_list <- list(u_height_lm_gradient_01,
+                                 u_height_lm_gradient_02)
 
-u_height_glm_gradient_2 <- lm(Height_Sept 	~ Year + Urb_score, data = (fertile_pops_all %>% filter(!is.na(Height_Sept))))
-u_height_glm_gradient_2_anova <- car::Anova(u_height_glm_gradient_2, REML = F)
-# No main effects significant,
 
-AIC(u_height_glm_gradient_1, u_height_glm_gradient_2)
+formulas_u_Height_Sept <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_u_Height_Sept$Model <- NA
+formulas_u_Height_Sept$Formula <- NA
+formulas_u_Height_Sept$r.squaredGLMM_R2m <- NA
+formulas_u_Height_Sept$r.squaredGLMM_R2c <- NA
+
+for (i in 1:length(u_height_lm_gradient_list)) {
+  formulas_u_Height_Sept[i, 1] <- toString(i)
+  formulas_u_Height_Sept[i, 2] <- toString(formula(u_height_lm_gradient_list[[i]]))
+  formulas_u_Height_Sept[i, 3] <- r.squaredGLMM(u_height_lm_gradient_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_u_Height_Sept[i, 4] <- r.squaredGLMM(u_height_lm_gradient_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_u_Height_Sept <- do.call(rbind,
+                       lapply(u_height_lm_gradient_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_u_Height_Sept <- bind_cols(formulas_u_Height_Sept,
+                        glance_u_Height_Sept %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 1, 2 lowest AIC (2 is best though)
+
+# check residuals
+plot(u_height_lm_gradient_02) # looks good
+
+
+summary(u_height_lm_gradient_02)
+u_height_lm_gradient_02_anova <- car::Anova(u_height_lm_gradient_02) %T>%
+  print() # nothing sig
 
 ```
 
 
 ### With transect
 #### Diagnostics
-##### City_dist: NO TRANSFORMATION NEEDED
+##### City_dist- No transformation necessary
 ```{r}
 
-urbheight_lm_sept <- lm(Height_Sept ~ City_dist * Year * Transect_ID,
-                        data = (fertile_pops_all %>% 
-                                  filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
+height_lm_subtr_01 <- lm(Height_Sept ~ City_dist * Year * Transect_ID,
+                 data = (fertile_pops_all %>%
+                           dplyr::filter(Transect_ID != "Rural")))
 
 par(mfrow=c(2,2))
-plot(urbheight_lm_sept)
-# looks like fanning (heteroskedasticity) 
-## Felipe says it's not a big deal, esp. since dist_city is not normally distributed (b/c of my study design)
-bptest(urbheight_lm_sept) # p = 0.153... not significant = there'sNO heteroskedasticity here
-
-summary(urbheight_lm_sept)
-hist((fertile_pops_all %>%
-        filter(!is.na(Height_Sept) & Transect_ID != "Rural"))$City_dist)
-
-ggqqplot((fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "Rural"))$Height_Sept)
-## Data points don't fit in envelope towards right margin.
+plot(height_lm_subtr_01)
 
 # Histogram
-gg_reshist(urbheight_lm, bins=20)
-# slightly right-skewed
+gg_reshist(height_lm_subtr_01, bins=15) # looks good
 
-# Shapiro-Wilk normality test
-shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "Rural"))$Height_Sept)
-## From the output, the p-value > 0.05 implying that the distribution of the data are NOT significantly different from normal distribution. We can assume normality.
+
+
+# all main effects and secondary interactions
+height_lm_subtr_02 <- update(height_lm_subtr_01,
+                              . ~ . -City_dist:Year:Transect_ID)
+
+# all main effects and 2/3 secondary interactions
+height_lm_subtr_03 <- update(height_lm_subtr_02,
+                              . ~ . -City_dist:Transect_ID)
+height_lm_subtr_04 <- update(height_lm_subtr_02,
+                              . ~ . -City_dist:Year)
+height_lm_subtr_05 <- update(height_lm_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+height_lm_subtr_06 <- update(height_lm_subtr_03,
+                              . ~ . -City_dist:Year)
+height_lm_subtr_07 <- update(height_lm_subtr_04,
+                              . ~ . -Year:Transect_ID)
+height_lm_subtr_08 <- update(height_lm_subtr_05,
+                              . ~ . -City_dist:Transect_ID)
+
+# all main effects
+height_lm_subtr_09 <- update(height_lm_subtr_08,
+                              . ~ . -City_dist:Year)
 ```
 
-
-##### Urb_score: NO TRANSFORMATION NEEDED
+##### Urb_score- No transformation necessary
 ```{r}
-diag_urb_height_2 <- lm(Height_Sept ~ Urb_score * Year * Transect_ID,
-                        data = (fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
+
+u_height_lm_subtr_01 <- lm(Height_Sept ~ Urb_score * Year * Transect_ID,
+                 data = (fertile_pops_all %>%
+                           dplyr::filter(Transect_ID != "Rural")))
 
 par(mfrow=c(2,2))
-plot(diag_urb_height_2)
-# looks like fanning (heteroskedasticity) 
-## Felipe says it's not a big deal, esp. since dist_city is not normally distributed (b/c of my study design)
-bptest(diag_urb_height_2) # there'sNO heteroskedasticity here
-
-summary(diag_urb_height_2)
-hist((fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "Rural"))$Urb_score)
-
-ggqqplot((fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "Rural"))$Height_Sept)
-## Data points don't fit in envelope towards right margin.
+plot(u_height_lm_subtr_01)
 
 # Histogram
-gg_reshist(diag_urb_height_2, bins=20)
-# slightly right-skewed
+gg_reshist(u_height_lm_subtr_01, bins=15) # looks good
 
-# Shapiro-Wilk normality test
-shapiro.test((fertile_pops_all %>% filter(!is.na(Height_Sept) & Transect_ID != "Rural"))$Height_Sept)
-## From the output, the p-value > 0.05 implying that the distribution of the data are NOT significantly different from normal distribution. We can assume normality.
+
+
+# all main effects and secondary interactions
+u_height_lm_subtr_02 <- update(u_height_lm_subtr_01,
+                              . ~ . -Urb_score:Year:Transect_ID)
+
+# all main effects and 2/3 secondary interactions
+u_height_lm_subtr_03 <- update(u_height_lm_subtr_02,
+                              . ~ . -Urb_score:Transect_ID)
+u_height_lm_subtr_04 <- update(u_height_lm_subtr_02,
+                              . ~ . -Urb_score:Year)
+u_height_lm_subtr_05 <- update(u_height_lm_subtr_02,
+                              . ~ . -Year:Transect_ID)
+
+# all main effects and 1/3 secondary interactions
+u_height_lm_subtr_06 <- update(u_height_lm_subtr_03,
+                              . ~ . -Urb_score:Year)
+u_height_lm_subtr_07 <- update(u_height_lm_subtr_04,
+                              . ~ . -Year:Transect_ID)
+u_height_lm_subtr_08 <- update(u_height_lm_subtr_05,
+                              . ~ . -Urb_score:Transect_ID)
+
+# all main effects
+u_height_lm_subtr_09 <- update(u_height_lm_subtr_08,
+                              . ~ . -Urb_score:Year)
 ```
-
-
 
 #### ANOVA
-##### City_dist, not urb_score
+##### City_dist, not urb_scores
 ```{r}
-lm.height.subt.1 <- lm(Height_Sept 	~ Year * City_dist * Transect_ID,
-                       data = (fertile_pops_all %>%
-                                 filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
-lm.height.subt.1_anova <- car::Anova(lm.height.subt.1, REML = F)
-# nothing sig
+height_lm_subtr_list <- list(height_lm_subtr_01,
+                             height_lm_subtr_02,
+                             height_lm_subtr_03,
+                             height_lm_subtr_04,
+                             height_lm_subtr_05,
+                             height_lm_subtr_06,
+                             height_lm_subtr_07,
+                             height_lm_subtr_08)
 
-lm.height.subt.2 <- lm(Height_Sept ~ Year + City_dist + Transect_ID + Year:City_dist + Year:Transect_ID + City_dist:Transect_ID,
-                       data = (fertile_pops_all %>% 
-                                 filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
-lm.height.subt.2_anova <- car::Anova(lm.height.subt.2, REML = F)
-# Nothing significant, so removing interactions
 
-lm.height.subt.3 <- lm(Height_Sept 	~ Year + City_dist + Transect_ID,
-                       data = (fertile_pops_all %>% 
-                                 filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
-lm.height.subt.3_anova <- car::Anova(lm.height.subt.3, REML = F)
-# nothing significant
+formulas_height <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_height$Model <- NA
+formulas_height$Formula <- NA
+formulas_height$r.squaredGLMM_R2m <- NA
+formulas_height$r.squaredGLMM_R2c <- NA
 
-AIC(lm.height.subt.1, lm.height.subt.2, lm.height.subt.3)
+for (i in 1:length(height_lm_subtr_list)) {
+  formulas_height[i, 1] <- toString(i)
+  formulas_height[i, 2] <- toString(formula(height_lm_subtr_list[[i]]))
+  formulas_height[i, 3] <- r.squaredGLMM(height_lm_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_height[i, 4] <- r.squaredGLMM(height_lm_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_height <- do.call(rbind,
+                       lapply(height_lm_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_height <- bind_cols(formulas_height,
+                        glance_height %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 3,5,6,78 lowest AIC (8 is best)
+
+# check residuals
+plot(height_lm_subtr_08) # looks good
+
+
+summary(height_lm_subtr_08)
+height_lm_subtr_08_anova <- car::Anova(height_lm_subtr_08) %T>%
+  print() # nothing sig
+
 ```
 
-
-##### urb_score, not city_dist
+##### urb_score, not City_dist
 ```{r}
-u_height_glm_subtr_1 <- lm(Height_Sept 	~ Year * Urb_score * Transect_ID, 
-                           data = (fertile_pops_all %>% 
-                                     filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
-u_height_glm_subtr_1_anova <- car::Anova(u_height_glm_subtr_1, REML = F)
-# 3-way interaction not significant, so let's look at lower-level interactions and main effects.
+u_height_lm_subtr_list <- list(u_height_lm_subtr_01,
+                             u_height_lm_subtr_02,
+                             u_height_lm_subtr_03,
+                             u_height_lm_subtr_04,
+                             u_height_lm_subtr_05,
+                             u_height_lm_subtr_06,
+                             u_height_lm_subtr_07,
+                             u_height_lm_subtr_08)
 
-u_height_glm_subtr_2 <-lm(Height_Sept 	~ Year + Urb_score + Transect_ID + Year:Urb_score + Year:Transect_ID + Urb_score:Transect_ID, 
-                          data = (fertile_pops_all %>%
-                                    filter(!is.na(Height_Sept) & Transect_ID != "Rural"))) 
-u_height_glm_subtr_2_anova <- car::Anova(u_height_glm_subtr_2, REML = F)
-# Nothing significant, so removing interactions
 
-u_height_glm_subtr_3 <- lm(Height_Sept 	~ Year + Urb_score + Transect_ID, 
-                           data = (fertile_pops_all %>% 
-                                     filter(!is.na(Height_Sept) & Transect_ID != "Rural")))
-u_height_glm_subtr_3_anova <- car::Anova(u_height_glm_subtr_3, REML = F)
-# nothing sig
+formulas_u_height <- data.frame(matrix(ncol = 0, nrow = 2))
+formulas_u_height$Model <- NA
+formulas_u_height$Formula <- NA
+formulas_u_height$r.squaredGLMM_R2m <- NA
+formulas_u_height$r.squaredGLMM_R2c <- NA
 
-AIC(u_height_glm_subtr_1, u_height_glm_subtr_2, u_height_glm_subtr_3)
+for (i in 1:length(u_height_lm_subtr_list)) {
+  formulas_u_height[i, 1] <- toString(i)
+  formulas_u_height[i, 2] <- toString(formula(u_height_lm_subtr_list[[i]]))
+  formulas_u_height[i, 3] <- r.squaredGLMM(u_height_lm_subtr_list[[i]])[1,1] %>%
+    round(digits = 3)
+  formulas_u_height[i, 4] <- r.squaredGLMM(u_height_lm_subtr_list[[i]])[1,2] %>%
+    round(digits = 3)
+}
+
+glance_u_height <- do.call(rbind,
+                       lapply(u_height_lm_subtr_list,
+                              broom.mixed::glance)) %>%
+  as.data.frame() %>%
+  mutate(BestModels = case_when(
+    AIC == min(AIC, na.rm=T) ~ "*",
+    AIC <= 2 + min(AIC, na.rm=T) ~ "*",
+    TRUE ~ "")) 
+
+bound_u_height <- bind_cols(formulas_u_height,
+                        glance_u_height %>%
+                          dplyr::select(AIC, BestModels)) %T>%
+  view() # Models 4,5,7 lowest AIC (7 is best)
+
+# check residuals
+plot(u_height_lm_subtr_07) # looks good
+
+
+summary(u_height_lm_subtr_07)
+u_height_lm_subtr_07_anova <- car::Anova(u_height_lm_subtr_07) %T>%
+  print() # urb_score sig
+
 ```
 
 
