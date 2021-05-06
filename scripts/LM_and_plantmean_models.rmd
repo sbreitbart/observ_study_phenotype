@@ -2483,6 +2483,258 @@ gg_reshist(lm(1/(density_sqm_18) ~ City_dist* Transect_ID, data = density_18_urb
 ```
 
 # Export ANOVAs
+## Best models: Inflors, pollen, pods, pods/inflor
 ```{r}
+# tidy anovas
+tidy_sb <- function(model){
+  
+  return(
+    car::Anova(model) %>%
+      broom.mixed::tidy() %>%
+      # as.data.frame() %>%
+      dplyr::mutate(Response = as.character(formula(model)[2]),
+                    .before = term) %>%
+      # dplyr::mutate(Model = paste(n(model)),
+      #               .before = term) %>%
+      dplyr::mutate(Sites = case_when(
+        str_detect(as.character(formula(model)[3]), "Transect_ID") == TRUE ~ "Urban Only",
+        str_detect(as.character(formula(model)[3]), "Transect_ID") == FALSE ~ "All"),
+                    .before = term) %>%
+      dplyr::mutate(Significance = case_when(p.value < 0.001 ~ "***",
+                                             p.value < 0.01 ~ "**",
+                                             p.value <= 0.05 ~ "*")) %>%
+      dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
+      mutate_if(is.numeric, round, 3))      %>%
+      dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
+      dplyr::select(., -df) %>%
+      dplyr::rename(., Chi_sq = statistic,
+                    Predictor = term,
+                    p = p.value) %>%
+      unite("p", p:Significance, sep = "", na.rm = TRUE) %>%
+      dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("City_dist"),
+                replacement = c("Distance to City Center")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Urb_score"),
+                replacement = c("Urbanization Score")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Transect_ID"),
+                replacement = c("Subtransect")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c(":"),
+                replacement = c(" x ")) %>%
+    dplyr::mutate_if(.,
+          is.character,
+          str_replace_all,
+          pattern = c("Year x Urbanization Score"),
+          replacement = c("Urbanization Score x Year")) # %>%
+        # dplyr::mutate_if(.,
+        #         is.character,
+        #         str_replace_all,
+        #         pattern = c("Year x Distance to City Center"),
+        #         replacement = c("Distance to City Center x Year")) %>%
+        # dplyr::mutate_if(.,
+        #         is.character,
+        #         str_replace_all,
+        #         pattern = c("Subtransect x Distance to City Center"),
+        #         replacement = c("Distance to City Center x Subtransect")) %>%
+        # dplyr::mutate_if(.,
+        #         is.character,
+        #         str_replace_all,
+        #         pattern = c("Distance to City Center x Year x Subtransect"),
+        #         replacement = c("Year x Subtransect x Distance to City Center"))
+}
+
+# combine anovas into publication-quality tables
+make_Q1Q2_Anova.lm <- function(anova_list){
+  return(
+    lapply(anova_list, tidy_sb) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename(
+      'SS' = 2,
+      'X2' = 3,
+      'p' = 4,
+      'SS ' = 5,
+      'X2 ' = 6,
+      'p ' = 7,
+      'SS  ' = 8,
+      'X2  ' = 9,
+      'p  ' = 10,
+      'SS   ' = 11,
+      'X2   ' = 12,
+      'p   ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Inflorescences",
+                 "Pollinaria Removed",
+                 "Follicles",
+                 "Follicles per Inflorescence"),
+      colwidths = c(1, 3, 3, 3, 3)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2  ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2   ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body")
+    )
+  }
+
+
+
+# CITY_DIST-----
+## ALL SITES
+
+best_mods_Q1.dist_list_lm <- list(
+### Peduncles
+   peds_lm_gradient_01,
+### Pollinia
+  poll_lm_gradient_02,
+### Pods
+  pods_lm_gradient_01,
+### Pods/Peduncle
+  podsperped_lm_gradient_02
+
+)
+
+make_Q1Q2_Anova.lm(best_mods_Q1.dist_list_lm) %>%
+  width(j = 1, width = 2.7) %>%
+  width(j = 2:13, width = 0.8) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Q1_Dist_ANOVA_lm.png"))
+
+
+
+
+
+## URBAN SITES
+best_mods_Q2.dist_list.lm <- list(
+### Peduncles
+  ,
+### Pollinia
+  ,
+### Pods
+  ,
+### Pods/Peduncle
+
+
+)
+
+
+# make_Q1Q2_Anova.lm(best_mods_Q2.dist_list.lm) %>%
+#   width(j = 1, width = 3) %>%
+#   width(j = 2:13, width = 0.9) %>%
+#   italic(i = 2, j = 2:13, part = "header") %>%
+#   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+#   add_footer_lines("*: p-value <= 0.05") %>%
+#   add_footer_lines("**: p-value <= 0.01") %>%
+#   add_footer_lines("***: p-value <= 0.001") %>%
+#   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Q2_Dist_ANOVA_lm.png"))
+
+
+
+
+
+# URB_SCORE-----
+## ALL SITES
+
+best_mods_Q1.urbscore_list.lm <- list(
+### Peduncles
+  u_peds_lm_gradient_01,
+### Pollinia
+  u_poll_lm_gradient_02,
+### Pods
+  u_pods_lm_gradient_02,
+### Pods/Peduncle
+  u_podsperped_lm_gradient_02
+
+)
+
+
+make_Q1Q2_Anova.lm(best_mods_Q1.urbscore_list.lm) %>%
+  width(j = 1, width = 2.4) %>%
+  width(j = 2:13, width = 0.8) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Q1_Urbscore_ANOVA_lm.png"))
+
+
+
+
+
+
+
+
+
+
+## URBAN SITES
+
+best_mods_Q2.urbscore_list <- list(
+### Peduncles
+  u_peds_glmer_subtr_06,  
+### Pollinia
+  u_poll_glmer_subtr_01,
+### Pods
+  u_pods_glmer_subtr_03,
+### Pods/Peduncle
+  u_podsperped_lmer_subtr_09
+
+)
+
+
+make_Q1Q2_Anova(best_mods_Q2.urbscore_list) %>%
+  width(j = 1, width = 3.3) %>%
+  width(j = 2:9, width = 0.9) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Urbscore_ANOVA.png"))
 
 ```
