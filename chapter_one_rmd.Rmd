@@ -3198,7 +3198,7 @@ podsperped_lmer_gradient_01 %>%
   # fix_border_issues() %>%
   add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines(paste0("AIC: ",
-                          AIC(height_lmer_gradient_02) %>% round(., 3))) %>%
+                          AIC(podsperped_lmer_gradient_01) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3313,7 +3313,7 @@ lapply(alt_best_mods_Q2.dist_list, tidy_sb) %>%
   # merge_at(i = 1:6, j = 19) %>%
   # merge_at(i = 1:6, j = 22) %>%
   # fix_border_issues() %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
                           AIC(peds_glmer_subtr_03) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 2: ",
                           AIC(peds_glmer_subtr_06) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
@@ -3398,7 +3398,7 @@ lapply(alt_best_mods_Q1.urbscore_list, tidy_sb) %>%
   # merge_at(i = 1:6, j = 19) %>%
   # merge_at(i = 1:6, j = 22) %>%
   # fix_border_issues() %>%
-  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best models examining the effects of urbanization on2 traits: pollinaria removed and mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best models examining the effects of urbanization on 2 traits: pollinaria removed and mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
                           AIC(u_poll_glmer_gradient_1.1) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
@@ -3509,7 +3509,7 @@ lapply(alt_best_mods_Q2.urbscore_list, tidy_sb) %>%
   # merge_at(i = 1:6, j = 19) %>%
   # merge_at(i = 1:6, j = 22) %>%
   # fix_border_issues() %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, follicles, and mean no. follicles per inflorescence. Alternative models of pollinaria removed were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, follicles, and mean no. follicles per inflorescence. Alternative models of pollinaria removed were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
     add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
                           AIC(u_peds_glmer_subtr_03) %>% round(., 3))) %>%
     add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 2: ",
