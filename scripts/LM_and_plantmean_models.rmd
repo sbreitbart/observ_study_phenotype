@@ -2312,7 +2312,7 @@ glance_height <- do.call(rbind,
 bound_height <- bind_cols(formulas_height,
                         glance_height %>%
                           dplyr::select(AIC, BestModels)) %T>%
-  view() # Models 3,5,6,78 lowest AIC (8 is best)
+  view() # Models 3,5,6,7, 8 lowest AIC (8 is best)
 
 # check residuals
 plot(height_lm_subtr_08) # looks good
@@ -2844,7 +2844,7 @@ make_Q1Q2_Anova.height_lm(u_height_lm_subtr_07) %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Height/Q2_Urbscore_ANOVA_HEIGHT_lm.png"))
 ```
 
-##### Alternative (AIC<2 from best) models: Inflors, pollen, pods, pods/inflor
+## Alternative (AIC<2 from best) models: Inflors, pollen, pods, pods/inflor
 ```{r}
 
 # CITY_DIST-----
@@ -3638,3 +3638,178 @@ lapply(alt_best_mods_Q2.urbscore_list_lm.podsperped, tidy_sb) %>%
 
 
 ```
+
+## Alternative (AIC<2 from best) models: height
+```{r}
+
+# City_dist x all sites: height_lm_gradient_01
+make_Q1Q2_Anova.height_lm(height_lm_gradient_01) %>%
+  width(j = 1, width = 2.4) %>%
+  width(j = 2:3, width = 1) %>%
+  italic(i = 2, j = 2:3, part = "header") %>%
+  add_footer_lines("Table X: Results from an alternative general linear model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
+                          AIC(height_lm_gradient_01) %>% round(., 3))) %>% 
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Alternative_Models/Q1_Dist_ANOVA_altmodels_HEIGHT_lm.png"))
+
+
+# City_dist x urban sites: height_lm_subtr_03, height_lm_subtr_05, height_lm_subtr_06, height_lm_subtr_07
+lapply(list(height_lm_subtr_03,
+            height_lm_subtr_05,
+            height_lm_subtr_06,
+            height_lm_subtr_07), tidy_sb) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('SS' = 2,
+                  'X2' = 3,
+                  'p' = 4,
+                  'SS ' = 5,
+                  'X2 ' = 6,
+                  'p ' = 7,
+                  'SS  ' = 8,
+                  'X2  ' = 9,
+                  'p  ' = 10,
+                  'SS   ' = 11,
+                  'X2   ' = 12,
+                  'p   ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Height, Alt. Model 1",
+                 "Height, Alt. Model 2",
+                 "Height, Alt. Model 3",
+                 "Height, Alt. Model 4"),
+      colwidths = c(1, 3, 3, 3, 3)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2  ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2   ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.5) %>%
+  width(j = 2:13, width = 1) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from alternative general linear models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+                          AIC(height_lm_subtr_03) %>% round(., 3))) %>%     add_footer_lines(paste0("AIC, Height, Alt. Model 2: ",
+                          AIC(height_lm_subtr_05) %>% round(., 3))) %>%     add_footer_lines(paste0("AIC, Height, Alt. Model 3: ",
+                          AIC(height_lm_subtr_06) %>% round(., 3))) %>%     add_footer_lines(paste0("AIC, Height, Alt. Model 4: ",
+                          AIC(height_lm_subtr_07) %>% round(., 3))) %>% 
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Alternative_Models/Q2_Dist_ANOVA_altmodels_HEIGHT_lm.png"))
+
+
+
+# Urb_score x all sites: u_height_lm_gradient_01
+make_Q1Q2_Anova.height_lm(u_height_lm_gradient_01) %>%
+  width(j = 1, width = 2.4) %>%
+  width(j = 2:3, width = 1) %>%
+  italic(i = 2, j = 2:3, part = "header") %>%
+  add_footer_lines("Table X: Results from an alternative general linear model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>% 
+  add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+                          AIC(u_height_lm_gradient_01) %>% round(., 3))) %>% 
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Alternative_Models/Q1_Urbscore_ANOVA_altmodels_HEIGHT_lm.png"))
+
+
+# Urb_score x urban sites: u_height_lm_subtr_04, u_height_lm_subtr_05
+lapply(list(u_height_lm_subtr_04,
+            u_height_lm_subtr_05), tidy_sb) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('SS' = 2,
+                  'X2' = 3,
+                  'p' = 4,
+                  'SS ' = 5,
+                  'X2 ' = 6,
+                  'p ' = 7) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Height, Alt. Model 1",
+                 "Height, Alt. Model 2"),
+      colwidths = c(1, 3, 3)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:7, align = "center", part = "body") %>%
+    align(j = 2:7, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.5) %>%
+  width(j = 2:7, width = 1) %>%
+  italic(i = 2, j = 2:7, part = "header") %>%
+  add_footer_lines("Table X: Results from alternative general linear models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+                          AIC(height_lm_subtr_03) %>% round(., 3))) %>%     add_footer_lines(paste0("AIC, Height, Alt. Model 2: ",
+                          AIC(height_lm_subtr_05) %>% round(., 3))) %>%     add_footer_lines(paste0("AIC, Height, Alt. Model 3: ",
+                          AIC(height_lm_subtr_06) %>% round(., 3))) %>%     add_footer_lines(paste0("AIC, Height, Alt. Model 4: ",
+                          AIC(height_lm_subtr_07) %>% round(., 3))) %>% 
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Linear_Models/Alternative_Models/Q2_Urbscore_ANOVA_altmodels_HEIGHT_lm.png"))
+
+```
+
+

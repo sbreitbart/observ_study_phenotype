@@ -3529,6 +3529,7 @@ lapply(alt_best_mods_Q2.urbscore_list, tidy_sb) %>%
 
 
 ```
+
 ##### Alternative (AIC<2 from best) models: height
 ```{r}
 # City_dist x all sites: height_lmer_gradient_01
@@ -3537,6 +3538,8 @@ make_Q1Q2_Anova.height(height_lmer_gradient_01) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
   add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+                          AIC(height_lmer_gradient_01) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3548,7 +3551,9 @@ make_Q1Q2_Anova.height(height_lmer_subtr_08) %>%
   width(j = 1, width = 2.4) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+      add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+                          AIC(height_lmer_subtr_08) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3561,6 +3566,8 @@ make_Q1Q2_Anova.height(u_height_lmer_gradient_02) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
   add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+        add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+                          AIC(u_height_lmer_gradient_02) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3572,7 +3579,9 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_09) %>%
   width(j = 1, width = 2.4) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+        add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+                          AIC(u_height_lmer_subtr_09) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
