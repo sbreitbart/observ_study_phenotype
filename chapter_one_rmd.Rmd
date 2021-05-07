@@ -3158,7 +3158,7 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
 ### ****Pods/Peduncle:  podsperped_lmer_gradient_01
 
 
-height_lmer_gradient_02 %>%
+podsperped_lmer_gradient_01 %>%
   tidy_sb() %>%
     as.data.frame() %>%
     arrange(factor(Predictor, levels = c("Distance to City Center",
@@ -3191,7 +3191,7 @@ height_lmer_gradient_02 %>%
       pattern = "{{val}}{{pow}}", part = "header",
       formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
       fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-  width(j = 1, width = 1.8) %>%
+  width(j = 1, width = 2.3) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
   # merge_at(i = 1:2, j = 4 ) %>%
