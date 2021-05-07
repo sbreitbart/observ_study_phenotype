@@ -3092,7 +3092,7 @@ make_Q1Q2_Anova.height(height_lmer_gradient_02) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q1_Dist_ANOVA_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q1_Dist_ANOVA_HEIGHT.png"))
 
 
 
@@ -3109,7 +3109,7 @@ make_Q1Q2_Anova.height(height_lmer_subtr_01) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q2_Dist_ANOVA_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q2_Dist_ANOVA_HEIGHT.png"))
 
 
 
@@ -3126,7 +3126,7 @@ make_Q1Q2_Anova.height(u_height_lmer_gradient_01) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q1_Urbscore_ANOVA_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q1_Urbscore_ANOVA_HEIGHT.png"))
 
 
 
@@ -3144,9 +3144,10 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Q2_Urbscore_ANOVA_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q2_Urbscore_ANOVA_HEIGHT.png"))
 
 ```
+
 ##### Alternative (AIC<2 from best) models: Inflors, pollen, pods, pods/inflor
 ```{r}
 
@@ -3202,7 +3203,7 @@ podsperped_lmer_gradient_01 %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q1_Dist_ANOVA_altmodels.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q1_Dist_ANOVA_altmodels.png"))
 
 
 
@@ -3325,7 +3326,7 @@ lapply(alt_best_mods_Q2.dist_list, tidy_sb) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q2_Dist_ANOVA_altmodels.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q2_Dist_ANOVA_altmodels.png"))
 
 
   
@@ -3406,7 +3407,7 @@ lapply(alt_best_mods_Q1.urbscore_list, tidy_sb) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q1_Urbscore_ANOVA_altmodels.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q1_Urbscore_ANOVA_altmodels.png"))
 
 
 
@@ -3525,7 +3526,7 @@ lapply(alt_best_mods_Q2.urbscore_list, tidy_sb) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q2_Urbscore_ANOVA_altmodels.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q2_Urbscore_ANOVA_altmodels.png"))
 
 
 ```
@@ -3543,7 +3544,7 @@ make_Q1Q2_Anova.height(height_lmer_gradient_01) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q1_Dist_ANOVA_altmodels_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q1_Dist_ANOVA_altmodels_HEIGHT.png"))
 
 
 # City_dist x urban sites: height_lmer_subtr_08
@@ -3557,7 +3558,7 @@ make_Q1Q2_Anova.height(height_lmer_subtr_08) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q2_Dist_ANOVA_altmodels_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q2_Dist_ANOVA_altmodels_HEIGHT.png"))
 
 
 # Urb_score x all sites: u_height_lmer_gradient_02
@@ -3571,7 +3572,7 @@ make_Q1Q2_Anova.height(u_height_lmer_gradient_02) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q1_Urbscore_ANOVA_altmodels_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q1_Urbscore_ANOVA_altmodels_HEIGHT.png"))
 
 
 # Urb_score x urban sites: u_height_lmer_subtr_09
@@ -3585,7 +3586,7 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_09) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
-  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/Alternative_Models/Q2_Urbscore_ANOVA_altmodels_HEIGHT.png"))
+  save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q2_Urbscore_ANOVA_altmodels_HEIGHT.png"))
 ```
 
 
