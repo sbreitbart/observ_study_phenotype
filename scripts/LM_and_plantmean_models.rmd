@@ -1671,10 +1671,10 @@ u_pods_lm_subtr_06_anova <- car::Anova(u_pods_lm_subtr_06) %T>%
 
 
 # Pods per peduncle
-## LM
+## LM- No transformation necessary
 ### Without transect
 #### Diagnostics
-##### City_dist: USE SQRT TRANSFORMATION
+##### City_dist: No transformation necessary
 ```{r}
 podsperped_lm_gradient_01 <- lm(pods_per_ped ~ City_dist * Year ,
                                 data = fertile_pops_all)
@@ -2060,10 +2060,10 @@ v2 <- car::Anova(glmer(as.numeric(Pods_per_plant) ~ (1|Patch_ID) + Transect_ID:Y
 
 
 # Height
-## LM
+## LM- No transformation necessary
 ### Without transect
 #### Diagnostics
-##### City_dist: USE SQRT TRANSFORMATION
+##### City_dist: No transformation necessary
 ```{r}
 height_lm_gradient_01 <- lm(Height_Sept ~ City_dist * Year ,
                                 data = fertile_pops_all)
