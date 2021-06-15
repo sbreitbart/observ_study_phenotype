@@ -2640,6 +2640,14 @@ make_Q1Q2_Anova.lm(best_mods_Q1.dist_list_lm) %>%
   width(j = 2:13, width = 0.8) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(peds_lm_gradient_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(poll_lm_gradient_02) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(pods_lm_gradient_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(podsperped_lm_gradient_02) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -2668,6 +2676,14 @@ make_Q1Q2_Anova.lm(best_mods_Q2.dist_list.lm) %>%
   width(j = 2:13, width = 0.9) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(peds_lm_subtr_06) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(poll_lm_subtr_06) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(pods_lm_subtr_08) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(podsperped_lm_subtr_08) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -2698,6 +2714,14 @@ make_Q1Q2_Anova.lm(best_mods_Q1.urbscore_list.lm) %>%
   width(j = 2:13, width = 0.8) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(u_peds_lm_gradient_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(u_poll_lm_gradient_02) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(u_pods_lm_gradient_02) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(u_podsperped_lm_gradient_02) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -2732,6 +2756,14 @@ make_Q1Q2_Anova.lm(best_mods_Q2.urbscore_list_lm) %>%
   width(j = 2:9, width = 0.9) %>%
   italic(i = 2, j = 2:9, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(u_peds_lm_subtr_06) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(u_poll_lm_subtr_06) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(u_pods_lm_subtr_06) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(u_podsperped_lm_subtr_07) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -2788,6 +2820,8 @@ make_Q1Q2_Anova.height_lm(height_lm_gradient_02) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+      add_footer_lines(paste0("AIC, Height: ",
+                          AIC(height_lm_gradient_02) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -2804,7 +2838,8 @@ make_Q1Q2_Anova.height_lm(height_lm_subtr_08) %>%
   width(j = 1, width = 2.5) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%    add_footer_lines(paste0("AIC, Height: ",
+                          AIC(height_lm_subtr_08) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -2820,7 +2855,9 @@ make_Q1Q2_Anova.height_lm(u_height_lm_gradient_02) %>%
   width(j = 1, width = 1.7) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>% 
+  add_footer_lines(paste0("AIC, Height: ",
+                          AIC(u_height_lm_gradient_02) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -2837,7 +2874,8 @@ make_Q1Q2_Anova.height_lm(u_height_lm_subtr_07) %>%
   width(j = 1, width = 2.5) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sum of squares (SS), maximum likelihood chi-square (X2), and p-values (p) obtained from a type II ANOVA.") %>%    add_footer_lines(paste0("AIC, Height: ",
+                          AIC(u_height_lm_subtr_07) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%

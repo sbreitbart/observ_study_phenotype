@@ -1,0 +1,10 @@
+Daily Data downloaded for 2018 and 2019 from 
+
+https://climate.weather.gc.ca/climate_data/daily_data_e.html?hlyRange=%7C&dlyRange=2007-01-30%7C2021-05-09&mlyRange=%7C&StationID=45667&Prov=ON&urlExtension=_e.html&searchType=stnName&optLimit=yearRange&StartYear=1840&EndYear=2021&selRowPerPage=25&Line=0&searchMethod=contains&Month=1&Day=12&txtStationName=oakville+twn&timeframe=2&Year=2018
+
+and
+
+https://climate.weather.gc.ca/climate_data/daily_data_e.html?hlyRange=%7C&dlyRange=2007-01-30%7C2021-05-09&mlyRange=%7C&StationID=45667&Prov=ON&urlExtension=_e.html&searchType=stnName&optLimit=yearRange&StartYear=1840&EndYear=2021&selRowPerPage=25&Line=0&searchMethod=contains&txtStationName=oakville+twn&timeframe=2&Day=12&Year=2019&Month=1#
+
+
+I chose Oakville because it was the closest station (only about 5km) from the midpoint of my gradient- near where the urban subtransects meet the rural subtransect.

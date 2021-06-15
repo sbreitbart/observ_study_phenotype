@@ -99,6 +99,7 @@ library(MASS)
 library(multcomp)
 library(MuMIn)
 library(nlme)
+library(officer)
 library(patchwork)
 library(plyr)
 library(reshape)
@@ -307,7 +308,7 @@ corr_df_spread[is.na(corr_df_spread)] <- 0
 corr_df_spread$Perc_Corr_Cumulative <- cumsum(corr_df_spread[, 4])
 corr_df_spread$Perc_Greensp_Cumulative <- cumsum(corr_df_spread[, 5])
 
-write.csv(corr_df_spread,"corr_df_spread.csv", row.names = FALSE)
+write.csv(corr_df_spread, here::here("./Corridor_Analysis/corr_df_spread.csv"), row.names = FALSE)
 
 ```
 
@@ -1361,8 +1362,8 @@ u_poll_glmer_subtr_01_anova <- car::Anova(u_poll_glmer_subtr_01) %T>%
 
 ##### Pods
 ###### GLMER
-####### City-dist, not urb_score
-######## All sites
+####### City-dist
+######## All sites- SQUARING TRANSFORMATION
 ```{r}
 # pods_glmer_gradient_01 <- glmer(Viable_Pods ~ (1|Patch_ID) +
 #                                   
@@ -1474,28 +1475,28 @@ pods_glmer_gradient_01_anova <- car::Anova(pods_glmer_gradient_01) %T>%
 
 ```
 
-######## Urban sites
+######## Urban sites- SQUARING TRANSFORMATION
 ```{r}
 # GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
 
 ## all main effects and secondary and tertiary interactions (full model)
-pods_glmer_subtr_01 <- glmer(Viable_Pods ~ (1|Patch_ID) +
-                               
-                               City_dist:Year:Transect_ID + 
-                               
-                               Year:Transect_ID + 
-                               City_dist:Transect_ID +
-                               City_dist:Year +
-                               
-                               City_dist +
-                               Year +
-                               Transect_ID,
-                             
-                             fertile %>%
-                               filter(Transect_ID != 'Rural'),
-                             family = "poisson",
-                             glmerControl(optimizer="bobyqa",
-                                          optCtrl = list(maxfun = 100000))) # diagnostic plot is not normal. Trying a hurdle model like for Q1 above
+# pods_glmer_subtr_01 <- glmer(Viable_Pods ~ (1|Patch_ID) +
+#                                
+#                                City_dist:Year:Transect_ID + 
+#                                
+#                                Year:Transect_ID + 
+#                                City_dist:Transect_ID +
+#                                City_dist:Year +
+#                                
+#                                City_dist +
+#                                Year +
+#                                Transect_ID,
+#                              
+#                              fertile %>%
+#                                filter(Transect_ID != 'Rural'),
+#                              family = "poisson",
+#                              glmerControl(optimizer="bobyqa",
+#                                           optCtrl = list(maxfun = 100000))) # diagnostic plot is not normal. Trying a hurdle model like for Q1 above
 
 # GOING TO SUBTRACT 1 AND THEN USE ZERO-INFLATED MODEL OR HURDLE MODEL TO DEAL WITH ONE-INFLATION-----
 
@@ -1715,7 +1716,7 @@ plot(simulateResiduals(pods_glmer_subtr_08)) # looks fine
 ```
 
 ####### urb_score, not dist
-######## All sites
+######## All sites- CUBING TRANSFORMATION
 ```{r}
 # u_pods_glmer_gradient_1 <- glmer(Viable_Pods ~ (1|Patch_ID) +
 #                                    
@@ -1798,7 +1799,7 @@ u_pods_glmer_gradient_1_anova <- car::Anova(u_pods_glmer_gradient_1) %T>%
 ```
 
 
-######## Urban sites
+######## Urban sites- CUBING TRANSFORMATION
 ```{r}
 
 # GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
@@ -2390,7 +2391,7 @@ u_podsperped_lmer_subtr_09_anova <- car::Anova(u_podsperped_lmer_subtr_09) %T>%
 
 ##### Height (Sept)
 ###### LMER
-####### City_dist, not urb-score
+####### City_dist
 ######## All sites
 ```{r}
 height_lmer_gradient_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
@@ -2556,7 +2557,7 @@ height_lmer_subtr_08_anova <- car::Anova(height_lmer_subtr_08) %T>%
 
 ```
 
-####### urb-score, not City_dist
+####### urb-score
 ######## All sites
 ```{r}
 u_height_lmer_gradient_01 <- lmer(Height_Sept ~ (1|Patch_ID) +
@@ -2942,11 +2943,20 @@ make_Q1Q2_Anova.1(best_mods_Q1.dist_list) %>%
   width(j = 2:11, width = 0.8) %>%
   italic(i = 2, j = 2:11, part = "header") %>%
   add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Pollinaria removed was analyzed on a yearly basis due to issues with model convergence. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(peds_glmer_gradient_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed- 2018: ",
+                          AIC(poll_glmer_gradient_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed- 2019: ",
+                          AIC(poll_glmer_gradient_02) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(pods_glmer_gradient_01) %>% round(., 3))) %>%  
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(podsperped_lmer_gradient_02) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Dist_ANOVA.png"))
-
 
 
 
@@ -2970,6 +2980,14 @@ make_Q1Q2_Anova(best_mods_Q2.dist_list) %>%
   width(j = 2:9, width = 0.9) %>%
   italic(i = 2, j = 2:9, part = "header") %>%
   add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(peds_glmer_subtr_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(poll_glmer_subtr_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(pods_glmer_subtr_03) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(podsperped_lmer_subtr_08) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3000,13 +3018,18 @@ make_Q1Q2_Anova(best_mods_Q1.urbscore_list) %>%
   width(j = 2:9, width = 0.8) %>%
   italic(i = 2, j = 2:9, part = "header") %>%
   add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(u_peds_glmer_gradient_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(u_poll_glmer_gradient_1) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(u_pods_glmer_gradient_1) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(u_podsperped_lmer_gradient_02) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Urbscore_ANOVA.png"))
-
-
-
 
 
 
@@ -3034,6 +3057,14 @@ make_Q1Q2_Anova(best_mods_Q2.urbscore_list) %>%
   width(j = 2:9, width = 0.9) %>%
   italic(i = 2, j = 2:9, part = "header") %>%
   add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Inflorescences: ",
+                          AIC(u_peds_glmer_subtr_06) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(u_poll_glmer_subtr_01) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles: ",
+                          AIC(u_pods_glmer_subtr_03) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+                          AIC(u_podsperped_lmer_subtr_09) %>% round(., 3))) %>% 
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3088,7 +3119,8 @@ make_Q1Q2_Anova.height(height_lmer_gradient_02) %>%
   width(j = 1, width = 1.8) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%  add_footer_lines(paste0("AIC, Height: ",
+                          AIC(height_lmer_gradient_02) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3106,6 +3138,8 @@ make_Q1Q2_Anova.height(height_lmer_subtr_01) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
   add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Height: ",
+                          AIC(height_lmer_subtr_01) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3123,6 +3157,8 @@ make_Q1Q2_Anova.height(u_height_lmer_gradient_01) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
   add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Height: ",
+                          AIC(u_height_lmer_gradient_01) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -3141,6 +3177,8 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
   width(j = 2:3, width = 1) %>%
   italic(i = 2, j = 2:3, part = "header") %>%
   add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+    add_footer_lines(paste0("AIC, Height: ",
+                          AIC(u_height_lmer_subtr_01) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -6682,375 +6720,4 @@ car::Anova(lm(simpson_equit ~ Transect, data = div_sum[which(div_sum$Transect ==
 ## p >> 0.05
 ## simpson_equit's diversity does NOT significantly vary among urban transects
 
-```
-
-## Random Statistical Analysis (double-check these are using correctly transformed data + Anova instead of aov...)
-#### Pollen Removal
-##### R-sq, p, and n for each subtransect * year
-```{r}
-
-# stats for average pollen removal by year AND by sub-transect
-## 2018
-Poll_Nor_18 <- summary(lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2018[which(AvgVars_byPatch_2018$Transect_ID == "North"), ]))
-Poll_Nor_18_n <- lm(Average_Pollinia ~ City_dist, 
-                    data = AvgVars_byPatch_2018[which(AvgVars_byPatch_2018$Transect_ID == "North"), ])
-Poll_Sou_18 <- summary(lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2018[which(AvgVars_byPatch_2018$Transect_ID == "South"), ]))
-Poll_Sou_18_n <- lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2018[which(AvgVars_byPatch_2018$Transect_ID == "South"), ])
-Poll_Rur_18 <- summary(lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2018[which(AvgVars_byPatch_2018$Transect_ID == "Rural"), ]))
-Poll_Rur_18_n <- lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2018[which(AvgVars_byPatch_2018$Transect_ID == "Rural"), ])
-
-## 2019
-Poll_Nor_19 <- summary(lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2019[which(AvgVars_byPatch_2019$Transect_ID == "North"), ]))
-Poll_Nor_19_n <- lm(Average_Pollinia ~ City_dist, 
-                    data = AvgVars_byPatch_2019[which(AvgVars_byPatch_2019$Transect_ID == "North"), ])
-Poll_Sou_19 <- summary(lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2019[which(AvgVars_byPatch_2019$Transect_ID == "South"), ]))
-Poll_Sou_19_n <- lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2019[which(AvgVars_byPatch_2019$Transect_ID == "South"), ])
-Poll_Rur_19 <- summary(lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2019[which(AvgVars_byPatch_2019$Transect_ID == "Rural"), ]))
-Poll_Rur_19_n <- lm(Average_Pollinia ~ City_dist,
-                    data = AvgVars_byPatch_2019[which(AvgVars_byPatch_2019$Transect_ID == "Rural"), ])
-
-
-##### table w/summary stats for each subtransect by year
-Pollen_removal_stats_table <-matrix(c(
-  "2018",round(Poll_Nor_18$r.squared,3),round(Poll_Nor_18$coefficients[2,4],3),nobs(Poll_Nor_18_n),
-  "2018",round(Poll_Sou_18$r.squared,3),round(Poll_Sou_18$coefficients[2,4],3),nobs(Poll_Sou_18_n),
-  "2018",round(Poll_Rur_18$r.squared,3),round(Poll_Rur_18$coefficients[2,4],3),nobs(Poll_Rur_18_n),
-  "2019",round(Poll_Nor_19$r.squared,3),round(Poll_Nor_19$coefficients[2,4],3),nobs(Poll_Nor_19_n),
-  "2019",round(Poll_Sou_19$r.squared,3),round(Poll_Sou_19$coefficients[2,4],3),nobs(Poll_Sou_19_n),
-  "2019",round(Poll_Rur_19$r.squared,3),round(Poll_Rur_19$coefficients[2,4],3),nobs(Poll_Rur_19_n))
-  ,ncol=4,byrow=TRUE)
-colnames(Pollen_removal_stats_table) <- c("Year","R-squared", "p", "n")
-rownames(Pollen_removal_stats_table) <- c("Urban: Northern","Urban: Southern (green corridor)","Rural","Urban: Northern","Urban: Southern (green corridor)","Rural")
-Pollen_removal_stats_table <- as.table(Pollen_removal_stats_table)
-Pollen_removal_stats_table
-
-
-##### table w/summary stats for each subtransect by subtransect
-Pollen_removal_stats_table2 <-matrix(c(
-"2018",round(Poll_Nor_18$r.squared,3),round(Poll_Nor_18$coefficients[2,4],3),nobs(Poll_Nor_18_n),
-"2019",round(Poll_Nor_19$r.squared,3),round(Poll_Nor_19$coefficients[2,4],3),nobs(Poll_Nor_19_n),
-                                      "2018",round(Poll_Sou_18$r.squared,3),round(Poll_Sou_18$coefficients[2,4],3),nobs(Poll_Sou_18_n),         "2019",round(Poll_Sou_19$r.squared,3),round(Poll_Sou_19$coefficients[2,4],3),nobs(Poll_Sou_19_n),
-                                      "2018",round(Poll_Rur_18$r.squared,3),round(Poll_Rur_18$coefficients[2,4],3),nobs(Poll_Rur_18_n),        "2019",round(Poll_Rur_19$r.squared,3),round(Poll_Rur_19$coefficients[2,4],3),nobs(Poll_Rur_19_n)),
-ncol=4,byrow=TRUE)
-colnames(Pollen_removal_stats_table2) <- c("Year","R-squared", "p", "n")
-rownames(Pollen_removal_stats_table2) <- c("Urban: Northern","Urban: Northern","Urban: Southern (green corridor)","Urban: Southern (green corridor)","Rural","Rural")
-Pollen_removal_stats_table2 <- as.table(Pollen_removal_stats_table)
-Pollen_removal_stats_table2
-write.csv(Pollen_removal_stats_table2, "Poll_removal_stats2.csv")
-```
-##### Comparing urban, rural subtransects
-```{r}
-
-# ANOVA
-## 2018
-Poll_18_North <- subset(AvgVars_notNA_Poll_18, Transect_ID == "North", select = c("Average_Pollinia", "City_dist"))
-Poll_18_South <- subset(AvgVars_notNA_Poll_18, Transect_ID == "South", select = c("Average_Pollinia", "City_dist"))
-Poll_18_Urban <- subset(AvgVars_notNA_Poll_18, Transect_ID == "North" | Transect_ID == "South", select = c("Average_Pollinia", "City_dist", "Transect_ID"))
-
-aov1 <- aov(Average_Pollinia ~ City_dist * Transect_ID, data = Poll_18_Urban)
-summary(aov1)
-Anova(aov1, type = "II")
-lsmeans_poll18 <- lsmeans(aov1, ~Transect_ID)
-lsmeans_poll18
-## South has (1.6-1.04)/(1.04) = 54% more pollinia removed, on average, than North transect
-
-## 2019
-Poll_19_North <- subset(AvgVars_notNA_Poll_19, Transect_ID == "North", select = c("Average_Pollinia", "City_dist"))
-Poll_19_South <- subset(AvgVars_notNA_Poll_19, Transect_ID == "South", select = c("Average_Pollinia", "City_dist"))
-Poll_19_Urban <- subset(AvgVars_notNA_Poll_19, Transect_ID == "North" | Transect_ID == "South", select = c("Average_Pollinia", "City_dist", "Transect_ID"))
-
-aov2 <- aov(Average_Pollinia ~ City_dist * Transect_ID, data = Poll_19_Urban)
-summary(aov2)
-Anova(aov2, type = "II")
-lsmeans_poll19 <- lsmeans(aov2, ~Transect_ID)
-lsmeans_poll19
-## South has (0.845-0.801)/(0.801) = 5% more pollinia removed, on average, than North transect
-
-## 2018-2019
-Poll_North <- subset(AvgVars_notNA_Poll, Transect_ID == "North", select = c("Average_Pollinia", "City_dist"))
-Poll_South <- subset(AvgVars_notNA_Poll, Transect_ID == "South", select = c("Average_Pollinia", "City_dist"))
-
-##### can I do this for 2 years?? Or do I have to use lmer for more than my current 2 variables? (city_dist and transect ID)
-aov3 <- aov(Average_Pollinia ~ City_dist * Transect_ID , data = Poll_Urban)
-summary(aov3)
-Anova(aov3, type = "II")
-lsmeans_poll19 <- lsmeans(aov3, ~Transect_ID)
-lsmeans_poll19
-## South has (1.126-0.876)/(0.876) = 29% more pollen removal, on average, than North transect
-
-```
-#### Follicles
-##### R-sq, p, and n for each subtransect * year
-```{r}
-
-# stats for average follicles by year AND by sub-transect
-## 2018
-Pod_Nor_18 <- summary(lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "North"), ]))
-Pod_Nor_18_n <- lm(Total_Pods ~ City_dist, 
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "North"), ])
-
-Pod_Sou_18 <- summary(lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "South"), ]))
-Pod_Sou_18_n <- lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "South"), ])
-
-Pod_Rur_18 <- summary(lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "Rural"), ]))
-Pod_Rur_18_n <- lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "Rural"), ])
-
-## 2019
-Pod_Nor_19 <- summary(lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "North"), ]))
-Pod_Nor_19_n <- lm(Total_Pods ~ City_dist, 
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "North"), ])
-
-Pod_Sou_19 <- summary(lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "South"), ]))
-Pod_Sou_19_n <- lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "South"), ])
-
-Pod_Rur_19 <- summary(lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "Rural"), ]))
-Pod_Rur_19_n <- lm(Total_Pods ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "Rural"), ])
-
-
-##### table w/summary stats for each subtransect by year
-Pods_stats_table <-matrix(c(
-  "2018",round(Pod_Nor_18$r.squared,3),round(Pod_Nor_18$coefficients[2,4],3),nobs(Pod_Nor_18_n),
-  "2018",round(Pod_Sou_18$r.squared,3),round(Pod_Sou_18$coefficients[2,4],3),nobs(Pod_Sou_18_n),
-  "2018",round(Pod_Rur_18$r.squared,3),round(Pod_Rur_18$coefficients[2,4],3),nobs(Pod_Rur_18_n),
-  "2019",round(Pod_Nor_19$r.squared,3),round(Pod_Nor_19$coefficients[2,4],3),nobs(Pod_Nor_19_n),
-  "2019",round(Pod_Sou_19$r.squared,3),round(Pod_Sou_19$coefficients[2,4],3),nobs(Pod_Sou_19_n),
-  "2019",round(Pod_Rur_19$r.squared,3),round(Pod_Rur_19$coefficients[2,4],3),nobs(Pod_Rur_19_n))
-  ,ncol=4,byrow=TRUE)
-colnames(Pods_stats_table) <- c("Year","R-squared", "p", "n")
-rownames(Pods_stats_table) <- c("Urban: Northern","Urban: Southern (green corridor)","Rural","Urban: Northern","Urban: Southern (green corridor)","Rural")
-Pods_stats_table <- as.table(Pods_stats_table)
-Pods_stats_table
-
-
-##### table w/summary stats for each subtransect by subtransect
-Pods_stats_table2 <-matrix(c(
-"2018",round(Pod_Nor_18$r.squared,3),round(Pod_Nor_18$coefficients[2,4],3),nobs(Pod_Nor_18_n),
-"2019",round(Pod_Nor_19$r.squared,3),round(Pod_Nor_19$coefficients[2,4],3),nobs(Pod_Nor_19_n),
-"2018",round(Pod_Sou_18$r.squared,3),round(Pod_Sou_18$coefficients[2,4],3),nobs(Pod_Sou_18_n),         "2019",round(Pod_Sou_19$r.squared,3),round(Pod_Sou_19$coefficients[2,4],3),nobs(Pod_Sou_19_n),
-"2018",round(Pod_Rur_18$r.squared,3),round(Pod_Rur_18$coefficients[2,4],3),nobs(Pod_Rur_18_n),        "2019",round(Pod_Rur_19$r.squared,3),round(Pod_Rur_19$coefficients[2,4],3),nobs(Pod_Rur_19_n)),
-ncol=4,byrow=TRUE)
-colnames(Pods_stats_table2) <- c("Year","R-squared", "p", "n")
-rownames(Pods_stats_table2) <- c("Urban: Northern","Urban: Northern","Urban: Southern (green corridor)","Urban: Southern (green corridor)","Rural","Rural")
-Pods_stats_table2 <- as.table(Pods_stats_table2)
-Pods_stats_table2
-write.csv(Pods_stats_table2, "Pods_stats2.csv")
-```
-##### Comparing urban, rural subtransects
-```{r}
-
-# ANOVA
-## 2018
-
-aov1a <- aov(Total_Pods ~ City_dist * Transect_ID, data = Pod_18_Urban)
-summary(aov1a)
-Anova(aov1a, type = "II")
-lsmeans_pod18 <- lsmeans(aov1a, ~Transect_ID)
-lsmeans_pod18
-## South has (4.99-3.35)/(3.35) = 49% more pods, on average, than North transect
-
-## 2019
-
-aov2a <- aov(Total_Pods ~ City_dist * Transect_ID, data = Pod_19_Urban)
-summary(aov2a)
-Anova(aov2a, type = "II")
-lsmeans_pod19 <- lsmeans(aov2a, ~Transect_ID)
-lsmeans_pod19
-## South has (3.65-3.4)/(3.4) = 7% more pods, on average, than North transect
-
-```
-#### Peduncles
-##### R-sq, p, and n for each subtransect * year
-```{r}
-
-# stats for average follicles by year AND by sub-transect
-## 2018
-Ped_Nor_18 <- summary(lm(Peduncles ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "North"), ]))
-Ped_Nor_18_n <- lm(Peduncles ~ City_dist, 
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "North"), ])
-
-Ped_Sou_18 <- summary(lm(Peduncles ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "South"), ]))
-Ped_Sou_18_n <- lm(Peduncles ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "South"), ])
-
-Ped_Rur_18 <- summary(lm(Peduncles ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "Rural"), ]))
-Ped_Rur_18_n <- lm(Peduncles ~ City_dist,
-                    data = fertile_pops_18[which(fertile_pops_18$Transect_ID == "Rural"), ])
-
-## 2019
-Ped_Nor_19 <- summary(lm(Peduncles ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "North"), ]))
-Ped_Nor_19_n <- lm(Peduncles ~ City_dist, 
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "North"), ])
-
-Ped_Sou_19 <- summary(lm(Peduncles ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "South"), ]))
-Ped_Sou_19_n <- lm(Peduncles ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "South"), ])
-
-Ped_Rur_19 <- summary(lm(Peduncles ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "Rural"), ]))
-Ped_Rur_19_n <- lm(Peduncles ~ City_dist,
-                    data = fertile_pops_19[which(fertile_pops_19$Transect_ID == "Rural"), ])
-
-
-##### table w/summary stats for each subtransect by year
-Peds_stats_table <-matrix(c(
-  "2018",round(Ped_Nor_18$r.squared,3),round(Ped_Nor_18$coefficients[2,4],3),nobs(Ped_Nor_18_n),
-  "2018",round(Ped_Sou_18$r.squared,3),round(Ped_Sou_18$coefficients[2,4],3),nobs(Ped_Sou_18_n),
-  "2018",round(Ped_Rur_18$r.squared,3),round(Ped_Rur_18$coefficients[2,4],3),nobs(Ped_Rur_18_n),
-  "2019",round(Ped_Nor_19$r.squared,3),round(Ped_Nor_19$coefficients[2,4],3),nobs(Ped_Nor_19_n),
-  "2019",round(Ped_Sou_19$r.squared,3),round(Ped_Sou_19$coefficients[2,4],3),nobs(Ped_Sou_19_n),
-  "2019",round(Ped_Rur_19$r.squared,3),round(Ped_Rur_19$coefficients[2,4],3),nobs(Ped_Rur_19_n))
-  ,ncol=4,byrow=TRUE)
-colnames(Peds_stats_table) <- c("Year","R-squared", "p", "n")
-rownames(Peds_stats_table) <- c("Urban: Northern","Urban: Southern (green corridor)","Rural","Urban: Northern","Urban: Southern (green corridor)","Rural")
-Peds_stats_table <- as.table(Peds_stats_table)
-Peds_stats_table
-
-
-##### table w/summary stats for each subtransect by subtransect
-Peds_stats_table2 <-matrix(c(
-"2018",round(Ped_Nor_18$r.squared,3),round(Ped_Nor_18$coefficients[2,4],3),nobs(Ped_Nor_18_n),
-"2019",round(Ped_Nor_19$r.squared,3),round(Ped_Nor_19$coefficients[2,4],3),nobs(Ped_Nor_19_n),
-"2018",round(Ped_Sou_18$r.squared,3),round(Ped_Sou_18$coefficients[2,4],3),nobs(Ped_Sou_18_n),         "2019",round(Ped_Sou_19$r.squared,3),round(Ped_Sou_19$coefficients[2,4],3),nobs(Ped_Sou_19_n),
-"2018",round(Ped_Rur_18$r.squared,3),round(Ped_Rur_18$coefficients[2,4],3),nobs(Ped_Rur_18_n),        "2019",round(Ped_Rur_19$r.squared,3),round(Ped_Rur_19$coefficients[2,4],3),nobs(Ped_Rur_19_n)),
-ncol=4,byrow=TRUE)
-colnames(Peds_stats_table2) <- c("Year","R-squared", "p", "n")
-rownames(Peds_stats_table2) <- c("Urban: Northern","Urban: Northern","Urban: Southern (green corridor)","Urban: Southern (green corridor)","Rural","Rural")
-Peds_stats_table2 <- as.table(Peds_stats_table2)
-Peds_stats_table2
-write.csv(Peds_stats_table2, "Peds_stats2.csv")
-```
-##### Comparing urban, rural subtransects
-```{r}
-
-# ANOVA
-## 2018
-
-
-aov1b <- aov(Peduncles ~ City_dist * Transect_ID, data = Ped_18_Urban)
-summary(aov1b)
-Anova(aov1b, type = "II")
-lsmeans_ped18 <- lsmeans(aov1b, ~Transect_ID)
-lsmeans_ped18
-## South has (8.67-7.16)/(7.16) = 21% more pods, on average, than North transect
-
-## 2019
-
-
-aov2b <- aov(Peduncles ~ City_dist * Transect_ID, data = Ped_19_Urban)
-summary(aov2b)
-Anova(aov2b, type = "II")
-lsmeans_ped19 <- lsmeans(aov2b, ~Transect_ID)
-lsmeans_ped19
-## South has (8.47-7.97)/(7.97) = 6% more pods, on average, than North transect
-```
-#### Height
-##### R-sq, p, and n for each subtransect * year
-```{r}
-# stats for average height by year AND by sub-transect
-## 2018
-Height_Nor_18 <- summary(lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_18[which(AvgVars_notNA_Height_18$Transect_ID == "North"), ]))
-Height_Nor_18_n <- lm(Height_Sept ~ City_dist, 
-                    data = AvgVars_notNA_Height_18[which(AvgVars_notNA_Height_18$Transect_ID == "North"), ])
-
-Height_Sou_18 <- summary(lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_18[which(AvgVars_notNA_Height_18$Transect_ID == "South"), ]))
-Height_Sou_18_n <- lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_18[which(AvgVars_notNA_Height_18$Transect_ID == "South"), ])
-
-Height_Rur_18 <- summary(lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_18[which(AvgVars_notNA_Height_18$Transect_ID == "Rural"), ]))
-Height_Rur_18_n <- lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_18[which(AvgVars_notNA_Height_18$Transect_ID == "Rural"), ])
-
-## 2019
-Height_Nor_19 <- summary(lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_19[which(AvgVars_notNA_Height_19$Transect_ID == "North"), ]))
-Height_Nor_19_n <- lm(Height_Sept ~ City_dist, 
-                    data = AvgVars_notNA_Height_19[which(AvgVars_notNA_Height_19$Transect_ID == "North"), ])
-
-Height_Sou_19 <- summary(lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_19[which(AvgVars_notNA_Height_19$Transect_ID == "South"), ]))
-Height_Sou_19_n <- lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_19[which(AvgVars_notNA_Height_19$Transect_ID == "South"), ])
-
-Height_Rur_19 <- summary(lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_19[which(AvgVars_notNA_Height_19$Transect_ID == "Rural"), ]))
-Height_Rur_19_n <- lm(Height_Sept ~ City_dist,
-                    data = AvgVars_notNA_Height_19[which(AvgVars_notNA_Height_19$Transect_ID == "Rural"), ])
-
-
-##### table w/summary stats for each subtransect by year
-Height_stats_table <-matrix(c(
-  "2018",round(Height_Nor_18$r.squared,3),round(Height_Nor_18$coefficients[2,4],3),nobs(Height_Nor_18_n),
-  "2018",round(Height_Sou_18$r.squared,3),round(Height_Sou_18$coefficients[2,4],3),nobs(Height_Sou_18_n),
-  "2018",round(Height_Rur_18$r.squared,3),round(Height_Rur_18$coefficients[2,4],3),nobs(Height_Rur_18_n),
-  "2019",round(Height_Nor_19$r.squared,3),round(Height_Nor_19$coefficients[2,4],3),nobs(Height_Nor_19_n),
-  "2019",round(Height_Sou_19$r.squared,3),round(Height_Sou_19$coefficients[2,4],3),nobs(Height_Sou_19_n),
-  "2019",round(Height_Rur_19$r.squared,3),round(Height_Rur_19$coefficients[2,4],3),nobs(Height_Rur_19_n))
-  ,ncol=4,byrow=TRUE)
-colnames(Height_stats_table) <- c("Year","R-squared", "p", "n")
-rownames(Height_stats_table) <- c("Urban: Northern","Urban: Southern (green corridor)","Rural","Urban: Northern","Urban: Southern (green corridor)","Rural")
-Height_stats_table <- as.table(Height_stats_table)
-Height_stats_table
-
-
-##### table w/summary stats for each subtransect by subtransect
-Height_stats_table2 <-matrix(c(
-"2018",round(Height_Nor_18$r.squared,3),round(Height_Nor_18$coefficients[2,4],3),nobs(Height_Nor_18_n),
-"2019",round(Height_Nor_19$r.squared,3),round(Height_Nor_19$coefficients[2,4],3),nobs(Height_Nor_19_n),
-"2018",round(Height_Sou_18$r.squared,3),round(Height_Sou_18$coefficients[2,4],3),nobs(Height_Sou_18_n),     "2019",round(Height_Sou_19$r.squared,3),round(Height_Sou_19$coefficients[2,4],3),nobs(Height_Sou_19_n),
-"2018",round(Height_Rur_18$r.squared,3),round(Height_Rur_18$coefficients[2,4],3),nobs(Height_Rur_18_n),     "2019",round(Height_Rur_19$r.squared,3),round(Height_Rur_19$coefficients[2,4],3),nobs(Height_Rur_19_n)),
-ncol=4,byrow=TRUE)
-colnames(Height_stats_table2) <- c("Year","R-squared", "p", "n")
-rownames(Height_stats_table2) <- c("Urban: Northern","Urban: Northern","Urban: Southern (green corridor)","Urban: Southern (green corridor)","Rural","Rural")
-Height_stats_table2 <- as.table(Height_stats_table2)
-Height_stats_table2
-write.csv(Height_stats_table2, "Height_stats2.csv")
-```
-
-##### Comparing urban, rural subtransects
-```{r}
-
-# ANOVA
-## 2018
-aov1c <- aov(Height_Sept ~ City_dist * Transect_ID, data = Height_18_Urban)
-summary(aov1c)
-Anova(aov1c, type = "II")
-lsmeans_Height18 <- lsmeans(aov1c, ~Transect_ID)
-lsmeans_Height18
-## South plants are (97.7-86.7)/(86.7) = 13% taller, on average, than North transect plants
-
-
-## 2019
-aov2c <- aov(Height_Sept ~ City_dist * Transect_ID, data = Height_19_Urban)
-summary(aov2c)
-Anova(aov2c, type = "II")
-lsmeans_Height19 <- lsmeans(aov2c, ~Transect_ID)
-lsmeans_Height19 ()
-## South plants are (102.3-95.1)/(95.1) = 8% taller, on average, than North transect plants
 ```
