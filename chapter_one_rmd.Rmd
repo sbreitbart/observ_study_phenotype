@@ -5734,41 +5734,6 @@ summary(lm.even.urbsubs) # corridor subtransect had 0.636 units lower evenness t
 ###### Functions
 ```{r}
 # tidy anovas
-# tidy_sb.pollinators_glm <- function(model){
-#   
-#   return(
-#     car::Anova(model) %>%
-#       broom::tidy() %>%
-#       dplyr::mutate(Sites = case_when(
-#         str_detect(as.character(formula(model)[3]), "Transect") == TRUE ~ "Urban Only",
-#         str_detect(as.character(formula(model)[3]), "Transect") == FALSE ~ "All"),
-#                     .before = term) %>%
-#       dplyr::mutate(Significance = case_when(p.value < 0.001 ~ "***",
-#                                              p.value < 0.01 ~ "**",
-#                                              p.value <= 0.05 ~ "*")) %>%
-#       dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
-#       mutate_if(is.numeric, round, 3)   %>%
-#       dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
-#       dplyr::rename(., Chi_sq = statistic,
-#                     Predictor = term,
-#                     p = p.value) %>%
-#       unite("p", p:Significance, sep = "", na.rm = TRUE) %>%
-#       dplyr::mutate_if(.,
-#                 is.character,
-#                 str_replace_all,
-#                 pattern = c("City_dist"),
-#                 replacement = c("Distance to City Center")) %>%
-#         dplyr::mutate_if(.,
-#                 is.character,
-#                 str_replace_all,
-#                 pattern = c("Urb_score"),
-#                 replacement = c("Urbanization Score")) %>%
-#         dplyr::mutate_if(.,
-#                 is.character,
-#                 str_replace_all,
-#                 pattern = c("Transect"),
-#                 replacement = c("Subtransect"))) 
-# }
 tidy_sb.pollinators_lm <- function(model){
   
   return(
@@ -5805,7 +5770,6 @@ tidy_sb.pollinators_lm <- function(model){
                 pattern = c("Transect"),
                 replacement = c("Subtransect"))) 
 }
-
 
 
 # combine anovas into publication-quality tables
@@ -5845,8 +5809,6 @@ make_Q3_Anova.pollinators <- function(anova_list){
       fontsize(size = 12, part = "body")
     )
 }
-
-
 ```
 
 ###### Main text: Abundance, Diversity, Richness
@@ -5858,7 +5820,9 @@ best_mods_Q3.dist_list <- list(
 ### abundance
   lm_abun1,  
 ### diversity
-lm_diversity
+lm_diversity,
+## richness
+lm.rich
 )
 
 #doing this one manually (not w/a function) b/c it has glm and lm's
@@ -5874,43 +5838,124 @@ lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
     dplyr::rename('X2' = 2,
                   'df' = 3,
                   'p' = 4,
-                  'Sum of Squares ' = 5,
+                  'Sum of Squares' = 5,
                   'df ' = 6,
                   'F' = 7,
-                  'p ' = 8) %>%
+                  'p ' = 8,
+                  'Sum of Squares ' = 9,
+                  'df  ' = 10,
+                  'F ' = 11,
+                  'p  ' = 12) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
-                 "Simpson's Diversity"),
-      colwidths = c(1, 3, 4)) %>%
+                 "Simpson's Diversity",
+                 "Species Richness"),
+      colwidths = c(1, 3, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:8, align = "center", part = "body") %>%
-    align(j = 2:8, align = "center", part = "header") %>%
+    align(j = 2:12, align = "center", part = "body") %>%
+    align(j = 2:12, align = "center", part = "header") %>%
     display(i = 2, col_key = "X2", 
       pattern = "{{val}}{{pow}}", part = "header",
       formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
       fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
-  width(j = 1, width = 1) %>%
-  width(j = 2:4, width = 0.8) %>%
-  width(j = 5, width = 1.4) %>%
-  width(j = 6:8, width = 0.8) %>%
-  italic(i = 2, j = 2:8, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization on pollinator abundance and diversity. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2,4), width = 0.7) %>%
+  width(j = c(3, 6, 10), width = 0.2) %>%
+  width(j = c(5, 9), width = 1.2) %>%
+  width(j = c(7:8, 11:12), width = 0.7) %>%
+  italic(i = 2, j = 2:12, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",
                           AIC(lm_abun1) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Diversity: ",
                           AIC(lm_diversity) %>% round(., 3))) %>%
+    add_footer_lines(paste0("AIC, Richness: ",
+                          AIC(lm.rich) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Dist_ANOVA.png"))
 
+
+
+
+
+
+
+# CITY_DIST-----
+## URBAN SITES
+
+best_mods_Q3urban.dist_list <- list(
+### abundance
+  lm_abun1.urbsubs_ME,  
+### diversity
+lm_diversity.urbsubs_ME,
+## richness
+lm.rich.urbsubs_ME
+)
+
+#doing this one manually (not w/a function) b/c it has glm and lm's
+lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'df' = 3,
+                  'p' = 4,
+                  'Sum of Squares' = 5,
+                  'df ' = 6,
+                  'F' = 7,
+                  'p ' = 8,
+                  'Sum of Squares ' = 9,
+                  'df  ' = 10,
+                  'F ' = 11,
+                  'p  ' = 12) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity",
+                 "Species Richness"),
+      colwidths = c(1, 3, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:12, align = "center", part = "body") %>%
+    align(j = 2:12, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2,4), width = 0.7) %>%
+  width(j = c(3, 6, 10), width = 0.2) %>%
+  width(j = c(5, 9), width = 1.2) %>%
+  width(j = c(7:8, 11:12), width = 0.7) %>%
+  italic(i = 2, j = 2:12, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.urbsubs_ME) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm_diversity.urbsubs_ME) %>% round(., 3))) %>%
+    add_footer_lines(paste0("AIC, Richness: ",
+                          AIC(lm.rich.urbsubs_ME) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Dist_urban_ANOVA.png"))
+
 ```
 
-###### Supplement
+###### Supplement (Equitability)
 ```{r}
 
 ```
