@@ -3801,6 +3801,7 @@ Diff.btwn.years <- function(city_dist_model_year18, city_dist_model_year19) {
 
 ###### Change along gradient: Just urban sites models
 ```{r}
+# CONDITIONAL MODEL
 Perc_change_gradient.urbansites <- function(city_dist_model){
 
   urban_terminus = 3.5 # km; most urban pop is close to this distance
@@ -3898,6 +3899,58 @@ Perc_change_gradient.2.urbansites <- function(city_dist_model){
   print(paste(noquote(c("On average, the most urban plants produced", round(percent_change.1, 1), "% more", response_var, " per plant than the most rural plants")), collapse = ' '))
   
 }
+
+
+
+# ZERO-INFLATED MODEL
+Perc_change_gradient.urbansites.zi <- function(city_dist_model){
+
+  urban_terminus = 3.5 # km; most urban pop is close to this distance
+  rural_terminus =  32 # km; most rural pop is close to this distance
+
+  intercept1 <- fixef(city_dist_model)$zi[1] %>%
+  as.numeric() # gives intercept for city_dist
+  
+  slope1 <- fixef(city_dist_model)$zi[2] %>%
+  as.numeric() # gives slope for city_dist
+  
+  response_var <- names(city_dist_model$modelInfo$respCol) %>%
+    str_remove(., "[()]")
+      
+
+# y(urban terminus)
+  urban_estimate <- slope1 * urban_terminus + intercept1 #  %T>%
+  # print()
+  
+  print(paste(noquote(c("There are an average of", round(urban_estimate, 3), response_var, "per plant at the urban terminus")), collapse = ' '))
+
+# y(rural terminus)
+   rural_estimate <- slope1 * rural_terminus + intercept1 # %T>%
+  # print()
+  
+  print(paste(noquote(c("There are an average of", round(rural_estimate, 3), response_var, "per plant at the rural terminus")), collapse = ' '))
+
+# AVG NUM. OF RAMETS FROM URBAN TO RURAL TERMINUS:
+  avg_diff <- abs( urban_estimate - rural_estimate )  / (0.5* (    urban_estimate + rural_estimate  )  ) # %T>%
+  # print()
+
+# % CHANGE
+  percent_change <- (((rural_estimate - urban_estimate) / abs(urban_estimate)) * 100) # %T>%
+  # print()
+  
+  print(paste(noquote(c("On average, the most rural plants produced", round(percent_change, 1), "% more", response_var, " per plant than the most urban plants")), collapse = ' '))
+  
+  # AVG NUM. OF RAMETS FROM RURAL TO URBAN TERMINUS:
+  avg_diff.1 <- abs( rural_estimate - urban_estimate )  / (0.5* (    urban_estimate + rural_estimate  )  ) # %T>%
+  # print()
+
+# % CHANGE
+  percent_change.1 <- (((urban_estimate - rural_estimate ) / abs(rural_estimate)) * 100) # %T>%
+  # print()
+  
+  print(paste(noquote(c("On average, the most urban plants produced", round(percent_change.1, 1), "% more", response_var, " per plant than the most rural plants")), collapse = ' '))
+
+}
 ```
 ###### Difference between urban subtransects models
 ```{r}
@@ -3918,21 +3971,22 @@ Perc_change_subtransects <- function(urban_model) {
 ###### lmer
 ####### All data
 ```{r}
-Perc_change_gradient.zi(peds_glmer_gradient_01)
-
-# differences between 2018-2019: 2019 had this much more peduncles/inflors, on avg, than 2018
+# ANOVA RESULT: MARG SIG VARIED BY YEAR
+# differences between 2018-2019: 2019 had 1.355X more peduncles/inflors, on avg, than 2018
 fixed.effects(peds_glmer_gradient_01)$zi[3]
 
 ```
 
 ####### Transects
 ```{r}
-Perc_change_gradient.urbansites(peds_glmer_subtr_01)
+# ANOVA RESULT: SIG VARIED BY YEAR, MARG SIG VARIED BY SUBTRANSECT
 
-# differences between transects: 2019 had this much more peduncles/inflors, on avg, than 2018
+# differences between transects: southern subtransect had 6.8485x fewer peduncles/inflors, on avg, than northern
 fixed.effects(peds_glmer_subtr_01)$zi[4]
 
-Perc_change_subtransects(peds_glmer_subtr_01)
+Perc_change_gradient.urbansites.zi(peds_glmer_subtr_01)
+
+sjPlot::plot_model(peds_glmer_subtr_01, type = "pred", terms = c( "City_dist", "Transect_ID", "Year"))
 ```
 
 
@@ -5138,7 +5192,9 @@ diversity <- merge(x=melted,y=tax,by="Morphospecies_Code",all.x=TRUE)
 
 
  ##################  CALCULATING SPECIES DIVERSITY ##################  
-pollinators1 <- pollinators[,c(1,7:48)] %>%
+pollinators1 <- pollinators[,c(1,7:48)]
+
+pollinators1 %<>%
   rowwise() %>% 
   add_column(., shannon = vegan::diversity(pollinators1[-1], index="shannon")) %>%
   add_column(., simpson = vegan::diversity(pollinators1[-1], index="simpson")) %>%
@@ -5267,44 +5323,13 @@ div_transects_no_honey <- diversity_no_honey %>%
 ####### Without transects- SQUARE ROOT TRANSFORMATION
 ```{r}
 
-# Linear model 1
-
-lm1 <- lm(total_indivs ~ Dist_city, data = div_sum )
+lm_abun1 <- lm(total_indivs ~ Dist_city, data = div_sum )
 
 par(mfrow=c(2,2))
-plot(lm1)
-plot(total_indivs ~ Dist_city, div_sum)
-lm1_sum <- summary(lm1)
-
-lm1_sum$coefficients[1,1] # this is the intercept (or, in y=mx + b, it's the b)
-lm1_sum$coefficients[2,1] # this is the slope (or, in y=mx + b, it's the m)
-lm1_sum$coefficients[2,4] # p-value
-lm1_sum$fstatistic[1] # F statistic
-lm1_sum$r.squared # R-squared value
-nobs(lm1_sum) # number of observations
-
+plot(lm_abun1)
 
 
 ######### Diagnostics ##########
-lm1_df <- div_sum[,c(1:3,10)]
-lm1_df$predicted <- predict(lm1)   # Save the predicted values
-lm1_df$residuals <- residuals(lm1) # Save the residual values
-
-ggplot(lm1_df, aes(x = Dist_city, y = total_indivs)) +
-  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
-  geom_segment(aes(xend = Dist_city, yend = predicted), alpha = .2) +
-  geom_point(aes(color = abs(residuals), size = abs(residuals))) + # size also mapped
-  scale_color_continuous(low = "black", high = "red") +
-  guides(color = FALSE, size = FALSE) +  # Size legend also removed
-  geom_point(aes(y = predicted), shape = 1) +
-  theme_bw()
-
-# residuals vs predicted values look ok... some potential outliers
-
-## Histogram
-gg_reshist(lm1, bins=20)
-
-
 diagnostic<-function(x){
   plot(x)
   abline(mean(x),0)
@@ -5316,100 +5341,37 @@ diagnostic<-function(x){
   print(paste("Kurtosis=", kurtosis(x), sep=""))
   print(paste("Skew=", skewness(x), sep=""))}
 
-diagnostic(lm1$residuals)
+diagnostic(lm_abun1$residuals)
 # right-skewed
 
-# get t-value
-lm1_tval <- skewness(lm1_df$residuals)/sqrt(6/length(lm1_df$residuals))
-
-# What's the chance of getting a t-value of 0.304 by chance alone, when the skew value really is zero?
-1-pt(lm1_tval,length(lm1_df$residuals))
-
-# 0.001 is way less than 0.05, so it looks like the data is NOT normal.
-# Conclusion: look into transformation or alternative models. Try square root transformation first.
+# look into transformation or alternative models. Try square root transformation first.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # Option 1: square root transformation
 
-lm1_df$sqrt <- sqrt(lm1_df$total_indivs)
 
-lm1_sqrt <- lm(sqrt ~ Dist_city, data = lm1_df)
+lm_abun1 <- lm(sqrt(total_indivs) ~ Dist_city,
+               data = div_sum) %T>%
+  plot()
 
-lm1_df$predicted_sqrt <- predict(lm1_sqrt)   # Save the predicted values
-lm1_df$residuals_sqrt <- residuals(lm1_sqrt) # Save the residual values
-
-ggplot(lm1_df, aes(x = Dist_city, y = sqrt)) +
-  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
-  geom_segment(aes(xend = Dist_city, yend = predicted_sqrt), alpha = .2) +
-  geom_point(aes(color = abs(residuals_sqrt), size = abs(residuals_sqrt))) + # size also mapped
-  scale_color_continuous(low = "black", high = "red") +
-  guides(color = FALSE, size = FALSE) +  # Size legend also removed
-  geom_point(aes(y = predicted_sqrt), shape = 1) +
-  theme_bw()
-
-# residuals vs predicted values look more balanced than first diagnostics
-
-diagnostic(lm1_df$residuals_sqrt)
-plot(lm1_sqrt)
-
-# get t-value
-lm1_sqrt_tval <- skewness(lm1_df$residuals_sqrt)/sqrt(6/length(lm1_df$residuals_sqrt))
-
-# What's the chance of getting a t-value of -1.097 by chance alone, when the skew value really is zero?
-1-pt(lm1_sqrt_tval,length(lm1_df$residuals_sqrt))
-
-# 0.1 is higher than 0.05 and it looks a lot better now.
-# Conclusion: Stick with the square root transformation.
-
-# Linear model 2: sq rt
-
-par(mfrow=c(2,2))
-plot(lm1_sqrt)
-lm1_sqrt_sum <- summary(lm1_sqrt)
-
-lm1_sqrt_sum$coefficients[1,1] # this is the intercept (or, in y=mx + b, it's the b)
-lm1_sqrt_sum$coefficients[2,1] # this is the slope (or, in y=mx + b, it's the m)
-lm1_sqrt_sum$coefficients[2,4] # p-value
-lm1_sqrt_sum$fstatistic[1] # F statistic
-lm1_sqrt_sum$r.squared # R-squared value
-nobs(lm1_sqrt_sum) # number of observations
-gg_reshist(lm1_sqrt, bins=20)
-
+# residuals vs predicted values look more balanced than first diagnostics. Go with this one
 ```
 
 
 ####### With transects- NO TRANSFORMATION
 ```{r}
 
-# ## USE URBAN SUBSET
-div_sum_urban <- div_sum %>% filter(Transect != 'Rural')
-
-
-lm1 <- lm(total_indivs ~ Dist_city * Transect, data = div_sum_urban )
+lm_abun1.urbsubs <- lm(total_indivs ~ Dist_city * Transect,
+                       data = div_sum %>%
+                         filter(Transect != 'Rural') )
 
 par(mfrow=c(2,2))
-plot(lm1)
-plot(total_indivs ~ Dist_city, div_sum_urban)
-lm1_sum <- summary(lm1)
+plot(lm_abun1.urbsubs)
 
 ## Histogram
-gg_reshist(lm1, bins=20)
+gg_reshist(lm_abun1.urbsubs, bins=20)
 
-
-diagnostic<-function(x){
-  plot(x)
-  abline(mean(x),0)
-  hist(x)
-  qqnorm(x)
-  qqline(x,lty=2, col="Red")
-  skewness(x)
-  kurtosis(x)
-  print(paste("Kurtosis=", kurtosis(x), sep=""))
-  print(paste("Skew=", skewness(x), sep=""))}
-
-diagnostic(lm1$residuals)
-# right-skewed
 
 # I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
 ```
@@ -5913,81 +5875,6 @@ central_mean_q.1
 ```
 
 ##### Diversity
-###### Shannon's Diversity Index
-####### All data
-```{r}
-# Shannon diversity  ~ dist city ctr
-summary(lm(shannon ~ Dist_city , data = div_sum ))
-car::Anova(lm(shannon ~ Dist_city , data = div_sum ))
-## city_dist nto sig
-
-# pairs(lsmeans(sh_div_lm, "Transect"), adjust = "mvt")
-# # No transects are signifcantly different from one another.
-# # This is more trustworthy than the ANOVA because it accounts for the unbalanced design.
-# 
-# marginal1 = lsmeans(sh_div_lm, ~ Transect)
-# CLD1 = cld(marginal1, alpha=0.05, Letters=letters, adjust="tukey")
-# ggplot(CLD1, aes(x = Transect, y = lsmean, label = .group)) +
-#     geom_point(shape  = 15,
-#                size   = 4,
-#              position = position_dodge(0.2) ) +
-#     geom_errorbar(aes(ymin  =  lower.CL,
-#                       ymax  =  upper.CL),
-#                       width =  0.2,
-#                       size  =  0.7,
-#                    position = position_dodge(0.2) ) +
-#     theme_bw() +
-#     theme(axis.title   = element_text(face = "bold"),
-#           axis.text    = element_text(face = "bold"),
-#           plot.caption = element_text(hjust = 0)) +
-#     ylab("Least square mean") +
-#     ggtitle ("Shannon Diversity per Site",
-#              subtitle = "Least Square Mean")
-```
-
-
-####### Transects
-```{r}
-# Shannon diversity  ~ dist city ctr *  Transect
-summary(lm(shannon^(1/2) ~ Dist_city * Transect, data = div_sum_urban))
-car::Anova(lm(shannon^(1/2) ~ Dist_city * Transect, data = div_sum_urban))
-## A:B not significant, so let's try these main factors separately.
-
-summary(lm(shannon^(1/2) ~ Dist_city+ Transect, data = div_sum_urban))
-car::Anova(lm(shannon^(1/2) ~ Dist_city + Transect, data = div_sum_urban))
-# nothing sig
-
-
-# pairs(lsmeans(lm(shannon ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]), "Transect"), adjust = "mvt")
-# # Marginally significant: p = 0.066
-# 
-# 
-# 
-# 
-# marginal2 = lsmeans(lm(shannon ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]), ~ Transect)
-# 
-# CLD2 = cld(marginal2, alpha=0.05, Letters=letters, adjust="tukey")
-# 
-# ggplot(CLD2, aes(x = Transect, y = lsmean, label = .group)) +
-#     geom_point(shape  = 15,
-#                size   = 4,
-#              position = position_dodge(0.2) ) +
-#     geom_errorbar(aes(ymin  =  lower.CL,
-#                       ymax  =  upper.CL),
-#                       width =  0.2,
-#                       size  =  0.7,
-#                    position = position_dodge(0.2) ) +
-#     theme_bw() +
-#     theme(axis.title   = element_text(face = "bold"),
-#           axis.text    = element_text(face = "bold"),
-#           plot.caption = element_text(hjust = 0)) +
-#     ylab("Least square mean") +
-#     ggtitle ("Shannon Diversity per Site",
-#              subtitle = "Least Square Mean")
-# 
-
-```
-
 ###### Simpson's Diversity Index
 ####### Transformed data (log(1-simpson) transformation. Was left-skewed)
 ######## All data
@@ -6068,42 +5955,6 @@ car::Anova(lm(Menhinicks_index ~ Transect, data = div_sum[which(div_sum$Transect
 ```
  *** STILL NEED TO DO 4/3/2020- SET UP LM'S CORRECTLY & REDO
 ##### Equitability (Evenness)*** STILL NEED TO DO 4/3/2020- SET UP LM'S CORRECTLY & REDO
-###### Shannon's Equitability
-Main takeaway: Shannon's Equitability does not differ by position along gradient. It marginally differs by transect (when comparing all 3 as well as just the 2 urban). The interaction is not significant.
-```{r}
-# Shannon equitability  ~ dist city ctr * Transect
-summary(lm(shannon_equit ~ Dist_city * Transect, data = div_sum ))
-car::Anova(lm(shannon_equit ~ Dist_city * Transect, data = div_sum ))
-## A:B not significant, so let's try these main factors separately.
-
-# Shannon equitability ~ dist city ctr
-summary(lm(shannon_equit ~ Dist_city, data = div_sum ))
-car::Anova(lm(shannon_equit ~ Dist_city, data = div_sum ))
-## p >> 0.05
-## Shannon's equitability does NOT significantly change along the gradient
-
-# Shannon equitability  ~ transect
-summary(lm(shannon_equit ~ Transect, data = div_sum ))
-car::Anova(lm(shannon_equit ~ Transect, data = div_sum ))
-## p = 0.09
-## Shannon's equitability varies among transects (it's marginally significant)
-
-
-### URBAN TRANSECTS ONLY ###
-# Shannon equitability  ~ dist city ctr * URBAN Transect
-summary(lm(shannon_equit ~ Dist_city * Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-car::Anova(lm(shannon_equit ~ Dist_city * Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-## A:B not significant (though B is marginally sig), so let's try these main factors separately.
-
-# Shannon equitability  ~ URBAN transect
-summary(lm(shannon_equit ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-car::Anova(lm(shannon_equit ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-## p = 0.066
-## Shannon's equitability does vary among urban transects (it's marginally significant)
-
-
-```
-
 ###### Simpson's Equitability
 Main takeaway: Simpson's Equitability does not differ by position along gradient or by transect. Their interaction is also not significant.
 ```{r}
@@ -6656,253 +6507,6 @@ plot_grid(
   )
 ```
 
-
-##### Diversity: by Order
-```{r}
-# ORDER
-ggplot(data=diversity, aes(x=Dist_city, group=Order, fill=Order)) +
-    geom_density(adjust=1.5, alpha=.4) 
-
-ggplot(data=diversity, aes(x=Dist_city, group=Order, fill=Order)) +
-    geom_density(adjust=1.5) +
-    facet_wrap(~Order) +
-    theme(
-      legend.position="none",
-      panel.spacing = unit(0.1, "lines"),
-      axis.ticks.x=element_blank())
-
-ggplot(data=diversity, aes(x=Dist_city, group=Order, fill=Order)) +
-    geom_density(adjust=1.5, alpha=.4) +
-    facet_wrap(~Transect) +
-    theme(
-      legend.position="none",
-      panel.spacing = unit(0.1, "lines"),
-      axis.ticks.x=element_blank())
-
-#install.packages('ggridges')
-library(ggridges)
-library(ggplot2)
-ggplot(diversity, aes(x = Dist_city, y = Order, fill = Order)) +
-  geom_density_ridges(alpha=0.6, stat="binline", bins=30) +
-  theme_ridges() + 
-  theme(legend.position = "none")
-
-ggplot(diversity, aes(x = Dist_city, y = Order, fill = Order)) +
-  geom_density_ridges(alpha=0.6) +
-  theme_ridges() + 
-  theme(legend.position = "none")
-
-ggplot(diversity, aes(x = Dist_city, y = Count, shape = Order, colour = Order)) +
-  labs(x = "Distance to urban center (km)", y = "Morphospecies Observed (per population)") +
-  geom_point(aes(shape = Order, color = Order)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape = Order, color = Order), method = lm, alpha=0.15,  se = T) +
-  labs() +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    ) 
-
-
-ggplot(diversity, aes(x = Dist_city, y = Count, shape = Order, colour = Order)) +
-  labs(x = "Distance to urban center (km)", y = "Morphospecies Observed (per population)") +
-  geom_point(aes(shape = Order, color = Order)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape = Order, color = Order), method = loess, alpha=0.15,  se = T) +
-  labs() +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    ) 
-
-ggplot(data=diversity, aes(x=Order, y=Count)) +
-  geom_bar(aes(fill=Order),stat = "identity")+
-  theme_bw()
-
-ggplot(sum1, aes(x=Transect, y=Count, fill=Order)) +
-  geom_bar(aes(fill=factor(Order)),stat = "identity", position="dodge") +
-  geom_errorbar(aes(ymax = Count + se, ymin = Count - se), position = position_dodge(width = 0.9), width = 0.25) +
-  scale_fill_grey(start = 0.8, end = 0.5) +
-  theme_bw() +
-    labs(title = "Total Pollinator Order Abundance by Transect",
-       caption = "Error bars represent standard error")
-
-
-
-
-## using SummarySE
-library(Rmisc)
-sum1 <- summarySE(diversity, measurevar="Count", groupvars= c("Order", "Transect"), na.rm = T)
-
-ggplot(sum1, aes(x=Transect, y=Count, color = Order, shape=Order)) +
-  geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
-  geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
-    scale_color_grey(start = 0.8, end = 0.5) +
-  # scale_color_manual(values=c("gray64", "black", 'grey')) +
-  theme_bw() +
-  labs(title = "Total Pollinator Order Abundance by Transect",
-       caption = "Error bars represent standard error")
-
-
-
-```
-
-##### Diversity: by Superfamily
-```{r}
-# SUPERFAMILY
-ggplot(data=diversity, aes(x=Dist_city, group=Superfamily, fill=Superfamily)) +
-    geom_density(adjust=1.5, alpha=.4) 
-
-ggplot(data=diversity, aes(x=Dist_city, group=Superfamily, fill=Superfamily)) +
-    geom_density(adjust=1.5) +
-    facet_wrap(~Superfamily) +
-    theme(
-      legend.position="none",
-      panel.spacing = unit(0.1, "lines"),
-      axis.ticks.x=element_blank())
-
-ggplot(diversity, aes(x = Dist_city, y = Count, shape = Superfamily, colour = Superfamily)) +
-  labs(x = "Distance to urban center (km)", y = "Morphospecies Observed (per population)") +
-  geom_point(aes(shape = Superfamily, color = Superfamily)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape = Superfamily, color = Superfamily), method = lm, alpha=0.15,  se = T) +
-  labs() +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    )
-
-ggplot(data=diversity, aes(x=Superfamily, y=Count)) +
-  geom_bar(aes(fill=Superfamily),stat = "identity")+
-  theme_bw()
-
-
-
-
-## using SummarySE
-library(Rmisc)
-sum2 <- summarySE(diversity, measurevar="Count", groupvars= c("Superfamily", "Transect"), na.rm = T)
-
-ggplot(sum2, aes(x=Transect, y=Count, color = Superfamily, shape=Superfamily)) +
-  geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
-  geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
-  # scale_color_manual(values=c("gray64", "black", 'grey')) +
-  theme_bw() +
-  labs(title = "Total Pollinator Superfamily Abundance by Transect",
-       caption = "Error bars represent standard error")
-
-
-
-```
-
-##### Diversity: by Family
-```{r}
-# FAMILY
-ggplot(data=diversity, aes(x=Dist_city, group=Family, fill=Family)) +
-    geom_density(adjust=1.5, alpha=.4) 
-
-ggplot(data=diversity, aes(x=Dist_city, group=Family, fill=Family)) +
-    geom_density(adjust=1.5) +
-    facet_wrap(~Family) +
-    theme(
-      legend.position="none",
-      panel.spacing = unit(0.1, "lines"),
-      axis.ticks.x=element_blank()
-    )
-
-ggplot(diversity, aes(x = Dist_city, y = Count, shape = Family, colour = Family)) +
-  labs(x = "Distance to urban center (km)", y = "Morphospecies Observed (per population)") +
-  geom_point(aes(shape = Family, color = Family)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape = Family, color = Family), method = lm, alpha=0.15,  se = T) +
-  labs() +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    )
-
-
-ggplot(data=diversity, aes(x=Family, y=Count)) +
-  geom_bar(aes(fill=Family),stat = "identity")+
-  theme_bw() +
-  labs(title = "Total Individuals Observed per Family")
-
-
-
-
-# Sankey diagram
-
-sank1 <- diversity[,c(6,8,9,11:13)]
-sank1[sank1=="Unidentified"]<- "Unknown"
-sank1 <- sank1 %>% ddply( .(Transect, Order, Family, Genus), summarise, sum_counts = sum(Count))
-
-# install.packages("wesanderson")
-# library(wesanderson)
-# install.packages("flipPlots")
-# install_github("Displayr/flipPlots")
-# install.packages("RColorBrewer")
-library("RColorBrewer")
-library(flipPlots)
-SankeyDiagram(sank1[, -5],
-              link.color = "Target",
-              variables.share.values = T,
-              label.show.varname = F,
-              label.show.counts = T,
-              weights = sank1$Count,
-              font.size = 20,
-              colors =  topo.colors(25),
-              # colors =  terrain.colors(25),
-              # colors =  grey.colors(25),
-              sinks.right = F,
-              max.categories = 12,
-              hovertext.show.percentages = T) 
-# it helps to move around the nodes to make them flow more simply
-
-
-## using SummarySE
-library(Rmisc)
-sum3 <- summarySE(diversity, measurevar="Count", groupvars= c("Family", "Transect"), na.rm = T)
-
-ggplot(sum3, aes(x=Transect, y=Count, color = Family, shape=Family)) +
-  geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
-  geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
-  # scale_color_manual(values=c("gray64", "black", 'grey')) +
-  theme_bw() +
-  labs(title = "Total Pollinator Family Abundance by Transect",
-       caption = "Error bars represent standard error")
-
-
-
-
-```
 
 #### Composite figure
 ```{r}
