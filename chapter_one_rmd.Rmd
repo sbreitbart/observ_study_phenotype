@@ -5233,12 +5233,18 @@ max_shannon <- summarise(div_sum, max(shannon))
 max_simpson <- summarise(div_sum, max(simpson))
 
 # add simpson's, shannon's equitabilities to div_sum
-div_sum <- div_sum %>%
+div_sum  %<>%
   rowwise() %>%
  # add Shannon's equitability
   dplyr::mutate(., shannon_equit = shannon / max_shannon) %>%
  # add Simpson's equitability
-  dplyr::mutate(., simpson_equit = simpson / max_simpson)
+  dplyr::mutate(., simpson_equit = simpson / max_simpson) 
+
+# flatten dfs within df (last 2 cols)
+div_sum <- do.call(data.frame, div_sum)
+
+names(div_sum)[14] <- "shannon_equit"
+names(div_sum)[15] <- "simpson_equit"
 
 
 
@@ -5320,206 +5326,120 @@ div_transects_no_honey <- diversity_no_honey %>%
 ### Statistical Analysis
 #### Linear Models
 ##### Abundance
-####### Without transects- SQUARE ROOT TRANSFORMATION
+####### Without transects- NO TRANSFORMATION
 ```{r}
 
-lm_abun1 <- lm(total_indivs ~ Dist_city, data = div_sum )
+lm_abun1 <- glm(total_indivs ~ Dist_city,
+               data = div_sum,
+                       family = "poisson" )
 
 par(mfrow=c(2,2))
-plot(lm_abun1)
+plot(lm_abun1) # looks good
 
-
-######### Diagnostics ##########
-diagnostic<-function(x){
-  plot(x)
-  abline(mean(x),0)
-  hist(x)
-  qqnorm(x)
-  qqline(x,lty=2, col="Red")
-  skewness(x)
-  kurtosis(x)
-  print(paste("Kurtosis=", kurtosis(x), sep=""))
-  print(paste("Skew=", skewness(x), sep=""))}
-
-diagnostic(lm_abun1$residuals)
-# right-skewed
-
-# look into transformation or alternative models. Try square root transformation first.
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# Option 1: square root transformation
-
-
-lm_abun1 <- lm(sqrt(total_indivs) ~ Dist_city,
-               data = div_sum) %T>%
-  plot()
-
-# residuals vs predicted values look more balanced than first diagnostics. Go with this one
 ```
 
 
 ####### With transects- NO TRANSFORMATION
 ```{r}
 
-lm_abun1.urbsubs <- lm(total_indivs ~ Dist_city * Transect,
+lm_abun1.urbsubs <- glm(total_indivs ~ Dist_city * Transect,
                        data = div_sum %>%
-                         filter(Transect != 'Rural') )
+                         filter(Transect != 'Rural'),
+                       family = "poisson")
 
 par(mfrow=c(2,2))
 plot(lm_abun1.urbsubs)
 
-## Histogram
-gg_reshist(lm_abun1.urbsubs, bins=20)
-
 
 # I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
+
+# main effects model
+lm_abun1.urbsubs_ME <- glm(total_indivs ~ Dist_city + Transect,
+                       data = div_sum %>%
+                         filter(Transect != 'Rural'),
+                       family = "poisson")
 ```
 
 
 ##### Diversity
 ###### Simpson Diversity
-####### Without transects- log(1-x) TRANSFORMATION
+####### Without transects- squaring TRANSFORMATION
 ```{r}
 
-# Linear model 3: Simpson's Diversity Index
-
-lm3 <- lm(simpson.y ~ Dist_city, data = div_sum )
+lm_diversity <- lm(simpson ~ Dist_city, data = div_sum )
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm_diversity)
 
 ## Histogram
-gg_reshist(lm3, bins=20)
+gg_reshist(lm_diversity, bins=20)
 
-diagnostic(lm3$residuals)
+diagnostic(lm_diversity$residuals)
 # some left skew
 
-# get t-value
-lm3_tval <- skewness(lm3_df$residuals)/sqrt(6/length(lm3_df$residuals))
-lm3_tval
-
-# What's the chance of getting a t-value of -3.312497 by chance alone, when the skew value really is zero?
-1-pt(lm3_tval,length(lm3_df$residuals))
-
-# 0.999 is way higher than 0.05, but the data doesn't look normal.
-
-# Conclusion: Try a transformation: 
-gg_reshist(lm(simpson.y ~ Dist_city, data = div_sum ), bins=30 ) 
-gg_reshist(lm(simpson.y^(3) ~ Dist_city, data = div_sum ), bins=10 )
-gg_reshist(lm(log(1-simpson.y) ~ Dist_city, data = div_sum ), bins=10) # going to try this first.
+# Try a transformation: 
+gg_reshist(lm(simpson^2 ~ Dist_city, data = div_sum ), bins=15 ) # this one looks best.
+gg_reshist(lm(simpson^(3) ~ Dist_city, data = div_sum ), bins=15 )
+gg_reshist(lm(log(1-simpson) ~ Dist_city, data = div_sum ), bins=15) 
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# Option 1: log(1-simpson) transformation
-
-lm3_df$log_inv <- log(1-lm3_df$simpson)
-
-lm3_log_inv <- lm(log_inv ~ Dist_city, data = lm3_df)
-
-lm3_df$predicted_log_inv <- predict(lm3_log_inv)   # Save the predicted values
-lm3_df$residuals_log_inv <- residuals(lm3_log_inv) # Save the residual values
-
-ggplot(lm3_df, aes(x = Dist_city, y = log_inv)) +
-  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
-  geom_segment(aes(xend = Dist_city, yend = predicted_log_inv), alpha = .2) +
-  geom_point(aes(color = abs(residuals_log_inv), size = abs(residuals_log_inv))) + # size also mapped
-  scale_color_continuous(low = "black", high = "red") +
-  guides(color = FALSE, size = FALSE) +  # Size legend also removed
-  geom_point(aes(y = predicted_log_inv), shape = 1) +
-  theme_bw()
-
-# residuals vs predicted values look more balanced than first diagnostics
-
-diagnostic(lm3_df$residuals_log_inv)
-
-# get t-value
-lm3_log_inv_tval <- skewness(lm3_df$residuals_log_inv)/sqrt(6/length(lm3_df$residuals_log_inv))
-
-# What's the chance of getting a t-value of 1.304685 by chance alone, when the skew value really is zero?
-1-pt(lm3_log_inv_tval,length(lm3_df$residuals_log_inv))
-
-# 0.106 is higher than 0.05 and it looks a lot better now.
-# Conclusion: Stick with the log(constant - simpson) transformation.
+lm_diversity <- lm(simpson^2 ~ Dist_city,
+                   data = div_sum )
 
 ```
 
 
-####### With transects- log(1-x) TRANSFORMATION
+####### With transects- squaring TRANSFORMATION
 ```{r}
 
-
-
-# Linear model 3: Simpson's Diversity Index
-
-lm3 <- lm(simpson ~ Dist_city * Transect, data = div_sum_urban )
+lm_diversity.urbsubs <- lm(simpson ~ Dist_city * Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm_diversity.urbsubs)
 
 ## Histogram
-gg_reshist(lm3, bins=20)
+gg_reshist(lm_diversity.urbsubs, bins=15)
 
-diagnostic(lm3$residuals)
+diagnostic(lm_diversity.urbsubs$residuals)
 # extreme left skew!
 
 # Conclusion: Try a transformation: 
-gg_reshist(lm(simpson ~ Dist_city* Transect, data = div_sum_urban ), bins=30 ) 
-gg_reshist(lm(simpson^(3) ~ Dist_city* Transect, data = div_sum_urban ), bins=10 )
-gg_reshist(lm(log(1-simpson) ~ Dist_city* Transect, data = div_sum_urban ), bins=10) # going to try this first.
+gg_reshist(lm(simpson^2 ~ Dist_city* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ), bins=15 ) # looks best
+gg_reshist(lm(simpson^(3) ~ Dist_city* Transect, data =div_sum %>%
+                         filter(Transect != 'Rural') ), bins=15 ) 
+gg_reshist(lm(log(1-simpson) ~ Dist_city* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ), bins=15) 
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+lm_diversity.urbsubs <- lm(simpson^2 ~ Dist_city * Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
 
-# Option 1: log(1-simpson) transformation
-
-lm3_df$log_inv <- log(1-lm3_df$simpson)
-
-lm3_log_inv <- lm(log_inv ~ Dist_city, data = lm3_df)
-
-lm3_df$predicted_log_inv <- predict(lm3_log_inv)   # Save the predicted values
-lm3_df$residuals_log_inv <- residuals(lm3_log_inv) # Save the residual values
-
-ggplot(lm3_df, aes(x = Dist_city, y = log_inv)) +
-  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
-  geom_segment(aes(xend = Dist_city, yend = predicted_log_inv), alpha = .2) +
-  geom_point(aes(color = abs(residuals_log_inv), size = abs(residuals_log_inv))) + # size also mapped
-  scale_color_continuous(low = "black", high = "red") +
-  guides(color = FALSE, size = FALSE) +  # Size legend also removed
-  geom_point(aes(y = predicted_log_inv), shape = 1) +
-  theme_bw()
-
-# residuals vs predicted values look more balanced than first diagnostics
-
-diagnostic(lm3_df$residuals_log_inv)
-
-# Conclusion: Looks much better! Stick with the log(constant - simpson) transformation.
+# main effects
+lm_diversity.urbsubs_ME <- lm(simpson^2 ~ Dist_city + Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
 
 ```
 ###### Simpson Diversity- without honeybees
-####### Without transects- SQUARE TRANSFORMATION
+####### Without transects- SQUARING TRANSFORMATION
 ```{r}
-
-# Linear model 3: Simpson's Diversity Index
-
-lm3 <- lm(simpson ~ Dist_city, data = div_sum_no_honey )
+lm.diversity_nohoney <- lm(simpson ~ Dist_city,
+                           data = div_sum_no_honey )
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm.diversity_nohoney)
 
 ## Histogram
-gg_reshist(lm3, bins=10)
+gg_reshist(lm.diversity_nohoney, bins=10)
 
-diagnostic(lm3$residuals)
+diagnostic(lm.diversity_nohoney$residuals)
 # some left skew
 
-# The data doesn't look normal.
-
-# Conclusion: Try a transformation: 
+# Try a transformation: 
 gg_reshist(lm(simpson ~ Dist_city, data = div_sum_no_honey ), bins=10 )
 gg_reshist(lm(simpson^(2) ~ Dist_city, data = div_sum_no_honey ), bins=10 )
 gg_reshist(lm(simpson^(3) ~ Dist_city, data = div_sum_no_honey ), bins=10 )
@@ -5530,383 +5450,471 @@ plot(lm(simpson^(2) ~ Dist_city, data = div_sum_no_honey ))
 
 # Conclusion: use square transformation.
 
-div_sum_no_honey$simpson_sq <- div_sum_no_honey$simpson^2
 
+lm.diversity_nohoney <- lm(simpson^2 ~ Dist_city,
+                           data = div_sum_no_honey )
 ```
 
 
 ####### With transects- CUBE TRANSFORMATION
 ```{r}
-# ## USE URBAN SUBSET
-div_sum_urban_no_honey <- div_sum_no_honey %>% filter(Transect != 'Rural')
 
-
-# Linear model 3: Simpson's Diversity Index
-
-lm3 <- lm(simpson ~ Dist_city * Transect, data = div_sum_urban_no_honey )
+lm.diversity_nohoney.urbsubs <- lm(simpson ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm.diversity_nohoney.urbsubs)
 
 ## Histogram
-gg_reshist(lm3, bins=10)
+gg_reshist(lm.diversity_nohoney.urbsubs, bins=10)
 
-diagnostic(lm3$residuals)
+diagnostic(lm.diversity_nohoney.urbsubs$residuals)
 # extreme left skew!
 
 # Conclusion: Try a transformation: 
-gg_reshist(lm(simpson ~ Dist_city* Transect, data = div_sum_urban_no_honey ), bins=10 )
-gg_reshist(lm(simpson^(2) ~ Dist_city* Transect, data = div_sum_urban_no_honey ), bins=10 )
-gg_reshist(lm(simpson^(3) ~ Dist_city* Transect, data = div_sum_urban_no_honey ), bins=10 )
+gg_reshist(lm(simpson^2 ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+gg_reshist(lm(simpson^3 ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+gg_reshist(lm(1 - log(simpson + 1) ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
 # cube transformation looks very good, especially since this is a small dataset again (31 entries)
 
-par(mfrow=c(2,2))
-plot(lm(simpson^(3) ~ Dist_city* Transect, data = div_sum_urban_no_honey ))
+lm.diversity_nohoney.urbsubs <- lm(simpson^3 ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
 
-# Conclusion: Stick with the cube transformation.
-
-div_sum_urban_no_honey$simpson_cube <- div_sum_urban_no_honey$simpson^3
-
+# main effects
+lm.diversity_nohoney.urbsubs_ME <- lm(simpson^3 ~ Dist_city + Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
 ```
 ##### Species Richness
 ####### Without transects- NO TRANSFORMATION NEEDED
 ```{r}
-lm3 <- lm(Menhinicks_index ~ Dist_city, data = div_sum )
+lm.rich <- lm(Menhinicks_index ~ Dist_city, data = div_sum )
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm.rich)
 
 ## Histogram
-gg_reshist(lm3, bins=20)
+gg_reshist(lm.rich, bins=20)
 
-diagnostic(lm3$residuals)
+diagnostic(lm.rich$residuals)
 # Very normal!
 
-
-
-# Conclusion: No transformation needed.
 ```
+
 ####### With transects- NO TRANSFORMATION NEEDED
 ```{r}
 
-lm3 <- lm(Menhinicks_index ~ Dist_city * Transect, data = div_sum_urban )
+lm.rich.urbsubs <- lm(Menhinicks_index ~ Dist_city * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural"))
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm.rich.urbsubs)
 
 ## Histogram
-gg_reshist(lm3, bins=20)
+gg_reshist(lm.rich.urbsubs, bins=15)
 
-diagnostic(lm3$residuals)
-# SLIGHT left skew
+diagnostic(lm.rich.urbsubs$residuals)
+#  looks fine
 
-# Conclusion: Try a transformation: 
-gg_reshist(lm(Menhinicks_index ~ Dist_city* Transect, data = div_sum_urban ), bins=10 ) 
-gg_reshist(lm(Menhinicks_index^(2) ~ Dist_city* Transect, data = div_sum_urban ), bins=10 )
 
-par(mfrow=c(2,2))
-plot(lm(Menhinicks_index^2 ~ Dist_city * Transect, data = div_sum_urban ))
+lm.rich.urbsubs_ME <- lm(Menhinicks_index ~ Dist_city + Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural"))
 
-# Squaring makes it look a tiny bit better but I think keeping it normal is fine.
 ```
 ##### Equitability (Evenness)
 ####### Without transects- NO TRANSFORMATION NEEDED
 ```{r}
-lm3 <- lm(shannon_equit ~ Dist_city, data = div_sum )
+lm.even <- lm(shannon_equit ~ Dist_city,
+              data = div_sum )
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm.even)
 
 ## Histogram
-gg_reshist(lm3, bins=20)
+gg_reshist(lm.even, bins=15)
 
-diagnostic(lm3$residuals)
+diagnostic(lm.even$residuals)
 # Looks pretty normal
-
-# Conclusion: No transformation needed.
 ```
+
 ####### With transects- SQUARING TRANSFORMATION 
 ```{r}
 
-lm3 <- lm(shannon_equit ~ Dist_city * Transect, data = div_sum_urban )
+lm.even.urbsubs <- lm(shannon_equit ~ Dist_city * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
 
 par(mfrow=c(2,2))
-plot(lm3)
-lm3_sum <- summary(lm3)
+plot(lm.even.urbsubs)
+
 
 ## Histogram
-gg_reshist(lm3, bins=20)
+gg_reshist(lm.even.urbsubs, bins=20)
 
-diagnostic(lm3$residuals)
+diagnostic(lm.even.urbsubs$residuals)
 # left skew
 
-# Conclusion: Try a transformation: 
-gg_reshist(lm(shannon_equit ~ Dist_city* Transect, data = div_sum_urban ), bins=10 ) 
-gg_reshist(lm(shannon_equit^(2) ~ Dist_city* Transect, data = div_sum_urban ), bins=10 )
+# Try a transformation: 
+gg_reshist(lm(shannon_equit ~ Dist_city* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 ) 
+gg_reshist(lm(shannon_equit^(2) ~ Dist_city* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 )
 
 par(mfrow=c(2,2))
-plot(lm(Menhinicks_index^2 ~ Dist_city * Transect, data = div_sum_urban ))
+plot(lm(shannon_equit^2 ~ Dist_city * Transect, data = div_sum %>%
+                        filter(Transect != "Rural") ))
 
 # Squaring makes it look much better.
+
+lm.even.urbsubs <- lm(shannon_equit^2 ~ Dist_city * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
+
+# main effects
+lm.even.urbsubs_ME <- lm(shannon_equit^2 ~ Dist_city + Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
 ```
 
 #### ANOVA
-##### Export to one csv- lm/glm
-```{r}
-
-# Start a sink file with a CSV extension
-sink('pollinators_ANOVA.csv')
-
-#### Abundance ####
-## table 1
-cat('Abundance- Q1')
-cat('\n')
-cat('P ~ dist_city')
-cat('\n')
-cat('Main Effect')
-write.csv(ab.q1)
-cat('\n')
-
-## table 2
-cat('Abundance- Q3')
-cat('\n')
-cat('P ~ dist_city + Transect_ID')
-cat('\n')
-cat('Main Effect')
-write.csv(ab.q2)
-cat('\n')
-cat('\n')
-
-#### Diversity ####
-## table 1
-cat('Simpsons Diversity- Q1')
-cat('\n')
-cat('p ~ City_dist')
-cat('\n')
-cat('Main Effect')
-write.csv(di.q1)
-cat('\n')
-
-## table 2
-cat('Simpsons Diversity- Q3')
-cat('\n')
-cat('P ~ City_dist + Transect')
-cat('\n')
-cat('Main Effect')
-write.csv(di.q2)
-cat('\n')
-cat('\n')
-
-##### Close the sink ####
-sink()
-
-```
-
 ##### Abundance
-###### **Poisson-distributed glm data
-####### All data
+###### All data
 ```{r}
-# Total individuals ~ dist city ctr 
-summary(glm(total_indivs ~ Dist_city, data = div_sum , family = "poisson"))
-ab.q1 <- car::Anova(glm(total_indivs ~ Dist_city , data = div_sum, family = "poisson" ))
-# Dist_city is sig
-
-
-# pairs(lsmeans(abun_m1, "Transect"), adjust = "mvt")
-# # The Rural and Southern Urban transects are significantly different from one another.
-# # The Rural and Northern urban transects are significantly different from one another.
-# # The 2 urban transects are not sig diff from e.o.
-# 
-# marginal = lsmeans(abun_m1, ~ Transect)
-# 
-# CLD = cld(marginal, alpha=0.05, Letters=letters, adjust="tukey")
-# 
-# ggplot(CLD, aes(x = Transect, y = lsmean, label = .group)) +
-#     geom_point(shape  = 15,
-#                size   = 4,
-#              position = position_dodge(0.2) ) +
-#     geom_errorbar(aes(ymin  =  lower.CL,
-#                       ymax  =  upper.CL),
-#                       width =  0.2,
-#                       size  =  0.7,
-#                    position = position_dodge(0.2) ) +
-#     theme_bw() +
-#     theme(axis.title   = element_text(face = "bold"),
-#           axis.text    = element_text(face = "bold"),
-#           plot.caption = element_text(hjust = 0)) +
-#     ylab("Least square mean") +
-#     ggtitle ("Pollinator Individuals per Site",
-#              subtitle = "Least Square Mean")
+car::Anova(lm_abun1) # highly sig
 
 ```
 
-####### Transects
+###### Transects
 ```{r}
-# Total individuals ~ dist city ctr *  Transect
-summary(glm(total_indivs ~ Dist_city*Transect, data = div_sum_urban , family = "poisson"))
-car::Anova(glm(total_indivs ~ Dist_city*Transect , data = div_sum_urban, family = "poisson" ))
-# Nothing sig
+car::Anova(lm_abun1.urbsubs) # not sig
+car::Anova(lm_abun1.urbsubs_ME) # not sig
 
-
-# Total individuals ~ dist city ctr + Transect
-summary(glm(total_indivs ~ Dist_city + Transect, data = div_sum_urban , family = "poisson"))
-ab.q2 <- car::Anova(glm(total_indivs ~ Dist_city + Transect , data = div_sum_urban, family = "poisson" ))
-# Nothing sig
-
+AIC(lm_abun1.urbsubs, lm_abun1.urbsubs_ME) # ME has lower AIC but <2 away
 ```
 
-
-
-####### Find abundance means at urban and rural terminii
+###### Find abundance means at urban and rural terminii
 ```{r}
 urban_terminus = 3.5 # km; most urban pop is close to this distance
 rural_terminus = 67 # km; most rural pop is close to this distance
 midpoint = 35.25 # km; midpoint of urban and rural terminii
 
 
-q.1 <- glm(total_indivs	~ Dist_city, data = div_sum, family = "poisson")
-coeffs.q.1 = coefficients(q.1)
+coeffs.q.1 = coefficients(lm_abun1)
 
-rural_mean = coeffs.q.1[1] + coeffs.q.1[2]*rural_terminus 
+rural_mean = coeffs.q.1[1] + coeffs.q.1[2]*rural_terminus
 rural_mean # mean abundance
 
-urban_mean = coeffs.q.1[1] + coeffs.q.1[2]*urban_terminus 
+urban_mean = coeffs.q.1[1] + coeffs.q.1[2]*urban_terminus
 urban_mean # mean abundance
 
 # AVG DIFFERENCE FROM URBAN TO RURAL TERMINUS:
 (urban_mean - rural_mean)/(0.5*(urban_mean + rural_mean))
 
 # FIND MEAN abundance
-central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint 
+central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
 central_mean_q.1
-
-
-# AVG DIFFERENCE FROM URBAN TO RURAL TERMINUS:
-(urban_mean - rural_mean)/(0.5*(urban_mean + rural_mean))
 
 
 ```
 
 ##### Diversity
 ###### Simpson's Diversity Index
-####### Transformed data (log(1-simpson) transformation. Was left-skewed)
-######## All data
+####### All data
+######## Gradient
 ```{r}
-# Simpson's diversity  ~ dist city ctr
-summary(lm(log(1-simpson) ~ Dist_city , data = div_sum ))
-di.q1 <- car::Anova(lm(log(1-simpson) ~ Dist_city , data = div_sum ))
+car::Anova(lm_diversity)
 ## Nothing sig
 
 ```
 
 ######## Transects
 ```{r}
-# Simpson's diversity  ~ dist city ctr * Transect
-summary(lm(log(1-simpson) ~ Dist_city * Transect, data = div_sum_urban))
-car::Anova(lm(log(1-simpson) ~ Dist_city * Transect, data = div_sum_urban))
-## A:B not significant, so let's try these main factors separately.
+car::Anova(lm_diversity.urbsubs) # transect sig
+car::Anova(lm_diversity.urbsubs_ME) # transect sig
 
-di.q2 <- car::Anova(lm(log(1-simpson) ~ Dist_city + Transect, data = div_sum_urban))
-# not sig
+AIC(lm_diversity.urbsubs, lm_diversity.urbsubs_ME) # ME has lower AIC but <2 away
+
+summary(lm_diversity.urbsubs_ME) # corridor transect was 0.148 units diversity lower than non-corridor subtransect
 ```
 
-######## Removing honeybees (use sq transf w/o transects, cube with transects)
-######### All data
+####### Removing honeybees
+######## Gradient
 ```{r}
-# Simpson's diversity  ~ dist city ctr
-summary(lm(simpson_sq ~ Dist_city , data = div_sum_no_honey ))
-car::Anova(lm(simpson_sq ~ Dist_city , data = div_sum_no_honey ))
-## Nothing sig
- 
+car::Anova(lm.diversity_nohoney) ## Nothing sig
 ```
 
-######### Transects
+######## Transects
 ```{r}
-# Simpson's diversity  ~ dist city ctr * Transect
-summary(lm(simpson_cube ~ Dist_city * Transect, data = div_sum_urban_no_honey))
-car::Anova(lm(simpson_cube ~ Dist_city * Transect, data = div_sum_urban_no_honey))
-## A:B not significant, so let's try these main factors separately.
+car::Anova(lm.diversity_nohoney.urbsubs) # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs_ME) # transect sig
 
-car::Anova(lm(simpson_cube ~ Dist_city + Transect, data = div_sum_urban_no_honey))
-# not sig
+AIC(lm.diversity_nohoney.urbsubs, lm.diversity_nohoney.urbsubs_ME) # ME has lower AIC but <2 away
+
+summary(lm.diversity_nohoney.urbsubs_ME) # corridor transect was 0.134 units diversity lower than non-corridor subtransect
 ```
 
 ##### Richness
-Main takeaway: Menhinick's Richness index does vary along the gradient and by transect- both when involving all 3 and only 2 urban transects. Their interaction is not significant.
+###### Gradient
 ```{r}
-
-# Menhinick's Index ~ dist city ctr * Transect
-summary(lm(Menhinicks_index ~ Dist_city * Transect, data = div_sum ))
-car::Anova(lm(Menhinicks_index ~ Dist_city * Transect, data = div_sum ))
-## A:B not significant but B (transect) is... so let's try these main factors separately.
-
-# Menhinick's Index ~ dist city ctr
-summary(lm(Menhinicks_index ~ Dist_city, data = div_sum ))
-car::Anova(lm(Menhinicks_index ~ Dist_city, data = div_sum ))
-## p < 0.01*
-## Richness does change along the gradient!
-
-# Menhinick's Index ~ transect
-summary(lm(Menhinicks_index ~ Transect, data = div_sum ))
-car::Anova(lm(Menhinicks_index ~ Transect, data = div_sum ))
-## p < 0.001***
-## Richness does vary among transects!
-
-
-### URBAN TRANSECTS ONLY ###
-# Menhinick's Index ~ dist city ctr * URBAN Transect
-summary(lm(Menhinicks_index ~ Dist_city * Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-car::Anova(lm(Menhinicks_index ~ Dist_city * Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-## A:B not significant but B (transect) is... so let's try these main factors separately.
-
-# Menhinick's Index ~ URBAN transect
-summary(lm(Menhinicks_index ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-car::Anova(lm(Menhinicks_index ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-## p < 0.03*
-## Richness does vary among urban transects!
+car::Anova(lm.rich) # highly sig
 
 ```
- *** STILL NEED TO DO 4/3/2020- SET UP LM'S CORRECTLY & REDO
-##### Equitability (Evenness)*** STILL NEED TO DO 4/3/2020- SET UP LM'S CORRECTLY & REDO
-###### Simpson's Equitability
-Main takeaway: Simpson's Equitability does not differ by position along gradient or by transect. Their interaction is also not significant.
+###### Find richness means at urban and rural terminii
 ```{r}
-
-# Simpson's equitability  ~ dist city ctr * Transect
-summary(lm(simpson_equit ~ Dist_city * Transect, data = div_sum ))
-car::Anova(lm(simpson_equit ~ Dist_city * Transect, data = div_sum ))
-## A:B not significant, so let's try these main factors separately.
-
-# Simpson diversity ~ dist city ctr
-summary(lm(simpson_equit ~ Dist_city, data = div_sum ))
-car::Anova(lm(simpson_equit ~ Dist_city, data = div_sum ))
-## p >> 0.05
-## Simpson's equitability does NOT significantly change along the gradient
-
-# Simpson's equitability  ~ transect
-summary(lm(simpson_equit ~ Transect, data = div_sum ))
-car::Anova(lm(simpson_equit ~ Transect, data = div_sum ))
-## p >> 0.05
-## simpson_equit's diversity does NOT significantly vary among transects
+urban_terminus = 3.5 # km; most urban pop is close to this distance
+rural_terminus = 67 # km; most rural pop is close to this distance
+midpoint = 35.25 # km; midpoint of urban and rural terminii
 
 
-### URBAN TRANSECTS ONLY ###
-# Simpson's equitability  ~ dist city ctr * URBAN Transect
-summary(lm(simpson_equit ~ Dist_city * Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-car::Anova(lm(simpson_equit ~ Dist_city * Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-## A:B not significant, so let's try these main factors separately.
+coeffs.q.1 = coefficients(lm.rich)
 
-# Simpson's equitability  ~ URBAN transect
-summary(lm(simpson_equit ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-car::Anova(lm(simpson_equit ~ Transect, data = div_sum[which(div_sum$Transect == "North" | div_sum$Transect == "South"),]))
-## p >> 0.05
-## simpson_equit's diversity does NOT significantly vary among urban transects
+rural_mean = coeffs.q.1[1] + coeffs.q.1[2]*rural_terminus
+rural_mean # mean richness
+
+urban_mean = coeffs.q.1[1] + coeffs.q.1[2]*urban_terminus
+urban_mean # mean richness
+
+# AVG DIFFERENCE FROM URBAN TO RURAL TERMINUS:
+(urban_mean - rural_mean)/(0.5*(urban_mean + rural_mean))
+
+# FIND MEAN richness
+central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
+central_mean_q.1
+
+
+# urban sites had, on average, 0.47 units higher richness than rural!
+```
+
+
+###### Transects
+```{r}
+car::Anova(lm.rich.urbsubs) # transect sig
+car::Anova(lm.rich.urbsubs_ME) # transect sig
+
+AIC(lm.rich.urbsubs, lm.rich.urbsubs_ME) # ME lower AIC but <2
+
+summary(lm.rich.urbsubs_ME)
+
+# corridor subtransect had 0.34 units lower richness than non-corridor, on avg!
+```
+
+##### Simpson's Equitability (Evenness)
+###### Gradient
+```{r}
+car::Anova(lm.even) # not sig
 
 ```
+
+###### Transects
+```{r}
+car::Anova(lm.even.urbsubs) # transect sig
+car::Anova(lm.even.urbsubs_ME) # transect sig
+
+AIC(lm.even.urbsubs,lm.even.urbsubs_ME ) # full model lower AIC but <2
+
+summary(lm.even.urbsubs) # corridor subtransect had 0.636 units lower evenness than non-corridor, on avg!
+
+```
+
+##### Export ANOVA
+###### Functions
+```{r}
+# tidy anovas
+# tidy_sb.pollinators_glm <- function(model){
+#   
+#   return(
+#     car::Anova(model) %>%
+#       broom::tidy() %>%
+#       dplyr::mutate(Sites = case_when(
+#         str_detect(as.character(formula(model)[3]), "Transect") == TRUE ~ "Urban Only",
+#         str_detect(as.character(formula(model)[3]), "Transect") == FALSE ~ "All"),
+#                     .before = term) %>%
+#       dplyr::mutate(Significance = case_when(p.value < 0.001 ~ "***",
+#                                              p.value < 0.01 ~ "**",
+#                                              p.value <= 0.05 ~ "*")) %>%
+#       dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
+#       mutate_if(is.numeric, round, 3)   %>%
+#       dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
+#       dplyr::rename(., Chi_sq = statistic,
+#                     Predictor = term,
+#                     p = p.value) %>%
+#       unite("p", p:Significance, sep = "", na.rm = TRUE) %>%
+#       dplyr::mutate_if(.,
+#                 is.character,
+#                 str_replace_all,
+#                 pattern = c("City_dist"),
+#                 replacement = c("Distance to City Center")) %>%
+#         dplyr::mutate_if(.,
+#                 is.character,
+#                 str_replace_all,
+#                 pattern = c("Urb_score"),
+#                 replacement = c("Urbanization Score")) %>%
+#         dplyr::mutate_if(.,
+#                 is.character,
+#                 str_replace_all,
+#                 pattern = c("Transect"),
+#                 replacement = c("Subtransect"))) 
+# }
+tidy_sb.pollinators_lm <- function(model){
+  
+  return(
+    car::Anova(model) %>%
+      broom::tidy() %>%
+      dplyr::mutate(Sites = case_when(
+        str_detect(as.character(formula(model)[3]), "Transect") == TRUE ~ "Urban Only",
+        str_detect(as.character(formula(model)[3]), "Transect") == FALSE ~ "All"),
+                    .before = term) %>%
+      dplyr::mutate(Significance = case_when(p.value < 0.001 ~ "***",
+                                             p.value < 0.01 ~ "**",
+                                             p.value <= 0.05 ~ "*")) %>%
+      dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
+      mutate_if(is.numeric, round, 3)   %>%
+      dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
+      dplyr::rename(., 
+                    # "F" = statistic,
+                    Predictor = term,
+                    p = p.value) %>%
+      unite("p", p:Significance, sep = "", na.rm = TRUE) %>%
+      dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Dist_city"),
+                replacement = c("Distance to City Center")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Urb_score"),
+                replacement = c("Urbanization Score")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Transect"),
+                replacement = c("Subtransect"))) 
+}
+
+
+
+# combine anovas into publication-quality tables
+make_Q3_Anova.pollinators <- function(anova_list){
+  return(
+    lapply(anova_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'p' = 3,
+                  'X2 ' = 4,
+                  'p ' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 2, 2)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body")
+    )
+}
+
+
+```
+
+###### Main text: Abundance, Diversity, Richness
+```{r}
+# CITY_DIST-----
+## ALL SITES
+
+best_mods_Q3.dist_list <- list(
+### abundance
+  lm_abun1,  
+### diversity
+lm_diversity
+)
+
+#doing this one manually (not w/a function) b/c it has glm and lm's
+lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'df' = 3,
+                  'p' = 4,
+                  'Sum of Squares ' = 5,
+                  'df ' = 6,
+                  'F' = 7,
+                  'p ' = 8) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 3, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:8, align = "center", part = "body") %>%
+    align(j = 2:8, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 1) %>%
+  width(j = 2:4, width = 0.8) %>%
+  width(j = 5, width = 1.4) %>%
+  width(j = 6:8, width = 0.8) %>%
+  italic(i = 2, j = 2:8, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization on pollinator abundance and diversity. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm_diversity) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Dist_ANOVA.png"))
+
+```
+
+###### Supplement
+```{r}
+
+```
+
 
 ### Tables
 ```{r}
