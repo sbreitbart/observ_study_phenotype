@@ -5749,7 +5749,7 @@ lm.rich.urbsubs.u_ME <- lm(Menhinicks_index ~ Urb_score + Transect,
                         filter(Transect != "Rural"))
 
 ```
-##### Equitability (Evenness)
+##### Evenness (Equitability)
 ###### City_dist
 ####### Without transects- NO TRANSFORMATION NEEDED
 ```{r}
@@ -6035,14 +6035,15 @@ car::Anova(lm.rich.urbsubs.u_ME) # transect & urb_score sig
 AIC(lm.rich.urbsubs.u, lm.rich.urbsubs.u_ME) # full model lower AIC but <2
 ```
 
-##### Simpson's Equitability (Evenness)
-###### Gradient
+##### Simpson's Evenness (Equitability)
+###### City_dist
+####### Gradient
 ```{r}
 car::Anova(lm.even) # not sig
 
 ```
 
-###### Transects
+####### Transects
 ```{r}
 car::Anova(lm.even.urbsubs) # transect sig
 car::Anova(lm.even.urbsubs_ME) # transect sig
@@ -6053,7 +6054,23 @@ summary(lm.even.urbsubs) # corridor subtransect had 0.636 units lower evenness t
 
 ```
 
-##### Export ANOVA
+###### Urb_score
+####### Gradient
+```{r}
+car::Anova(lm.even.u) # not sig
+
+```
+
+####### Transects
+```{r}
+car::Anova(lm.even.urbsubs.u) # interaxn and urb_score sig
+car::Anova(lm.even.urbsubs.u_ME) # urb_score sig
+
+AIC(lm.even.urbsubs.u,lm.even.urbsubs.u_ME ) # full model sig lower AIC
+
+```
+
+#### Export ANOVA
 ###### Functions
 ```{r}
 # tidy anovas
@@ -6420,23 +6437,184 @@ lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
 ```
 
 ###### Supplement
-####### Equitability
+####### Evenness
 ```{r}
 # CITY_DIST
-## all sites
+## all sites-----
+lm.even
+
+tidy_sb.pollinators_lm(lm.even) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'X2' = 3,
+                  'df' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.8) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Dist_evenness_ANOVA.png"))
 
 
 # CITY_DIST
-## URBAN sites
+## URBAN sites-----
+lm.even.urbsubs
+
+tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'X2' = 3,
+                  'df' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.9) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even.urbsubs) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Dist_urb_evenness_ANOVA.png"))
 
 
 
-# URB_SCORE
+# URB_SCORE-----
 ## all sites
+lm.even.u
+
+tidy_sb.pollinators_lm(lm.even.u) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'X2' = 3,
+                  'df' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.5) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Urbscore_evenness_ANOVA.png"))
+
 
 
 # URB_SCORE
-## URBAN sites
+## URBAN sites-----
+lm.even.urbsubs.u
+
+tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'X2' = 3,
+                  'df' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.7) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even.urbsubs.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Urbscore_urb_evenness_ANOVA.png"))
 ```
 
 ####### Alternative (AIC<2 from best) models:
