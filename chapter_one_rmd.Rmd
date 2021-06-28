@@ -4306,7 +4306,7 @@ central_mean_2019
 Q1_reg_poll <- ggplot(AvgVars_notNA_Poll_18_19,
                       aes(x = City_dist, y = Average_Pollinia,
                           shape=Year)) + 
-  labs(x = "Distance to urban center (km)", 
+  labs(x = "Distance to city center (km)", 
     y = "Pollinaria Removed") +
   geom_point(aes(shape=Year, color=Year),  size=2) +
   scale_shape(solid = F)+
@@ -4330,7 +4330,7 @@ Q1_reg_poll
 # PODS --------
 Q1_reg_pod <- ggplot(fertile_pops_all,
                      aes(x = City_dist, y = sqrt(Viable_Pods), shape=Year)) +
-  labs(x = "Distance to urban center (km)",
+  labs(x = "Distance to city center (km)",
        y = expression(Follicles^{0.5})) +
   geom_point(aes(shape=Year, color=Year),  size=2) +
   scale_shape(solid = F)+
@@ -4355,7 +4355,7 @@ Q1_reg_pod
 # PEDUNCLES --------
 Q1_reg_ped <- ggplot(fertile_pops_all,
                      aes(x = City_dist, y = Peduncles^2, shape=Year)) +
-  labs(x = "Distance to urban center (km)",
+  labs(x = "Distance to city center (km)",
        y = expression(Inflorescences^{2})) +
   geom_point(aes(shape=Year, color=Year),  size=2) +
   scale_shape(solid = F)+
@@ -4378,7 +4378,7 @@ Q1_reg_ped
 # FOLLICLES PER INFLOR --------
 Q1_reg_follperinflor <- ggplot(fertile_pops_all,
                                aes(x = City_dist, y = pods_per_ped, shape=Year)) +
-  labs(x = "Distance to urban center (km)",
+  labs(x = "Distance to city center (km)",
     y = "Follicles/Inflorescence") +
   geom_point(aes(color = Year, shape = Year), size=2) +
   scale_shape(solid = F)+
@@ -4400,7 +4400,7 @@ Q1_reg_follperinflor
 
 # PLANT DENSITY AT SITE (not included in composite figure, below) --------
 # Q1_reg_density <- ggplot(density_18, aes(x = City_dist, y = density_sqm_18)) +
-#   labs( x = "Distance to urban center (km)", y = "Plant density") +
+#   labs( x = "Distance to city center (km)", y = "Plant density") +
 #   geom_point(size=2) +
 #   scale_shape(solid = F)+
 #   geom_smooth(size=0.75, method = lm, alpha=0.15, se = T) +
@@ -4557,7 +4557,7 @@ Q1_regressions_urbscore <- ggarrange(Q1_reg_ped_u, Q1_reg_poll_u, Q1_reg_pod_u, 
                             common.legend = F) %T>%
   plot
 
-city_plots <- annotate_figure(Q1_regressions_citydist, bottom = text_grob("Distance to Urban Center (km)", size=14))
+city_plots <- annotate_figure(Q1_regressions_citydist, bottom = text_grob("Distance to city center (km)", size=14))
 urbscore_plots <- annotate_figure(Q1_regressions_urbscore, bottom = text_grob("Urbanization Score", size=14))
 
 city_plots/urbscore_plots
@@ -4945,7 +4945,7 @@ Q2_regressions_urbscore <- ggarrange(Q2_reg_ped_subtr_u,Q2_reg_poll_subtr_u, Q2_
                             common.legend = F) %T>%
   plot
 
-city_plots_subtr <- annotate_figure(Q2_regressions_citydist, bottom = text_grob("Distance to Urban Center (km)", size=14))
+city_plots_subtr <- annotate_figure(Q2_regressions_citydist, bottom = text_grob("Distance to city center (km)", size=14))
 urbscore_plots_subtr <- annotate_figure(Q2_regressions_urbscore, bottom = text_grob("Urbanization Score", size=14))
 
 city_plots_subtr/urbscore_plots_subtr
@@ -4960,7 +4960,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/
 ### CITY_DIST --------
 Q1_reg_height <- ggplot(fertile_pops_all,
                         aes(x = City_dist, y = Height_Sept, shape=Year, color = Year)) +
-  labs(x = "Distance to Urban Center (km)", 
+  labs(x = "Distance to city center (km)", 
     y = "Height (cm)") +
   geom_point(aes(color = Year, shape = Year), size=2) +
   scale_shape(solid = F)+
@@ -6453,8 +6453,8 @@ tidy_sb.pollinators_lm(lm.even) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
     dplyr::rename('Sum of Squares' = 2,
-                  'X2' = 3,
-                  'df' = 4,
+                  'df' = 3,
+                  'F' = 4,
                   'p' = 5) %>%
     flextable::flextable() %>%
     add_header_row(
@@ -6464,10 +6464,6 @@ tidy_sb.pollinators_lm(lm.even) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:5, align = "center", part = "body") %>%
     align(j = 2:5, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 2.8) %>%
@@ -6487,6 +6483,8 @@ tidy_sb.pollinators_lm(lm.even) %>%
 ## URBAN sites-----
 lm.even.urbsubs
 
+
+
 tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
     as.data.frame() %>%
     # purrr::reduce(full_join, by = "Predictor") %>%
@@ -6497,8 +6495,8 @@ tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
     dplyr::rename('Sum of Squares' = 2,
-                  'X2' = 3,
-                  'df' = 4,
+                  'df' = 3,
+                  'F' = 4,
                   'p' = 5) %>%
     flextable::flextable() %>%
     add_header_row(
@@ -6508,10 +6506,6 @@ tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:5, align = "center", part = "body") %>%
     align(j = 2:5, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 3.9) %>%
@@ -6532,6 +6526,8 @@ tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
 ## all sites
 lm.even.u
 
+
+
 tidy_sb.pollinators_lm(lm.even.u) %>%
     as.data.frame() %>%
     # purrr::reduce(full_join, by = "Predictor") %>%
@@ -6542,8 +6538,8 @@ tidy_sb.pollinators_lm(lm.even.u) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
     dplyr::rename('Sum of Squares' = 2,
-                  'X2' = 3,
-                  'df' = 4,
+                  'df' = 3,
+                  'F' = 4,
                   'p' = 5) %>%
     flextable::flextable() %>%
     add_header_row(
@@ -6553,10 +6549,6 @@ tidy_sb.pollinators_lm(lm.even.u) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:5, align = "center", part = "body") %>%
     align(j = 2:5, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 2.5) %>%
@@ -6577,6 +6569,8 @@ tidy_sb.pollinators_lm(lm.even.u) %>%
 ## URBAN sites-----
 lm.even.urbsubs.u
 
+
+
 tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
     as.data.frame() %>%
     # purrr::reduce(full_join, by = "Predictor") %>%
@@ -6587,8 +6581,8 @@ tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
     dplyr::rename('Sum of Squares' = 2,
-                  'X2' = 3,
-                  'df' = 4,
+                  'df' = 3,
+                  'F' = 4,
                   'p' = 5) %>%
     flextable::flextable() %>%
     add_header_row(
@@ -6598,10 +6592,6 @@ tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:5, align = "center", part = "body") %>%
     align(j = 2:5, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 3.7) %>%
@@ -6620,16 +6610,179 @@ tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
 ####### Alternative (AIC<2 from best) models:
 ```{r}
 # Abundance/Diversity/Richness
+## City_dist-----
+alt_best_mods_Q3.dist_list <- list(
+lm_abun1.urbsubs,
+lm_diversity.urbsubs,
+lm.rich.urbsubs
+)
+
+
+lapply(alt_best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'df' = 3,
+                  'p' = 4,
+                  'Sum of Squares' = 5,
+                  'df ' = 6,
+                  'F' = 7,
+                  'p ' = 8,
+                  'Sum of Squares ' = 9,
+                  'df  ' = 10,
+                  'F ' = 11,
+                  'p  ' = 12) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance, Alt. Model 1",
+                 "Simpson's Diversity, Alt. Model 1",
+                 "Richness, Alt. Model 1"),
+      colwidths = c(1, 3, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:12, align = "center", part = "body") %>%
+    align(j = 2:12, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.4) %>%
+  width(j = 2:12, width = 0.7) %>%
+  italic(i = 2, j = 2:12, part = "header") %>%
+  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
+                          AIC(lm_abun1.urbsubs) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
+                          AIC(lm_diversity.urbsubs) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
+                          AIC(lm.rich.urbsubs) %>% round(., 3))) %>%  
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Q3_Dist_ANOVA_altmodels.png"))
+
+
+
+
+## Urb_score-----
+# abundance & diversity: no alt best model
+lm.rich.urbsubs.u_ME
+
+lm.rich.urbsubs.u_ME %>%
+  tidy_sb.pollinators_lm %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Evenness, Alt. Model 1"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2) %>%
+  width(j = 2:5, width = 0.7) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator richness. Alternative models of other pollinator indices were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Richness, Alt. Model 1: ",
+                          AIC(lm.rich.urbsubs.u_ME) %>% round(., 3))) %>%  
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Q3_Urbscore_ANOVA_altmodels.png"))
+
+
+# Evenness-----
 ## City_dist
+lm.even.urbsubs_ME
+
+lm.even.urbsubs_ME %>%
+  tidy_sb.pollinators_lm %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Evenness, Alt. Model 1"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2) %>%
+  width(j = 2:5, width = 0.7) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator evenness Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness, Alt. Model 1: ",
+                          AIC(lm.even.urbsubs_ME) %>% round(., 3))) %>%  
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Alt_models_evenness/Q3_Dist_ANOVA_altmodels_evenness.png"))
+
+
 
 ## Urb_score
-
-
-
-# Evenness
-## City_dist
-
-## Urb_score
+# no alt best model
 
 ```
 
@@ -6638,7 +6791,8 @@ tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
 # Total pollinators observed per morphospecies:
 ms_table <- colSums(pollinators[,c(7:48)]) %>%
   as.data.frame() %>%
-  dplyr::rename(indivs_observed = 1)
+  dplyr::rename(indivs_observed = 1) %T>%
+  view()
 # top 4 abundant morphospecies: MW 6, 14, 2, 10.
 #   6: Apis mellifera (Large)
 #   14: (small) black sweat bee (Halictidae spp.)
@@ -6648,50 +6802,74 @@ ms_table <- colSums(pollinators[,c(7:48)]) %>%
 
 
 ####### Table of each family's most common morphospecies vs dist city ctr ------
-four_popfams <- dplyr::filter(diversity, Family %in% c( 'Apidae', 'Cantharidae' , 'Halictidae', 'Megachilidae')) %>%
+four_popfams <- dplyr::filter(diversity,
+                              Family %in%
+                                c( 'Apidae',
+                                   'Cantharidae' ,
+                                   'Halictidae',
+                                   'Megachilidae')) %>%
   group_by(Morphospecies, Family) %>%
-  summarise(
+  dplyr::summarise(
     "Sites" = n_distinct(Patch_ID),
-    "Individuals_observed" = sum(Count))
+    "Individuals_observed" = sum(Count)) %T>%
+  view()
 
 # switch order of first 2 cols
 four_popfams <- four_popfams[,c(2,1,3,4)]
 
 # break into 4 separate tables, calculate subtotals, then bind together
-apidae <- dplyr::filter(four_popfams, Family %in% 'Apidae') %>% adorn_totals("row")
-canth <- dplyr::filter(four_popfams, Family %in% 'Cantharidae')%>% adorn_totals("row")
-halict <- dplyr::filter(four_popfams, Family %in% 'Halictidae')%>% adorn_totals("row")
-megachil <- dplyr::filter(four_popfams, Family %in% 'Megachilidae')%>% adorn_totals("row")
+four_popfams_summary <- four_popfams %>%
+  group_by(Family) %>%
+  dplyr::summarise(across(Individuals_observed, sum)) %>%
+  arrange(desc(Individuals_observed))
+#   
+# apidae <- dplyr::filter(four_popfams, Family %in% 'Apidae') %>%
+#   adorn_totals("row") %T>%
+#   view()
+# 
+# canth <- dplyr::filter(four_popfams, Family %in% 'Cantharidae')%>%
+#   adorn_totals("row")
+# 
+# halict <- dplyr::filter(four_popfams, Family %in% 'Halictidae')%>%
+#   adorn_totals("row")
+# 
+# megachil <- dplyr::filter(four_popfams, Family %in% 'Megachilidae')%>%
+#   adorn_totals("row")
+# 
+# b <- bind_rows(list(apidae, canth, halict, megachil)) %>%
+#               arrange(Family, Morphospecies, Sites, Individuals_observed)
 
-b <- bind_rows(list(apidae, canth, halict, megachil)) %>%
-              arrange(Family, Morphospecies, Sites, Individuals_observed)
-
-d <- rbindlist(list(
-  four_popfams %>%
-    group_by(Family) %>%
-    summarise(sum(Sites), sum(Individuals_observed)),
-  four_popfams %>%
-    group_by(Family, Morphospecies) %>%
-    summarise(sum(Sites), sum(Individuals_observed))),fill=TRUE) %>%
-  arrange(Family, Morphospecies)
-
-# Make Total rows clear
-d$Family <- as.character(d$Family)
-d[8,1] <- as.character("Apidae: Total")
-d[10,1] <- as.character("Cantharidae: Total")
-d[18,1] <- as.character("Halictidae: Total")
-d[29,1] <- as.character("Megachilidae: Total")
-
-colnames(d)[2] <- "Sites Observed"
-colnames(d)[3] <- "Individuals Observed"
-colnames(d)[4] <- "Morphospecies Description "
-
-kable(d, digits = 3, format = "pandoc", caption = "Top 4 Families") # the digits argument controls rounding
-d_export <- kable(d, digits = 3, format = "pandoc", caption = "Top 4 Families")
-kable(d, "html") %>%
-  kable_styling("striped") %>%
-  save_kable(file = "table_d.html", self_contained = T)
-  as_image(width = 4)
+# d <- rbindlist(
+#   list(
+#     four_popfams %>%
+#       dplyr::group_by(Family) %>%
+#       summarise(across(Sites:Individuals_observed, ~ sum()))
+#       summarise(across(sum(Sites),
+#                 sum(Individuals_observed))),
+#   four_popfams %>%
+#     group_by(Family, Morphospecies) %>%
+#     summarise(sum(Sites),
+#               sum(Individuals_observed))),
+#   fill=TRUE) %>%
+#   arrange(Family, Morphospecies)
+# 
+# # Make Total rows clear
+# d$Family <- as.character(d$Family)
+# d[8,1] <- as.character("Apidae: Total")
+# d[10,1] <- as.character("Cantharidae: Total")
+# d[18,1] <- as.character("Halictidae: Total")
+# d[29,1] <- as.character("Megachilidae: Total")
+# 
+# colnames(d)[2] <- "Sites Observed"
+# colnames(d)[3] <- "Individuals Observed"
+# colnames(d)[4] <- "Morphospecies Description "
+# 
+# kable(d, digits = 3, format = "pandoc", caption = "Top 4 Families") # the digits argument controls rounding
+# d_export <- kable(d, digits = 3, format = "pandoc", caption = "Top 4 Families")
+# kable(d, "html") %>%
+#   kable_styling("striped") %>%
+#   save_kable(file = "table_d.html", self_contained = T)
+#   as_image(width = 4)
 ```
 
 ### Figures
@@ -6700,21 +6878,26 @@ kable(d, "html") %>%
 ```{r}
 # Total abundance
 
-## try to get standard error to create confidence intervals here? 
-# library(Rmisc)
-# sum1 <- summarySE(diversity, measurevar="Count", groupvars= c("Order", "Transect"), na.rm = T)
-# sum_a <- summarySE(diversity, measurevars = c("Morphospecies_Code", "Count"), groupvar= ("Patch_ID"), na.rm = T)
-# ggplot(sum1, aes(x=Transect, y=Count, color = Order, shape=Order)) +
-#   geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
-#   geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
-#   # scale_color_manual(values=c("gray64", "black", 'grey')) +
-#   theme_bw() +
-#   labs(title = "Total Pollinator Order Abundance by Transect",
-#        caption = "Error bars represent standard error")
+# try to get standard error to create confidence intervals here?
+library(Rmisc)
+sum1 <- summarySE(diversity, measurevar="Count",
+                  groupvars= c("Order", "Transect"),
+                  na.rm = T)
+sum_a <- summarySE(diversity, measurevars = c("Morphospecies_Code", "Count"), groupvar= ("Patch_ID"), na.rm = T)
+ggplot(sum1, aes(x=Transect, y=Count, color = Order, shape=Order)) +
+  geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
+  geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
+  # scale_color_manual(values=c("gray64", "black", 'grey')) +
+  theme_bw() +
+  labs(title = "Total Pollinator Order Abundance by Transect",
+       caption = "Error bars represent standard error")
 
 
-abun <- ggplot(pollinators, aes(x = Dist_city, y = Total)) +
-  labs(x = "Distance to urban center (km)", y = "Average Pollinators Observed") +
+abun <- ggplot(pollinators,
+               aes(x = Dist_city,
+                   y = Total)) +
+  labs(x = "Distance to city center (km)",
+       y = "Average Pollinators Observed") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth(color="black", method = lm, alpha=0.15,  se = T) +
@@ -6725,20 +6908,32 @@ abun <- ggplot(pollinators, aes(x = Dist_city, y = Total)) +
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
+    text = element_text(size=14),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    )+
+    legend.key = element_rect(fill = NA)
+    ) +
   theme_bw()
+abun
 
 # Total abundance, split by transect
-abun_transect <- ggplot(pollinators, aes(x = Dist_city, y = Total, shape=Transect, color = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Average Pollinators Observed") +
-  geom_point(aes(shape=Transect, color=Transect)) +
+abun_transect <- ggplot(pollinators,
+                        aes(x = Dist_city,
+                            y = Total,
+                            shape = Transect,
+                            color = Transect)) +
+  labs(x = "Distance to city center (km)", y = "Average Pollinators Observed") +
+  geom_point(aes(shape=Transect,
+                 color=Transect)) +
   scale_shape(solid = F)+
-  geom_smooth(aes(color=Transect, linetype = Transect, fill = Transect), method = lm, alpha=0.15,  se = T) +
-  labs(title = 'Pollinator Abundance Among Sub-transects', linetype="Transect", color="Transect", linetype = "Transect") +
+  geom_smooth(aes(color=Transect,
+                  linetype = Transect,
+                  fill = Transect),
+              method = lm, alpha=0.15,  se = T) +
+  labs(title = 'Pollinator Abundance Among Subtransects',
+       linetype="Transect",
+       color="Transect",
+       linetype = "Transect") +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -6751,12 +6946,12 @@ abun_transect <- ggplot(pollinators, aes(x = Dist_city, y = Total, shape=Transec
     legend.key = element_rect(fill = NA) 
     ) +
   theme_bw()
-
+abun_transect
 
 
 # Average abundance per plant
 abun_perplant <- ggplot(poll_pp, aes(x = Dist_city, y = Total)) +
-  labs(x = "Distance to urban center (km)", y = "Average Pollinators Observed (per plant)") +
+  labs(x = "Distance to city center (km)", y = "Average Pollinators Observed (per plant)") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth(color="black", method = lm, alpha=0.15,  se = T) +
@@ -6773,10 +6968,11 @@ abun_perplant <- ggplot(poll_pp, aes(x = Dist_city, y = Total)) +
     legend.key = element_rect(fill = NA) 
     ) +
   theme_bw()
+abun_perplant
 
 # Average abundance per plant, split by transect
 abun_perplant_transect <- ggplot(poll_pp, aes(x = Dist_city, y = Total, shape=Transect, color = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Average Pollinators Observed (per plant)") +
+  labs(x = "Distance to city center (km)", y = "Average Pollinators Observed (per plant)") +
   geom_point(aes(shape=Transect, color=Transect)) +
   scale_shape(solid = F)+
   geom_smooth(aes(color=Transect, linetype = Transect, fill = Transect), method = lm, alpha=0.15,  se = T) +
@@ -6793,7 +6989,7 @@ abun_perplant_transect <- ggplot(poll_pp, aes(x = Dist_city, y = Total, shape=Tr
     legend.key = element_rect(fill = NA) 
     ) +
   theme_bw()
-
+abun_perplant_transect
 
 
 library(cowplot)
@@ -6819,7 +7015,7 @@ library(cowplot)
 ```{r}
 #### wrapped regressions per family vs dist city ctr ####
 ggplot(subset(diversity, Family %in% c('Apidae', 'Cantharidae', 'Halictidae', 'Megachilidae')), aes(x = Dist_city, y = Count, colour = Family)) +
-  labs(x = "Distance to urban center (km)", y = "Individuals Observed by Family (per population)") +
+  labs(x = "Distance to city center (km)", y = "Individuals Observed by Family (per population)") +
   geom_point(aes( color = Family)) +
   scale_shape(solid = F)+
   geom_smooth(aes(color = Family), method = lm, alpha=0.15,  se = T) +
@@ -6842,7 +7038,7 @@ ggplot(subset(diversity, Family %in% c('Apidae', 'Cantharidae', 'Halictidae', 'M
 ####### regressions of each family's most common morphospecies vs dist city ctr #######
 top_4ms <- dplyr::filter(diversity, Morphospecies_Code %in% c( 'MS_06', 'MS_14' , 'MS_02', 'MS_21')) 
 ggplot(top_4ms, aes(x = Dist_city, y = Count, colour = Morphospecies)) +
-  labs(x = "Distance to urban center (km)", y = "Individuals Observed") +
+  labs(x = "Distance to city center (km)", y = "Individuals Observed") +
   geom_point(aes( color = Morphospecies)) +
   scale_shape(solid = F)+
   geom_smooth(aes(color = Morphospecies), method = lm, alpha=0.15,  se = T) +
@@ -6854,7 +7050,7 @@ ggplot(top_4ms, aes(x = Dist_city, y = Count, colour = Morphospecies)) +
   
 ###### Bombus abundance re: dist city ctr #######
   ggplot(subset(diversity, Genus %in% 'Bombus'), aes(x = Dist_city, y = Count)) +
-  labs(x = "Distance to urban center (km)", y = "Bombus Individuals Observed (per population)") +
+  labs(x = "Distance to city center (km)", y = "Bombus Individuals Observed (per population)") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth( method = lm, alpha=0.15,  se = T) +
@@ -6865,7 +7061,7 @@ ggplot(top_4ms, aes(x = Dist_city, y = Count, colour = Morphospecies)) +
 
 ###### Monarch abundance re: dist city ctr #######
   ggplot(subset(diversity, Genus %in% 'Danaus'), aes(x = Dist_city, y = Count)) +
-  labs(x = "Distance to urban center (km)", y = "Monarchs Observed (per population)") +
+  labs(x = "Distance to city center (km)", y = "Monarchs Observed (per population)") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth( method = lm, alpha=0.15,  se = T) +
@@ -6876,7 +7072,7 @@ ggplot(top_4ms, aes(x = Dist_city, y = Count, colour = Morphospecies)) +
   
 ###### Honeybee abundance re: dist city ctr #######
   ggplot(subset(diversity, Morphospecies %in% 'Apis mellifera (Large)'), aes(x = Dist_city, y = Count)) +
-  labs(x = "Distance to urban center (km)", y = "Honeybees Observed (per population)") +
+  labs(x = "Distance to city center (km)", y = "Honeybees Observed (per population)") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth( method = lm, alpha=0.15,  se = T) +
@@ -6889,7 +7085,7 @@ ggplot(top_4ms, aes(x = Dist_city, y = Count, colour = Morphospecies)) +
 ```{r}
 # Total morphospecies diversity
 ggplot(poll_binary, aes(x = Dist_city, y = Total)) +
-  labs(x = "Distance to urban center (km)", y = "Morphospecies Observed") +
+  labs(x = "Distance to city center (km)", y = "Morphospecies Observed") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth(color="black", method = lm, alpha=0.15,  se = T) +
@@ -6916,7 +7112,7 @@ div_sum_melted <- reshape2::melt(div_sum, id.vars= c("Patch_ID", "Transect", "Di
 
 # Total morphospecies diversity, split by transect
 ggplot(poll_binary, aes(x = Dist_city, y = Total, shape=Transect, color = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Morphospecies Observed (per population)") +
+  labs(x = "Distance to city center (km)", y = "Morphospecies Observed (per population)") +
   geom_point(aes(shape=Transect, color=Transect)) +
   scale_shape(solid = F)+
   geom_smooth(aes(color=Transect, linetype = Transect), method = lm, alpha=0.15,  se = T) +
@@ -6938,7 +7134,7 @@ ggplot(poll_binary, aes(x = Dist_city, y = Total, shape=Transect, color = Transe
 
 # Orders per transect
 ord_trsct <- ggplot(div_sum, aes(x = Dist_city, y = orders, shape = Transect, colour = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Orders") +
+  labs(x = "Distance to city center (km)", y = "Orders") +
   geom_point(aes(shape = Transect, color = Transect)) +
   scale_shape(solid = F)+
   geom_smooth(aes(shape = Transect, color = Transect), method = lm, alpha=0.15,  se = T) +
@@ -6960,7 +7156,7 @@ ord_trsct <- ggplot(div_sum, aes(x = Dist_city, y = orders, shape = Transect, co
 
 # Superfamilies per transect
 supfam_trsct <- ggplot(div_sum, aes(x = Dist_city, y = superfams, shape = Transect, colour = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Superfamilies") +
+  labs(x = "Distance to city center (km)", y = "Superfamilies") +
   geom_point(aes(shape = Transect, color = Transect)) +
   scale_shape(solid = F)+
   geom_smooth(aes(shape = Transect, color = Transect), method = lm, alpha=0.15,  se = T) +
@@ -6980,7 +7176,7 @@ supfam_trsct <- ggplot(div_sum, aes(x = Dist_city, y = superfams, shape = Transe
 
 # Morphospecies per transect
 mspecies_trsct <- ggplot(div_sum, aes(x = Dist_city, y = mspecies, shape = Transect, colour = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Morphospecies") +
+  labs(x = "Distance to city center (km)", y = "Morphospecies") +
   geom_point(aes(shape = Transect, color = Transect)) +
   scale_shape(solid = F)+
   geom_smooth(aes(shape = Transect, color = Transect), method = lm, alpha=0.15,  se = T) +
@@ -7029,7 +7225,7 @@ ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')), aes(x = D
                             labels=c("Shannon", "Simpson")) +
   scale_linetype_discrete(name  ="Diversity Index",
                             labels=c("Shannon", "Simpson")) +
-  labs(x = "Distance to urban center (km)", y = "Diversity") +
+  labs(x = "Distance to city center (km)", y = "Diversity") +
   geom_point() +
   geom_smooth(aes(linetype = variable), method = lm, alpha=0.15,  se = T) +
   labs(title = "Shannon's and Simpson's Diversity Indices") +
@@ -7037,7 +7233,7 @@ ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')), aes(x = D
 
 # Major gradient, with cleaned up labels, JUST Simpson
 ggplot(div_sum_melted, aes(x = Dist_city, y = value)) +
-  labs(x = "Distance to urban center (km)", y = "Diversity Index") +
+  labs(x = "Distance to city center (km)", y = "Diversity Index") +
   geom_point(data=div_sum_melted[div_sum_melted$variable== 'simpson', ]) +
   geom_smooth(data=div_sum_melted[div_sum_melted$variable== 'simpson', ], color = "black", method = lm, alpha=0.15,  se = T) +
   labs(title = "Simpson's Diversity Index") +
@@ -7049,7 +7245,7 @@ names(var.labs) <- c("shannon", "simpson")
 
 # Split into transects
 div_fig2 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')), aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Diversity") +
+  labs(x = "Distance to city center (km)", y = "Diversity") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth(aes(fill = Transect), method = lm, alpha=0.15,  se = T) +
@@ -7058,7 +7254,7 @@ div_fig2 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')
 
 ## Just Simpson's
 ggplot(div_sum_melted, aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Diversity Index") +
+  labs(x = "Distance to city center (km)", y = "Diversity Index") +
     scale_shape(solid = F)+
   geom_point(data=div_sum_melted[div_sum_melted$variable== 'simpson', ]) +
   geom_smooth(data=div_sum_melted[div_sum_melted$variable== 'simpson', ], aes(fill = Transect), method = lm, alpha=0.15,  se = T) +
@@ -7072,7 +7268,7 @@ ggplot(div_sum_melted, aes(x = Dist_city, y = value, shape = Transect, color = T
 ```{r}
 # Major gradient
 rich_fig1 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')), aes(x = Dist_city, y = value), shape = 1, color = "black") +
-  labs(x = "Distance to urban center (km)", y = "Species Richness") +
+  labs(x = "Distance to city center (km)", y = "Species Richness") +
   geom_point(show.legend = FALSE) +
   scale_shape(solid = F)+
   geom_smooth(color = "black", method = lm, alpha=0.15,  se = T, show.legend = FALSE) +
@@ -7081,7 +7277,7 @@ rich_fig1 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')),
 
 # Split into transects
 rich_fig2 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')), aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Species Richness") +
+  labs(x = "Distance to city center (km)", y = "Species Richness") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth(aes( fill = Transect), method = lm, alpha=0.15,  se = T) +
@@ -7093,7 +7289,7 @@ rich_fig2 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')),
 ```{r}
 # Major gradient
 even_fig1 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon_equit', 'simpson_equit')), aes(x = Dist_city, y = value, shape = variable, color = variable)) +
-  labs(x = "Distance to urban center (km)", y = "Equitability") +
+  labs(x = "Distance to city center (km)", y = "Equitability") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth( method = lm, alpha=0.15,  se = T) +
@@ -7102,7 +7298,7 @@ even_fig1 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon_equit', 'si
 
 # Split into transects
 even_fig2 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon_equit', 'simpson_equit')), aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to urban center (km)", y = "Equitability") +
+  labs(x = "Distance to city center (km)", y = "Equitability") +
   geom_point() +
   scale_shape(solid = F)+
   geom_smooth(aes(fill = Transect), method = lm, alpha=0.15,  se = T) +
@@ -7154,7 +7350,7 @@ plot_grid(
 ```{r}
 # TOTAL ABUNDANCE
 abun_all <- ggplot(div_sum, aes(x = Dist_city, y = total_indivs^(1/2))) +
-  labs(   # x = "Distance to urban center (km)",
+  labs(   # x = "Distance to city center (km)",
     y = expression(Pollinators~Observed^{0.5})) +
   geom_point(size=2) +
   scale_shape(solid = F)+
@@ -7175,7 +7371,7 @@ abun_all
 
 # urban transects- abundance
 abun_transects <- ggplot(div_sum_urban, aes(x = Dist_city, y = total_indivs, shape=Transect, color = Transect)) + 
-  labs(   # x = "Distance to urban center (km)", 
+  labs(   # x = "Distance to city center (km)", 
     y = "Pollinators Observed") +
   geom_point(aes(shape=Transect, color=Transect),  size=2) +
   scale_shape(solid = F)+
@@ -7197,7 +7393,7 @@ abun_transects
 
 # Simpson's Diversity
 simp_all <- ggplot(div_sum, aes(x = Dist_city, y = log(1-simpson))) +
-  labs(   # x = "Distance to urban center (km)", 
+  labs(   # x = "Distance to city center (km)", 
     y = "log(1-Simpson's Index)") +
   geom_point(size=2) +
   scale_shape(solid = F)+
@@ -7218,7 +7414,7 @@ simp_all
 
 # Simpson's Diversity- urban subtransects
 simp_transects <- ggplot(div_sum_urban, aes(x = Dist_city, y = log(1-simpson), shape=Transect, color = Transect)) + 
-  labs(   # x = "Distance to urban center (km)", 
+  labs(   # x = "Distance to city center (km)", 
     y = "log(1-Simpson's Index)") +
   geom_point(aes(shape=Transect, color=Transect),  size=2) +
   # scale_shape(solid = F)+
@@ -7260,7 +7456,7 @@ library(ggpubr)
 Q2_regressions <- ggarrange(abun_all,  abun_transects, simp_all, simp_transects, ncol = 2, nrow = 2, align = "v", labels = list("A", "B", "C", "D"), font.label = (size =16), common.legend = FALSE)
 Q2_regressions
 
-annotate_figure(Q2_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
+annotate_figure(Q2_regressions, bottom = text_grob("Distance to city center (km)", size=14))
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Pollinator_regressions.pdf", width = 10, height = 7)
 ```
