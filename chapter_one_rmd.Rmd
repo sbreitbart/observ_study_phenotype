@@ -5173,7 +5173,7 @@ poll_binary <- pollinators[,-49] %>%
 
 
 # reshape to create diversity table (combining occurrence data with taxonomy)
-melted <- melt(pollinators,
+melted <- melt(poll_pp,
                id = c("Patch_ID", "Lat", "Long", "Dist_city", "Transect", "Plants_surveyed")) %>%
   # remove rows with no pollinators observed, remove "Total"
   filter(value != 0) %>%
@@ -5184,7 +5184,7 @@ diversity <- merge(x=melted,y=tax,by="Morphospecies_Code",all.x=TRUE)
 
 
  ##################  CALCULATING SPECIES DIVERSITY ##################  
-pollinators1 <- pollinators[,c(1,7:48)]
+pollinators1 <- poll_pp[,c(1,7:48)]
 
 pollinators1 %<>%
   rowwise() %>% 
@@ -5343,9 +5343,8 @@ sum_a <- summarySE(diversity, measurevars = c("Morphospecies_Code", "Count"), gr
 ####### Without transects- NO TRANSFORMATION
 ```{r}
 
-lm_abun1 <- glm(total_indivs ~ Dist_city,
-               data = div_sum,
-                       family = "poisson" )
+lm_abun1 <- lm(total_indivs ~ Dist_city,
+               data = div_sum)
 
 par(mfrow=c(2,2))
 plot(lm_abun1) # looks good
@@ -5356,10 +5355,9 @@ plot(lm_abun1) # looks good
 ####### With transects- NO TRANSFORMATION
 ```{r}
 
-lm_abun1.urbsubs <- glm(total_indivs ~ Dist_city * Transect,
+lm_abun1.urbsubs <- lm(total_indivs ~ Dist_city * Transect,
                        data = div_sum %>%
-                         filter(Transect != 'Rural'),
-                       family = "poisson")
+                         filter(Transect != 'Rural'))
 
 par(mfrow=c(2,2))
 plot(lm_abun1.urbsubs)
@@ -5368,10 +5366,9 @@ plot(lm_abun1.urbsubs)
 # I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
 
 # main effects model
-lm_abun1.urbsubs_ME <- glm(total_indivs ~ Dist_city + Transect,
+lm_abun1.urbsubs_ME <- lm(total_indivs ~ Dist_city + Transect,
                        data = div_sum %>%
-                         filter(Transect != 'Rural'),
-                       family = "poisson")
+                         filter(Transect != 'Rural'))
 ```
 
 
@@ -5379,9 +5376,8 @@ lm_abun1.urbsubs_ME <- glm(total_indivs ~ Dist_city + Transect,
 ####### Without transects- NO TRANSFORMATION
 ```{r}
 
-lm_abun1.u <- glm(total_indivs ~ Urb_score,
-               data = div_sum,
-                       family = "poisson" )
+lm_abun1.u <- lm(total_indivs ~ Urb_score,
+               data = div_sum )
 
 par(mfrow=c(2,2))
 plot(lm_abun1.u) # looks good
@@ -5392,10 +5388,9 @@ plot(lm_abun1.u) # looks good
 ####### With transects- NO TRANSFORMATION
 ```{r}
 
-lm_abun1.urbsubs.u <- glm(total_indivs ~ Urb_score * Transect,
+lm_abun1.urbsubs.u <- lm(total_indivs ~ Urb_score * Transect,
                        data = div_sum %>%
-                         filter(Transect != 'Rural'),
-                       family = "poisson")
+                         filter(Transect != 'Rural'))
 
 par(mfrow=c(2,2))
 plot(lm_abun1.urbsubs.u)
@@ -5404,12 +5399,10 @@ plot(lm_abun1.urbsubs.u)
 # I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
 
 # main effects model
-lm_abun1.urbsubs.u_ME <- glm(total_indivs ~ Urb_score + Transect,
+lm_abun1.urbsubs.u_ME <- lm(total_indivs ~ Urb_score + Transect,
                        data = div_sum %>%
-                         filter(Transect != 'Rural'),
-                       family = "poisson")
+                         filter(Transect != 'Rural'))
 ```
-
 
 ##### Simpson's Diversity
 ###### All data
@@ -5423,7 +5416,7 @@ par(mfrow=c(2,2))
 plot(lm_diversity)
 
 ## Histogram
-gg_reshist(lm_diversity, bins=20)
+gg_reshist(lm_diversity, bins=15)
 
 diagnostic(lm_diversity$residuals)
 # some left skew
@@ -5770,7 +5763,7 @@ par(mfrow=c(2,2))
 plot(lm.even)
 
 ## Histogram
-gg_reshist(lm.even, bins=15)
+gg_reshist(lm.even, bins=10)
 
 diagnostic(lm.even$residuals)
 # Looks pretty normal
@@ -5788,7 +5781,7 @@ plot(lm.even.urbsubs)
 
 
 ## Histogram
-gg_reshist(lm.even.urbsubs, bins=20)
+gg_reshist(lm.even.urbsubs, bins=15)
 
 diagnostic(lm.even.urbsubs$residuals)
 # left skew
@@ -5884,10 +5877,10 @@ car::Anova(lm_abun1.u) # highly sig
 
 ####### Transects
 ```{r}
-car::Anova(lm_abun1.urbsubs.u) # interaction sig
+car::Anova(lm_abun1.urbsubs.u) # not sig
 car::Anova(lm_abun1.urbsubs.u_ME) # not sig
 
-AIC(lm_abun1.urbsubs.u, lm_abun1.urbsubs.u_ME) # Full has sig lower AIC
+AIC(lm_abun1.urbsubs.u, lm_abun1.urbsubs.u_ME) # Full has lower AIC (not <2 away though)
 ```
 
 ###### Find abundance means at urban and rural terminii
@@ -5928,12 +5921,12 @@ car::Anova(lm_diversity)
 
 ######### Transects
 ```{r}
-car::Anova(lm_diversity.urbsubs) # transect sig
-car::Anova(lm_diversity.urbsubs_ME) # transect sig
+car::Anova(lm_diversity.urbsubs) # transect marg sig
+car::Anova(lm_diversity.urbsubs_ME) # transect marg sig
 
 AIC(lm_diversity.urbsubs, lm_diversity.urbsubs_ME) # ME has lower AIC but <2 away
 
-summary(lm_diversity.urbsubs_ME) # corridor transect was 0.148 units diversity lower than non-corridor subtransect
+summary(lm_diversity.urbsubs_ME) # corridor transect was 0.109 units diversity lower than non-corridor subtransect
 ```
 
 ######## Removing honeybees
@@ -5947,9 +5940,9 @@ car::Anova(lm.diversity_nohoney) ## Nothing sig
 car::Anova(lm.diversity_nohoney.urbsubs) # transect sig
 car::Anova(lm.diversity_nohoney.urbsubs_ME) # transect sig
 
-AIC(lm.diversity_nohoney.urbsubs, lm.diversity_nohoney.urbsubs_ME) # ME has lower AIC but <2 away
+AIC(lm.diversity_nohoney.urbsubs, lm.diversity_nohoney.urbsubs_ME) # full model has lower AIC but <2 away
 
-summary(lm.diversity_nohoney.urbsubs_ME) # corridor transect was 0.134 units diversity lower than non-corridor subtransect
+summary(lm.diversity_nohoney.urbsubs) # corridor transect was 0.270 units diversity lower than non-corridor subtransect
 ```
 
 ####### Urb_score
@@ -5968,7 +5961,7 @@ car::Anova(lm_diversity.urbsubs.u_ME) #  transect marg sig, urb_score sig
 
 AIC(lm_diversity.urbsubs.u, lm_diversity.urbsubs.u_ME) # ME has sig. lower AIC
 
-summary(lm_diversity.urbsubs.u_ME) # corridor transect was 0.09 units diversity lower than non-corridor subtransect
+summary(lm_diversity.urbsubs.u_ME) # corridor transect was 0.093 units diversity lower than non-corridor subtransect
 ```
 
 ######## Removing honeybees
@@ -5992,6 +5985,7 @@ AIC(lm.diversity_nohoney.urbsubs.u, lm.diversity_nohoney.urbsubs.u_ME) # full mo
 car::Anova(lm.rich) # highly sig
 
 ```
+
 ####### Find richness means at urban and rural terminii
 ```{r}
 urban_terminus = 3.5 # km; most urban pop is close to this distance
@@ -6015,7 +6009,7 @@ central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
 central_mean_q.1
 
 
-# urban sites had, on average, 0.47 units higher richness than rural!
+# urban sites had, on average, 0.502 units higher richness than rural!
 ```
 
 
@@ -6024,11 +6018,11 @@ central_mean_q.1
 car::Anova(lm.rich.urbsubs) # transect sig
 car::Anova(lm.rich.urbsubs_ME) # transect sig
 
-AIC(lm.rich.urbsubs, lm.rich.urbsubs_ME) # ME lower AIC but <2
+AIC(lm.rich.urbsubs, lm.rich.urbsubs_ME) # ME model lower AIC but <2
 
 summary(lm.rich.urbsubs_ME)
 
-# corridor subtransect had 0.34 units lower richness than non-corridor, on avg!
+# corridor subtransect had 1.199 units lower richness than non-corridor, on avg!
 ```
 
 ###### Urb_score
@@ -6055,12 +6049,12 @@ car::Anova(lm.even) # not sig
 
 ####### Transects
 ```{r}
-car::Anova(lm.even.urbsubs) # transect sig
+car::Anova(lm.even.urbsubs) # transect sig, interaxn marg sig
 car::Anova(lm.even.urbsubs_ME) # transect sig
 
 AIC(lm.even.urbsubs,lm.even.urbsubs_ME ) # full model lower AIC but <2
 
-summary(lm.even.urbsubs) # corridor subtransect had 0.636 units lower evenness than non-corridor, on avg!
+summary(lm.even.urbsubs) # corridor subtransect had 0.615 units lower evenness than non-corridor, on avg!
 
 ```
 
@@ -6180,7 +6174,6 @@ lm_diversity,
 lm.rich
 )
 
-#doing this one manually (not w/a function) b/c it has glm and lm's
 lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
     lapply(., as.data.frame) %>%
     purrr::reduce(full_join, by = "Predictor") %>%
@@ -6190,40 +6183,36 @@ lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
                                          "Subtransect"))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
-    dplyr::rename('X2' = 2,
+    dplyr::rename('Sum of Squares' = 2,
                   'df' = 3,
-                  'p' = 4,
-                  'Sum of Squares' = 5,
-                  'df ' = 6,
-                  'F' = 7,
-                  'p ' = 8,
-                  'Sum of Squares ' = 9,
-                  'df  ' = 10,
-                  'F ' = 11,
-                  'p  ' = 12) %>%
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
                  "Simpson's Diversity",
                  "Species Richness"),
-      colwidths = c(1, 3, 4, 4)) %>%
+      colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:12, align = "center", part = "body") %>%
-    align(j = 2:12, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 2.3) %>%
-  width(j = c(2,4), width = 0.7) %>%
-  width(j = c(3, 6, 10), width = 0.2) %>%
-  width(j = c(5, 9), width = 1.2) %>%
-  width(j = c(7:8, 11:12), width = 0.7) %>%
-  italic(i = 2, j = 2:12, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",
                           AIC(lm_abun1) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Diversity: ",
@@ -6253,7 +6242,6 @@ lm_diversity.urbsubs_ME,
 lm.rich.urbsubs_ME
 )
 
-#doing this one manually (not w/a function) b/c it has glm and lm's
 lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
     lapply(., as.data.frame) %>%
     purrr::reduce(full_join, by = "Predictor") %>%
@@ -6263,40 +6251,36 @@ lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
                                          "Subtransect"))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
-    dplyr::rename('X2' = 2,
+    dplyr::rename('Sum of Squares' = 2,
                   'df' = 3,
-                  'p' = 4,
-                  'Sum of Squares' = 5,
-                  'df ' = 6,
-                  'F' = 7,
-                  'p ' = 8,
-                  'Sum of Squares ' = 9,
-                  'df  ' = 10,
-                  'F ' = 11,
-                  'p  ' = 12) %>%
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
                  "Simpson's Diversity",
                  "Species Richness"),
-      colwidths = c(1, 3, 4, 4)) %>%
+      colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:12, align = "center", part = "body") %>%
-    align(j = 2:12, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 2.3) %>%
-  width(j = c(2,4), width = 0.7) %>%
-  width(j = c(3, 6, 10), width = 0.2) %>%
-  width(j = c(5, 9), width = 1.2) %>%
-  width(j = c(7:8, 11:12), width = 0.7) %>%
-  italic(i = 2, j = 2:12, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",
                           AIC(lm_abun1.urbsubs_ME) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Diversity: ",
@@ -6321,7 +6305,6 @@ lm_diversity.u,
 lm.rich.u
 )
 
-#doing this one manually (not w/a function) b/c it has glm and lm's
 lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
     lapply(., as.data.frame) %>%
     purrr::reduce(full_join, by = "Predictor") %>%
@@ -6331,40 +6314,36 @@ lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
                                          "Subtransect"))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
-    dplyr::rename('X2' = 2,
+    dplyr::rename('Sum of Squares' = 2,
                   'df' = 3,
-                  'p' = 4,
-                  'Sum of Squares' = 5,
-                  'df ' = 6,
-                  'F' = 7,
-                  'p ' = 8,
-                  'Sum of Squares ' = 9,
-                  'df  ' = 10,
-                  'F ' = 11,
-                  'p  ' = 12) %>%
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
                  "Simpson's Diversity",
                  "Species Richness"),
-      colwidths = c(1, 3, 4, 4)) %>%
+      colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:12, align = "center", part = "body") %>%
-    align(j = 2:12, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 2.3) %>%
-  width(j = c(2,4), width = 0.7) %>%
-  width(j = c(3, 6, 10), width = 0.2) %>%
-  width(j = c(5, 9), width = 1.2) %>%
-  width(j = c(7:8, 11:12), width = 0.7) %>%
-  italic(i = 2, j = 2:12, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p),  and F-statistics (F) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",
                           AIC(lm_abun1.u) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Diversity: ",
@@ -6389,7 +6368,6 @@ lm_diversity.urbsubs.u_ME,
 lm.rich.urbsubs.u
 )
 
-#doing this one manually (not w/a function) b/c it has glm and lm's
 lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
     lapply(., as.data.frame) %>%
     purrr::reduce(full_join, by = "Predictor") %>%
@@ -6399,40 +6377,36 @@ lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
                                          "Subtransect"))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
-    dplyr::rename('X2' = 2,
+    dplyr::rename('Sum of Squares' = 2,
                   'df' = 3,
-                  'p' = 4,
-                  'Sum of Squares' = 5,
-                  'df ' = 6,
-                  'F' = 7,
-                  'p ' = 8,
-                  'Sum of Squares ' = 9,
-                  'df  ' = 10,
-                  'F ' = 11,
-                  'p  ' = 12) %>%
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
                  "Simpson's Diversity",
                  "Species Richness"),
-      colwidths = c(1, 3, 4, 4)) %>%
+      colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:12, align = "center", part = "body") %>%
-    align(j = 2:12, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 3) %>%
-  width(j = c(2,4), width = 0.7) %>%
-  width(j = c(3, 6, 10), width = 0.2) %>%
-  width(j = c(5, 9), width = 1.2) %>%
-  width(j = c(7:8, 11:12), width = 0.7) %>%
-  italic(i = 2, j = 2:12, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",
                           AIC(lm_abun1.urbsubs.u) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Diversity: ",
@@ -6480,7 +6454,7 @@ tidy_sb.pollinators_lm(lm.even) %>%
   width(j = 2, width = 1.2) %>%
   width(j = c(3,4,5), width = 0.2) %>%
   italic(i = 2, j = 2:5, part = "header") %>%
-  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Evenness: ",
                           AIC(lm.even) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
@@ -6522,7 +6496,7 @@ tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
   width(j = 2, width = 1.2) %>%
   width(j = c(3,4,5), width = 0.2) %>%
   italic(i = 2, j = 2:5, part = "header") %>%
-  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Evenness: ",
                           AIC(lm.even.urbsubs) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
@@ -6565,7 +6539,7 @@ tidy_sb.pollinators_lm(lm.even.u) %>%
   width(j = 2, width = 1.2) %>%
   width(j = c(3,4,5), width = 0.2) %>%
   italic(i = 2, j = 2:5, part = "header") %>%
-  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Evenness: ",
                           AIC(lm.even.u) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
@@ -6608,7 +6582,7 @@ tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
   width(j = 2, width = 1.2) %>%
   width(j = c(3,4,5), width = 0.2) %>%
   italic(i = 2, j = 2:5, part = "header") %>%
-  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Evenness: ",
                           AIC(lm.even.urbsubs.u) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
@@ -6647,40 +6621,39 @@ lapply(alt_best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
                                  "AIC", 
                                  "Response"))) %>%
     replace(., is.na(.), "-") %>%
-    dplyr::rename('X2' = 2,
+    dplyr::rename('Sum of Squares' = 2,
                   'df' = 3,
-                  'p' = 4,
-                  'Sum of Squares' = 5,
-                  'df ' = 6,
-                  'F' = 7,
-                  'p ' = 8,
-                  'Sum of Squares ' = 9,
-                  'df  ' = 10,
-                  'F ' = 11,
-                  'p  ' = 12) %>%
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
                  "Abundance, Alt. Model 1",
                  "Simpson's Diversity, Alt. Model 1",
                  "Richness, Alt. Model 1"),
-      colwidths = c(1, 3, 4, 4)) %>%
+      colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:12, align = "center", part = "body") %>%
-    align(j = 2:12, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
-  width(j = 1, width = 3.4) %>%
-  width(j = 2:12, width = 0.7) %>%
-  italic(i = 2, j = 2:12, part = "header") %>%
-  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2), degrees of freedom (df), p-values (p), sums of squares, and F-statistics obtained from type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
-                          AIC(lm_abun1.urbsubs) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
-                          AIC(lm_diversity.urbsubs) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from alternative general linear models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance, Alt. Model 1: ",
+                          AIC(lm_abun1.urbsubs) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Simpson's Diversity, Alt. Model 1: ",
+                          AIC(lm_diversity.urbsubs) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Richness, Alt. Model 1: ",
                           AIC(lm.rich.urbsubs) %>% round(., 3))) %>%  
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
@@ -6691,13 +6664,15 @@ lapply(alt_best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
 
 
 ## Urb_score-----
-# abundance & diversity: no alt best model
+# diversity: no alt best model
+alt_best_mods_Q3.urbsc_list <- list(
+lm_abun1.urbsubs.u_ME,
 lm.rich.urbsubs.u_ME
+)
 
-lm.rich.urbsubs.u_ME %>%
-  tidy_sb.pollinators_lm %>%
-    as.data.frame() %>%
-    # purrr::reduce(full_join, by = "Predictor") %>%
+lapply(alt_best_mods_Q3.urbsc_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
     arrange(factor(Predictor, levels = c("Distance to City Center",
                                          "Urbanization Score",
                                          "Year",
@@ -6717,22 +6692,29 @@ lm.rich.urbsubs.u_ME %>%
     dplyr::rename('Sum of Squares' = 2,
                   'df' = 3,
                   'F' = 4,
-                  'p' = 5) %>%
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
-                 "Evenness, Alt. Model 1"),
-      colwidths = c(1, 4)) %>%
+                 "Abundance, Alt. Model 1",
+                 "Richness, Alt. Model 1"),
+      colwidths = c(1, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:5, align = "center", part = "body") %>%
-    align(j = 2:5, align = "center", part = "header") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header") %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 2) %>%
-  width(j = 2:5, width = 0.7) %>%
-  italic(i = 2, j = 2:5, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator richness. Alternative models of other pollinator indices were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Richness, Alt. Model 1: ",
+  width(j = 2:9, width = 0.7) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from alternative general linear models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator abundance and richness. Alternative models of pollinator diversity were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance, Alt. Model 1: ",
+                          AIC(lm_abun1.urbsubs.u_ME) %>% round(., 3))) %>%  
+    add_footer_lines(paste0("AIC, Richness, Alt. Model 1: ",
                           AIC(lm.rich.urbsubs.u_ME) %>% round(., 3))) %>%  
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
@@ -6781,7 +6763,7 @@ lm.even.urbsubs_ME %>%
   width(j = 1, width = 2) %>%
   width(j = 2:5, width = 0.7) %>%
   italic(i = 2, j = 2:5, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator evenness Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics, and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator evenness Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Evenness, Alt. Model 1: ",
                           AIC(lm.even.urbsubs_ME) %>% round(., 3))) %>%  
   add_footer_lines("*: p-value <= 0.05") %>%
