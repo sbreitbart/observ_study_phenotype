@@ -5119,13 +5119,8 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Supplement/Subtransec
 ## Question 3 (Pollinator data)
 ### Import data
 ```{r}
-pollinators <- read.csv(here("./raw_data/Pollinator_PivotTable_byPop_Coded.csv"),  header=T, na.strings=c("","NA"))
-
-# Neaten first column's name
-colnames(pollinators)[1] <- "Patch_ID"
-
-# Delete last, empty column
-pollinators <- pollinators[-59,]
+pollinators <- read.csv(here("./raw_data/Pollinator_PivotTable_byPop_Coded.csv"),  header=T, na.strings=c("","NA")) %>%
+  dplyr::rename(Patch_ID = 1)
 
 
 ### Add City_dist values with Haversine formula
@@ -5178,7 +5173,8 @@ poll_binary <- pollinators[,-49] %>%
 
 
 # reshape to create diversity table (combining occurrence data with taxonomy)
-melted <- melt(pollinators, id=c("Patch_ID", "Lat", "Long", "Dist_city", "Transect", "Plants_surveyed")) %>%
+melted <- melt(pollinators,
+               id = c("Patch_ID", "Lat", "Long", "Dist_city", "Transect", "Plants_surveyed")) %>%
   # remove rows with no pollinators observed, remove "Total"
   filter(value != 0) %>%
   filter(variable != "Total") %>%
@@ -5325,6 +5321,20 @@ div_transects_no_honey <- diversity_no_honey %>%
 
 ```
 
+
+##### SummarySE
+```{r}
+library(Rmisc)
+sum_a <- summarySE(diversity, measurevars = c("Morphospecies_Code", "Count"), groupvar= ("Patch_ID"), na.rm = T)
+
+# ggplot(sum1, aes(x=Transect, y=Count, color = Order, shape=Order)) +
+#   geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
+#   geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
+#   # scale_color_manual(values=c("gray64", "black", 'grey')) +
+#   theme_bw() +
+#   labs(title = "Total Pollinator Order Abundance by Transect",
+#        caption = "Error bars represent standard error")
+```
 
 ### Statistical Analysis
 #### Linear Models
@@ -6789,10 +6799,16 @@ lm.even.urbsubs_ME %>%
 ### Tables
 ```{r}
 # Total pollinators observed per morphospecies:
-ms_table <- colSums(pollinators[,c(7:48)]) %>%
+Morphospecies_table <- colSums(pollinators[,c(7:48)]) %>%
   as.data.frame() %>%
-  dplyr::rename(indivs_observed = 1) %T>%
-  view()
+  tibble::rownames_to_column("Morphospecies_Code") %>%
+  # dplyr::rename(Morphospecies_Code = 0) %>%
+  dplyr::rename(Individuals_observed = 2) %>%
+  # as.data.frame() %>%
+  left_join(., diversity %>%
+              dplyr::select(c(1,14)),
+            by = "Morphospecies_Code") %>%
+  write.csv(here::here("./Figures_Tables/Q3_Pollinator/Q3_Pollinators_Table.csv"))
 # top 4 abundant morphospecies: MW 6, 14, 2, 10.
 #   6: Apis mellifera (Large)
 #   14: (small) black sweat bee (Halictidae spp.)
@@ -6811,18 +6827,19 @@ four_popfams <- dplyr::filter(diversity,
   group_by(Morphospecies, Family) %>%
   dplyr::summarise(
     "Sites" = n_distinct(Patch_ID),
-    "Individuals_observed" = sum(Count)) %T>%
-  view()
+    "Individuals_observed" = sum(Count))
 
 # switch order of first 2 cols
-four_popfams <- four_popfams[,c(2,1,3,4)]
+four_popfams <- four_popfams[,c(2,1,3,4)] %T>%
+  write.csv(here::here("./Figures_Tables/Q3_Pollinator/Q3_4MostCommonMorphospecies_Table.csv")) 
 
-# break into 4 separate tables, calculate subtotals, then bind together
+# break into 4 separate tables, calculate subtotals
 four_popfams_summary <- four_popfams %>%
   group_by(Family) %>%
   dplyr::summarise(across(Individuals_observed, sum)) %>%
-  arrange(desc(Individuals_observed))
-#   
+  arrange(desc(Individuals_observed)) %T>%
+  write.csv(here::here("./Figures_Tables/Q3_Pollinator/Q3_4MostCommonMorphospecies_SummaryTable.csv")) 
+
 # apidae <- dplyr::filter(four_popfams, Family %in% 'Apidae') %>%
 #   adorn_totals("row") %T>%
 #   view()
@@ -6877,22 +6894,6 @@ four_popfams_summary <- four_popfams %>%
 ##### Abundance along gradient & subtransects
 ```{r}
 # Total abundance
-
-# try to get standard error to create confidence intervals here?
-library(Rmisc)
-sum1 <- summarySE(diversity, measurevar="Count",
-                  groupvars= c("Order", "Transect"),
-                  na.rm = T)
-sum_a <- summarySE(diversity, measurevars = c("Morphospecies_Code", "Count"), groupvar= ("Patch_ID"), na.rm = T)
-ggplot(sum1, aes(x=Transect, y=Count, color = Order, shape=Order)) +
-  geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
-  geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
-  # scale_color_manual(values=c("gray64", "black", 'grey')) +
-  theme_bw() +
-  labs(title = "Total Pollinator Order Abundance by Transect",
-       caption = "Error bars represent standard error")
-
-
 abun <- ggplot(pollinators,
                aes(x = Dist_city,
                    y = Total)) +
@@ -6915,6 +6916,7 @@ abun <- ggplot(pollinators,
     ) +
   theme_bw()
 abun
+
 
 # Total abundance, split by transect
 abun_transect <- ggplot(pollinators,
