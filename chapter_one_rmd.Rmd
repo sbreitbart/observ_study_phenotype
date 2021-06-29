@@ -104,6 +104,7 @@ library(patchwork)
 library(plyr)
 library(reshape)
 library(reshape2)
+library(Rmisc)
 library(rpart)
 library(sjPlot)
 library(stargazer)
@@ -5151,7 +5152,7 @@ tax <- read.csv(here("./raw_data/Taxonomy_transposed.csv"),  header=T, na.string
 ```
 
 ### Manipulate pollinator, taxonomy tables
-##### All data
+#### All data
 ```{r}
 # Create new table with average pollinator sightings per plant
 poll_pp <- pollinators %>%
@@ -5180,7 +5181,10 @@ melted <- melt(poll_pp,
   filter(variable != "Total") %>%
   dplyr::rename(Morphospecies_Code = variable, Count = value)
 
-diversity <- merge(x=melted,y=tax,by="Morphospecies_Code",all.x=TRUE)
+diversity <- merge(x=melted,y=tax,by="Morphospecies_Code",all.x=TRUE) %>%
+  # join urbanization scores
+  left_join(., AvgVars_notNA_Poll_18_19 %>%
+                    dplyr::select(c(Patch_ID, Urb_score)))
 
 
  ##################  CALCULATING SPECIES DIVERSITY ##################  
@@ -5196,7 +5200,7 @@ pollinators1 %<>%
 
 # Find number of each taxon level present per population
 div_sum <- diversity %>%
-  group_by(Patch_ID, Dist_city, Transect) %>%
+  group_by(Patch_ID, Dist_city, Transect, Urb_score) %>%
   dplyr::summarise(
     orders = n_distinct(Order),
     superfams = n_distinct(Superfamily),
@@ -5237,11 +5241,11 @@ div_sum <- do.call(data.frame, div_sum)
 
 names(div_sum)[14] <- "shannon_equit"
 names(div_sum)[15] <- "simpson_equit"
-
-# join urbanization scores
-div_sum <- left_join(div_sum, AvgVars_notNA_Poll_18_19 %>%
-                    dplyr::select(c(Patch_ID, Urb_score)))
-
+# 
+# # join urbanization scores
+# div_sum <- left_join(div_sum, AvgVars_notNA_Poll_18_19 %>%
+#                     dplyr::select(c(Patch_ID, Urb_score)))
+# 
 
  # Find number of each taxon level present per transect
 div_transects <- diversity %>%
@@ -5257,7 +5261,7 @@ div_transects <- diversity %>%
 
 ```
  
-##### Without honeybee data
+#### Without honeybee data
 ```{r}
 # remove honeybee data
 diversity_no_honey <- diversity %>% filter(Morphospecies != "Apis mellifera (Large)")
@@ -5322,18 +5326,13 @@ div_transects_no_honey <- diversity_no_honey %>%
 ```
 
 
-##### SummarySE
+#### SummarySE
 ```{r}
-library(Rmisc)
-sum_a <- summarySE(diversity, measurevars = c("Morphospecies_Code", "Count"), groupvar= ("Patch_ID"), na.rm = T)
-
-# ggplot(sum1, aes(x=Transect, y=Count, color = Order, shape=Order)) +
-#   geom_pointrange(aes(ymin=Count-se, ymax=Count+se), size = 1, position = position_jitterdodge(dodge.width = .5)) +
-#   geom_smooth(method=lm, se=F, fullrange = T, size = 0.5) +
-#   # scale_color_manual(values=c("gray64", "black", 'grey')) +
-#   theme_bw() +
-#   labs(title = "Total Pollinator Order Abundance by Transect",
-#        caption = "Error bars represent standard error")
+# Abundance
+sum_abun <- summarySE(diversity,
+                   measurevar = "Count",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
 ```
 
 ### Statistical Analysis
@@ -7197,18 +7196,30 @@ four_popfams_summary <- four_popfams %>%
 
 ### Figures
 #### Abundance
-##### Abundance along gradient & subtransects
+##### Gradient
+###### City_dist
 ```{r}
-# Total abundance
-abun <- ggplot(pollinators,
+abun <- ggplot(sum_abun,
                aes(x = Dist_city,
-                   y = Total)) +
-  labs(x = "Distance to city center (km)",
-       y = "Average Pollinators Observed") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth(color="black", method = lm, alpha=0.15,  se = T) +
-  labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+                   y = Count)) +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                   color = "black"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Pollinators Observed per Plant") +
+  xlim(0,70) +
+  ylim(0, 6) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -7221,311 +7232,272 @@ abun <- ggplot(pollinators,
     legend.key = element_rect(fill = NA)
     ) +
   theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
 abun
+```
 
-
-# Total abundance, split by transect
-abun_transect <- ggplot(pollinators,
-                        aes(x = Dist_city,
-                            y = Total,
-                            shape = Transect,
-                            color = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Average Pollinators Observed") +
-  geom_point(aes(shape=Transect,
-                 color=Transect)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(color=Transect,
-                  linetype = Transect,
-                  fill = Transect),
-              method = lm, alpha=0.15,  se = T) +
-  labs(title = 'Pollinator Abundance Among Subtransects',
-       linetype="Transect",
-       color="Transect",
-       linetype = "Transect") +
+###### Urb_score
+```{r}
+abun.u <- ggplot(sum_abun,
+               aes(x = Urb_score,
+                   y = Count)) +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                   color = "black"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = "Mean Pollinators Observed per Plant") +
+  xlim(4, -4) +
+  ylim(0, 6) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
+    text = element_text(size=14),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
+    legend.key = element_rect(fill = NA)
     ) +
   theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun.u
+```
+
+##### Transects
+###### City_dist
+```{r}
+abun_transect <- ggplot(sum_abun %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = Count,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Pollinators Observed per Plant",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                  linetype = "solid"
+                  ,
+                  position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(0, 40) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
 abun_transect
 
 
-# Average abundance per plant
-abun_perplant <- ggplot(poll_pp, aes(x = Dist_city, y = Total)) +
-  labs(x = "Distance to city center (km)", y = "Average Pollinators Observed (per plant)") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth(color="black", method = lm, alpha=0.15,  se = T) +
-  labs(title = 'Pollinator Abundance Along Urban-Rural Gradient', subtitle = "per plant") +
+```
+
+###### Urb_score
+```{r}
+abun_transect.u <- ggplot(sum_abun %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = Count,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = "Mean Pollinators Observed per Plant",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                  linetype = "solid"
+                  ,
+                  position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(-2, 4) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
+    text = element_text(size=14),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
+    legend.key = element_rect(fill = NA)
     ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
   theme_bw()
-abun_perplant
+# +
+#   labs(caption = "Error bars represent standard error")
+abun_transect.u
 
-# Average abundance per plant, split by transect
-abun_perplant_transect <- ggplot(poll_pp, aes(x = Dist_city, y = Total, shape=Transect, color = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Average Pollinators Observed (per plant)") +
-  geom_point(aes(shape=Transect, color=Transect)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(color=Transect, linetype = Transect, fill = Transect), method = lm, alpha=0.15,  se = T) +
-    labs(title = 'Pollinator Abundance Among Sub-transects', subtitle = "per plant", linetype="Transect", color="Transect", linetype = "Transect") +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    ) +
-  theme_bw()
-abun_perplant_transect
-
-
-library(cowplot)
-
-# plot_grid(
-#   plot_grid(
-#     abun + theme(legend.position = "none")
-#     , abun_transect + theme(legend.position = "none")
-#     , abun_perplant+ theme(legend.position = "none")
-#     , abun_perplant_transect + theme(legend.position = "none")
-#     , ncol = 2
-#     , align = "hv")
-#   , plot_grid(
-#     get_legend(abun_transect)
-#     , ggplot()
-#     , ncol =1)
-#   , rel_widths = c(8,1)
-#   )
 
 ```
 
 ##### Abundance of 4 most populous families
 ```{r}
 #### wrapped regressions per family vs dist city ctr ####
-ggplot(subset(diversity, Family %in% c('Apidae', 'Cantharidae', 'Halictidae', 'Megachilidae')), aes(x = Dist_city, y = Count, colour = Family)) +
-  labs(x = "Distance to city center (km)", y = "Individuals Observed by Family (per population)") +
-  geom_point(aes( color = Family)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(color = Family), method = lm, alpha=0.15,  se = T) +
-  labs() +
+ggplot(diversity %>%
+         filter(Family == c('Apidae',
+                            'Cantharidae',
+                            'Halictidae',
+                            'Megachilidae')),
+       aes(x = Dist_city,
+           y = Count,
+           colour = Family)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Individuals Observed by Family per plant") +
+  geom_point(aes( color = Family,
+                  shape = Family),
+                  size = 2) +
+  geom_smooth(aes(color = Family), method = lm, alpha=0.15,  se = F) +
+  xlim(0, 70) +
+  ylim(0,6) +
   facet_wrap(~Family) +
   theme(
-    legend.position = c(.99, .99),
+    # legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
+    text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) 
     ) +
   theme_bw()
+  ggsave(here::here("Figures_Tables/Q3_Pollinator/Supplement", "4_most_populous_families.png"),
+         width = 14, height = 8, units = "cm")
 
 
 ####### regressions of each family's most common morphospecies vs dist city ctr #######
-top_4ms <- dplyr::filter(diversity, Morphospecies_Code %in% c( 'MS_06', 'MS_14' , 'MS_02', 'MS_21')) 
-ggplot(top_4ms, aes(x = Dist_city, y = Count, colour = Morphospecies)) +
-  labs(x = "Distance to city center (km)", y = "Individuals Observed") +
-  geom_point(aes( color = Morphospecies)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(color = Morphospecies), method = lm, alpha=0.15,  se = T) +
-  facet_grid(~Family + Morphospecies,
-             labeller = label_context) +
-  theme(legend.position = "none") 
+# ggplot(diversity %>%
+#          filter(Morphospecies_Code == c( 'MS_06', 'MS_14' , 'MS_02', 'MS_21')),
+#        aes(x = Dist_city, y = Count, colour = Morphospecies)) +
+#   labs(x = "Distance to city center (km)", y = "Individuals Observed") +
+#   geom_point(aes( color = Morphospecies)) +
+#   scale_shape(solid = F)+
+#   geom_smooth(aes(color = Morphospecies), method = lm, alpha=0.15,  se = T) +
+#   facet_grid(~Family + Morphospecies,
+#              labeller = label_context) +
+#   theme(legend.position = "none") +
+#   ylim(0, 4) +
+#   xlim(0, 70)
   
   
   
 ###### Bombus abundance re: dist city ctr #######
-  ggplot(subset(diversity, Genus %in% 'Bombus'), aes(x = Dist_city, y = Count)) +
-  labs(x = "Distance to city center (km)", y = "Bombus Individuals Observed (per population)") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth( method = lm, alpha=0.15,  se = T) +
-  labs()
-  
-# Only 3 data points, so not very interesting/reliable.
-  
-
-###### Monarch abundance re: dist city ctr #######
-  ggplot(subset(diversity, Genus %in% 'Danaus'), aes(x = Dist_city, y = Count)) +
-  labs(x = "Distance to city center (km)", y = "Monarchs Observed (per population)") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth( method = lm, alpha=0.15,  se = T) +
-  labs()
-  
-# Only 4 data points, so not very interesting/reliable.
+#   ggplot(subset(diversity, Genus %in% 'Bombus'), aes(x = Dist_city, y = Count)) +
+#   labs(x = "Distance to city center (km)", y = "Bombus Individuals Observed (per population)") +
+#   geom_point() +
+#   scale_shape(solid = F)+
+#   geom_smooth( method = lm, alpha=0.15,  se = T) +
+#   labs()
+#   
+# # Only 3 data points, so not very interesting/reliable.
+#   
+# 
+# ###### Monarch abundance re: dist city ctr #######
+#   ggplot(subset(diversity, Genus %in% 'Danaus'), aes(x = Dist_city, y = Count)) +
+#   labs(x = "Distance to city center (km)", y = "Monarchs Observed (per population)") +
+#   geom_point() +
+#   scale_shape(solid = F)+
+#   geom_smooth( method = lm, alpha=0.15,  se = T) +
+#   labs()
+# # Only 4 data points, so not very interesting/reliable.
   
   
 ###### Honeybee abundance re: dist city ctr #######
-  ggplot(subset(diversity, Morphospecies %in% 'Apis mellifera (Large)'), aes(x = Dist_city, y = Count)) +
-  labs(x = "Distance to city center (km)", y = "Honeybees Observed (per population)") +
+  ggplot(diversity %>%
+           filter(Morphospecies == 'Apis mellifera (Large)'),
+         aes(x = Dist_city,
+             y = Count)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Honeybees Observed per Plant") +
   geom_point() +
   scale_shape(solid = F)+
-  geom_smooth( method = lm, alpha=0.15,  se = T) +
-  labs()
-  
+  geom_smooth( method = lm, alpha=0.15,  se = F, color = "black") +
+  xlim(0, 70) +
+  ylim(0,6) +
+  theme_bw()
+
+ggsave(here::here("Figures_Tables/Q3_Pollinator/Supplement", "Honeybees_per_plant.png"),
+         width = 10, height = 8, units = "cm")
 ```
 
 #### Diversity
-##### Total diversity
+##### Gradient
 ```{r}
-# Total morphospecies diversity
-ggplot(poll_binary, aes(x = Dist_city, y = Total)) +
-  labs(x = "Distance to city center (km)", y = "Morphospecies Observed") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth(color="black", method = lm, alpha=0.15,  se = T) +
-  labs(title = 'Pollinator Morphospecies Present Along Urban-Rural Gradient') +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    ) +
-  theme_bw()
-
- 
- 
-div_sum_melted <- reshape2::melt(div_sum, id.vars= c("Patch_ID", "Transect", "Dist_city"), measure.vars = c('orders', 'superfams', 'families', 'subfams', 'genera', 'mspecies', 'total_indivs', 'Menhinicks_index', 'shannon', 'simpson', 'shannon_equit', 'simpson_equit'))
-
-######################## BY TRANSECT ############################
-
-
-# Total morphospecies diversity, split by transect
-ggplot(poll_binary, aes(x = Dist_city, y = Total, shape=Transect, color = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Morphospecies Observed (per population)") +
-  geom_point(aes(shape=Transect, color=Transect)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(color=Transect, linetype = Transect), method = lm, alpha=0.15,  se = T) +
-  labs(linetype="Transect", color="Transect", linetype = "Transect") +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    )  +
-  theme_bw()
-
-
-
-# Orders per transect
-ord_trsct <- ggplot(div_sum, aes(x = Dist_city, y = orders, shape = Transect, colour = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Orders") +
-  geom_point(aes(shape = Transect, color = Transect)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape = Transect, color = Transect), method = lm, alpha=0.15,  se = T) +
-  labs() +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    ) +
-  theme_bw()
-
-
-
-# Superfamilies per transect
-supfam_trsct <- ggplot(div_sum, aes(x = Dist_city, y = superfams, shape = Transect, colour = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Superfamilies") +
-  geom_point(aes(shape = Transect, color = Transect)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape = Transect, color = Transect), method = lm, alpha=0.15,  se = T) +
-  labs() +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    ) +
-  theme_bw()
-
-# Morphospecies per transect
-mspecies_trsct <- ggplot(div_sum, aes(x = Dist_city, y = mspecies, shape = Transect, colour = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Morphospecies") +
-  geom_point(aes(shape = Transect, color = Transect)) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape = Transect, color = Transect), method = lm, alpha=0.15,  se = T) +
-  labs() +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=18),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) 
-    ) +
-  theme_bw()
-
-# 
-# plot_grid(
-#   plot_grid(
-#     ord_trsct + theme(legend.position = "none")
-#     , supfam_trsct + theme(legend.position = "none")
-#     , fams_trsct+ theme(legend.position = "none")
-#     , subfams_trsct + theme(legend.position = "none")
-#     , mspecies_trsct+ theme(legend.position = "none")
-#     , ncol = 2
-#     , align = "hv")
-#   , plot_grid(
-#     get_legend(ord_trsct)
-#     , ggplot()
-#     , ncol =1)
-#   , rel_widths = c(8,1)
-#   )
-# 
-
-```
-
-##### Diversity, Richness, and Evenness indices
-###### Diversity
-```{r}
-# Major gradient, with cleaned up labels
 ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')), aes(x = Dist_city, y = value, shape = variable, color = variable)) +
     scale_shape_discrete(name  ="Diversity Index",
                            labels=c("Shannon", "Simpson")) +
@@ -7550,8 +7522,10 @@ ggplot(div_sum_melted, aes(x = Dist_city, y = value)) +
 
 var.labs <- c("Shannon's Diversity", "Simpson's Diversity")
 names(var.labs) <- c("shannon", "simpson")
+```
+##### Transects
+```{r}
 
-# Split into transects
 div_fig2 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')), aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
   labs(x = "Distance to city center (km)", y = "Diversity") +
   geom_point() +
@@ -7572,7 +7546,7 @@ ggplot(div_sum_melted, aes(x = Dist_city, y = value, shape = Transect, color = T
 ```
 
 
-###### Richness
+#### Richness
 ```{r}
 # Major gradient
 rich_fig1 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')), aes(x = Dist_city, y = value), shape = 1, color = "black") +
@@ -7593,7 +7567,7 @@ rich_fig2 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')),
 
 ```
 
-###### Evenness
+#### Evenness
 ```{r}
 # Major gradient
 even_fig1 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon_equit', 'simpson_equit')), aes(x = Dist_city, y = value, shape = variable, color = variable)) +
@@ -7617,7 +7591,7 @@ even_fig2 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon_equit', 'si
 
 ```
 
-###### Plot all
+#### Plot all
 ```{r}
 
 library(cowplot)
