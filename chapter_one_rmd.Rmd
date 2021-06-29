@@ -5339,8 +5339,9 @@ sum_a <- summarySE(diversity, measurevars = c("Morphospecies_Code", "Count"), gr
 ### Statistical Analysis
 #### Linear Models
 ##### Abundance
-###### City_dist
-####### Without transects- NO TRANSFORMATION
+###### All data
+####### City_dist
+######## Without transects- NO TRANSFORMATION
 ```{r}
 
 lm_abun1 <- lm(total_indivs ~ Dist_city,
@@ -5352,7 +5353,7 @@ plot(lm_abun1) # looks good
 ```
 
 
-####### With transects- NO TRANSFORMATION
+######## With transects- NO TRANSFORMATION
 ```{r}
 
 lm_abun1.urbsubs <- lm(total_indivs ~ Dist_city * Transect,
@@ -5372,8 +5373,8 @@ lm_abun1.urbsubs_ME <- lm(total_indivs ~ Dist_city + Transect,
 ```
 
 
-###### Urb_score
-####### Without transects- NO TRANSFORMATION
+####### Urb_score
+######## Without transects- NO TRANSFORMATION
 ```{r}
 
 lm_abun1.u <- lm(total_indivs ~ Urb_score,
@@ -5385,7 +5386,7 @@ plot(lm_abun1.u) # looks good
 ```
 
 
-####### With transects- NO TRANSFORMATION
+######## With transects- NO TRANSFORMATION
 ```{r}
 
 lm_abun1.urbsubs.u <- lm(total_indivs ~ Urb_score * Transect,
@@ -5401,6 +5402,71 @@ plot(lm_abun1.urbsubs.u)
 # main effects model
 lm_abun1.urbsubs.u_ME <- lm(total_indivs ~ Urb_score + Transect,
                        data = div_sum %>%
+                         filter(Transect != 'Rural'))
+```
+
+###### Without honeybees
+####### City_dist
+######## Without transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.nohoney <- lm(total_indivs ~ Dist_city,
+               data = div_sum_no_honey)
+
+par(mfrow=c(2,2))
+plot(lm_abun1.nohoney) # looks good
+
+```
+
+
+######## With transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.urbsubs.nohoney <- lm(total_indivs ~ Dist_city * Transect,
+                       data = div_sum_no_honey %>%
+                         filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm_abun1.urbsubs.nohoney)
+
+
+# I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
+
+# main effects model
+lm_abun1.urbsubs.nohoney_ME <- lm(total_indivs ~ Dist_city + Transect,
+                       data = div_sum_no_honey %>%
+                         filter(Transect != 'Rural'))
+```
+
+####### Urb_score
+######## Without transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.u_nohoney <- lm(total_indivs ~ Urb_score,
+               data = div_sum_no_honey )
+
+par(mfrow=c(2,2))
+plot(lm_abun1.u_nohoney) # looks good
+
+```
+
+
+######## With transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.urbsubs.u_nohoney <- lm(total_indivs ~ Urb_score * Transect,
+                       data = div_sum_no_honey %>%
+                         filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm_abun1.urbsubs.u_nohoney)
+
+
+# I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
+
+# main effects model
+lm_abun1.urbsubs.u_nohoney_ME <- lm(total_indivs ~ Urb_score + Transect,
+                       data = div_sum_no_honey %>%
                          filter(Transect != 'Rural'))
 ```
 
@@ -5853,14 +5919,15 @@ lm.even.urbsubs.u_ME <- lm(shannon_equit ~ Urb_score + Transect,
 
 #### ANOVA
 ##### Abundance
-###### City_dist
-####### All data
+###### All data
+####### City_dist
+######## All data
 ```{r}
 car::Anova(lm_abun1) # highly sig
 
 ```
 
-####### Transects
+######## Transects
 ```{r}
 car::Anova(lm_abun1.urbsubs) # not sig
 car::Anova(lm_abun1.urbsubs_ME) # not sig
@@ -5868,14 +5935,14 @@ car::Anova(lm_abun1.urbsubs_ME) # not sig
 AIC(lm_abun1.urbsubs, lm_abun1.urbsubs_ME) # ME has lower AIC but <2 away
 ```
 
-###### Urb_score
-####### All data
+####### Urb_score
+######## All data
 ```{r}
 car::Anova(lm_abun1.u) # highly sig
 
 ```
 
-####### Transects
+######## Transects
 ```{r}
 car::Anova(lm_abun1.urbsubs.u) # not sig
 car::Anova(lm_abun1.urbsubs.u_ME) # not sig
@@ -5883,7 +5950,7 @@ car::Anova(lm_abun1.urbsubs.u_ME) # not sig
 AIC(lm_abun1.urbsubs.u, lm_abun1.urbsubs.u_ME) # Full has lower AIC (not <2 away though)
 ```
 
-###### Find abundance means at urban and rural terminii
+####### Find abundance means at urban and rural terminii
 ```{r}
 urban_terminus = 3.5 # km; most urban pop is close to this distance
 rural_terminus = 67 # km; most rural pop is close to this distance
@@ -5906,6 +5973,37 @@ central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
 central_mean_q.1
 
 
+```
+
+###### Without honeybees
+####### City_dist
+######## All data
+```{r}
+car::Anova(lm_abun1.nohoney) # not sig- stark contrast to dataset WITH honeybees- clear effect of distance
+
+```
+
+######## Transects
+```{r}
+car::Anova(lm_abun1.urbsubs.nohoney) # not sig
+car::Anova(lm_abun1.urbsubs.nohoney_ME) # not sig
+
+AIC(lm_abun1.urbsubs.nohoney, lm_abun1.urbsubs.nohoney_ME) # ME has lower AIC but <2 away
+```
+
+####### Urb_score
+######## All data
+```{r}
+car::Anova(lm_abun1.u_nohoney) # not sig- stark contrast to dataset WITH honeybees- clear effect of urb score
+
+```
+
+######## Transects
+```{r}
+car::Anova(lm_abun1.urbsubs.u_nohoney) # interaxn marg sig
+car::Anova(lm_abun1.urbsubs.u_nohoney_ME) # not sig
+
+AIC(lm_abun1.urbsubs.u_nohoney, lm_abun1.urbsubs.u_nohoney_ME) # Full has lower AIC (not <2 away though)
 ```
 
 ##### Diversity
@@ -6506,8 +6604,8 @@ tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
 
 
 
-# URB_SCORE-----
-## all sites
+# URB_SCORE
+## all sites-----
 lm.even.u
 
 
@@ -6591,9 +6689,235 @@ tidy_sb.pollinators_lm(lm.even.urbsubs.u) %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Urbscore_urb_evenness_ANOVA.png"))
 ```
 
-####### Alternative (AIC<2 from best) models:
+####### Abundance & Diversity Models without Honeybees
 ```{r}
-# Abundance/Diversity/Richness
+# CITY_DIST-----
+## ALL SITES
+
+best_mods_Q3.dist_list_NOHONEY <- list(
+### abundance
+  lm_abun1.nohoney,  
+### diversity
+lm.diversity_nohoney
+)
+
+lapply(best_mods_Q3.dist_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.nohoney) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Dist_ANOVA_nohoneybees.png"))
+
+
+
+
+
+
+
+# CITY_DIST-----
+## URBAN SITES
+
+best_mods_Q3urban.dist_list_NOHONEY <- list(
+### abundance
+  lm_abun1.urbsubs.nohoney_ME,  
+### diversity
+lm.diversity_nohoney.urbsubs
+)
+
+lapply(best_mods_Q3urban.dist_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Residuals"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.2) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.urbsubs.nohoney_ME) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney.urbsubs) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Dist_urban_ANOVA_nohoneybees.png"))
+
+
+# URB_SCORE-----
+## all sites
+
+best_mods_Q3.usc_list_NOHONEY <- list(
+### abundance
+  lm_abun1.u_nohoney,  
+### diversity
+lm.diversity_nohoney.u
+)
+
+lapply(best_mods_Q3.usc_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p),  and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.u_nohoney) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Urbscore_ANOVA_nohoneybees.png"))
+
+
+
+# URB_SCORE-----
+## URBAN sites
+best_mods_Q3urban.usc_list_NOHONEY <- list(
+### abundance
+  lm_abun1.urbsubs.u_nohoney,  
+### diversity
+lm.diversity_nohoney.urbsubs.u
+)
+
+lapply(best_mods_Q3urban.usc_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.urbsubs.u_nohoney) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney.urbsubs.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Urbscore_urban_ANOVA_nohoneybees.png"))
+
+```
+
+####### Alternative (AIC<2 from best) models
+######## Abundance/Diversity/Richness
+```{r}
 ## City_dist-----
 alt_best_mods_Q3.dist_list <- list(
 lm_abun1.urbsubs,
@@ -6720,9 +7044,10 @@ lapply(alt_best_mods_Q3.urbsc_list, tidy_sb.pollinators_lm) %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Q3_Urbscore_ANOVA_altmodels.png"))
+```
 
-
-# Evenness-----
+######## Evenness
+```{r}
 ## City_dist
 lm.even.urbsubs_ME
 
@@ -6775,7 +7100,6 @@ lm.even.urbsubs_ME %>%
 
 ## Urb_score
 # no alt best model
-
 ```
 
 ### Tables
