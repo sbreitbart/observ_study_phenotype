@@ -5238,9 +5238,10 @@ div_sum  %<>%
 
 # flatten dfs within df (last 2 cols)
 div_sum <- do.call(data.frame, div_sum)
+str(div_sum)
 
-names(div_sum)[14] <- "shannon_equit"
-names(div_sum)[15] <- "simpson_equit"
+names(div_sum)[15] <- "shannon_equit"
+names(div_sum)[16] <- "simpson_equit"
 # 
 # # join urbanization scores
 # div_sum <- left_join(div_sum, AvgVars_notNA_Poll_18_19 %>%
@@ -5327,10 +5328,24 @@ div_transects_no_honey <- diversity_no_honey %>%
 
 
 #### SummarySE
+##### Abundance
 ```{r}
-# Abundance
 sum_abun <- summarySE(diversity,
                    measurevar = "Count",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+##### Diversity
+```{r}
+sum_diversity <- summarySE(div_sum,
+                   measurevar = "simpson",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+##### Richness
+```{r}
+sum_richness <- summarySE(div_sum,
+                   measurevar = "Menhinicks_index",
                    groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
                    na.rm = T)
 ```
@@ -7497,242 +7512,377 @@ ggsave(here::here("Figures_Tables/Q3_Pollinator/Supplement", "Honeybees_per_plan
 
 #### Diversity
 ##### Gradient
+###### City_dist
 ```{r}
-ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')), aes(x = Dist_city, y = value, shape = variable, color = variable)) +
-    scale_shape_discrete(name  ="Diversity Index",
-                           labels=c("Shannon", "Simpson")) +
-    scale_colour_discrete(name  ="Diversity Index",
-                            labels=c("Shannon", "Simpson")) +
-  scale_linetype_discrete(name  ="Diversity Index",
-                            labels=c("Shannon", "Simpson")) +
-  labs(x = "Distance to city center (km)", y = "Diversity") +
-  geom_point() +
-  geom_smooth(aes(linetype = variable), method = lm, alpha=0.15,  se = T) +
-  labs(title = "Shannon's and Simpson's Diversity Indices") +
-  theme_bw()
-
-# Major gradient, with cleaned up labels, JUST Simpson
-ggplot(div_sum_melted, aes(x = Dist_city, y = value)) +
-  labs(x = "Distance to city center (km)", y = "Diversity Index") +
-  geom_point(data=div_sum_melted[div_sum_melted$variable== 'simpson', ]) +
-  geom_smooth(data=div_sum_melted[div_sum_melted$variable== 'simpson', ], color = "black", method = lm, alpha=0.15,  se = T) +
-  labs(title = "Simpson's Diversity Index") +
-  theme_bw()
-
-
-var.labs <- c("Shannon's Diversity", "Simpson's Diversity")
-names(var.labs) <- c("shannon", "simpson")
-```
-##### Transects
-```{r}
-
-div_fig2 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon', 'simpson')), aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Diversity") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth(aes(fill = Transect), method = lm, alpha=0.15,  se = T) +
-  labs(title = "Shannon's and Simpson's Diversity Indices by Transect") +
-  facet_grid(~variable, labeller = labeller(variable = var.labs))
-
-## Just Simpson's
-ggplot(div_sum_melted, aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Diversity Index") +
+diversity_simpson <- ggplot(sum_diversity,
+               aes(x = Dist_city,
+                   y = simpson)) +
+  geom_point(color = "black",
+                  size = 2) +
     scale_shape(solid = F)+
-  geom_point(data=div_sum_melted[div_sum_melted$variable== 'simpson', ]) +
-  geom_smooth(data=div_sum_melted[div_sum_melted$variable== 'simpson', ], aes(fill = Transect), method = lm, alpha=0.15,  se = T) +
-  labs(title = "Simpson's Diversity Index by Transect")
-
-
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Simpson's Diversity Index") +
+  xlim(0,70) +
+  ylim(0, 1) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson
+```
+###### Urb_score
+```{r}
+diversity_simpson.u <- ggplot(sum_diversity,
+               aes(x = Urb_score,
+                   y = simpson)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = "Simpson's Diversity Index") +
+  xlim(4, -4) +
+  ylim(0, 1) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson.u
 ```
 
+##### Transects
+###### City_dist
+```{r}
+diversity_simpson_transect <- ggplot(sum_diversity %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = simpson,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Simpson's Diversity Index",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(0, 40) +
+  ylim(0, 1) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson_transect
+```
+
+###### Urb_score
+```{r}
+diversity_simpson_transect.u <- ggplot(sum_diversity %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = simpson,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = "Simpson's Diversity Index",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(-2, 4) +
+  ylim(0, 1) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson_transect.u
+```
 
 #### Richness
+##### Gradient
+###### City_dist
 ```{r}
-# Major gradient
-rich_fig1 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')), aes(x = Dist_city, y = value), shape = 1, color = "black") +
-  labs(x = "Distance to city center (km)", y = "Species Richness") +
-  geom_point(show.legend = FALSE) +
-  scale_shape(solid = F)+
-  geom_smooth(color = "black", method = lm, alpha=0.15,  se = T, show.legend = FALSE) +
-  labs(title = "Menhinick's Species Richness") 
-
-
-# Split into transects
-rich_fig2 <- ggplot(subset(div_sum_melted, variable %in% c('Menhinicks_index')), aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Species Richness") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth(aes( fill = Transect), method = lm, alpha=0.15,  se = T) +
-  labs(title = "Menhinick's Species Richness by Transect") 
-
-```
-
-#### Evenness
-```{r}
-# Major gradient
-even_fig1 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon_equit', 'simpson_equit')), aes(x = Dist_city, y = value, shape = variable, color = variable)) +
-  labs(x = "Distance to city center (km)", y = "Equitability") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth( method = lm, alpha=0.15,  se = T) +
-  labs(title = "Shannon's and Simpson's Equitabilities")
-
-
-# Split into transects
-even_fig2 <- ggplot(subset(div_sum_melted, variable %in% c( 'shannon_equit', 'simpson_equit')), aes(x = Dist_city, y = value, shape = Transect, color = Transect)) +
-  labs(x = "Distance to city center (km)", y = "Equitability") +
-  geom_point() +
-  scale_shape(solid = F)+
-  geom_smooth(aes(fill = Transect), method = lm, alpha=0.15,  se = T) +
-  labs(title = "Shannon's and Simpson's Equitabilities by Transect") +
-  facet_grid(~variable)
-
-
-
-```
-
-#### Plot all
-```{r}
-
-library(cowplot)
-
-# Total
-plot_grid(
-  plot_grid(
-    div_fig1 + theme(legend.position = "none")
-    , even_fig1 + theme(legend.position = "none")
-    , rich_fig1 
-    , ncol = 1
-    , align = "hv")
-  , plot_grid(
-    get_legend(div_fig1)
-    , ggplot()
-    , ncol =1)
-  , rel_widths = c(7,3)
-  )
-
-# By transect
-plot_grid(
-  plot_grid(
-    div_fig2 + theme(legend.position = "none")
-    , even_fig2 + theme(legend.position = "none")
-    , rich_fig2 + theme(legend.position = "none")
-    , ncol = 1
-    , align = "h")
-  , plot_grid(
-    get_legend(even_fig2)
-    , ggplot()
-    , ncol =1)
-  , rel_widths = c(9,1)
-  )
-```
-
-
-#### Composite figure
-```{r}
-# TOTAL ABUNDANCE
-abun_all <- ggplot(div_sum, aes(x = Dist_city, y = total_indivs^(1/2))) +
-  labs(   # x = "Distance to city center (km)",
-    y = expression(Pollinators~Observed^{0.5})) +
-  geom_point(size=2) +
-  scale_shape(solid = F)+
-  geom_smooth(color = "black", size=0.75, method = lm, alpha=0.15, se = T) +
-  # scale_y_continuous(limits=c(0,200)) +
-  theme(legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box.just = "right",
-    legend.box = 'horizontal',
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
-    axis.title.x = element_blank(),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) )
-abun_all
-
-
-# urban transects- abundance
-abun_transects <- ggplot(div_sum_urban, aes(x = Dist_city, y = total_indivs, shape=Transect, color = Transect)) + 
-  labs(   # x = "Distance to city center (km)", 
-    y = "Pollinators Observed") +
-  geom_point(aes(shape=Transect, color=Transect),  size=2) +
-  scale_shape(solid = F)+
-  geom_smooth(aes(shape=Transect, color=Transect, linetype = Transect, fill = Transect), size=0.75, method = lm, alpha=.15, se = T) +
-  # scale_y_continuous(breaks=c(0,1,2,3), limits=c(0,3)) +
-  labs(linetype="Transect", color="Transect", shape="Transect") +
-  theme(legend.position = "none",
+rich <- ggplot(sum_richness,
+               aes(x = Dist_city,
+                   y = Menhinicks_index)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Menhinick's Species Richness") +
+  xlim(0,70) +
+  ylim(0, 4) +
+  theme(
+    legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) ) 
-abun_transects
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+rich
+```
 
-
-# Simpson's Diversity
-simp_all <- ggplot(div_sum, aes(x = Dist_city, y = log(1-simpson))) +
-  labs(   # x = "Distance to city center (km)", 
-    y = "log(1-Simpson's Index)") +
-  geom_point(size=2) +
-  scale_shape(solid = F)+
-  geom_smooth(color = "black", size=0.75, method = lm, alpha=0.15, se = T) +
-  # scale_y_continuous(limits=c(0,200)) +
-  theme(legend.position = c(.99, .99),
+###### Urb_score
+```{r}
+rich.u <- ggplot(sum_richness,
+               aes(x = Urb_score,
+                   y = Menhinicks_index)) +
+  geom_point(color = "black",
+                  size = 2) +
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = "Menhinick's Species Richness") +
+  xlim(4, -4) +
+  ylim(0, 4) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
-    legend.box.just = "right",
     legend.box = 'horizontal',
+    legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) )
-simp_all
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+rich.u
+```
 
-
-# Simpson's Diversity- urban subtransects
-simp_transects <- ggplot(div_sum_urban, aes(x = Dist_city, y = log(1-simpson), shape=Transect, color = Transect)) + 
-  labs(   # x = "Distance to city center (km)", 
-    y = "log(1-Simpson's Index)") +
-  geom_point(aes(shape=Transect, color=Transect),  size=2) +
+##### Transects
+###### City_dist
+```{r}
+diversity_transect <- ggplot(sum_richness %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = Menhinicks_index,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Menhinick's Species Richness",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(0, 40) +
+  ylim(0, 4) +
   # scale_shape(solid = F)+
-  geom_smooth(aes(color=Transect, linetype = Transect, fill = Transect), size=0.75, method = lm, alpha=.15, se = T) +
-  # scale_y_continuous(breaks=c(0,1,2,3), limits=c(0,3)) +
-  # labs(linetype="Transect", color="Transect", shape="Transect") +
-  theme(legend.position = "bottom",
-    legend.justification = c("center", "top"),
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
     legend.box = 'horizontal',
-    legend.box.just = "center",
+    legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    legend.text=element_text(size=14),
-    axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) ) +
-   scale_color_manual(values = c('#F8766D', '#00BFC4'),
-                     breaks = c("North", "South"),
-                       labels = c("Urban: Non-Corridor", "Urban: Corridor"),
-                       name = "Subtransect") +
-   scale_shape_manual(values = c(1,2),
-                      breaks = c("North", "South"),
-                       labels = c("Urban: Non-Corridor", "Urban: Corridor"),
-                       name = "Subtransect") +
-   scale_linetype_manual(values = c("solid", "dashed"),
-                      breaks = c("North", "South"),
-                       labels = c("Urban: Non-Corridor", "Urban: Corridor"),
-                       name = "Subtransect") +
-   scale_fill_manual(values = c('#F8766D', '#00BFC4'),
-                      breaks = c("North", "South"),
-                       labels = c("Urban: Non-Corridor", "Urban: Corridor"),
-                       name = "Subtransect")
-  
-simp_transects
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_transect
+```
 
+###### Urb_score
+```{r}
+diversity_transect.u <- ggplot(sum_richness %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = Menhinicks_index,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = "Menhinick's Species Richness",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(-2, 4) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_transect.u
+```
+
+#### Composite figure (main text)
+```{r}
 
 library(ggpubr)
 Q2_regressions <- ggarrange(abun_all,  abun_transects, simp_all, simp_transects, ncol = 2, nrow = 2, align = "v", labels = list("A", "B", "C", "D"), font.label = (size =16), common.legend = FALSE)
@@ -7742,3 +7892,6 @@ annotate_figure(Q2_regressions, bottom = text_grob("Distance to city center (km)
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Pollinator_regressions.pdf", width = 10, height = 7)
 ```
+
+#### Supplement
+##### Evenness
