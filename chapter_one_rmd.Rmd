@@ -1101,7 +1101,7 @@ poll_glmer_gradient_list <- list(poll_glmer_gradient_01,
                                  poll_glmer_gradient_02)
 
 # - ----- GLMMTMB
-poll_glmer_gradient_01.v2 <- glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist ,
+poll_glmer_gradient_01.v2 <- glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist * Year,
         long_Transect_Data_18_19,
         family = "poisson") # this works
 
@@ -2860,73 +2860,6 @@ make_Q1Q2_Anova <- function(anova_list){
     )
   }
 
-# for City dist/all sites because pollinaria was analyzed per year, so an extra column is needed
-make_Q1Q2_Anova.1 <- function(anova_list){
-  return(
-    lapply(anova_list, tidy_sb) %>%
-    lapply(., as.data.frame) %>%
-    purrr::reduce(full_join, by = "Predictor") %>%
-    arrange(factor(Predictor, levels = c("Distance to City Center",
-                                         "Urbanization Score",
-                                         "Year",
-                                         "Subtransect",
-                                         "Distance to City Center x Subtransect",
-                                         "Urbanization Score x Subtransect",
-                                         "Distance to City Center x Year",
-                                         "Urbanization Score x Year",
-                                         "Year x Subtransect",
-                                         "Urbanization Score x Year x Subtransect",
-                                         "Distance to City Center x Year x Subtransect"
-                                         ))) %>%
-    dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
-    replace(., is.na(.), "-") %>%
-    dplyr::rename('X2' = 2,
-                  'p' = 3,
-                  'X2 ' = 4,
-                  'p ' = 5,
-                  'X2  ' = 6,
-                  'p  ' = 7,
-                  'X2   ' = 8,
-                  'p   ' = 9,
-                  'X2    ' = 10,
-                  'p    ' = 11) %>%
-    flextable::flextable() %>%
-    add_header_row(
-      values = c(" ",
-                 "Inflorescences",
-                 "Pollinaria Removed- 2018",
-                 "Pollinaria Removed- 2019",
-                 "Follicles",
-                 "Follicles per Inflorescence"),
-      colwidths = c(1, 2, 2, 2, 2, 2)) %>%
-    align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:9, align = "center", part = "body") %>%
-    align(j = 2:9, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2 ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2  ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2   ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2    ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2    ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-      fontsize(size = 12, part = "header") %>%
-      fontsize(size = 12, part = "body")
-    )
-  }
-
 
 
 
@@ -2937,8 +2870,7 @@ best_mods_Q1.dist_list <- list(
 ### Peduncles
   peds_glmer_gradient_01,  
 ### Pollinia
-  poll_glmer_gradient_01, #2018 data
-  poll_glmer_gradient_02,  #2019 data
+  poll_glmer_gradient_01.v2,
 ### Pods
   pods_glmer_gradient_01,
 ### Pods/Peduncle
@@ -2946,17 +2878,15 @@ best_mods_Q1.dist_list <- list(
 
 )
 
-make_Q1Q2_Anova.1(best_mods_Q1.dist_list) %>%
+make_Q1Q2_Anova(best_mods_Q1.dist_list) %>%
   width(j = 1, width = 2.7) %>%
-  width(j = 2:11, width = 0.8) %>%
-  italic(i = 2, j = 2:11, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Pollinaria removed was analyzed on a yearly basis due to issues with model convergence. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  width(j = 2:9, width = 0.8) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Inflorescences: ",
                           AIC(peds_glmer_gradient_01) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Pollinaria Removed- 2018: ",
-                          AIC(poll_glmer_gradient_01) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Pollinaria Removed- 2019: ",
-                          AIC(poll_glmer_gradient_02) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+                          AIC(poll_glmer_gradient_01.v2) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Follicles: ",
                           AIC(pods_glmer_gradient_01) %>% round(., 3))) %>%  
   add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
