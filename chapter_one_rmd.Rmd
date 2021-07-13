@@ -316,7 +316,7 @@ write.csv(corr_df_spread, here::here("./Corridor_Analysis/corr_df_spread.csv"), 
 
 
 # Results
-## Questions 1-2 (Traits along urb-rural gradient and urban subtransects)
+## Questions 1-2 (Milkweed data)
 ### Model Selection
 #### Linear Models (lmer and glmer)
 ##### Peduncles
@@ -1099,6 +1099,13 @@ poll_glmer_gradient_02_anova <- car::Anova(poll_glmer_gradient_02) %T>%
 
 poll_glmer_gradient_list <- list(poll_glmer_gradient_01,
                                  poll_glmer_gradient_02)
+
+# - ----- GLMMTMB
+poll_glmer_gradient_01.v2 <- glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist ,
+        long_Transect_Data_18_19,
+        family = "poisson") # this works
+
+# I've checked that glmer's annual results are identical to glmmtmb's, so I'll use glmmtmb for this Q.
 
 ```
 
@@ -2940,7 +2947,7 @@ best_mods_Q1.dist_list <- list(
 )
 
 make_Q1Q2_Anova.1(best_mods_Q1.dist_list) %>%
-  width(j = 1, width = 2.4) %>%
+  width(j = 1, width = 2.7) %>%
   width(j = 2:11, width = 0.8) %>%
   italic(i = 2, j = 2:11, part = "header") %>%
   add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Pollinaria removed was analyzed on a yearly basis due to issues with model convergence. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
@@ -3970,7 +3977,7 @@ Perc_change_subtransects <- function(urban_model) {
 ####### All data
 ```{r}
 # ANOVA RESULT: MARG SIG VARIED BY YEAR
-# differences between 2018-2019: 2019 had 1.355X more peduncles/inflors, on avg, than 2018
+# differences between 2018-2019: 2019 had 1.355 more peduncles/inflors, on avg, than 2018
 fixed.effects(peds_glmer_gradient_01)$zi[3]
 
 ```
@@ -4056,6 +4063,7 @@ central_mean_2019
 ```{r}
 Perc_change_gradient.2(poll_glmer_gradient_01)
 Perc_change_gradient.2(poll_glmer_gradient_02)
+
 
 Diff.btwn.years(poll_glmer_gradient_01, poll_glmer_gradient_02)
 ```
@@ -5007,7 +5015,7 @@ library(ggpubr)
 Q1_regressions_supp <- ggarrange(Q1_reg_height, Q1_reg_height_u + font("x.text"), ncol = 2, nrow = 1, align = "h", labels = list("A", "B"), font.label = (size =16), common.legend = TRUE, legend = "right")
 Q1_regressions_supp
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Supplement/Gradient_regression_height.pdf", width = 8, height = 4)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/Supplement/Gradient_regression_height.pdf", width = 8, height = 4)
 ```
 
 ##### Height, Subtransect regressions
@@ -5114,7 +5122,7 @@ library(ggpubr)
 Q2_regressions_supp <- ggarrange(Q2_reg_height, Q2_reg_height_u + font("x.text"), ncol = 2, nrow = 1, align = "h", labels = list("A", "B"), font.label = (size =16), common.legend = TRUE, legend = "bottom")
 Q2_regressions_supp
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Supplement/Subtransect_regression_height.pdf", width = 7, height = 4)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/Supplement/Subtransect_regression_height.pdf", width = 7, height = 4)
 ```
 
 ## Question 3 (Pollinator data)
@@ -6408,7 +6416,8 @@ lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
     arrange(factor(Predictor, levels = c("Distance to City Center",
                                          "Urbanization Score",
                                          "Year",
-                                         "Subtransect"))) %>%
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect"))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
     replace(., is.na(.), "-") %>%
     dplyr::rename('Sum of Squares' = 2,
@@ -6435,7 +6444,7 @@ lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
     align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
-  width(j = 1, width = 2.3) %>%
+  width(j = 1, width = 3.3) %>%
   width(j = c(2, 6, 10), width = 1) %>%
   width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
   width(j = c(3,7,10), width = 0.5) %>%
@@ -7620,9 +7629,9 @@ diversity_simpson <- ggplot(sum_diversity,
                   size = 2) +
     scale_shape(solid = F)+
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Distance to Urban Center (km)",
        y = expression("Simpson's Diversity Index "^2)) +
@@ -7655,9 +7664,9 @@ diversity_simpson.u <- ggplot(sum_diversity,
                   size = 2) +
     scale_shape(solid = F)+
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Urbanization Score",
        y = expression("Simpson's Diversity Index "^2)) +
@@ -7702,11 +7711,11 @@ diversity_simpson_transect <- ggplot(sum_diversity %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(0, 40) +
   ylim(0, 1) +
   # scale_shape(solid = F)+
@@ -7724,10 +7733,10 @@ diversity_simpson_transect <- ggplot(sum_diversity %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
@@ -7759,11 +7768,11 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(4, -2) +
   ylim(0, 1) +
   # scale_shape(solid = F)+
@@ -7781,10 +7790,10 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
@@ -7807,9 +7816,9 @@ rich <- ggplot(sum_richness,
                   size = 2) +
     scale_shape(solid = F)+
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Distance to Urban Center (km)",
        y = "Menhinick's Species Richness") +
@@ -7840,9 +7849,9 @@ rich.u <- ggplot(sum_richness,
   geom_point(color = "black",
                   size = 2) +
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Urbanization Score",
        y = "Menhinick's Species Richness") +
@@ -7887,11 +7896,11 @@ rich_transect <- ggplot(sum_richness %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(0, 40) +
   ylim(0, 4) +
   # scale_shape(solid = F)+
@@ -7909,10 +7918,10 @@ rich_transect <- ggplot(sum_richness %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
@@ -7944,11 +7953,11 @@ rich_transect.u <- ggplot(sum_richness %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(4, -2) +
   ylim(0, 4) +
   # scale_shape(solid = F)+
@@ -7966,10 +7975,10 @@ rich_transect.u <- ggplot(sum_richness %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
@@ -8036,9 +8045,9 @@ even <- ggplot(sum_evenness,
                   size = 2) +
     scale_shape(solid = F)+
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Distance to Urban Center (km)",
        y = "Simpson's Evenness") +
@@ -8069,9 +8078,9 @@ even.u <- ggplot(sum_evenness,
   geom_point(color = "black",
                   size = 2) +
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Urbanization Score",
        y = "Simpson's Evenness") +
@@ -8116,11 +8125,11 @@ even_transect <- ggplot(sum_evenness %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(0, 40) +
   # ylim(0, 4) +
   # scale_shape(solid = F)+
@@ -8138,10 +8147,10 @@ even_transect <- ggplot(sum_evenness %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
@@ -8173,11 +8182,11 @@ even_transect.u <- ggplot(sum_evenness %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(4, -2) +
   # ylim(0, 4) +
   # scale_shape(solid = F)+
@@ -8195,10 +8204,10 @@ even_transect.u <- ggplot(sum_evenness %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
@@ -8447,9 +8456,9 @@ diversity_simpson.nohoney <- ggplot(sum_diversity.nohoney,
                   size = 2) +
     scale_shape(solid = F)+
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Distance to Urban Center (km)",
        y = expression(atop(paste("Simpson's Diversity Index "^2, ":"), paste("Honeybees Excluded")))) +
@@ -8482,9 +8491,9 @@ diversity_simpson.u.nohoney <- ggplot(sum_diversity.nohoney,
                   size = 2) +
     scale_shape(solid = F)+
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15,
+              alpha = 0.3,
               color = "black") +
   labs(x = "Urbanization Score",
        y = expression(atop(paste("Simpson's Diversity Index "^2, ":"), paste("Honeybees Excluded")))) +
@@ -8529,11 +8538,11 @@ diversity_simpson_transect.nohoney <- ggplot(sum_diversity.nohoney %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(0, 40) +
   ylim(0, 1) +
   # scale_shape(solid = F)+
@@ -8551,10 +8560,10 @@ diversity_simpson_transect.nohoney <- ggplot(sum_diversity.nohoney %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
@@ -8586,11 +8595,11 @@ diversity_simpson_transect.u.nohoney <- ggplot(sum_diversity.nohoney %>%
                             shape = Transect,
                             fill = Transect),
                   size = 2) +
-  geom_smooth(
+  geom_smooth(aes(color = Transect),
               method = lm,
-              se = F,
+              se = T,
               size = 1,
-              alpha = 0.15) +
+              alpha = 0.3) +
   xlim(4, -2) +
   ylim(0, 1) +
   # scale_shape(solid = F)+
@@ -8608,10 +8617,10 @@ diversity_simpson_transect.u.nohoney <- ggplot(sum_diversity.nohoney %>%
   scale_shape_manual(values = c(0,1),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
-  scale_color_manual(values = c("gray29", "gray9"),
+  scale_color_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) + 
-  scale_fill_manual(values = c("gray29", "gray9"),
+  scale_fill_manual(values = c("dark green", "slateblue4"),
                      labels = c("Urban: Non-Corridor",
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),

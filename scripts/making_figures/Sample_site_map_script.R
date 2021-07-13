@@ -22,7 +22,7 @@ sites <- sites[c(1:3, 5,10,14,17,21:93),]
 # Import urb_index values for each of these rows
 urb_scores <- read.csv(here::here("./Figures_Tables/UrbanizationScore/Urbanization_Scores_Table.csv"),
                        header=T, na.strings=c("","NA")) %>%
-  select(2,8)
+  dplyr::select(2,8)
 
 sites <- dplyr::inner_join(urb_scores, sites, by = "Patch_ID") 
 
@@ -47,7 +47,7 @@ map1 <- base_map +
            st.bottom = FALSE, st.color = "black",
            transform = TRUE, model = 'WGS84',
            st.dist=.03) +
-  theme(legend.position = c(0.8, 0.3),
+  theme(legend.position = c(0.75, 0.35),
         legend.background = element_rect(fill = "white",colour = "black"),
         legend.box.margin = margin(6, 6, 6, 6),
         legend.text = element_text(size=12),
@@ -57,11 +57,11 @@ map1 <- base_map +
   scale_fill_manual(values = cols1,
                     breaks = c("North", "South", "Rural"),
                     labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-                    name = "Sample Site Transect") +
+                    name = "Sample Site Subtransect") +
   scale_shape_manual(values = c(23,24,21),
                      breaks = c("North", "South", "Rural"),
                      labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-                     name = "Sample Site Transect") 
+                     name = "Sample Site Subtransect") 
 
 
 north2(map1, x = .59, y = .2, scale = 0.11, symbol = 1)
@@ -91,11 +91,11 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/SampleSiteMaps/Sample
 #   scale_fill_manual(values = cols1,
 #                     breaks = c("North", "South", "Rural"),
 #                     labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-#                     name = "Sample Site Transect") +
+#                     name = "Sample Site Subtransect") +
 #   scale_shape_manual(values = c(23,24,21),
 #                      breaks = c("North", "South", "Rural"),
 #                      labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-#                      name = "Sample Site Transect") 
+#                      name = "Sample Site Subtransect") 
 # 
 # ggdraw(map1) +
 #   draw_image(here::here("./Figures_Tables/Meteorology/Monthly_precip_bargraph.png"),
@@ -130,7 +130,7 @@ map1_urbscore <- base_map +
   scale_shape_manual(values = c(23,24,21),
                      breaks = c("North", "South", "Rural"),
                      labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-                     name = "Sample Site Transect") +
+                     name = "Sample Site Subtransect") +
   scale_fill_gradient(low = "white", high = "dark red",
                       breaks=c(-3.5, 0, 3.5),
                       labels=c("Rural",0, "Urban"),
@@ -142,7 +142,7 @@ map1_urbscore <- base_map +
 north2(map1_urbscore, x = .6, y = .37, scale = 0.11, symbol = 1)
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/SampleSiteMaps/SampleSiteMap_terrain_color_urbscore.pdf",
-             width = 7, height = 7)
+             width = 8, height = 7)
 
 
 
@@ -174,11 +174,11 @@ map1_satellite <- get_googlemap(center = c(lon = -79.74256, lat = 43.5421), zoom
   scale_fill_manual(values = cols2,
                     breaks = c("North", "South", "Rural"),
                     labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-                    name = "Sample Site Transect") +
+                    name = "Sample Site Subtransect") +
   scale_shape_manual(values = c(23,24,21),
                      breaks = c("North", "South", "Rural"),
                      labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-                     name = "Sample Site Transect") 
+                     name = "Sample Site Subtransect") 
 
 north2(map1_satellite, x = .7, y = .5, scale = 0.11, symbol = 1)
 dev.copy2pdf(file="~/R_Projects/Chapter1/Figures_Tables/SampleSiteMaps/SampleSiteMap_satellite_color.pdf", width = 10, height = 7)
@@ -203,11 +203,11 @@ dev.copy2pdf(file="~/R_Projects/Chapter1/Figures_Tables/SampleSiteMaps/SampleSit
 #    scale_fill_manual(values = cols1,
 #                      breaks = c("North", "South", "Rural"),
 #                        labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-#                        name = "Sample Site Transect") +
+#                        name = "Sample Site Subtransect") +
 #    scale_shape_manual(values = c(23,24,21),
 #                       breaks = c("North", "South", "Rural"),
 #                        labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-#                        name = "Sample Site Transect") 
+#                        name = "Sample Site Subtransect") 
 
 
 #---------------------
