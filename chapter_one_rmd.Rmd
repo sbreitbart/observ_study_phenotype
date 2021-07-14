@@ -322,7 +322,7 @@ write.csv(corr_df_spread, here::here("./Corridor_Analysis/corr_df_spread.csv"), 
 ##### Peduncles
 ###### GLMER (be sure to indicate that model is zero-inflated and minus 1, so results need to be explained with that in mind!!)
 ####### City_dist, not urb_score
-######## All sites 
+######## All sites: NO TRANSFORMATION NEEDED
 ```{r}
 # OLD- BEFORE ZERO-INFLATED MODEL -----
 # peds_glmer_gradient_01 <- glmer(Peduncles ~ (1|Patch_ID) +
@@ -494,7 +494,7 @@ plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
 
 ```
 
-######## Urban sites
+######## Urban sites: NO TRANSFORMATION NEEDED
 ```{r}
 # GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
 
@@ -733,7 +733,7 @@ peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06) %T>%
 
 
 ####### urb_score, not City_dist
-######## All sites
+######## All sites: NO TRANSFORMATION NEEDED
 ```{r}
 # u_peds_glmer_gradient_1 <- glmer(as.numeric(Peduncles) ~ (1|Patch_ID) + Urb_score * Year,
 #                                  fertile,
@@ -808,7 +808,7 @@ plot(simulateResiduals(u_peds_glmer_gradient_01)) # again, fine
 
 ```
 
-######## Urban sites
+######## Urban sites: NO TRANSFORMATION NEEDED
 ```{r}
 # GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
 
@@ -3991,8 +3991,33 @@ central_mean_2019
 ###### lmer
 ####### All data
 ```{r}
-Perc_change_gradient.2(poll_glmer_gradient_01)
-Perc_change_gradient.2(poll_glmer_gradient_02)
+# Perc_change_gradient.2(poll_glmer_gradient_01)
+# Perc_change_gradient.2(poll_glmer_gradient_02)
+
+fixef(poll_glmer_gradient_01.v2)
+
+fixef(glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist,
+        long_Transect_Data_18_19 %>% filter(Year == "2018"),
+        family = "poisson") )
+# (Intercept)    City_dist  
+#  -0.0008819    0.0109157
+
+Perc_change_gradient(glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist,
+        long_Transect_Data_18_19 %>% filter(Year == "2018"),
+        family = "poisson") )
+
+
+
+fixef(glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist,
+        long_Transect_Data_18_19 %>% filter(Year == "2019"),
+        family = "poisson") )
+# (Intercept)    City_dist  
+#    -0.65393      0.01744
+
+Perc_change_gradient(glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist,
+        long_Transect_Data_18_19 %>% filter(Year == "2019"),
+        family = "poisson") )
+        
 
 
 Diff.btwn.years(poll_glmer_gradient_01, poll_glmer_gradient_02)
@@ -4268,13 +4293,13 @@ Q1_reg_poll
 
 # PODS --------
 Q1_reg_pod <- ggplot(fertile_pops_all,
-                     aes(x = City_dist, y = sqrt(Viable_Pods), shape=Year)) +
+                     aes(x = City_dist, y = Viable_Pods^2, shape=Year)) +
   labs(x = "Distance to city center (km)",
-       y = expression(Follicles^{0.5})) +
+       y = expression(Follicles^{2})) +
   geom_point(aes(shape=Year, color=Year),  size=2) +
   scale_shape(solid = F)+
   geom_smooth(aes(shape=Year, color=Year, fill=Year), size=0.75, method = lm, alpha=0.15, se = T) +
-  scale_y_continuous(limits=c(0,5)) +
+  scale_y_continuous(limits=c(0,350)) +
   labs(color="Year", size = "Year") +
   theme(
     legend.position = c(.99, .99),
@@ -4293,13 +4318,13 @@ Q1_reg_pod
 
 # PEDUNCLES --------
 Q1_reg_ped <- ggplot(fertile_pops_all,
-                     aes(x = City_dist, y = Peduncles^2, shape=Year)) +
+                     aes(x = City_dist, y = Peduncles, shape=Year)) +
   labs(x = "Distance to city center (km)",
-       y = expression(Inflorescences^{2})) +
+       y = "Inflorescences") +
   geom_point(aes(shape=Year, color=Year),  size=2) +
   scale_shape(solid = F)+
   geom_smooth(aes(shape=Year, color=Year, fill=Year), size=0.75, method = lm, alpha=0.15, se = T) +
-  scale_y_continuous(limits=c(0,200)) +
+  scale_y_continuous(limits=c(0,15)) +
   labs(color="Year", size = "Year") +
   theme(
     legend.position = c(.99, .99),
@@ -4388,15 +4413,15 @@ Q1_reg_poll_u
 
 # PODS --------
 Q1_reg_pod_u <- ggplot(fertile_pops_all,
-                       aes(x = Urb_score, y = sqrt(Viable_Pods), shape=Year)) +
+                       aes(x = Urb_score, y = Viable_Pods^3, shape=Year)) +
   labs(
   # x = "Urbanization Score",
-    y = expression(Follicles^{0.5})) +
+    y = expression(Follicles^{3})) +
   scale_x_reverse() +
   geom_point(aes(shape=Year, color=Year),  size=2) +
   scale_shape(solid = F)+
   geom_smooth(aes(shape=Year, color=Year, fill=Year), size=0.75, method = lm, alpha=0.15, se = T) +
-  scale_y_continuous(limits=c(0,5)) +
+  # scale_y_continuous(limits=c(0,5)) +
   labs(color="Year", size = "Year") +
   theme(
     legend.position = "none",
@@ -4418,15 +4443,15 @@ Q1_reg_pod_u
 
 # PEDUNCLES --------
 Q1_reg_ped_u <- ggplot(fertile_pops_all,
-                       aes(x = Urb_score, y = (Peduncles)^2, shape=Year)) + 
+                       aes(x = Urb_score, y = (Peduncles), shape=Year)) + 
   labs(
     # x = "Urbanization Score",
-       y = expression(Inflorescences^{2})) +
+       y = "Inflorescences") +
   scale_x_reverse() +
   geom_point(aes(shape=Year, color=Year),  size=2) +
   scale_shape(solid = F)+
   geom_smooth(aes(shape=Year, color=Year, fill=Year), size=0.75, method = lm, alpha=0.15, se = T) +
-  scale_y_continuous(limits=c(0,200)) +
+  scale_y_continuous(limits=c(0,15)) +
   labs(color="Year", size = "Year") +
   theme(
     legend.position = "none",
@@ -4496,7 +4521,7 @@ Q1_regressions_urbscore <- ggarrange(Q1_reg_ped_u, Q1_reg_poll_u, Q1_reg_pod_u, 
                             common.legend = F) %T>%
   plot
 
-city_plots <- annotate_figure(Q1_regressions_citydist, bottom = text_grob("Distance to city center (km)", size=14))
+city_plots <- annotate_figure(Q1_regressions_citydist, bottom = text_grob("Distance to Urban Center (km)", size=14))
 urbscore_plots <- annotate_figure(Q1_regressions_urbscore, bottom = text_grob("Urbanization Score", size=14))
 
 city_plots/urbscore_plots
@@ -4884,7 +4909,7 @@ Q2_regressions_urbscore <- ggarrange(Q2_reg_ped_subtr_u,Q2_reg_poll_subtr_u, Q2_
                             common.legend = F) %T>%
   plot
 
-city_plots_subtr <- annotate_figure(Q2_regressions_citydist, bottom = text_grob("Distance to city center (km)", size=14))
+city_plots_subtr <- annotate_figure(Q2_regressions_citydist, bottom = text_grob("Distance to Urban Center (km)", size=14))
 urbscore_plots_subtr <- annotate_figure(Q2_regressions_urbscore, bottom = text_grob("Urbanization Score", size=14))
 
 city_plots_subtr/urbscore_plots_subtr
@@ -4899,7 +4924,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/
 ### CITY_DIST --------
 Q1_reg_height <- ggplot(fertile_pops_all,
                         aes(x = City_dist, y = Height_Sept, shape=Year, color = Year)) +
-  labs(x = "Distance to city center (km)", 
+  labs(x = "Distance to Urban Center (km)", 
     y = "Height (cm)") +
   geom_point(aes(color = Year, shape = Year), size=2) +
   scale_shape(solid = F)+
@@ -4961,7 +4986,7 @@ Q2_reg_height <- ggplot(fertile_pops_all %>%
   geom_point(size=2.5)  +
   geom_smooth(method = lm, alpha=0.15, se = F) +
   scale_y_continuous(limits = c(0, 160)) +
-  labs(x = "Distance to City Center (km)",
+  labs(x = "Distance to Urban Center (km)",
     y = "Height (cm)",
        color = "Year, Subtransect",
        shape = "Year, Subtransect",
