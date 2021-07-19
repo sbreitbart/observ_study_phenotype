@@ -2752,7 +2752,7 @@ tidy_sb <- function(model){
                                              p.value <= 0.05 ~ "*")) %>%
       dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
       mutate_if(is.numeric, round, 3))      %>%
-      dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
+      dplyr::mutate(p.value = replace(p.value, Significance == "***", "<0.001"))  %>%
       dplyr::select(., -df) %>%
       dplyr::rename(., Chi_sq = statistic,
                     Predictor = term,
@@ -6214,8 +6214,8 @@ tidy_sb.pollinators_lm <- function(model){
                                              p.value < 0.01 ~ "**",
                                              p.value <= 0.05 ~ "*")) %>%
       dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
-      mutate_if(is.numeric, round, 3)   %>%
-      dplyr::mutate(p.value = replace(p.value, p.value < 0.001, "<0.001"))  %>%
+      mutate_if(is.numeric, round, 3))  %>%
+      dplyr::mutate(p.value = replace(p.value, Significance == "***", "<0.001"))  %>%
       dplyr::rename(., 
                     # "F" = statistic,
                     Predictor = term,
@@ -6235,12 +6235,13 @@ tidy_sb.pollinators_lm <- function(model){
                 is.character,
                 str_replace_all,
                 pattern = c("Transect"),
-                replacement = c("Subtransect"))) %>%
+                replacement = c("Subtransect")) %>%
         dplyr::mutate_if(.,
                 is.character,
                 str_replace_all,
                 pattern = c(":"),
-                replacement = c(" x ")) 
+                replacement = c(" x "))
+  
 }
 
 
@@ -6281,6 +6282,7 @@ make_Q3_Anova.pollinators <- function(anova_list){
       fontsize(size = 12, part = "body")
     )
 }
+
 ```
 
 ###### Main text: Abundance, Diversity, Richness
@@ -6330,10 +6332,10 @@ lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
     align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
-  width(j = 1, width = 2.3) %>%
+  width(j = 1, width = 1.1) %>%
   width(j = c(2, 6, 10), width = 1) %>%
   width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
-  width(j = c(3,7,10), width = 0.5) %>%
+  width(j = c(3,7,11), width = 0.3) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",
@@ -6399,10 +6401,10 @@ lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
     align(j = 2:13, align = "center", part = "header")%>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
-  width(j = 1, width = 3.3) %>%
-  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = 1, width = 2) %>%
+  width(j = c(2, 6, 10), width = 0.8) %>%
   width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
-  width(j = c(3,7,10), width = 0.5) %>%
+  width(j = c(3,7,11), width = 0.3) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",

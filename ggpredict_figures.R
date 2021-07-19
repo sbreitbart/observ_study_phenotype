@@ -1273,6 +1273,15 @@ Perc_change_subtransects_ggpredict <- function(ggpredict_object){
   
 }
 
+# test1 <- pods_subtr_01_pred %>%
+#   as.data.frame() %>%
+#   dplyr::group_by(group, facet) %>%
+#   dplyr::summarize(emm = mean(predicted)) %>%
+#   view()
+
+
+
+
 Perc_change_subtransects_ggpredict(peds_subtr_01_pred)
 # mean num. inflors at urban terminus in 2018: (2.711 + 7.451)/2 = 5.081
 # mean num. inflors at rural terminus in 2018: (8.398 + 6.904)/2 = 7.651
@@ -1419,3 +1428,168 @@ Q1_regressions_supp.ggpredict <- ggarrange(ggpred_Q1.citydist_height,
 Q1_regressions_supp.ggpredict
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/Supplement/Gradient_regression_height_ggpredict.pdf", width = 8, height = 4)
+
+## Find estimated marginal means at terminii-----
+### Distance-----
+Perc_change_gradient_ggpredict_byyear(height_gradient_01_pred)
+
+
+
+# Q2 / Subtransects---------------------
+## Distance from City Center----------
+
+### Height
+height_lmer_subtr_01
+height_subtr_01_pred <- ggpredict(height_lmer_subtr_01,
+                                terms = c("City_dist", "Year", "Transect_ID"),
+                                type = "fe")
+
+
+
+ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
+                              geom_smooth(aes(x = x,
+                                              y = predicted,
+                                              color = interaction(group,facet),
+                                              linetype = interaction(group,facet)),
+                                          method = "loess",
+                                          se = F) +
+                              geom_ribbon(aes(x = x,
+                                              ymin = predicted - std.error,
+                                              ymax = predicted + std.error,
+                                              fill = interaction(group,facet),
+                                              linetype = interaction(group,facet)),
+                                          alpha = 0.2)) + 
+  geom_point(data = fertile_pops_all %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = City_dist, y = Height_Sept,
+                 colour = interaction(Year, Transect_ID),
+                 shape = interaction(Year, Transect_ID)),
+             size = 3) +
+  scale_y_continuous(limits=c(0,200)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Height (cm)",
+       color = "Year, Subtransect",
+       shape = "Year, Subtransect",
+       fill = "Year, Subtransect",
+       linetype = "Year, Subtransect") +
+  scale_shape_manual(values = c(16,2,17,1),
+                     labels = c("2018- Urban: Non-Corridor",
+                                "2019- Urban: Non-Corridor",
+                                "2018- Urban: Corridor",
+                                "2019- Urban: Corridor")) +
+  scale_color_manual(values = c("#00BFC4", "#00BFC4", "#F8766D", "#F8766D"),
+                     labels = c("2018- Urban: Non-Corridor",
+                                "2019- Urban: Non-Corridor",
+                                "2018- Urban: Corridor",
+                                "2019- Urban: Corridor")) +
+  scale_fill_manual(values = c("#00BFC4", "#00BFC4", "#F8766D", "#F8766D"),
+                    labels = c("2018- Urban: Non-Corridor",
+                               "2019- Urban: Non-Corridor",
+                               "2018- Urban: Corridor",
+                               "2019- Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed', 'solid', 'dashed'),
+                        labels = c("2018- Urban: Non-Corridor",
+                                   "2019- Urban: Non-Corridor",
+                                   "2018- Urban: Corridor",
+                                   "2019- Urban: Corridor")) +
+  theme( #legend.position = c(.97, .99),
+        legend.justification = c("center"),
+        legend.box = 'horizontal',
+        legend.box.just = "center",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        # axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
+ggpred_Q2.citydist_height
+
+
+## Urbanization Score----------
+
+### Height
+u_height_lmer_subtr_01
+height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
+                                  terms = c("Urb_score", "Year", "Transect_ID"),
+                                  type = "fe")
+
+
+
+ggpred_Q2.citydist_height.u <- (ggplot(height_subtr_01_pred.u) +
+                                geom_smooth(aes(x = x,
+                                                y = predicted,
+                                                color = interaction(group,facet),
+                                                linetype = interaction(group,facet)),
+                                            method = "loess",
+                                            se = F) +
+                                geom_ribbon(aes(x = x,
+                                                ymin = predicted - std.error,
+                                                ymax = predicted + std.error,
+                                                fill = interaction(group,facet),
+                                                linetype = interaction(group,facet)),
+                                            alpha = 0.2)) + 
+  geom_point(data = fertile_pops_all %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = Urb_score, y = Height_Sept,
+                 colour = interaction(Year, Transect_ID),
+                 shape = interaction(Year, Transect_ID)),
+             size = 3) +
+  scale_x_reverse() +
+  xlim(3.5, -2) +
+  scale_y_continuous(limits=c(0,200)) +
+  labs(x = "Urbanization Score",
+       y = "Height (cm)",
+       color = "Year, Subtransect",
+       shape = "Year, Subtransect",
+       fill = "Year, Subtransect",
+       linetype = "Year, Subtransect") +
+  scale_shape_manual(values = c(16,2,17,1),
+                     labels = c("2018- Urban: Non-Corridor",
+                                "2019- Urban: Non-Corridor",
+                                "2018- Urban: Corridor",
+                                "2019- Urban: Corridor")) +
+  scale_color_manual(values = c("#00BFC4", "#00BFC4", "#F8766D", "#F8766D"),
+                     labels = c("2018- Urban: Non-Corridor",
+                                "2019- Urban: Non-Corridor",
+                                "2018- Urban: Corridor",
+                                "2019- Urban: Corridor")) +
+  scale_fill_manual(values = c("#00BFC4", "#00BFC4", "#F8766D", "#F8766D"),
+                    labels = c("2018- Urban: Non-Corridor",
+                               "2019- Urban: Non-Corridor",
+                               "2018- Urban: Corridor",
+                               "2019- Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed', 'solid', 'dashed'),
+                        labels = c("2018- Urban: Non-Corridor",
+                                   "2019- Urban: Non-Corridor",
+                                   "2018- Urban: Corridor",
+                                   "2019- Urban: Corridor")) +
+  theme(# legend.position = c(.97, .99),
+        legend.justification = c("center"),
+        legend.box = 'horizontal',
+        legend.box.just = "center",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        # axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
+ggpred_Q2.citydist_height.u
+
+
+
+
+library(ggpubr)
+Q2_regressions_supp.ggpredict <- ggarrange(ggpred_Q2.citydist_height,
+                                           ggpred_Q2.citydist_height.u +
+                                             font("x.text"),
+                                           ncol = 2, nrow = 1, align = "h",
+                                           labels = list("A", "B"),
+                                           font.label = (size =16),
+                                           common.legend = T, 
+                                           legend = "bottom")
+Q2_regressions_supp.ggpredict
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/Supplement/Subtransect_regression_height_ggpredict.pdf",
+             width = 11, height = 5)
