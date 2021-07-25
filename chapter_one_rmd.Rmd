@@ -5146,8 +5146,9 @@ melted <- melt(poll_pp,
 
 diversity <- merge(x=melted,y=tax,by="Morphospecies_Code",all.x=TRUE) %>%
   # join urbanization scores
-  left_join(., AvgVars_notNA_Poll_18_19 %>%
-                    dplyr::select(c(Patch_ID, Urb_score)))
+  left_join(., long_Transect_Data_18_19 %>%
+                    dplyr::select(c(Patch_ID, Urb_score))) %>%
+  unique()
 
 
  ##################  CALCULATING SPECIES DIVERSITY ##################  
@@ -5273,10 +5274,6 @@ str(div_sum_no_honey)
 names(div_sum_no_honey)[15] <- "shannon_equit"
 names(div_sum_no_honey)[16] <- "simpson_equit"
  
-# # join urbanization scores
-# div_sum <- left_join(div_sum, AvgVars_notNA_Poll_18_19 %>%
-#                     dplyr::select(c(Patch_ID, Urb_score)))
-# 
 
  # Find number of each taxon level present per transect
 div_transects_no_honey <- diversity_no_honey %>%
@@ -5400,7 +5397,7 @@ par(mfrow=c(2,2))
 plot(lm_abun1.urbsubs.u)
 
 
-# I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
+# I think it looks normal enough, especially because it's not a huge sample size (n < 35 pops)
 
 # main effects model
 lm_abun1.urbsubs.u_ME <- lm(total_indivs ~ Urb_score + Transect,
@@ -5465,7 +5462,7 @@ par(mfrow=c(2,2))
 plot(lm_abun1.urbsubs.u_nohoney)
 
 
-# I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
+# I think it looks normal enough
 
 # main effects model
 lm_abun1.urbsubs.u_nohoney_ME <- lm(total_indivs ~ Urb_score + Transect,
@@ -5791,7 +5788,7 @@ par(mfrow=c(2,2))
 plot(lm.rich.u)
 
 ## Histogram
-gg_reshist(lm.rich.u, bins=20)
+gg_reshist(lm.rich.u, bins=15)
 
 diagnostic(lm.rich.u$residuals)
 # Very normal!
@@ -5949,7 +5946,7 @@ lm.even.urbsubs.u_ME <- lm(simpson_equit^3 ~ Urb_score + Transect,
 ######## All data
 ```{r}
 car::Anova(lm_abun1) # highly sig
-
+summary(lm_abun1)
 ```
 
 ######## Transects
@@ -5963,8 +5960,7 @@ AIC(lm_abun1.urbsubs, lm_abun1.urbsubs_ME) # ME has lower AIC but <2 away
 ####### Urb_score
 ######## All data
 ```{r}
-car::Anova(lm_abun1.u) # highly sig
-
+car::Anova(lm_abun1.u) # sig
 ```
 
 ######## Transects
@@ -5972,7 +5968,7 @@ car::Anova(lm_abun1.u) # highly sig
 car::Anova(lm_abun1.urbsubs.u) # not sig
 car::Anova(lm_abun1.urbsubs.u_ME) # not sig
 
-AIC(lm_abun1.urbsubs.u, lm_abun1.urbsubs.u_ME) # Full has lower AIC (not <2 away though)
+AIC(lm_abun1.urbsubs.u, lm_abun1.urbsubs.u_ME) # ME has lower AIC (not <2 away though)
 ```
 
 ####### Find abundance means at urban and rural terminii
@@ -5997,6 +5993,8 @@ urban_mean # mean abundance
 central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
 central_mean_q.1
 
+(((urban_mean - rural_mean) / abs(urban_mean)) * 100) # 200% fewer pollinators in city vs rural terminus
+(((rural_mean - urban_mean) / abs(rural_mean)) * 100) # 67% more pollinators in rural terminus vs city
 
 ```
 
@@ -6025,8 +6023,8 @@ car::Anova(lm_abun1.u_nohoney) # not sig- stark contrast to dataset WITH honeybe
 
 ######## Transects
 ```{r}
-car::Anova(lm_abun1.urbsubs.u_nohoney) # interaxn marg sig
-car::Anova(lm_abun1.urbsubs.u_nohoney_ME) # not sig
+car::Anova(lm_abun1.urbsubs.u_nohoney) # nothing sig
+car::Anova(lm_abun1.urbsubs.u_nohoney_ME) # nothing sig
 
 AIC(lm_abun1.urbsubs.u_nohoney, lm_abun1.urbsubs.u_nohoney_ME) # Full has lower AIC (not <2 away though)
 ```
@@ -6084,7 +6082,7 @@ car::Anova(lm_diversity.urbsubs.u_ME) #  transect sig
 
 AIC(lm_diversity.urbsubs.u, lm_diversity.urbsubs.u_ME) # ME has lower AIC (but <2 away)
 
-summary(lm_diversity.urbsubs.u_ME) # corridor transect was 0.147 units diversity lower than non-corridor subtransect
+summary(lm_diversity.urbsubs.u_ME) # corridor transect was 0.119 units diversity lower than non-corridor subtransect
 ```
 
 ######## Removing honeybees
@@ -6095,10 +6093,10 @@ car::Anova(lm.diversity_nohoney.u) ## urb_score sig
 
 ######### Transects
 ```{r}
-car::Anova(lm.diversity_nohoney.urbsubs.u) # interaxn, transect, urb_score sig
-car::Anova(lm.diversity_nohoney.urbsubs.u_ME) # transect, urb_score sig
+car::Anova(lm.diversity_nohoney.urbsubs.u) # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs.u_ME) # transect sig
 
-AIC(lm.diversity_nohoney.urbsubs.u, lm.diversity_nohoney.urbsubs.u_ME) # full model has sig. lower AIC
+AIC(lm.diversity_nohoney.urbsubs.u, lm.diversity_nohoney.urbsubs.u_ME) # full model has lower AIC (<2 away)
 ```
 
 ##### Richness
@@ -6133,6 +6131,9 @@ central_mean_q.1
 
 
 # urban sites had, on average, 0.502 units higher richness than rural!
+
+(((urban_mean - rural_mean) / abs(urban_mean)) * 100) # 40% higher richness in city vs rural terminus
+(((rural_mean - urban_mean) / abs(rural_mean)) * 100) # 67% lower richness in rural terminus vs city
 ```
 
 
@@ -6145,7 +6146,7 @@ AIC(lm.rich.urbsubs, lm.rich.urbsubs_ME) # ME model lower AIC but <2
 
 summary(lm.rich.urbsubs_ME)
 
-# corridor subtransect had 1.199 units lower richness than non-corridor, on avg!
+# corridor subtransect had 0.6 units lower richness than non-corridor, on avg!
 ```
 
 ###### Urb_score
@@ -6156,10 +6157,10 @@ car::Anova(lm.rich.u) # highly sig
 ```
 ####### Transects
 ```{r}
-car::Anova(lm.rich.urbsubs.u) # interaxn marg sig, transect & urb_score sig
-car::Anova(lm.rich.urbsubs.u_ME) # transect & urb_score sig
+car::Anova(lm.rich.urbsubs.u) # transect marg sig
+car::Anova(lm.rich.urbsubs.u_ME) # transect marg sig
 
-AIC(lm.rich.urbsubs.u, lm.rich.urbsubs.u_ME) # full model lower AIC but <2
+AIC(lm.rich.urbsubs.u, lm.rich.urbsubs.u_ME) # ME model lower AIC but <2
 ```
 
 ##### Simpson's Evenness (Equitability)
@@ -6193,7 +6194,7 @@ car::Anova(lm.even.u) # not sig
 car::Anova(lm.even.urbsubs.u) # transect sig
 car::Anova(lm.even.urbsubs.u_ME) # transect sig
 
-AIC(lm.even.urbsubs.u,lm.even.urbsubs.u_ME ) # main effects model lower AIC (but <2 away)
+AIC(lm.even.urbsubs.u,lm.even.urbsubs.u_ME ) # ME model lower AIC (but <2 away)
 
 ```
 
@@ -6487,11 +6488,11 @@ lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
 ## URBAN sites
 best_mods_Q3urban.usc_list <- list(
 ### abundance
-  lm_abun1.urbsubs.u,  
+  lm_abun1.urbsubs.u_ME,  
 ### diversity
 lm_diversity.urbsubs.u_ME,
 ## richness
-lm.rich.urbsubs.u
+lm.rich.urbsubs.u_ME
 )
 
 lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
@@ -6534,11 +6535,11 @@ lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
   add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
   add_footer_lines(paste0("AIC, Abundance: ",
-                          AIC(lm_abun1.urbsubs.u) %>% round(., 3))) %>%
+                          AIC(lm_abun1.urbsubs.u_ME) %>% round(., 3))) %>%
   add_footer_lines(paste0("AIC, Diversity: ",
                           AIC(lm_diversity.urbsubs.u_ME) %>% round(., 3))) %>%
     add_footer_lines(paste0("AIC, Richness: ",
-                          AIC(lm.rich.urbsubs.u) %>% round(., 3))) %>%
+                          AIC(lm.rich.urbsubs.u_ME) %>% round(., 3))) %>%
   add_footer_lines("*: p-value <= 0.05") %>%
   add_footer_lines("**: p-value <= 0.01") %>%
   add_footer_lines("***: p-value <= 0.001") %>%
@@ -7017,9 +7018,9 @@ lapply(alt_best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
 
 ## Urb_score-----
 alt_best_mods_Q3.urbsc_list <- list(
-lm_abun1.urbsubs.u_ME,
+lm_abun1.urbsubs.u,
 lm_diversity.urbsubs.u,
-lm.rich.urbsubs.u_ME
+lm.rich.urbsubs.u
 )
 
 lapply(alt_best_mods_Q3.urbsc_list, tidy_sb.pollinators_lm) %>%
