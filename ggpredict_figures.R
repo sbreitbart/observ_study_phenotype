@@ -3,7 +3,7 @@
 
 ### Peduncles
 peds_glmer_gradient_01
-peds_gradient_01_pred <- ggpredict(peds_glmer_gradient_01,
+peds_gradient_01_pred <- ggeffects::ggpredict(peds_glmer_gradient_01,
                                    terms = c("City_dist", "Year"),
                                    type = "zero_inflated")
 

@@ -1,0 +1,3689 @@
+---
+title: "chapter_one_pollinators"
+output: html_document
+---
+# Question 3 (Pollinator data)
+## Set up notebook
+### Install, load packages
+```{r message=FALSE, warning=FALSE}
+# devtools::install_github("cardiomoon/ggiraphExtra")
+# devtools::install_github("dkahle/ggmap")
+# devtools::install_github("hadley/devtools")
+# install.packages("agricolae")
+# install.packages("BH")
+# install.packages("car")
+# install.packages("cowplot")
+# install.packages("digest", type="source")
+# install.packages("dplyr")
+# install.packages("factoextra")
+# install.packages("flextable")
+# install.packages("geosphere")
+# install.packages("ggiraphExtra")
+# install.packages("ggpubr")
+# install.packages("ggsn")
+# install.packages("ggspatial")
+# install.packages("GISTools")
+# install.packages("ISLR")
+# install.packages("janitor")
+# install.packages("lindia")
+# install.packages("lme4")
+# install.packages("lmerTest")
+# install.packages("mnormt")
+# install.packages("patchwork")
+# install.packages("plogr")
+# install.packages("psych")
+# install.packages("RcppEigen")
+# install.packages("rpart")
+# install.packages('sjPlot')
+# install.packages('stargazer')
+# install.packages("swirl")
+# install.packages("tibble")
+# install.packages("tidyverse")
+# install.packages("vegan")
+# install.packages("XLConnect")
+# install.packages('backports')
+# install.packages(c("slidify", "ggplot2", "devtools"))
+# install.packages('maps')
+# install.packages('rmarkdown')
+# install_github("vqv/ggbiplot")
+# library("FactoMineR")
+# library("tibble", lib.loc="~/R/win-library/3.5")
+# library(agricolae)
+# library(apaTables)
+library(car)
+library(data.table)
+# library(devtools)
+# library(DHARMa)
+library(dplyr)
+library(e1071)
+# library(factoextra)
+library(flextable)
+library(forcats)
+library(geosphere)
+# library(ggbiplot)
+library(ggmap)
+library(ggpubr)
+library(ggsn)
+library(ggspatial)
+library(GISTools)
+library(glmmTMB)
+library(gridExtra)
+library(here)
+library(Hmisc)
+# library(hrbrthemes)
+# library(ISLR)
+# library(janitor)
+# library(lindia)
+library(lme4)
+library(lmerTest)
+# library(lsmeans)
+library(MASS)
+library(multcomp)
+# library(MuMIn)
+library(nlme)
+library(officer)
+library(patchwork)
+library(plyr)
+library(reshape)
+library(reshape2)
+library(Rmisc)
+library(rpart)
+library(sjPlot)
+# library(stargazer)
+library(tibble)
+library(tidyr)
+library(tidyverse)
+library(vegan)
+library(viridis)
+require(ggiraph)
+require(ggiraphExtra)
+require(ggplot2)
+# require(MASS)
+require(scales)
+
+```
+
+### Import data
+```{r}
+pollinators <- read.csv(here("./raw_data/Pollinator_PivotTable_byPop_Coded.csv"),  header=T, na.strings=c("","NA")) %>%
+  dplyr::rename(Patch_ID = 1)
+
+
+### Add City_dist values with Haversine formula
+# Ref lat and longs are for Yonge & Dundas intersection in downtown Toronto
+pollinators$Ref_Lat <- "43.656327"
+pollinators$Ref_Long <- "-79.380904"
+
+# Make lat/long cols numeric
+pollinators$Lat <- as.numeric(as.character(pollinators$Lat))
+pollinators$Long <- as.numeric(as.character(pollinators$Long))
+pollinators$Ref_Lat <- as.numeric(as.character(pollinators$Ref_Lat))
+pollinators$Ref_Long <- as.numeric(as.character(pollinators$Ref_Long))
+
+# Find distances from Yonge/Dundas to sample sites (in meters)
+pollinators <- pollinators %>% mutate(CTD_m = distHaversine(cbind(Long, Lat), cbind(Ref_Long, Ref_Lat)))
+
+# convert to km
+pollinators$Dist_city <- pollinators$CTD / 1000
+
+# drop ref lat, long, and city_dist (in m) cols
+pollinators <- pollinators[,-c(50:52)]
+
+
+## Import taxonomy table-----
+tax <- read.csv(here("./raw_data/Taxonomy_transposed.csv"),  header=T, na.strings=c("","NA"), fileEncoding = 'UTF-8-BOM')
+
+
+```
+
+## Manipulate pollinator, taxonomy tables
+#### All data
+```{r}
+# Create new table with average pollinator sightings per plant
+poll_pp <- pollinators %>%
+  as_tibble %>%
+  mutate_at(vars(starts_with("MS_")), funs(./pollinators$Plants_surveyed)) %>%
+  # Drop inaccurate Total column
+  dplyr::select(., -49) %>%
+  # add new accurate total col
+  rowwise() %>% 
+  mutate(., Total = sum(c_across(MS_01:MS_42)))
+  
+
+# Create new table recoding all sightings to binary (0 = not seen; 1 = seen)
+poll_binary <- pollinators[,-49] %>%
+  mutate_at(vars(starts_with("MS_")), funs(ifelse(. >0, 1, .))) %>%
+  # add new accurate total col
+  rowwise() %>% 
+  mutate(., Total = sum(c_across(MS_01:MS_42)))
+
+
+# reshape to create diversity table (combining occurrence data with taxonomy)
+melted <- melt(poll_pp,
+               id = c("Patch_ID", "Lat", "Long", "Dist_city", "Transect", "Plants_surveyed")) %>%
+  # remove rows with no pollinators observed, remove "Total"
+  filter(value != 0) %>%
+  filter(variable != "Total") %>%
+  dplyr::rename(Morphospecies_Code = variable, Count = value)
+
+diversity <- merge(x=melted,y=tax,by="Morphospecies_Code",all.x=TRUE) %>%
+  # join urbanization scores
+  left_join(., long_Transect_Data_18_19 %>%
+                    dplyr::select(c(Patch_ID, Urb_score))) %>%
+  unique()
+
+
+ ##################  CALCULATING SPECIES DIVERSITY ##################  
+pollinators1 <- poll_pp[,c(1,7:48)]
+
+pollinators1 %<>%
+  rowwise() %>% 
+  add_column(., shannon = vegan::diversity(pollinators1[-1], index="shannon")) %>%
+  add_column(., simpson = vegan::diversity(pollinators1[-1], index="simpson")) %>%
+  # remove observations per site to just get site and shannon & simpson indices
+  dplyr::select(., c(1,44,45))
+
+
+# Find number of each taxon level present per population
+div_sum <- diversity %>%
+  group_by(Patch_ID, Dist_city, Transect, Urb_score) %>%
+  dplyr::summarise(
+    orders = n_distinct(Order),
+    superfams = n_distinct(Superfamily),
+    families = n_distinct(Family),
+    subfams = n_distinct(Subfamily),
+    genera = n_distinct(Genus),
+    mspecies = n_distinct(Morphospecies_Code)) %>%
+  # Find total number of individuals seen per population & add 
+  dplyr::full_join(., diversity %>%
+                     group_by(Patch_ID) %>%
+                     dplyr::summarise(
+                       total_indivs = sum(Count)), by = "Patch_ID") %>%
+  # add species richness cols
+  ## The mspecies column of div_sum is a simple measure of species richness.
+  ## Another measure of species richness, or D (Menhinick's index), = the number of species divided by the square root of the number of individuals in the sample.
+  # rowwise() %>% 
+  mutate(., Menhinicks_index = mspecies / total_indivs^0.5) %>%
+
+## join all the rows from pollinators1 to div_sum, which doesn't have all sites represented (because those missing sites had no pollinators observed). In this case, those sites had a shannon index of 0 and a simpson's index of 1.
+ dplyr::left_join(., pollinators1, by = "Patch_ID")
+
+
+
+# get max values in shannon's and simpson's diversity columns
+max_shannon <- summarise(div_sum, max(shannon))
+max_simpson <- summarise(div_sum, max(simpson))
+
+# add simpson's, shannon's equitabilities to div_sum
+div_sum  %<>%
+  rowwise() %>%
+ # add Shannon's equitability
+  dplyr::mutate(., shannon_equit = shannon / max_shannon) %>%
+ # add Simpson's equitability
+  dplyr::mutate(., simpson_equit = simpson / max_simpson) 
+
+# flatten dfs within df (last 2 cols)
+div_sum <- do.call(data.frame, div_sum)
+str(div_sum)
+
+names(div_sum)[15] <- "shannon_equit"
+names(div_sum)[16] <- "simpson_equit"
+# 
+# # join urbanization scores
+# div_sum <- left_join(div_sum, AvgVars_notNA_Poll_18_19 %>%
+#                     dplyr::select(c(Patch_ID, Urb_score)))
+# 
+
+ # Find number of each taxon level present per transect
+div_transects <- diversity %>%
+  group_by(Transect) %>%
+  dplyr::summarise(
+    Orders = n_distinct(Order),
+    Superfamilies = n_distinct(Superfamily),
+    Families = n_distinct(Family),
+    Subfamilies = n_distinct(Subfamily),
+    Genera = n_distinct(Genus),
+    Morphospecies = n_distinct(Morphospecies_Code),
+    Total_individuals = n())
+
+```
+ 
+#### Without honeybee data
+```{r}
+# remove honeybee data
+diversity_no_honey <- diversity %>% filter(Morphospecies != "Apis mellifera (Large)")
+
+# - - - - -
+
+# Find number of each taxon level present per population
+div_sum_no_honey <- diversity_no_honey %>%
+  group_by(Patch_ID, Dist_city, Transect, Urb_score) %>%
+  dplyr::summarise(
+    orders = n_distinct(Order),
+    superfams = n_distinct(Superfamily),
+    families = n_distinct(Family),
+    subfams = n_distinct(Subfamily),
+    genera = n_distinct(Genus),
+    mspecies = n_distinct(Morphospecies_Code)) %>%
+  # Find total number of individuals seen per population & add 
+  dplyr::full_join(., diversity_no_honey %>%
+                     group_by(Patch_ID) %>%
+                     dplyr::summarise(
+                       total_indivs = sum(Count)), by = "Patch_ID") %>%
+  # add species richness cols
+  ## The mspecies column of div_sum is a simple measure of species richness.
+  ## Another measure of species richness, or D (Menhinick's index), = the number of species divided by the square root of the number of individuals in the sample.
+  # rowwise() %>% 
+  mutate(., Menhinicks_index = mspecies / total_indivs^0.5) %>%
+
+## join all the rows from pollinators1 to div_sum, which doesn't have all sites represented (because those missing sites had no pollinators observed). In this case, those sites had a shannon index of 0 and a simpson's index of 1.
+ dplyr::left_join(., pollinators1, by = "Patch_ID")
+
+
+
+# add simpson's, shannon's equitabilities to div_sum
+div_sum_no_honey  %<>%
+  rowwise() %>%
+ # add Shannon's equitability
+  dplyr::mutate(., shannon_equit = shannon / max_shannon) %>%
+ # add Simpson's equitability
+  dplyr::mutate(., simpson_equit = simpson / max_simpson) 
+
+# flatten dfs within df (last 2 cols)
+div_sum_no_honey <- do.call(data.frame, div_sum_no_honey)
+str(div_sum_no_honey)
+
+names(div_sum_no_honey)[15] <- "shannon_equit"
+names(div_sum_no_honey)[16] <- "simpson_equit"
+ 
+
+ # Find number of each taxon level present per transect
+div_transects_no_honey <- diversity_no_honey %>%
+  group_by(Transect) %>%
+  dplyr::summarise(
+    Orders = n_distinct(Order),
+    Superfamilies = n_distinct(Superfamily),
+    Families = n_distinct(Family),
+    Subfamilies = n_distinct(Subfamily),
+    Genera = n_distinct(Genus),
+    Morphospecies = n_distinct(Morphospecies_Code),
+    Total_individuals = n())
+
+```
+
+
+#### SummarySE
+##### Abundance
+```{r}
+sum_abun <- summarySE(diversity,
+                   measurevar = "Count",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+##### Diversity
+```{r}
+sum_diversity <- summarySE(div_sum,
+                   measurevar = "simpson",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+##### Richness
+```{r}
+sum_richness <- summarySE(div_sum,
+                   measurevar = "Menhinicks_index",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+
+##### Evenness
+```{r}
+sum_evenness <- summarySE(div_sum,
+                   measurevar = "simpson_equit",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+
+##### Abundance: No honeybees
+```{r}
+sum_abun.nohoney <- summarySE(diversity_no_honey,
+                   measurevar = "Count",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+
+##### Diversity: No honeybees
+```{r}
+sum_diversity.nohoney <- summarySE(div_sum_no_honey,
+                   measurevar = "simpson",
+                   groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
+                   na.rm = T)
+```
+## Statistical Analysis
+#### Linear Models
+##### Abundance
+###### All data
+####### City_dist
+######## Without transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1 <- lm(total_indivs ~ Dist_city,
+               data = div_sum)
+
+par(mfrow=c(2,2))
+plot(lm_abun1) # looks good
+
+```
+
+
+######## With transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.urbsubs <- lm(total_indivs ~ Dist_city * Transect,
+                       data = div_sum %>%
+                         filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm_abun1.urbsubs)
+
+
+# I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
+
+# main effects model
+lm_abun1.urbsubs_ME <- lm(total_indivs ~ Dist_city + Transect,
+                       data = div_sum %>%
+                         filter(Transect != 'Rural'))
+```
+
+
+####### Urb_score
+######## Without transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.u <- lm(total_indivs ~ Urb_score,
+               data = div_sum )
+
+par(mfrow=c(2,2))
+plot(lm_abun1.u) # looks good
+
+```
+
+
+######## With transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.urbsubs.u <- lm(total_indivs ~ Urb_score * Transect,
+                       data = div_sum %>%
+                         filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm_abun1.urbsubs.u)
+
+
+# I think it looks normal enough, especially because it's not a huge sample size (n < 35 pops)
+
+# main effects model
+lm_abun1.urbsubs.u_ME <- lm(total_indivs ~ Urb_score + Transect,
+                       data = div_sum %>%
+                         filter(Transect != 'Rural'))
+```
+
+###### Without honeybees
+####### City_dist
+######## Without transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.nohoney <- lm(total_indivs ~ Dist_city,
+               data = div_sum_no_honey)
+
+par(mfrow=c(2,2))
+plot(lm_abun1.nohoney) # looks good
+
+```
+
+
+######## With transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.urbsubs.nohoney <- lm(total_indivs ~ Dist_city * Transect,
+                       data = div_sum_no_honey %>%
+                         filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm_abun1.urbsubs.nohoney)
+
+
+# I think it looks normal enough, especially because it's not a huge sample size (n = 31 pops)
+
+# main effects model
+lm_abun1.urbsubs.nohoney_ME <- lm(total_indivs ~ Dist_city + Transect,
+                       data = div_sum_no_honey %>%
+                         filter(Transect != 'Rural'))
+```
+
+####### Urb_score
+######## Without transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.u_nohoney <- lm(total_indivs ~ Urb_score,
+               data = div_sum_no_honey )
+
+par(mfrow=c(2,2))
+plot(lm_abun1.u_nohoney) # looks good
+
+```
+
+
+######## With transects- NO TRANSFORMATION
+```{r}
+
+lm_abun1.urbsubs.u_nohoney <- lm(total_indivs ~ Urb_score * Transect,
+                       data = div_sum_no_honey %>%
+                         filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm_abun1.urbsubs.u_nohoney)
+
+
+# I think it looks normal enough
+
+# main effects model
+lm_abun1.urbsubs.u_nohoney_ME <- lm(total_indivs ~ Urb_score + Transect,
+                       data = div_sum_no_honey %>%
+                         filter(Transect != 'Rural'))
+```
+
+##### Simpson's Diversity
+###### All data
+####### City_dist
+######## Without transects- squaring TRANSFORMATION
+```{r}
+
+lm_diversity <- lm(simpson ~ Dist_city, data = div_sum )
+
+par(mfrow=c(2,2))
+plot(lm_diversity)
+
+## Histogram
+gg_reshist(lm_diversity, bins=15)
+
+diagnostic(lm_diversity$residuals)
+# some left skew
+
+# Try a transformation: 
+gg_reshist(lm(simpson^2 ~ Dist_city, data = div_sum ), bins=10 ) # this one looks best.
+gg_reshist(lm(simpson^(3) ~ Dist_city, data = div_sum ), bins=10 )
+gg_reshist(lm(log(1-simpson) ~ Dist_city, data = div_sum ), bins=10) 
+
+
+lm_diversity <- lm(simpson^2 ~ Dist_city,
+                   data = div_sum )
+
+```
+
+
+######## With transects- cubing TRANSFORMATION
+```{r}
+
+lm_diversity.urbsubs <- lm(simpson ~ Dist_city * Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
+
+par(mfrow=c(2,2))
+plot(lm_diversity.urbsubs)
+
+## Histogram
+gg_reshist(lm_diversity.urbsubs, bins=15)
+
+diagnostic(lm_diversity.urbsubs$residuals)
+# extreme left skew!
+
+# Conclusion: Try a transformation: 
+gg_reshist(lm(simpson^2 ~ Dist_city* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ), bins=10 ) 
+gg_reshist(lm(simpson^(3) ~ Dist_city* Transect, data =div_sum %>%
+                         filter(Transect != 'Rural') ), bins=10 ) # looks best
+gg_reshist(lm(log(1-simpson) ~ Dist_city* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ), bins=10) 
+
+
+lm_diversity.urbsubs <- lm(simpson^3 ~ Dist_city * Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
+
+# main effects
+lm_diversity.urbsubs_ME <- lm(simpson^3 ~ Dist_city + Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
+
+```
+####### Urb_score
+######## Without transects- squaring TRANSFORMATION
+```{r}
+
+lm_diversity.u <- lm(simpson ~ Urb_score, data = div_sum )
+
+par(mfrow=c(2,2))
+plot(lm_diversity.u)
+
+## Histogram
+gg_reshist(lm_diversity.u, bins=15)
+
+diagnostic(lm_diversity.u$residuals)
+# some left skew
+
+# Try a transformation: 
+gg_reshist(lm(simpson^2 ~ Urb_score, data = div_sum ), bins=10 ) # looks good enough
+gg_reshist(lm(simpson^(3) ~ Urb_score, data = div_sum ), bins=10 )
+gg_reshist(lm(log(1-simpson) ~ Urb_score, data = div_sum ), bins=10) 
+
+
+lm_diversity.u <- lm(simpson^2 ~ Urb_score,
+                   data = div_sum )
+```
+
+
+######## With transects- cubing TRANSFORMATION
+```{r}
+
+lm_diversity.urbsubs.u <- lm(simpson ~ Urb_score * Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
+
+par(mfrow=c(2,2))
+plot(lm_diversity.urbsubs.u)
+
+## Histogram
+gg_reshist(lm_diversity.urbsubs.u, bins=10)
+
+diagnostic(lm_diversity.urbsubs.u$residuals)
+# left skew
+
+# Conclusion: Try a transformation: 
+gg_reshist(lm(simpson^2 ~ Urb_score* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ), bins=10 ) 
+plot(lm(simpson^2 ~ Urb_score* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ))
+
+gg_reshist(lm(simpson^(3) ~ Urb_score* Transect, data =div_sum %>%
+                         filter(Transect != 'Rural') ), bins=10 ) 
+plot(lm(simpson^3 ~ Urb_score* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ))# looks best
+
+gg_reshist(lm(log(1-simpson) ~ Urb_score* Transect, data = div_sum %>%
+                         filter(Transect != 'Rural') ), bins=10) 
+
+
+lm_diversity.urbsubs.u <- lm(simpson^3 ~ Urb_score * Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
+
+# main effects
+lm_diversity.urbsubs.u_ME <- lm(simpson^3 ~ Urb_score + Transect,
+                           data = div_sum %>%
+                         filter(Transect != 'Rural') )
+
+```
+###### without honeybees
+####### City_dist
+######## Without transects- SQUARING TRANSFORMATION
+```{r}
+lm.diversity_nohoney <- lm(simpson ~ Dist_city,
+                           data = div_sum_no_honey )
+
+par(mfrow=c(2,2))
+plot(lm.diversity_nohoney)
+
+## Histogram
+gg_reshist(lm.diversity_nohoney, bins=10)
+
+diagnostic(lm.diversity_nohoney$residuals)
+# some left skew
+
+# Try a transformation: 
+gg_reshist(lm(simpson ~ Dist_city, data = div_sum_no_honey ), bins=10 )
+gg_reshist(lm(simpson^(2) ~ Dist_city, data = div_sum_no_honey ), bins=10 )
+gg_reshist(lm(simpson^(3) ~ Dist_city, data = div_sum_no_honey ), bins=10 )
+
+par(mfrow=c(2,2))
+plot(lm(simpson^(2) ~ Dist_city, data = div_sum_no_honey ))
+# Looks MUCH better. With only 48 observations, it's a small dataset too.
+
+# Conclusion: use square transformation.
+
+
+lm.diversity_nohoney <- lm(simpson^2 ~ Dist_city,
+                           data = div_sum_no_honey )
+```
+
+
+######## With transects- CUBE TRANSFORMATION
+```{r}
+
+lm.diversity_nohoney.urbsubs <- lm(simpson ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm.diversity_nohoney.urbsubs)
+
+## Histogram
+gg_reshist(lm.diversity_nohoney.urbsubs, bins=10)
+
+diagnostic(lm.diversity_nohoney.urbsubs$residuals)
+# extreme left skew!
+
+# Conclusion: Try a transformation: 
+gg_reshist(lm(simpson^2 ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+gg_reshist(lm(simpson^3 ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+gg_reshist(lm(1 - log(simpson + 1) ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+# cube transformation looks very good, especially since this is a small dataset again (31 entries)
+
+lm.diversity_nohoney.urbsubs <- lm(simpson^3 ~ Dist_city * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
+
+# main effects
+lm.diversity_nohoney.urbsubs_ME <- lm(simpson^3 ~ Dist_city + Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
+```
+####### Urb_score
+######## Without transects- SQUARING TRANSFORMATION
+```{r}
+lm.diversity_nohoney.u <- lm(simpson ~ Urb_score,
+                           data = div_sum_no_honey )
+
+par(mfrow=c(2,2))
+plot(lm.diversity_nohoney.u)
+
+## Histogram
+gg_reshist(lm.diversity_nohoney.u, bins=10)
+
+diagnostic(lm.diversity_nohoney.u$residuals)
+# some left skew
+
+# Try a transformation: 
+gg_reshist(lm(simpson ~ Urb_score, data = div_sum_no_honey ), bins=10 )
+gg_reshist(lm(simpson^(2) ~ Urb_score, data = div_sum_no_honey ), bins=10 )
+gg_reshist(lm(simpson^(3) ~ Urb_score, data = div_sum_no_honey ), bins=10 )
+
+par(mfrow=c(2,2))
+plot(lm(simpson^(2) ~ Urb_score, data = div_sum_no_honey ))
+# Looks MUCH better. With only 48 observations, it's a small dataset too.
+
+# Conclusion: use square transformation.
+
+
+lm.diversity_nohoney.u <- lm(simpson^2 ~ Urb_score,
+                           data = div_sum_no_honey )
+```
+
+
+######## With transects- CUBE TRANSFORMATION
+```{r}
+
+lm.diversity_nohoney.urbsubs.u <- lm(simpson ~ Urb_score * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
+
+par(mfrow=c(2,2))
+plot(lm.diversity_nohoney.urbsubs.u)
+
+## Histogram
+gg_reshist(lm.diversity_nohoney.urbsubs.u, bins=10)
+
+diagnostic(lm.diversity_nohoney.urbsubs.u$residuals)
+# left skew
+
+# Conclusion: Try a transformation: 
+gg_reshist(lm(simpson^2 ~ Urb_score * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+gg_reshist(lm(simpson^3 ~ Urb_score * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+gg_reshist(lm(1 - log(simpson + 1) ~ Urb_score * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural')), bins=10 )
+# cube transformation looks very good, especially since this is a small dataset again (31 entries)
+
+lm.diversity_nohoney.urbsubs.u <- lm(simpson^3 ~ Urb_score * Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
+
+# main effects
+lm.diversity_nohoney.urbsubs.u_ME <- lm(simpson^3 ~ Urb_score + Transect,
+                                   data = div_sum_no_honey %>%
+                                     filter(Transect != 'Rural'))
+```
+##### Species Richness
+###### City_dist
+####### Without transects- NO TRANSFORMATION NEEDED
+```{r}
+lm.rich <- lm(Menhinicks_index ~ Dist_city, data = div_sum )
+
+par(mfrow=c(2,2))
+plot(lm.rich)
+
+## Histogram
+gg_reshist(lm.rich, bins=20)
+
+diagnostic(lm.rich$residuals)
+# Very normal!
+
+```
+
+####### With transects- NO TRANSFORMATION NEEDED
+```{r}
+
+lm.rich.urbsubs <- lm(Menhinicks_index ~ Dist_city * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural"))
+
+par(mfrow=c(2,2))
+plot(lm.rich.urbsubs)
+
+## Histogram
+gg_reshist(lm.rich.urbsubs, bins=15)
+
+diagnostic(lm.rich.urbsubs$residuals)
+#  looks fine
+
+
+lm.rich.urbsubs_ME <- lm(Menhinicks_index ~ Dist_city + Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural"))
+
+```
+###### Urb_score
+####### Without transects- NO TRANSFORMATION NEEDED
+```{r}
+lm.rich.u <- lm(Menhinicks_index ~ Urb_score, data = div_sum )
+
+par(mfrow=c(2,2))
+plot(lm.rich.u)
+
+## Histogram
+gg_reshist(lm.rich.u, bins=15)
+
+diagnostic(lm.rich.u$residuals)
+# Very normal!
+
+```
+
+####### With transects- NO TRANSFORMATION NEEDED
+```{r}
+
+lm.rich.urbsubs.u <- lm(Menhinicks_index ~ Urb_score * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural"))
+
+par(mfrow=c(2,2))
+plot(lm.rich.urbsubs.u)
+
+## Histogram
+gg_reshist(lm.rich.urbsubs.u, bins=10)
+
+diagnostic(lm.rich.urbsubs.u$residuals)
+#  looks fine
+
+
+lm.rich.urbsubs.u_ME <- lm(Menhinicks_index ~ Urb_score + Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural"))
+
+```
+##### Evenness (Equitability)
+###### City_dist
+####### Without transects- NO TRANSFORMATION NEEDED
+```{r}
+lm.even <- lm(simpson_equit ~ Dist_city,
+              data = div_sum )
+
+par(mfrow=c(2,2))
+plot(lm.even)
+
+## Histogram
+gg_reshist(lm.even, bins=10)
+
+diagnostic(lm.even$residuals)
+# Looks pretty normal
+```
+
+####### With transects- CUBING TRANSFORMATION 
+```{r}
+lm.even.urbsubs <- lm(simpson_equit ~ Dist_city * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
+
+par(mfrow=c(2,2))
+plot(lm.even.urbsubs)
+
+
+## Histogram
+gg_reshist(lm.even.urbsubs, bins=10)
+
+diagnostic(lm.even.urbsubs$residuals)
+# left skew
+
+# Try a transformation: 
+gg_reshist(lm(simpson_equit ~ Dist_city* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 ) 
+gg_reshist(lm(simpson_equit^(2) ~ Dist_city* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 )
+gg_reshist(lm(simpson_equit^(3) ~ Dist_city* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 )
+
+par(mfrow=c(2,2))
+plot(lm(simpson_equit^3 ~ Dist_city * Transect, data = div_sum %>%
+                        filter(Transect != "Rural") ))
+
+# Cubing makes it look much better.
+
+lm.even.urbsubs <- lm(simpson_equit^3 ~ Dist_city * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
+
+# main effects
+lm.even.urbsubs_ME <- lm(simpson_equit^3 ~ Dist_city + Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
+```
+
+###### Urb_score
+####### Without transects- NO TRANSFORMATION NEEDED
+```{r}
+lm.even.u <- lm(simpson_equit ~ Urb_score,
+              data = div_sum )
+
+par(mfrow=c(2,2))
+plot(lm.even)
+
+## Histogram
+gg_reshist(lm.even.u, bins=10)
+
+diagnostic(lm.even.u$residuals)
+# Looks normal enough
+```
+
+####### With transects- CUBING TRANSFORMATION
+```{r}
+
+lm.even.urbsubs.u <- lm(simpson_equit ~ Urb_score * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
+
+par(mfrow=c(2,2))
+plot(lm.even.urbsubs.u)
+
+
+## Histogram
+gg_reshist(lm.even.urbsubs.u, bins=10) # left skew
+
+# Try a transformation: 
+gg_reshist(lm(simpson_equit ~ Urb_score* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 ) 
+gg_reshist(lm(simpson_equit^(2) ~ Urb_score* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 )
+gg_reshist(lm(simpson_equit^(3) ~ Urb_score* Transect,
+              data = div_sum %>%
+                        filter(Transect != "Rural") ),
+           bins=10 )
+
+par(mfrow=c(2,2))
+plot(lm(simpson_equit^3 ~ Urb_score * Transect, data = div_sum %>%
+                        filter(Transect != "Rural") ))
+
+# Cubing makes it look much better.
+lm.even.urbsubs.u <- lm(simpson_equit^3 ~ Urb_score * Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
+
+# main effects
+lm.even.urbsubs.u_ME <- lm(simpson_equit^3 ~ Urb_score + Transect,
+                      data = div_sum %>%
+                        filter(Transect != "Rural") )
+```
+
+#### ANOVA
+##### Abundance
+###### All data
+####### City_dist
+######## All data
+```{r}
+car::Anova(lm_abun1) # highly sig
+summary(lm_abun1)
+```
+
+######## Transects
+```{r}
+car::Anova(lm_abun1.urbsubs) # not sig
+car::Anova(lm_abun1.urbsubs_ME) # not sig
+
+AIC(lm_abun1.urbsubs, lm_abun1.urbsubs_ME) # ME has lower AIC but <2 away
+```
+
+####### Urb_score
+######## All data
+```{r}
+car::Anova(lm_abun1.u) # sig
+```
+
+######## Transects
+```{r}
+car::Anova(lm_abun1.urbsubs.u) # not sig
+car::Anova(lm_abun1.urbsubs.u_ME) # not sig
+
+AIC(lm_abun1.urbsubs.u, lm_abun1.urbsubs.u_ME) # ME has lower AIC (not <2 away though)
+```
+
+####### Find abundance means at urban and rural terminii
+```{r}
+urban_terminus = 3.5 # km; most urban pop is close to this distance
+rural_terminus = 67 # km; most rural pop is close to this distance
+midpoint = 35.25 # km; midpoint of urban and rural terminii
+
+
+coeffs.q.1 = coefficients(lm_abun1)
+
+rural_mean = coeffs.q.1[1] + coeffs.q.1[2]*rural_terminus
+rural_mean # mean abundance
+
+urban_mean = coeffs.q.1[1] + coeffs.q.1[2]*urban_terminus
+urban_mean # mean abundance
+
+# AVG DIFFERENCE FROM URBAN TO RURAL TERMINUS:
+(urban_mean - rural_mean)/(0.5*(urban_mean + rural_mean))
+
+# FIND MEAN abundance
+central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
+central_mean_q.1
+
+(((urban_mean - rural_mean) / abs(urban_mean)) * 100) # 155% fewer pollinators in city vs rural terminus
+(((rural_mean - urban_mean) / abs(rural_mean)) * 100) # 61% more pollinators in rural terminus vs city
+
+```
+
+###### Without honeybees
+####### City_dist
+######## All data
+```{r}
+car::Anova(lm_abun1.nohoney) # not sig- stark contrast to dataset WITH honeybees- clear effect of distance
+
+```
+
+######## Transects
+```{r}
+car::Anova(lm_abun1.urbsubs.nohoney) # not sig
+car::Anova(lm_abun1.urbsubs.nohoney_ME) # not sig
+
+AIC(lm_abun1.urbsubs.nohoney, lm_abun1.urbsubs.nohoney_ME) # ME has lower AIC but <2 away
+```
+
+####### Urb_score
+######## All data
+```{r}
+car::Anova(lm_abun1.u_nohoney) # not sig- stark contrast to dataset WITH honeybees- clear effect of urb score
+
+```
+
+######## Transects
+```{r}
+car::Anova(lm_abun1.urbsubs.u_nohoney) # nothing sig
+car::Anova(lm_abun1.urbsubs.u_nohoney_ME) # nothing sig
+
+AIC(lm_abun1.urbsubs.u_nohoney, lm_abun1.urbsubs.u_nohoney_ME) # Full has lower AIC (not <2 away though)
+```
+
+##### Diversity
+###### Simpson's Diversity Index
+####### City_dist
+######## All data
+######### Gradient
+```{r}
+car::Anova(lm_diversity)
+## Nothing sig
+
+```
+
+######### Transects
+```{r}
+car::Anova(lm_diversity.urbsubs) # transect sig
+car::Anova(lm_diversity.urbsubs_ME) # transect sig
+
+AIC(lm_diversity.urbsubs, lm_diversity.urbsubs_ME) # full model has lower AIC but <2 away
+
+summary(lm_diversity.urbsubs) # corridor transect was 0.311 units diversity lower than non-corridor subtransect
+```
+
+######## Removing honeybees
+######### Gradient
+```{r}
+car::Anova(lm.diversity_nohoney) ## Nothing sig
+```
+
+######### Transects
+```{r}
+car::Anova(lm.diversity_nohoney.urbsubs) # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs_ME) # transect sig
+
+AIC(lm.diversity_nohoney.urbsubs, lm.diversity_nohoney.urbsubs_ME) # full model has lower AIC but <2 away
+
+summary(lm.diversity_nohoney.urbsubs) # corridor transect was 0.270 units diversity lower than non-corridor subtransect
+```
+
+####### Urb_score
+######## All data
+######### Gradient
+```{r}
+car::Anova(lm_diversity.u)
+## urb_score sig
+
+```
+
+######### Transects
+```{r}
+car::Anova(lm_diversity.urbsubs.u) # transect sig
+car::Anova(lm_diversity.urbsubs.u_ME) #  transect sig
+
+AIC(lm_diversity.urbsubs.u, lm_diversity.urbsubs.u_ME) # ME has lower AIC (but <2 away)
+
+summary(lm_diversity.urbsubs.u_ME) # corridor transect was 0.119 units diversity lower than non-corridor subtransect
+```
+
+######## Removing honeybees
+######### Gradient
+```{r}
+car::Anova(lm.diversity_nohoney.u) ## urb_score sig
+```
+
+######### Transects
+```{r}
+car::Anova(lm.diversity_nohoney.urbsubs.u) # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs.u_ME) # transect sig
+
+AIC(lm.diversity_nohoney.urbsubs.u, lm.diversity_nohoney.urbsubs.u_ME) # full model has lower AIC (<2 away)
+```
+
+##### Richness
+###### City_dist
+####### Gradient
+```{r}
+car::Anova(lm.rich) # sig
+
+```
+
+####### Find richness means at urban and rural terminii
+```{r}
+urban_terminus = 3.5 # km; most urban pop is close to this distance
+rural_terminus = 67 # km; most rural pop is close to this distance
+midpoint = 35.25 # km; midpoint of urban and rural terminii
+
+
+coeffs.q.1 = coefficients(lm.rich)
+
+rural_mean = coeffs.q.1[1] + coeffs.q.1[2]*rural_terminus
+rural_mean # mean richness
+
+urban_mean = coeffs.q.1[1] + coeffs.q.1[2]*urban_terminus
+urban_mean # mean richness
+
+# AVG DIFFERENCE FROM URBAN TO RURAL TERMINUS:
+(urban_mean - rural_mean)/(0.5*(urban_mean + rural_mean))
+
+# FIND MEAN richness
+central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
+central_mean_q.1
+
+
+# urban sites had, on average, 0.502 units higher richness than rural!
+
+(((urban_mean - rural_mean) / abs(urban_mean)) * 100) # 39% higher richness in city vs rural terminus
+(((rural_mean - urban_mean) / abs(rural_mean)) * 100) # 63% lower richness in rural terminus vs city
+```
+
+####### Transects
+```{r}
+car::Anova(lm.rich.urbsubs) # transect sig
+car::Anova(lm.rich.urbsubs_ME) # transect sig
+
+AIC(lm.rich.urbsubs, lm.rich.urbsubs_ME) # ME model lower AIC but <2
+
+summary(lm.rich.urbsubs_ME) # corridor subtransect had 0.6 units lower richness than non-corridor, on avg!
+```
+
+###### Urb_score
+####### Gradient
+```{r}
+car::Anova(lm.rich.u) # highly sig
+
+```
+####### Transects
+```{r}
+car::Anova(lm.rich.urbsubs.u) # transect marg sig
+car::Anova(lm.rich.urbsubs.u_ME) # transect marg sig
+
+AIC(lm.rich.urbsubs.u, lm.rich.urbsubs.u_ME) # ME model lower AIC but <2
+```
+
+##### Simpson's Evenness (Equitability)
+###### City_dist
+####### Gradient
+```{r}
+car::Anova(lm.even) # not sig
+
+```
+
+####### Transects
+```{r}
+car::Anova(lm.even.urbsubs) # transect sig
+car::Anova(lm.even.urbsubs_ME) # transect sig
+
+AIC(lm.even.urbsubs,lm.even.urbsubs_ME ) # full model lower AIC but <2
+
+summary(lm.even.urbsubs) # corridor subtransect had 0.607 units lower evenness than non-corridor, on avg!
+
+```
+
+###### Urb_score
+####### Gradient
+```{r}
+car::Anova(lm.even.u) # not sig
+
+```
+
+####### Transects
+```{r}
+car::Anova(lm.even.urbsubs.u) # transect sig
+car::Anova(lm.even.urbsubs.u_ME) # transect sig
+
+AIC(lm.even.urbsubs.u,lm.even.urbsubs.u_ME ) # ME model lower AIC (but <2 away)
+
+```
+
+#### Export ANOVA
+###### Functions
+```{r}
+# tidy anovas
+tidy_sb.pollinators_lm <- function(model){
+  
+  return(
+    car::Anova(model) %>%
+      broom::tidy() %>%
+      dplyr::mutate(Sites = case_when(
+        str_detect(as.character(formula(model)[3]), "Transect") == TRUE ~ "Urban Only",
+        str_detect(as.character(formula(model)[3]), "Transect") == FALSE ~ "All"),
+                    .before = term) %>%
+      dplyr::mutate(Significance = case_when(p.value < 0.001 ~ "***",
+                                             p.value < 0.01 ~ "**",
+                                             p.value <= 0.05 ~ "*")) %>%
+      dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
+      mutate_if(is.numeric, round, 3))  %>%
+      dplyr::mutate(p.value = replace(p.value, Significance == "***", "<0.001"))  %>%
+      dplyr::rename(., 
+                    # "F" = statistic,
+                    Predictor = term,
+                    p = p.value) %>%
+      unite("p", p:Significance, sep = "", na.rm = TRUE) %>%
+      dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Dist_city"),
+                replacement = c("Distance to City Center")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Urb_score"),
+                replacement = c("Urbanization Score")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c("Transect"),
+                replacement = c("Subtransect")) %>%
+        dplyr::mutate_if(.,
+                is.character,
+                str_replace_all,
+                pattern = c(":"),
+                replacement = c(" x "))
+  
+}
+
+
+# combine anovas into publication-quality tables
+make_Q3_Anova.pollinators <- function(anova_list){
+  return(
+    lapply(anova_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('X2' = 2,
+                  'p' = 3,
+                  'X2 ' = 4,
+                  'p ' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 2, 2)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+    display(i = 2, col_key = "X2", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    display(i = 2, col_key = "X2 ", 
+      pattern = "{{val}}{{pow}}", part = "header",
+      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
+      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body")
+    )
+}
+
+```
+
+###### Main text: Abundance, Diversity, Richness
+```{r}
+# CITY_DIST-----
+## ALL SITES
+
+best_mods_Q3.dist_list <- list(
+### abundance
+  lm_abun1,  
+### diversity
+lm_diversity,
+## richness
+lm.rich
+)
+
+lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity",
+                 "Species Richness"),
+      colwidths = c(1, 4, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 1.1) %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,11), width = 0.3) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm_diversity) %>% round(., 3))) %>%
+    add_footer_lines(paste0("AIC, Richness: ",
+                          AIC(lm.rich) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Dist_ANOVA.png"))
+
+
+
+
+
+
+
+# CITY_DIST-----
+## URBAN SITES
+
+best_mods_Q3urban.dist_list <- list(
+### abundance
+  lm_abun1.urbsubs_ME,  
+### diversity
+lm_diversity.urbsubs,
+## richness
+lm.rich.urbsubs_ME
+)
+
+lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity",
+                 "Species Richness"),
+      colwidths = c(1, 4, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2) %>%
+  width(j = c(2, 6, 10), width = 0.8) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,11), width = 0.3) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.urbsubs_ME) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm_diversity.urbsubs) %>% round(., 3))) %>%
+    add_footer_lines(paste0("AIC, Richness: ",
+                          AIC(lm.rich.urbsubs_ME) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Dist_urban_ANOVA.png"))
+
+
+# URB_SCORE-----
+## all sites
+
+best_mods_Q3.usc_list <- list(
+### abundance
+  lm_abun1.u,  
+### diversity
+lm_diversity.u,
+## richness
+lm.rich.u
+)
+
+lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity",
+                 "Species Richness"),
+      colwidths = c(1, 4, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p),  and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.u) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm_diversity.u) %>% round(., 3))) %>%
+    add_footer_lines(paste0("AIC, Richness: ",
+                          AIC(lm.rich.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Usc_ANOVA.png"))
+
+
+
+# URB_SCORE-----
+## URBAN sites
+best_mods_Q3urban.usc_list <- list(
+### abundance
+  lm_abun1.urbsubs.u_ME,  
+### diversity
+lm_diversity.urbsubs.u_ME,
+## richness
+lm.rich.urbsubs.u_ME
+)
+
+lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity",
+                 "Species Richness"),
+      colwidths = c(1, 4, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3) %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.urbsubs.u_ME) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm_diversity.urbsubs.u_ME) %>% round(., 3))) %>%
+    add_footer_lines(paste0("AIC, Richness: ",
+                          AIC(lm.rich.urbsubs.u_ME) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Usc_urban_ANOVA.png"))
+
+```
+
+###### Supplement
+####### Evenness
+```{r}
+# CITY_DIST
+## all sites-----
+lm.even
+
+tidy_sb.pollinators_lm(lm.even) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.8) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Dist_evenness_ANOVA.png"))
+
+
+# CITY_DIST
+## URBAN sites-----
+lm.even.urbsubs
+
+
+
+tidy_sb.pollinators_lm(lm.even.urbsubs) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.9) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even.urbsubs) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Dist_urb_evenness_ANOVA.png"))
+
+
+
+# URB_SCORE-----
+## all sites-----
+lm.even.u
+
+
+
+tidy_sb.pollinators_lm(lm.even.u) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.5) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization on pollinator evenness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Urbscore_evenness_ANOVA.png"))
+
+
+
+# URB_SCORE
+## URBAN sites-----
+lm.even.urbsubs.u_ME
+
+
+
+tidy_sb.pollinators_lm(lm.even.urbsubs.u_ME) %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Simpson's Evenness"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.7) %>%
+  width(j = 2, width = 1.2) %>%
+  width(j = c(3,4,5), width = 0.2) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from a general linear model examining the effects of urbanization and distance to an urban corridor on pollinator evenness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness: ",
+                          AIC(lm.even.urbsubs.u_ME) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Best_models_Evenness/Q3_Urbscore_urb_evenness_ANOVA.png"))
+```
+
+####### Abundance & Diversity Models without Honeybees
+```{r}
+# CITY_DIST-----
+## ALL SITES
+
+best_mods_Q3.dist_list_NOHONEY <- list(
+### abundance
+  lm_abun1.nohoney,  
+### diversity
+lm.diversity_nohoney
+)
+
+lapply(best_mods_Q3.dist_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.nohoney) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Dist_ANOVA_nohoneybees.png"))
+
+
+
+
+
+
+
+# CITY_DIST-----
+## URBAN SITES
+
+best_mods_Q3urban.dist_list_NOHONEY <- list(
+### abundance
+  lm_abun1.urbsubs.nohoney_ME,  
+### diversity
+lm.diversity_nohoney.urbsubs
+)
+
+lapply(best_mods_Q3urban.dist_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Residuals"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3.2) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.urbsubs.nohoney_ME) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney.urbsubs) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Dist_urban_ANOVA_nohoneybees.png"))
+
+
+# URB_SCORE-----
+## all sites
+
+best_mods_Q3.usc_list_NOHONEY <- list(
+### abundance
+  lm_abun1.u_nohoney,  
+### diversity
+lm.diversity_nohoney.u
+)
+
+lapply(best_mods_Q3.usc_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p),  and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.u_nohoney) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Urbscore_ANOVA_nohoneybees.png"))
+
+
+
+# URB_SCORE-----
+## URBAN sites
+best_mods_Q3urban.usc_list_NOHONEY <- list(
+### abundance
+  lm_abun1.urbsubs.u_nohoney,  
+### diversity
+lm.diversity_nohoney.urbsubs.u
+)
+
+lapply(best_mods_Q3urban.usc_list_NOHONEY, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect"))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", "AIC"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance",
+                 "Simpson's Diversity"),
+      colwidths = c(1, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:9, align = "center", part = "body") %>%
+    align(j = 2:9, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3) %>%
+  width(j = c(2, 6), width = 1) %>%
+  width(j = c(4:5, 8:9), width = 0.7) %>%
+  width(j = c(3,7), width = 0.5) %>%
+  italic(i = 2, j = 2:9, part = "header") %>%
+  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance and diversity using a dataset without honeybees (Apis mellifera). Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance: ",
+                          AIC(lm_abun1.urbsubs.u_nohoney) %>% round(., 3))) %>%
+  add_footer_lines(paste0("AIC, Diversity: ",
+                          AIC(lm.diversity_nohoney.urbsubs.u) %>% round(., 3))) %>%
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Models_without_Honeybees/Q3_Urbscore_urban_ANOVA_nohoneybees.png"))
+
+```
+
+####### Alternative (AIC<2 from best) models
+######## Abundance/Diversity/Richness
+```{r}
+## City_dist-----
+alt_best_mods_Q3.dist_list <- list(
+lm_abun1.urbsubs,
+lm_diversity.urbsubs_ME,
+lm.rich.urbsubs
+)
+
+
+lapply(alt_best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance, Alt. Model 1",
+                 "Simpson's Diversity, Alt. Model 1",
+                 "Richness, Alt. Model 1"),
+      colwidths = c(1, 4, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header")%>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.3) %>%
+  width(j = c(2, 6, 10), width = 1) %>%
+  width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
+  width(j = c(3,7,10), width = 0.5) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from alternative general linear models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance, Alt. Model 1: ",
+                          AIC(lm_abun1.urbsubs) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Simpson's Diversity, Alt. Model 1: ",
+                          AIC(lm_diversity.urbsubs_ME) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Richness, Alt. Model 1: ",
+                          AIC(lm.rich.urbsubs) %>% round(., 3))) %>%  
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Q3_Dist_ANOVA_altmodels.png"))
+
+
+
+
+## Urb_score-----
+alt_best_mods_Q3.urbsc_list <- list(
+lm_abun1.urbsubs.u,
+lm_diversity.urbsubs.u,
+lm.rich.urbsubs.u
+)
+
+lapply(alt_best_mods_Q3.urbsc_list, tidy_sb.pollinators_lm) %>%
+    lapply(., as.data.frame) %>%
+    purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5,
+                  'Sum of Squares ' = 6,
+                  'df ' = 7,
+                  'F ' = 8,
+                  'p ' = 9,
+                  'Sum of Squares  ' = 10,
+                  'df  ' = 11,
+                  'F  ' = 12,
+                  'p  ' = 13) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Abundance, Alt. Model 1",
+                 "Simpson's Diversity, Alt. Model 1",
+                 "Richness, Alt. Model 1"),
+      colwidths = c(1, 4, 4, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:13, align = "center", part = "body") %>%
+    align(j = 2:13, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 3) %>%
+  width(j = 2:13, width = 0.7) %>%
+  italic(i = 2, j = 2:13, part = "header") %>%
+  add_footer_lines("Table X: Results from alternative general linear models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator abundance, diversity, and richness. Alternative models of pollinator diversity were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Abundance, Alt. Model 1: ",
+                          AIC(lm_abun1.urbsubs.u_ME) %>% round(., 3))) %>%  
+    add_footer_lines(paste0("AIC, Simpson's Diversity, Alt. Model 1: ",
+                          AIC(lm_diversity.urbsubs.u) %>% round(., 3))) %>%      add_footer_lines(paste0("AIC, Richness, Alt. Model 1: ",
+                          AIC(lm.rich.urbsubs.u_ME) %>% round(., 3))) %>%  
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Q3_Urbscore_ANOVA_altmodels.png"))
+```
+
+######## Evenness
+```{r}
+## City_dist-----
+lm.even.urbsubs_ME
+
+lm.even.urbsubs_ME %>%
+  tidy_sb.pollinators_lm %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Evenness, Alt. Model 1"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2) %>%
+  width(j = 2:5, width = 0.7) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator evenness Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness, Alt. Model 1: ",
+                          AIC(lm.even.urbsubs_ME) %>% round(., 3))) %>%  
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Alt_models_evenness/Q3_Dist_ANOVA_altmodels_evenness_citydist.png"))
+
+
+
+## Urb_score-----
+lm.even.urbsubs.u
+
+lm.even.urbsubs.u %>%
+  tidy_sb.pollinators_lm %>%
+    as.data.frame() %>%
+    # purrr::reduce(full_join, by = "Predictor") %>%
+    arrange(factor(Predictor, levels = c("Distance to City Center",
+                                         "Urbanization Score",
+                                         "Year",
+                                         "Subtransect",
+                                         "Distance to City Center x Subtransect",
+                                         "Urbanization Score x Subtransect",
+                                         "Distance to City Center x Year",
+                                         "Urbanization Score x Year",
+                                         "Year x Subtransect",
+                                         "Urbanization Score x Year x Subtransect",
+                                         "Distance to City Center x Year x Subtransect"
+                                         ))) %>%
+    dplyr::select(-starts_with(c("Sites", "Significance", 
+                                 "AIC", 
+                                 "Response"))) %>%
+    replace(., is.na(.), "-") %>%
+    dplyr::rename('Sum of Squares' = 2,
+                  'df' = 3,
+                  'F' = 4,
+                  'p' = 5) %>%
+    flextable::flextable() %>%
+    add_header_row(
+      values = c(" ",
+                 "Evenness, Alt. Model 1"),
+      colwidths = c(1, 4)) %>%
+    align(j = 1, align = "left", part = "all") %>%
+    align(j = 2:5, align = "center", part = "body") %>%
+    align(j = 2:5, align = "center", part = "header") %>%
+      fontsize(size = 12, part = "header") %>%
+      fontsize(size = 12, part = "body") %>%
+  width(j = 1, width = 2.8) %>%
+  width(j = 2:5, width = 0.7) %>%
+  italic(i = 2, j = 2:5, part = "header") %>%
+  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on pollinator evenness Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), F-statistics (F), and p-values (p) obtained from type II ANOVA.") %>%
+  add_footer_lines(paste0("AIC, Evenness, Alt. Model 1: ",
+                          AIC(lm.even.urbsubs.u) %>% round(., 3))) %>%  
+  add_footer_lines("*: p-value <= 0.05") %>%
+  add_footer_lines("**: p-value <= 0.01") %>%
+  add_footer_lines("***: p-value <= 0.001") %>%
+  save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Alt_models_evenness/Q3_Dist_ANOVA_altmodels_evenness_urbscore.png"))
+```
+
+## Tables
+```{r}
+# Total pollinators observed per morphospecies:
+Morphospecies_table <- colSums(pollinators[,c(7:48)]) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column("Morphospecies_Code") %>%
+  # dplyr::rename(Morphospecies_Code = 0) %>%
+  dplyr::rename(Individuals_observed = 2) %>%
+  # as.data.frame() %>%
+  left_join(., diversity %>%
+              dplyr::select(c(1,14)),
+            by = "Morphospecies_Code") %>%
+  write.csv(here::here("./Figures_Tables/Q3_Pollinator/Q3_Pollinators_Table.csv"))
+# top 4 abundant morphospecies: MW 6, 14, 2, 10.
+#   6: Apis mellifera (Large)
+#   14: (small) black sweat bee (Halictidae spp.)
+#   2: orange beetle (Rhagoycha fulva)
+#   10: small black sweat bee (yellow face) (Hylaeus spp.)
+
+
+
+####### Table of each family's most common morphospecies vs dist city ctr ------
+four_popfams <- dplyr::filter(diversity,
+                              Family %in%
+                                c( 'Apidae',
+                                   'Cantharidae' ,
+                                   'Halictidae',
+                                   'Megachilidae')) %>%
+  group_by(Morphospecies, Family) %>%
+  dplyr::summarise(
+    "Sites" = n_distinct(Patch_ID),
+    "Individuals_observed" = sum(Count))
+
+# switch order of first 2 cols
+four_popfams <- four_popfams[,c(2,1,3,4)] %T>%
+  write.csv(here::here("./Figures_Tables/Q3_Pollinator/Q3_4MostCommonMorphospecies_Table.csv")) 
+
+# break into 4 separate tables, calculate subtotals
+four_popfams_summary <- four_popfams %>%
+  group_by(Family) %>%
+  dplyr::summarise(across(Individuals_observed, sum)) %>%
+  arrange(desc(Individuals_observed)) %T>%
+  write.csv(here::here("./Figures_Tables/Q3_Pollinator/Q3_4MostCommonMorphospecies_SummaryTable.csv")) 
+
+# apidae <- dplyr::filter(four_popfams, Family %in% 'Apidae') %>%
+#   adorn_totals("row") %T>%
+#   view()
+# 
+# canth <- dplyr::filter(four_popfams, Family %in% 'Cantharidae')%>%
+#   adorn_totals("row")
+# 
+# halict <- dplyr::filter(four_popfams, Family %in% 'Halictidae')%>%
+#   adorn_totals("row")
+# 
+# megachil <- dplyr::filter(four_popfams, Family %in% 'Megachilidae')%>%
+#   adorn_totals("row")
+# 
+# b <- bind_rows(list(apidae, canth, halict, megachil)) %>%
+#               arrange(Family, Morphospecies, Sites, Individuals_observed)
+
+# d <- rbindlist(
+#   list(
+#     four_popfams %>%
+#       dplyr::group_by(Family) %>%
+#       summarise(across(Sites:Individuals_observed, ~ sum()))
+#       summarise(across(sum(Sites),
+#                 sum(Individuals_observed))),
+#   four_popfams %>%
+#     group_by(Family, Morphospecies) %>%
+#     summarise(sum(Sites),
+#               sum(Individuals_observed))),
+#   fill=TRUE) %>%
+#   arrange(Family, Morphospecies)
+# 
+# # Make Total rows clear
+# d$Family <- as.character(d$Family)
+# d[8,1] <- as.character("Apidae: Total")
+# d[10,1] <- as.character("Cantharidae: Total")
+# d[18,1] <- as.character("Halictidae: Total")
+# d[29,1] <- as.character("Megachilidae: Total")
+# 
+# colnames(d)[2] <- "Sites Observed"
+# colnames(d)[3] <- "Individuals Observed"
+# colnames(d)[4] <- "Morphospecies Description "
+# 
+# kable(d, digits = 3, format = "pandoc", caption = "Top 4 Families") # the digits argument controls rounding
+# d_export <- kable(d, digits = 3, format = "pandoc", caption = "Top 4 Families")
+# kable(d, "html") %>%
+#   kable_styling("striped") %>%
+#   save_kable(file = "table_d.html", self_contained = T)
+#   as_image(width = 4)
+```
+
+## Figures
+#### Abundance
+##### Gradient
+###### City_dist
+```{r}
+abun <- ggplot(sum_abun,
+               aes(x = Dist_city,
+                   y = Count)) +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                   color = "black"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Pollinators Observed per Plant") +
+  xlim(0,70) +
+  ylim(0, 6) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun
+```
+
+###### Urb_score
+```{r}
+abun.u <- ggplot(sum_abun,
+               aes(x = Urb_score,
+                   y = Count)) +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                   color = "black"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = "Mean Pollinators Observed per Plant") +
+  xlim(4, -4) +
+  ylim(0, 6) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun.u
+```
+
+##### Transects
+###### City_dist
+```{r}
+abun_transect <- ggplot(sum_abun %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = Count,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Pollinators Observed per Plant",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                  linetype = "solid"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(0, 40) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = "none",
+    # legend.position = c(.99, .99),
+    # legend.justification = c("right", "top"),
+    # legend.box = 'horizontal',
+    # legend.box.just = "right",
+    # legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black")
+    # legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw() +
+  guides(linetype = FALSE) +
+  guides(shape = FALSE) +
+  guides(fill = FALSE) +
+  guides(color = FALSE) 
+# +
+#   labs(caption = "Error bars represent standard error")
+abun_transect
+
+
+```
+
+###### Urb_score
+```{r}
+abun_transect.u <- ggplot(sum_abun %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = Count,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = "Mean Pollinators Observed per Plant",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                  linetype = "solid"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(4, -2) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun_transect.u
+
+
+```
+
+##### Abundance of 4 most populous families
+```{r}
+#### wrapped regressions per family vs dist city ctr ####
+ggplot(diversity %>%
+         filter(Family == c('Apidae',
+                            'Cantharidae',
+                            'Halictidae',
+                            'Megachilidae')),
+       aes(x = Dist_city,
+           y = Count,
+           colour = Family)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Individuals Observed by Family per plant") +
+  geom_point(aes( color = Family,
+                  shape = Family),
+                  size = 2) +
+  geom_smooth(aes(color = Family), method = lm, alpha=0.15,  se = F) +
+  xlim(0, 70) +
+  ylim(0,6) +
+  facet_wrap(~Family) +
+  theme(
+    # legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=12),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA) 
+    ) +
+  theme_bw()
+  ggsave(here::here("Figures_Tables/Q3_Pollinator/Supplement", "4_most_populous_families.png"),
+         width = 14, height = 8, units = "cm")
+
+
+####### regressions of each family's most common morphospecies vs dist city ctr #######
+# ggplot(diversity %>%
+#          filter(Morphospecies_Code == c( 'MS_06', 'MS_14' , 'MS_02', 'MS_21')),
+#        aes(x = Dist_city, y = Count, colour = Morphospecies)) +
+#   labs(x = "Distance to city center (km)", y = "Individuals Observed") +
+#   geom_point(aes( color = Morphospecies)) +
+#   scale_shape(solid = F)+
+#   geom_smooth(aes(color = Morphospecies), method = lm, alpha=0.15,  se = T) +
+#   facet_grid(~Family + Morphospecies,
+#              labeller = label_context) +
+#   theme(legend.position = "none") +
+#   ylim(0, 4) +
+#   xlim(0, 70)
+  
+  
+  
+###### Bombus abundance re: dist city ctr #######
+#   ggplot(subset(diversity, Genus %in% 'Bombus'), aes(x = Dist_city, y = Count)) +
+#   labs(x = "Distance to city center (km)", y = "Bombus Individuals Observed (per population)") +
+#   geom_point() +
+#   scale_shape(solid = F)+
+#   geom_smooth( method = lm, alpha=0.15,  se = T) +
+#   labs()
+#   
+# # Only 3 data points, so not very interesting/reliable.
+#   
+# 
+# ###### Monarch abundance re: dist city ctr #######
+#   ggplot(subset(diversity, Genus %in% 'Danaus'), aes(x = Dist_city, y = Count)) +
+#   labs(x = "Distance to city center (km)", y = "Monarchs Observed (per population)") +
+#   geom_point() +
+#   scale_shape(solid = F)+
+#   geom_smooth( method = lm, alpha=0.15,  se = T) +
+#   labs()
+# # Only 4 data points, so not very interesting/reliable.
+  
+  
+###### Honeybee abundance re: dist city ctr #######
+  ggplot(diversity %>%
+           filter(Morphospecies == 'Apis mellifera (Large)'),
+         aes(x = Dist_city,
+             y = Count)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Honeybees Observed per Plant") +
+  geom_point() +
+  scale_shape(solid = F)+
+  geom_smooth( method = lm, alpha=0.15,  se = F, color = "black") +
+  xlim(0, 70) +
+  ylim(0,6) +
+  theme_bw()
+
+ggsave(here::here("Figures_Tables/Q3_Pollinator/Supplement", "Honeybees_per_plant.png"),
+         width = 10, height = 8, units = "cm")
+```
+
+#### Diversity
+##### Gradient
+###### City_dist
+```{r}
+diversity_simpson <- ggplot(sum_diversity,
+               aes(x = Dist_city,
+                   y = simpson^2)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = expression("Simpson's Diversity Index "^2)) +
+  xlim(0,70) +
+  ylim(0, 1) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson
+```
+
+###### Urb_score
+```{r}
+diversity_simpson.u <- ggplot(sum_diversity,
+               aes(x = Urb_score,
+                   y = simpson^2)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = expression("Simpson's Diversity Index "^2)) +
+  xlim(4, -4) +
+  ylim(0, 1) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson.u
+```
+
+##### Transects
+###### City_dist
+```{r}
+diversity_simpson_transect <- ggplot(sum_diversity %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = simpson^3,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = expression("Simpson's Diversity Index "^3),
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(0, 40) +
+  ylim(0, 1) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson_transect
+```
+
+###### Urb_score
+```{r}
+diversity_simpson_transect.u <- ggplot(sum_diversity %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = simpson^3,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = expression("Simpson's Diversity Index "^3),
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(4, -2) +
+  ylim(0, 1) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson_transect.u
+```
+
+#### Richness
+##### Gradient
+###### City_dist
+```{r}
+rich <- ggplot(sum_richness,
+               aes(x = Dist_city,
+                   y = Menhinicks_index)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Menhinick's Species Richness") +
+  xlim(0,70) +
+  ylim(0, 4) +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+rich
+```
+
+###### Urb_score
+```{r}
+rich.u <- ggplot(sum_richness,
+               aes(x = Urb_score,
+                   y = Menhinicks_index)) +
+  geom_point(color = "black",
+                  size = 2) +
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = "Menhinick's Species Richness") +
+  xlim(4, -4) +
+  ylim(0, 4) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+rich.u
+```
+
+##### Transects
+###### City_dist
+```{r}
+rich_transect <- ggplot(sum_richness %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = Menhinicks_index,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Menhinick's Species Richness",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(0, 40) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+rich_transect
+```
+
+###### Urb_score
+```{r}
+rich_transect.u <- ggplot(sum_richness %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = Menhinicks_index,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = "Menhinick's Species Richness",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(4, -2) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+rich_transect.u
+```
+
+#### Composite figure (main text)
+##### Gradient
+```{r}
+
+library(ggpubr)
+Q3_regressions <- ggarrange(abun,
+                            diversity_simpson,
+                            rich,
+                            abun.u,
+                            diversity_simpson.u,
+                            rich.u,
+                            ncol = 3, nrow = 2, align = "v",
+                            labels = list("A", "B", "C", "D", "E", "F"),
+                            font.label = (size =16),
+                            common.legend = FALSE)
+Q3_regressions
+
+# annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions.pdf", width = 12, height = 7)
+```
+
+##### Transects
+```{r}
+library(ggpubr)
+Q3_regressions.transects <- ggarrange(abun_transect,
+                            diversity_simpson_transect,
+                            rich_transect,
+                            abun_transect.u,
+                            diversity_simpson_transect.u,
+                            rich_transect.u,
+                            ncol = 3, nrow = 2, align = "h",
+                            labels = list("A", "B", "C", "D", "E", "F"),
+                            font.label = (size =16),
+                            common.legend = T)
+Q3_regressions.transects
+
+# annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_transects.pdf", width = 12, height = 7)
+```
+
+
+#### Supplement
+##### Evenness
+###### Gradient
+####### City_dist
+```{r}
+even <- ggplot(sum_evenness,
+               aes(x = Dist_city,
+                   y = simpson_equit)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Simpson's Evenness") +
+  xlim(0,70) +
+  # ylim(0, 4) +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+even
+```
+
+####### Urb_score
+```{r}
+even.u <- ggplot(sum_evenness,
+               aes(x = Urb_score,
+                   y = simpson_equit)) +
+  geom_point(color = "black",
+                  size = 2) +
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = "Simpson's Evenness") +
+  xlim(4, -4) +
+  # ylim(0, 4) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+even.u
+```
+
+###### Transects
+####### City_dist
+```{r}
+even_transect <- ggplot(sum_evenness %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = simpson_equit^3,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = expression("Simpson's Evenness "^3),
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(0, 40) +
+  # ylim(0, 4) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+even_transect
+```
+
+####### Urb_score
+```{r}
+even_transect.u <- ggplot(sum_evenness %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = simpson_equit^3,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = expression("Simpson's Evenness "^3),
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(4, -2) +
+  # ylim(0, 4) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+even_transect.u
+```
+
+###### Composite Figure
+####### Gradient & transect figs together
+```{r}
+
+library(ggpubr)
+Q3_regressions.evenness <- ggarrange(even,
+                            even_transect,
+                            even.u,
+                            even_transect.u,
+                            ncol = 2, nrow = 2, align = "h",
+                            labels = list("A", "B", "C", "D"),
+                            font.label = (size =16),
+                            common.legend = TRUE)
+Q3_regressions.evenness
+
+# annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_Evenness.pdf", width = 12, height = 7)
+```
+####### Gradient & transect figs separate
+######## Gradient figs
+```{r}
+
+library(ggpubr)
+Q3_regressions.evenness.gradient <- ggarrange(even,
+                            even.u,
+                            ncol = 2, nrow = 1, align = "h",
+                            labels = list("A", "B"),
+                            font.label = (size =16),
+                            common.legend = TRUE)
+Q3_regressions.evenness.gradient
+
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_Evenness_gradientfigs.pdf", width = 6, height = 2.5)
+```
+
+######## Transect figs
+```{r}
+
+library(ggpubr)
+Q3_regressions.evenness.transects <- ggarrange(
+                            even_transect,
+                            even_transect.u,
+                            ncol = 2, nrow = 1, align = "h",
+                            labels = list("A", "B"),
+                            font.label = (size =16),
+                            common.legend = TRUE)
+Q3_regressions.evenness.transects
+
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_Evenness_transects.pdf", width = 6, height = 3)
+```
+
+
+
+##### Abundance & Diversity without Honeybees
+###### Abundance
+####### Gradient
+######## City_dist
+```{r}
+abun.nohoney <- ggplot(sum_abun.nohoney,
+               aes(x = Dist_city,
+                   y = Count)) +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                   color = "black"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Pollinators Observed per Plant: \n Honeybees Excluded") +
+  xlim(0,70) +
+  ylim(0, 6) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun.nohoney
+```
+
+######## Urb_score
+```{r}
+abun.u.nohoney <- ggplot(sum_abun.nohoney,
+               aes(x = Urb_score,
+                   y = Count)) +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                   color = "black"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = "Mean Pollinators Observed per Plant: \n Honeybees Excluded") +
+  xlim(4, -4) +
+  ylim(0, 6) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun.u.nohoney
+```
+
+####### Transects
+######## City_dist
+```{r}
+abun_transect.nohoney <- ggplot(sum_abun.nohoney %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = Count,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Mean Pollinators Observed per Plant: \n Honeybees Excluded",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                  linetype = "solid"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(0, 40) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun_transect.nohoney
+```
+
+######## Urb_score
+```{r}
+abun_transect.u.nohoney <- ggplot(sum_abun.nohoney %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = Count,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = "Mean Pollinators Observed per Plant: \n Honeybees Excluded",
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_pointrange(aes(ymin = Count - se, 
+                      ymax = Count + se),
+                  size = 0.5,
+                  linetype = "solid"
+                  # ,
+                  # position = position_jitterdodge(dodge.width = .5)
+                                                  ) +
+  geom_smooth(
+              method = lm,
+              se = F,
+              size = 1,
+              alpha = 0.15) +
+  xlim(4, -2) +
+  ylim(0, 4) +
+  # scale_shape(solid = F)+
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("gray29", "gray9"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+abun_transect.u.nohoney
+
+```
+
+###### Diversity
+####### Gradient
+######## City_dist
+```{r}
+diversity_simpson.nohoney <- ggplot(sum_diversity.nohoney,
+               aes(x = Dist_city,
+                   y = simpson^2)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Distance to Urban Center (km)",
+       y = expression(atop(paste("Simpson's Diversity Index "^2, ":"), paste("Honeybees Excluded")))) +
+  xlim(0,70) +
+  ylim(0, 1) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson.nohoney
+```
+
+######## Urb_score
+```{r}
+diversity_simpson.u.nohoney <- ggplot(sum_diversity.nohoney,
+               aes(x = Urb_score,
+                   y = simpson^2)) +
+  geom_point(color = "black",
+                  size = 2) +
+    scale_shape(solid = F)+
+  geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3,
+              color = "black") +
+  labs(x = "Urbanization Score",
+       y = expression(atop(paste("Simpson's Diversity Index "^2, ":"), paste("Honeybees Excluded")))) +
+  xlim(4, -4) +
+  ylim(0, 1) +
+  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson.u.nohoney
+```
+
+####### Transects
+######## City_dist
+```{r}
+diversity_simpson_transect.nohoney <- ggplot(sum_diversity.nohoney %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Dist_city,
+                            y = simpson^3,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = expression(atop(paste("Simpson's Diversity Index "^3, ":"), paste("Honeybees Excluded"))),
+  shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(0, 40) +
+  ylim(0, 1) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson_transect.nohoney
+```
+
+######## Urb_score
+```{r}
+diversity_simpson_transect.u.nohoney <- ggplot(sum_diversity.nohoney %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = simpson^3,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = expression(atop(paste("Simpson's Diversity Index "^3, ":"), paste("Honeybees Excluded"))),
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(4, -2) +
+  ylim(0, 1) +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  theme_bw()
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson_transect.u.nohoney
+```
+
+###### Composite figure (main text)
+####### Gradient
+```{r}
+
+library(ggpubr)
+Q3_regressions.nohoney <- ggarrange(abun.nohoney,
+                            diversity_simpson.nohoney,
+                            abun.u.nohoney,
+                            diversity_simpson.u.nohoney,
+                            ncol = 2, nrow = 2, align = "v",
+                            labels = list("A", "B", "C", "D"),
+                            font.label = (size =16),
+                            common.legend = FALSE)
+Q3_regressions.nohoney
+
+# annotate_figure(Q3_regressions.nohoney, bottom = text_grob("Distance to Urban Center (km)", size=14))
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_nohoneybees.pdf", width = 12, height = 7)
+```
+
+####### Transects
+```{r}
+library(ggpubr)
+Q3_regressions.transects.nohoney <- ggarrange(abun_transect.nohoney,
+                            diversity_simpson_transect.nohoney,
+                            abun_transect.u.nohoney,
+                            diversity_simpson_transect.u.nohoney,
+                            ncol = 2, nrow = 2, align = "h",
+                            labels = list("A", "B", "C", "D"),
+                            font.label = (size =16),
+                            common.legend = TRUE)
+Q3_regressions.transects.nohoney
+
+# annotate_figure(Q3_regressions.nohoney, bottom = text_grob("Distance to Urban Center (km)", size=14))
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_transects_nohoneybees.pdf", width = 12, height = 7)
+```
