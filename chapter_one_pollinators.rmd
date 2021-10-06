@@ -105,7 +105,7 @@ require(scales)
 
 ### Import data
 ```{r}
-pollinators <- read.csv(here("./raw_data/Pollinator_PivotTable_byPop_Coded.csv"),  header=T, na.strings=c("","NA")) %>%
+pollinators <- read.csv(here::here("./raw_data/Pollinator_PivotTable_byPop_Coded.csv"),  header=T, na.strings=c("","NA")) %>%
   dplyr::rename(Patch_ID = 1)
 
 
@@ -131,8 +131,14 @@ pollinators <- pollinators[,-c(50:52)]
 
 
 ## Import taxonomy table-----
-tax <- read.csv(here("./raw_data/Taxonomy_transposed.csv"),  header=T, na.strings=c("","NA"), fileEncoding = 'UTF-8-BOM')
+tax <- read.csv(here::here("./raw_data/Taxonomy_transposed.csv"),  header=T, na.strings=c("","NA"), fileEncoding = 'UTF-8-BOM')
 
+# import milkweed site data
+long_Transect_Data_18_19 <-
+  read.csv(here::here("./clean_data/long_Transect_Data_18_19.csv"),
+           header=T,
+           na.strings=c("","NA")) %>%
+  dplyr::select(-1)
 
 ```
 
@@ -147,7 +153,7 @@ poll_pp <- pollinators %>%
   dplyr::select(., -49) %>%
   # add new accurate total col
   rowwise() %>% 
-  mutate(., Total = sum(c_across(MS_01:MS_42)))
+  dplyr::mutate(., Total = sum(c_across(MS_01:MS_42)))
   
 
 # Create new table recoding all sightings to binary (0 = not seen; 1 = seen)
@@ -155,7 +161,7 @@ poll_binary <- pollinators[,-49] %>%
   mutate_at(vars(starts_with("MS_")), funs(ifelse(. >0, 1, .))) %>%
   # add new accurate total col
   rowwise() %>% 
-  mutate(., Total = sum(c_across(MS_01:MS_42)))
+  dplyr::mutate(., Total = sum(c_across(MS_01:MS_42)))
 
 
 # reshape to create diversity table (combining occurrence data with taxonomy)
@@ -1015,9 +1021,14 @@ urban_mean # mean abundance
 central_mean_q.1 = coeffs.q.1[1] + coeffs.q.1[2]*midpoint
 central_mean_q.1
 
-(((urban_mean - rural_mean) / abs(urban_mean)) * 100) # 155% fewer pollinators in city vs rural terminus
-(((rural_mean - urban_mean) / abs(rural_mean)) * 100) # 61% more pollinators in rural terminus vs city
 
+
+
+# The percent change formula is as follows:
+# (new_value - original_value) / |original_value| * 100
+
+(((urban_mean - rural_mean) / abs(rural_mean)) * 100) # 61% decrease in pollinator abundance from rural to urban terminus
+(((rural_mean - urban_mean) / abs(urban_mean)) * 100) # 155% increase in pollinator abundance from urban to rural terminus
 ```
 
 ###### Without honeybees
@@ -1070,6 +1081,28 @@ car::Anova(lm_diversity.urbsubs_ME) # transect sig
 AIC(lm_diversity.urbsubs, lm_diversity.urbsubs_ME) # full model has lower AIC but <2 away
 
 summary(lm_diversity.urbsubs) # corridor transect was 0.311 units diversity lower than non-corridor subtransect
+
+
+
+
+## LONG-HAND CALCULATIONS ##
+############################
+
+# NON-CORRIDOR coefficient (estimate): 0.408938
+# CORRIDOR coefficient (estimate): 0.408938 - 0.31122 = 0.097718
+# PERCENT CHANGE from non-corr to corr: (corr - non-corr) / non-corr = (0.097718 - 0.408938)/0.408938 = 76% decrease in diversity in corridor compared to non-corridor
+
+
+## SHORT-HAND CALCULATIONS ##
+#############################
+
+nonC_est <- summary(lm_diversity.urbsubs)$coeff[1] # = non-corridor estimate
+summary(lm_diversity.urbsubs)$coeff[3] # = difference btwn corridor and non-corridor
+C_est <- (summary(lm_diversity.urbsubs)$coeff[1] + summary(lm_diversity.urbsubs)$coeff[3]) # corridor estimate
+
+# PERCENT CHANGE from non-corr to corr:
+(C_est - nonC_est) / nonC_est # 76% decrease in diversity in corridor compared to non-corridor
+
 ```
 
 ######## Removing honeybees
@@ -1083,9 +1116,21 @@ car::Anova(lm.diversity_nohoney) ## Nothing sig
 car::Anova(lm.diversity_nohoney.urbsubs) # transect sig
 car::Anova(lm.diversity_nohoney.urbsubs_ME) # transect sig
 
-AIC(lm.diversity_nohoney.urbsubs, lm.diversity_nohoney.urbsubs_ME) # full model has lower AIC but <2 away
+AIC(lm.diversity_nohoney.urbsubs, lm.diversity_nohoney.urbsubs_ME) # ME model has lower AIC but <2 away
 
-summary(lm.diversity_nohoney.urbsubs) # corridor transect was 0.270 units diversity lower than non-corridor subtransect
+summary(lm.diversity_nohoney.urbsubs_ME) # corridor transect was 0.134 units diversity lower than non-corridor subtransect
+
+
+
+## SHORT-HAND CALCULATIONS ##
+#############################
+
+nonC_est <- summary(lm.diversity_nohoney.urbsubs_ME)$coeff[1] # = non-corridor estimate
+summary(lm.diversity_nohoney.urbsubs_ME)$coeff[3] # = difference btwn corridor and non-corridor
+C_est <- (summary(lm.diversity_nohoney.urbsubs_ME)$coeff[1] + summary(lm.diversity_nohoney.urbsubs_ME)$coeff[3]) # corridor estimate
+
+# PERCENT CHANGE from non-corr to corr:
+(C_est - nonC_est) / nonC_est # 41% decrease in diversity in corridor compared to non-corridor
 ```
 
 ####### Urb_score
@@ -1154,8 +1199,11 @@ central_mean_q.1
 
 # urban sites had, on average, 0.502 units higher richness than rural!
 
-(((urban_mean - rural_mean) / abs(urban_mean)) * 100) # 39% higher richness in city vs rural terminus
-(((rural_mean - urban_mean) / abs(rural_mean)) * 100) # 63% lower richness in rural terminus vs city
+# The percent change formula is as follows:
+# (new_value - original_value) / |original_value| * 100
+
+(((urban_mean - rural_mean) / abs(rural_mean)) * 100) # 63% increase in pollinator richness from rural to urban terminus
+(((rural_mean - urban_mean) / abs(urban_mean)) * 100) # 39% decrease in pollinator richness from urban to rural terminus
 ```
 
 ####### Transects
@@ -1166,6 +1214,17 @@ car::Anova(lm.rich.urbsubs_ME) # transect sig
 AIC(lm.rich.urbsubs, lm.rich.urbsubs_ME) # ME model lower AIC but <2
 
 summary(lm.rich.urbsubs_ME) # corridor subtransect had 0.6 units lower richness than non-corridor, on avg!
+
+
+## SHORT-HAND CALCULATIONS ##
+#############################
+
+nonC_est <- summary(lm.rich.urbsubs_ME)$coeff[1] # = non-corridor estimate
+summary(lm.rich.urbsubs_ME)$coeff[3] # = difference btwn corridor and non-corridor
+C_est <- (summary(lm.rich.urbsubs_ME)$coeff[1] + summary(lm.rich.urbsubs_ME)$coeff[3]) # corridor estimate
+
+# PERCENT CHANGE from non-corr to corr:
+(C_est - nonC_est) / nonC_est # 21% decrease in richness in corridor compared to non-corridor
 ```
 
 ###### Urb_score
