@@ -1197,50 +1197,28 @@ Perc_change_subtransects_ggpredict <- function(ggpredict_object){
   
   
   
-  # AVG (var) FROM URBAN TO RURAL TERMINUS:
-  # avg_diff_2018 <- abs( urban_estimate_2018 - rural_estimate_2018 )  /
-  #   (0.5* (    urban_estimate_2018 + rural_estimate_2018  )  ) # %T>%
-  # # print()
-  
-  # % CHANGE
-  # percent_change_2018 <- (((rural_estimate_2018 - urban_estimate_2018) /
-  #                            abs(rural_estimate_2018)) * 100) # %T>%
-  # # print()
-  
+
   # % CHANGE
   percent_change_2018.2.north <- (((urban_estimate_2018.north - rural_estimate_2018.north) /
-                               abs(urban_estimate_2018.north)) * 100) # %T>%
+                               abs(rural_estimate_2018.north)) * 100) # %T>%
   # print()
   
   percent_change_2018.2.south <- (((urban_estimate_2018.south - rural_estimate_2018.south) /
-                                     abs(urban_estimate_2018.south)) * 100) # %T>%
+                                     abs(rural_estimate_2018.south)) * 100) # %T>%
   # print()
   
   
-  
-  # avg_diff_2019 <- abs( urban_estimate_2019 - rural_estimate_2019 )  /
-  #   (0.5* (    urban_estimate_2019 + rural_estimate_2019  )  ) # %T>%
-  # # print()
-  
-  # % CHANGE
-  # percent_change_2019 <- (((rural_estimate_2019 - urban_estimate_2019) /
-  #                            abs(rural_estimate_2019)) * 100) # %T>%
-  # # print()
   
   # % CHANGE
   percent_change_2019.2.north <- (((urban_estimate_2019.north - rural_estimate_2019.north) /
-                               abs(urban_estimate_2019.north)) * 100) # %T>%
+                               abs(rural_estimate_2019.north)) * 100) # %T>%
   # print()
   
   percent_change_2019.2.south <- (((urban_estimate_2019.south - rural_estimate_2019.south) /
-                                     abs(urban_estimate_2019.south)) * 100) # %T>%
+                                     abs(rural_estimate_2019.south)) * 100) # %T>%
   # print()
   
   
-  # print(paste(noquote(c("On average, the most rural plants produced",
-  #                       round(percent_change_2018, 1), "% more",
-  #                       "[variable] per plant than the most urban plants in 2018")),
-  #             collapse = ' '))
   
   print(paste(noquote(c("On average, the most urban plants produced",
                         round(percent_change_2018.2.north, 1), "% more",
@@ -1254,10 +1232,7 @@ Perc_change_subtransects_ggpredict <- function(ggpredict_object){
                         along the South subtransect")),
               collapse = ' '))
   
-  # print(paste(noquote(c("On average, the most rural plants produced",
-  #                       round(percent_change_2019, 1), "% more",
-  #                       "[variable] per plant than the most urban plants in 2019")),
-  #             collapse = ' '))
+
   
   print(paste(noquote(c("On average, the most urban plants produced",
                         round(percent_change_2019.2.north, 1), "% more",
@@ -1273,15 +1248,6 @@ Perc_change_subtransects_ggpredict <- function(ggpredict_object){
   
 }
 
-# test1 <- pods_subtr_01_pred %>%
-#   as.data.frame() %>%
-#   dplyr::group_by(group, facet) %>%
-#   dplyr::summarize(emm = mean(predicted)) %>%
-#   view()
-
-
-
-
 Perc_change_subtransects_ggpredict(peds_subtr_01_pred)
 # mean num. inflors at urban terminus in 2018: (2.711 + 7.451)/2 = 5.081
 # mean num. inflors at rural terminus in 2018: (8.398 + 6.904)/2 = 7.651
@@ -1289,19 +1255,20 @@ Perc_change_subtransects_ggpredict(peds_subtr_01_pred)
 # mean num. inflors at rural terminus in 2019: (8.595 + 9.196)/2 = 8.896
 # URBAN MEAN: (5.081 + 3.985) / 2 = 4.533
 # RURAL MEAN: (7.651 + 8.896) / 2 = 8.274
-#
-# % diff: urban terminus had, on average, (4.533 - 8.274)/4.533 =
-#         -0.825 = 83% fewer inflors than rural terminus
-#
+
+# % diff: urban terminus had, on average, (4.533 - 8.274)/8.274 =
+#         -0.452 = 45% fewer inflors than rural terminus
+
 # % diff, urb:rural, 2018:
 #                         urb mean = 5.081
 #                         rur mean = 7.651
-#                         there were (5.081 - 7.651)/5.081 = 51% fewer
+#                         there were (5.081 - 7.651)/7.651 = -0.3359 = 34% fewer
 # inflors at urb terminus than rural terminus in 2018.
+
 # % diff, urb:rural, 2019:
 #                         urb mean = 3.985
 #                         rur mean = 8.896
-#                         there were (3.985 - 8.896)/3.985 = 123% fewer
+#                         there were (3.985 - 8.896)/8.896 = -0.552 = 55% fewer
 # inflors at urb terminus than rural terminus in 2019.
 
 
@@ -1327,7 +1294,7 @@ Perc_change_subtransects_ggpredict(pods_subtr_01_pred) # remember this is square
 #            rural/2019: sqrt(151.400) = 12.3
 # 2018 MEAN: (12.26 + 11.01)/2 = 11.635
 # 2019 MEAN: (11.83 + 12.3)/2 = 12.065
-# 2019 had (12.065 - 11.635)/12.065 = 0.0356 = 4% more follicles than 2018
+# 2019 had (12.065 - 11.635)/11.635 = 0.0359 = 4% more follicles than 2018
 
 
 Perc_change_subtransects_ggpredict(podsperped_subtr_01_pred)
@@ -1339,11 +1306,15 @@ Perc_change_subtransects_ggpredict(podsperped_subtr_01_pred)
 # RURAL MEAN: (1.266 + 1.969) / 2 = 1.618
 
 # % diff, urb:rural, 2018:
-#                         there were (1.889 - 1.266)/1.889 = 33% more
+#                         there were (1.889 - 1.266)/1.266 = 49% more
 # follicles per inflor at urb terminus than rural terminus in 2018.
+
 # % diff, urb:rural, 2019:
-#                         there were (1.188 - 1.969)/1.188 = 66% fewer
+#                         there were (1.188 - 1.969)/1.969 = 40% fewer
 # follicles per inflor at urb terminus than rural terminus in 2019.
+
+
+
 
 # Q1 / Gradient: Supplement-----
 ## Distance from City Center-----
