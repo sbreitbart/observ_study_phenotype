@@ -21,6 +21,8 @@ renv::activate()
 renv::snapshot()
 ---
 
+For code comparing variable means  across years, urban to rural terminii, and subtransects, run "set up notebook" chunk, "Linear Models (lmer and glmer)" chunk under Results, and then open "ggpredict_figures.R" script.
+
 # Set up notebook
 ## Install, load packages
 ```{r message=FALSE, warning=FALSE}

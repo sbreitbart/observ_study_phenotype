@@ -386,12 +386,12 @@ Perc_change_gradient_ggpredict <- function(ggpredict_object){
   
   # % CHANGE
   percent_change_2018 <- (((rural_estimate_2018 - urban_estimate_2018) /
-                        abs(rural_estimate_2018)) * 100) # %T>%
+                        abs(urban_estimate_2018)) * 100) # %T>%
   # print()
   
   # % CHANGE
   percent_change_2018.2 <- (((urban_estimate_2018 - rural_estimate_2018) /
-                             abs(urban_estimate_2018)) * 100) # %T>%
+                             abs(rural_estimate_2018)) * 100) # %T>%
   # print()
   
   
@@ -403,12 +403,12 @@ Perc_change_gradient_ggpredict <- function(ggpredict_object){
   
   # % CHANGE
   percent_change_2019 <- (((rural_estimate_2019 - urban_estimate_2019) /
-                             abs(rural_estimate_2019)) * 100) # %T>%
+                             abs(urban_estimate_2019)) * 100) # %T>%
   # print()
   
   # % CHANGE
   percent_change_2019.2 <- (((urban_estimate_2019 - rural_estimate_2019) /
-                               abs(urban_estimate_2019)) * 100) # %T>%
+                               abs(rural_estimate_2019)) * 100) # %T>%
   # print()
   
   
@@ -456,11 +456,11 @@ Perc_change_gradient_ggpredict_byyear <- function(ggpredict_object){
   print(paste(noquote(c("2019 mean:", mean_2019)),
               collapse = ' '))
   
-  print(paste(noquote(c("2018 had", ((mean_2018 - mean_2019)/mean_2018),
+  print(paste(noquote(c("2018 had", ((mean_2018 - mean_2019)/mean_2019),
                       "more [variable] than 2019")),
               collapse = ' '))
   
-  print(paste(noquote(c("2019 had", ((mean_2019 - mean_2018)/mean_2019),
+  print(paste(noquote(c("2019 had", ((mean_2019 - mean_2018)/mean_2018),
                       "more [variable] than 2018")),
               collapse = ' '))
 }
@@ -1249,6 +1249,34 @@ Perc_change_subtransects_ggpredict <- function(ggpredict_object){
 }
 
 Perc_change_subtransects_ggpredict(peds_subtr_01_pred)
+# mean num. inflors/urban terminus/2018/northern subtransect: 2.711
+# mean num. inflors/rural terminus/2018/northern subtransect: 8.398
+## MEAN: 2018/northern subtransect: (2.711 + 8.398) / 2 = 5.5545
+
+# mean num. inflors/urban terminus/2019/northern subtransect: 3.733
+# mean num. inflors/rural terminus/2019/northern subtransect: 8.595
+## MEAN: 2019/northern subtransect: (3.733 + 8.595) / 2 = 6.164
+
+# mean num. inflors/urban terminus/2018/southern subtransect: 7.451
+# mean num. inflors/rural terminus/2018/southern subtransect: 4.236
+## MEAN: 2018/southern subtransect: (7.451 + 4.236) / 2 = 5.8435
+
+# mean num. inflors/urban terminus/2019/southern subtransect: 6.904
+# mean num. inflors/rural terminus/2019/southern subtransect: 9.196
+## MEAN: 2019/southern subtransect: (6.904 + 9.196) / 2 = 8.05
+
+
+# % change, non-corr to corr subtransect, 2018:
+#           there were (5.8435 - 5.5545)/5.5545 = 0.0520 = 5% more
+# inflors on corridor vs non-corridor subtransect in 2018.
+
+# % change, non-corr to corr subtransect, 2019:
+#           there were (8.05 - 6.164)/6.164 = 0.30597 = 31% more
+# inflors on corridor vs non-corridor subtransect in 2019.
+
+
+
+
 # mean num. inflors at urban terminus in 2018: (2.711 + 7.451)/2 = 5.081
 # mean num. inflors at rural terminus in 2018: (8.398 + 6.904)/2 = 7.651
 # mean num. inflors at urban terminus in 2019: (3.733 + 4.236)/2 = 3.985
@@ -1256,16 +1284,16 @@ Perc_change_subtransects_ggpredict(peds_subtr_01_pred)
 # URBAN MEAN: (5.081 + 3.985) / 2 = 4.533
 # RURAL MEAN: (7.651 + 8.896) / 2 = 8.274
 
-# % diff: urban terminus had, on average, (4.533 - 8.274)/8.274 =
+# % change: urban terminus had, on average, (4.533 - 8.274)/8.274 =
 #         -0.452 = 45% fewer inflors than rural terminus
 
-# % diff, urb:rural, 2018:
+# % change, urb:rural, 2018:
 #                         urb mean = 5.081
 #                         rur mean = 7.651
 #                         there were (5.081 - 7.651)/7.651 = -0.3359 = 34% fewer
 # inflors at urb terminus than rural terminus in 2018.
 
-# % diff, urb:rural, 2019:
+# % change, urb:rural, 2019:
 #                         urb mean = 3.985
 #                         rur mean = 8.896
 #                         there were (3.985 - 8.896)/8.896 = -0.552 = 55% fewer
@@ -1284,6 +1312,19 @@ Perc_change_subtransects_ggpredict(poll_subtr_01_pred)
 #             urban/2019: 0.872/5 = 0.174 (17%)
 #             rural/2018: 1.7/5 = 0.34 (34%)
 #             rural/2019: 0.68/5 = 0.136 (14%)
+
+# looking at diffs btwn subtransects
+## MEAN: 2018/northern subtransect: (0.07 + 0.404) / 2 = 0.237 = 23.7% removed
+## MEAN: 2018/southern subtransect: (0.224 + 0.34) / 2 = 0.282 = 28.2%
+## MEAN: 2019/northern subtransect: (0.191 + 0.108) / 2 = 0.1495 = 15%
+## MEAN: 2019/southern subtransect: (0.174 + 0.136) / 2 = 0.155 = 16%
+
+# looking at changes along subtransects
+## % change: 2018/northern/rur-->urb: (0.07 - 0.404) / 0.404 = -0.8267 = 83% decrease
+## % change: 2018/southern/rur-->urb: (0.224 - 0.34) / 0.34 = -0.3412 = 34% decrease
+## % change: 2019/northern/rur-->urb: (0.191 - 0.108) / 0.108 = 0.7685 = 77% increase
+## % change: 2019/southern/rur-->urb: (0.174 - 0.136) / 0.136 = 0.2794 = 28% increase
+ - 
 
 
 
