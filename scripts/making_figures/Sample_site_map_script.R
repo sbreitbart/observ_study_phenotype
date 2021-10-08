@@ -12,9 +12,6 @@ library(ggsn)
 # Import data
 #---------------------
 
-# REMOVE API KEY EVENTUALLY
-ggmap::register_google(key = "AIzaSyDa0p-isKca8Plhs2zSy5inHG9LQTb0MEs")
-
 sites_all <- read.csv(here("./raw_data/80_Sites.csv"), sep = ",", header = TRUE)
 sites <- sites_all[,2:6]
 sites <- sites[c(1:3, 5,10,14,17,21:93),]

@@ -138,16 +138,35 @@ ggpred_Q1.citydist_podsperped <- (ggplot(podsperped_gradient_01_pred) +
        y = "Follicles per Inflorescence") 
 
 
+# 
+# Q1_regressions_citydist_ggpred <- ggarrange(ggpred_Q1.citydist_peds ,
+#                                             ggpred_Q1.citydist_poll,
+#                                             ggpred_Q1.citydist_pods,
+#                                             ggpred_Q1.citydist_podsperped +
+#                                        font("x.text"),
+#                                      ncol = 4,
+#                                      nrow = 1,
+#                                      align = "hv",
+#                                      labels = list("A", "B", "C", "D"),
+#                                      font.label = (size =16),
+#                                      common.legend = T,
+#                                      legend = "top") %T>%
+#   plot
 
-Q1_regressions_citydist_ggpred <- ggarrange(ggpred_Q1.citydist_peds , ggpred_Q1.citydist_poll, ggpred_Q1.citydist_pods,  ggpred_Q1.citydist_podsperped +
-                                       font("x.text"),
-                                     ncol = 4,
-                                     nrow = 1,
-                                     align = "hv",
-                                     labels = list("A", "B", "C", "D"),
-                                     font.label = (size =16),
-                                     common.legend = T,
-                                     legend = "top") %T>%
+
+# REARRANGED FOR PAPER
+Q1_regressions_citydist_ggpred <- ggarrange(ggpred_Q1.citydist_poll,
+          ggpred_Q1.citydist_podsperped,
+          ggpred_Q1.citydist_pods,
+          ggpred_Q1.citydist_peds+
+            font("x.text"),
+          ncol = 4,
+          nrow = 1,
+          align = "hv",
+          labels = list("A", "B", "C", "D"),
+          font.label = (size =16),
+          common.legend = T,
+          legend = "top") %T>%
   plot
 
 
@@ -313,7 +332,7 @@ Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.urbscore_peds ,
                                             legend = "none") %T>%
   plot
 
-
+# PUT THIS PLOT INTO MAIN TEXT 
 city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
                                      bottom = text_grob("Distance to Urban Center (km)",
                                                         size=14))
@@ -764,10 +783,25 @@ ggpred_Q2.citydist_podsperped
 
 
 
-Q2_regressions_citydist_ggpred <- ggarrange(ggpred_Q2.citydist_peds ,
-                                            ggpred_Q2.citydist_poll,
+# Q2_regressions_citydist_ggpred <- ggarrange(ggpred_Q2.citydist_peds ,
+#                                             ggpred_Q2.citydist_poll,
+#                                             ggpred_Q2.citydist_pods,
+#                                             ggpred_Q2.citydist_podsperped +
+#                                               font("x.text"),
+#                                             ncol = 4,
+#                                             nrow = 1,
+#                                             align = "hv",
+#                                             labels = list("A", "B", "C", "D"),
+#                                             font.label = (size =16),
+#                                             common.legend = T,
+#                                             legend = "top") %T>%
+#   plot
+
+# reordering for main text
+Q2_regressions_citydist_ggpred <- ggarrange( ggpred_Q2.citydist_poll,
                                             ggpred_Q2.citydist_pods,
-                                            ggpred_Q2.citydist_podsperped +
+                                            ggpred_Q2.citydist_podsperped,
+                                            ggpred_Q2.citydist_peds +
                                               font("x.text"),
                                             ncol = 4,
                                             nrow = 1,
@@ -1062,11 +1096,27 @@ ggpred_Q2.urbscore_podsperped
 
 
 
+# 
+# Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.urbscore_peds ,
+#                                             ggpred_Q2.urbscore_poll,
+#                                             ggpred_Q2.urbscore_pods,
+#                                             ggpred_Q2.urbscore_podsperped +
+#                                               font("x.text"),
+#                                             ncol = 4,
+#                                             nrow = 1,
+#                                             align = "hv",
+#                                             labels = list("E", "F", "G", "H"),
+#                                             font.label = (size =16),
+#                                             common.legend = T,
+#                                             legend = "none") %T>%
+#   plot
 
-Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.urbscore_peds ,
-                                            ggpred_Q2.urbscore_poll,
+
+# reordering for main text
+Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.urbscore_poll,
                                             ggpred_Q2.urbscore_pods,
-                                            ggpred_Q2.urbscore_podsperped +
+                                            ggpred_Q2.urbscore_podsperped, 
+                                            ggpred_Q2.urbscore_peds  +
                                               font("x.text"),
                                             ncol = 4,
                                             nrow = 1,

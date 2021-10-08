@@ -33,6 +33,7 @@ For code comparing variable means  across years, urban to rural terminii, and su
 # install.packages("BH")
 # install.packages("car")
 # install.packages("cowplot")
+# install.packages("DHARMa")
 # install.packages("digest", type="source")
 # install.packages("dplyr")
 # install.packages("factoextra")
@@ -73,7 +74,7 @@ For code comparing variable means  across years, urban to rural terminii, and su
 library(car)
 library(data.table)
 # library(devtools)
-# library(DHARMa)
+library(DHARMa)
 library(dplyr)
 library(e1071)
 # library(factoextra)
@@ -81,6 +82,7 @@ library(flextable)
 library(forcats)
 library(geosphere)
 # library(ggbiplot)
+library(ggeffects)
 library(ggiraphExtra)
 library(ggmap)
 library(ggpubr)
@@ -316,8 +318,6 @@ corr_df_spread$Perc_Greensp_Cumulative <- cumsum(corr_df_spread[, 5])
 write.csv(corr_df_spread, here::here("./Corridor_Analysis/corr_df_spread.csv"), row.names = FALSE)
 
 ```
-
-
 
 # Results
 ## Questions 1-2 (Milkweed data)
@@ -3567,7 +3567,7 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_09) %>%
 ```
 
 
-### Figures
+### Figures- NOT USING THESE- THESE USE POP MEANS. LOOK TO GGPREDICT_FIGURES.R SCRIPT INSTEAD FOR GGPREDICT-GENERATED PLOTS.
 #### Main text
 ##### Gradient regressions
 ```{r}
