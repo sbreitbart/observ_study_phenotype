@@ -71,6 +71,7 @@ For code comparing variable means  across years, urban to rural terminii, and su
 # library("tibble", lib.loc="~/R/win-library/3.5")
 # library(agricolae)
 # library(apaTables)
+library(broom.mixed)
 library(car)
 library(data.table)
 # library(devtools)
@@ -119,6 +120,7 @@ library(tidyr)
 library(tidyverse)
 library(vegan)
 library(viridis)
+library(xlsx)
 require(ggiraph)
 require(ggiraphExtra)
 require(ggplot2)
@@ -2866,7 +2868,6 @@ make_Q1Q2_Anova <- function(anova_list){
 
 
 
-
 # CITY_DIST-----
 ## ALL SITES
 
@@ -3109,7 +3110,7 @@ make_Q1Q2_Anova.height(u_height_lmer_gradient_01) %>%
 
 
 ## URBAN SITES
-# Height: 
+# Height: u_height_lmer_subtr_01
 
 make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
   width(j = 1, width = 3.2) %>%
@@ -3314,8 +3315,7 @@ lapply(alt_best_mods_Q2.dist_list, tidy_sb) %>%
 
 alt_best_mods_Q1.urbscore_list <- list(
 ### Peduncles- NONE- only 1 best model
-### Pollinia
-  u_poll_glmer_gradient_1.1,
+### Pollinia- NONE- only 1 best model
 ### Pods-      NONE- only 1 best model
 ### Pods/Peduncle
   u_podsperped_lmer_gradient_01
@@ -3565,6 +3565,250 @@ make_Q1Q2_Anova.height(u_height_lmer_subtr_09) %>%
   add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q2_Urbscore_ANOVA_altmodels_HEIGHT.png"))
 ```
+
+
+##### Creating table with AIC scores
+###### Question 1
+```{r}
+# Lists of models
+
+# BEST MODELS
+## Q1/Dist: best_mods_Q1.dist_list
+### HEIGHT: height_lmer_gradient_02
+
+## Q1/Urb score: best_mods_Q1.urbscore_list
+### HEIGHT: u_height_lmer_gradient_01
+
+# ALTERNATIVE MODELS
+## Q1/Dist: ONLY podsperped_lmer_gradient_01 (1)
+### HEIGHT: height_lmer_gradient_01
+
+## Q1/Urb score: ONLY u_podsperped_lmer_gradient_01 (1)
+### HEIGHT: u_height_lmer_gradient_02
+
+
+AIC_df.Q1 <- data.frame(matrix(nrow = 14,
+                            ncol = 6))
+
+colnames(AIC_df.Q1) <- c("Model", "Urbanization_Metric", "Best_or_Alt_Model", "Variable", "AIC", "Delta_AIC_from_Best_Model")
+AIC_df.Q1$Model <- seq.int(nrow(AIC_df.Q1))
+AIC_df.Q1[c(1:5, 11:12),  2] <- "Distance from City Center"
+AIC_df.Q1[c(6:10, 13:14), 2] <- "Urbanization Score"
+AIC_df.Q1[1:10,  3] <- "Best Model"
+AIC_df.Q1[11:14, 3] <- "Alternative Model"
+AIC_df.Q1 %<>%
+  mutate(Delta_AIC_from_Best_Model = case_when(
+    Best_or_Alt_Model == "Best Model" ~ "-"))
+
+# Q1/Dist- BEST- main vars
+for (i in 1:length(best_mods_Q1.dist_list)){
+  AIC_df.Q1[i, 4] <- as.character(formula(best_mods_Q1.dist_list[[i]])[2])
+  AIC_df.Q1[i, 5] <- as.double(AIC(best_mods_Q1.dist_list[[i]])) %>%
+    round(., 3)
+}
+# Q1/Dist- BEST- height
+AIC_df.Q1[5, 4] <- as.character(formula(height_lmer_gradient_02)[2])
+AIC_df.Q1[5, 5] <- as.double(AIC(height_lmer_gradient_02)) %>%
+  round(., 3)
+
+
+
+# Q1/Urb score- BEST- main vars
+for (i in 1:length(best_mods_Q1.urbscore_list)){
+  AIC_df.Q1[(i + 5), 4] <- as.character(formula(best_mods_Q1.urbscore_list[[i]])[2])
+  AIC_df.Q1[(i + 5), 5] <- as.double(AIC(best_mods_Q1.urbscore_list[[i]])) %>%
+    round(., 3)
+}
+
+# Q1/Urb score- BEST- height
+AIC_df.Q1[10, 4] <- as.character(formula(u_height_lmer_gradient_01)[2])
+AIC_df.Q1[10, 5] <- as.double(AIC(u_height_lmer_gradient_01)) %>%
+  round(., 3)
+
+# ----
+
+# Q1/Dist- ALTERNATIVE- main vars
+AIC_df.Q1[11, 4] <- as.character(formula(podsperped_lmer_gradient_01)[2])
+AIC_df.Q1[11, 5] <- as.double(AIC(podsperped_lmer_gradient_01)) %>%
+  round(., 3)
+## now calculate Delta AIC
+AIC_df.Q1[11, 6] <- as.numeric(AIC_df.Q1[11, 5] - AIC_df.Q1[4, 5]) %>% 
+  round(3)
+
+# Q1/Dist- ALTERNATIVE- height
+AIC_df.Q1[12, 4] <- as.character(formula(height_lmer_gradient_01)[2])
+AIC_df.Q1[12, 5] <- as.double(AIC(height_lmer_gradient_01)) %>%
+  round(., 3)
+## now calculate Delta AIC
+AIC_df.Q1[12, 6] <- as.numeric(AIC_df.Q1[12, 5] - AIC_df.Q1[5, 5]) %>% 
+  round(3)
+
+
+
+
+# Q1/Urb score- ALTERNATIVE- main vars
+AIC_df.Q1[13, 4] <- as.character(formula(u_podsperped_lmer_gradient_01)[2])
+AIC_df.Q1[13, 5] <- as.double(AIC(u_podsperped_lmer_gradient_01)) %>%
+    round(., 3)
+## now calculate Delta AIC
+AIC_df.Q1[13, 6] <- as.numeric(AIC_df.Q1[13, 5] - AIC_df.Q1[9, 5]) %>% 
+  round(3)
+
+# Q1/Urb score- ALTERNATIVE- height
+AIC_df.Q1[14, 4] <- as.character(formula(u_height_lmer_gradient_02)[2])
+AIC_df.Q1[14, 5] <- as.double(AIC(u_height_lmer_gradient_02)) %>%
+  round(., 3)
+## now calculate Delta AIC
+AIC_df.Q1[14, 6] <- as.numeric(AIC_df.Q1[14, 5] - AIC_df.Q1[10, 5]) %>% 
+  round(3)
+
+
+
+# Now make variable names nice
+AIC_df.Q1 %<>%
+  mutate(Variable = case_when(
+    str_detect(Variable, "Peduncles") ~ "Inflorescences",
+    str_detect(Variable, "Pollinia")  ~ "Pollinaria Removed",
+    str_detect(Variable, "Viable_Pods") ~ "Follicles",
+    str_detect(Variable, "pods_per")  ~ "Follicles per Inflorescence",
+    str_detect(Variable, "Sept")  ~ "Height"
+    )
+  )
+
+
+write.table(AIC_df.Q1, file = here::here("./Figures_Tables/AIC_df_Q1.txt"), sep = ",", quote = FALSE, row.names = F)
+
+```
+
+
+###### Question 2
+```{r}
+# Lists of models
+
+# BEST MODELS
+## Q2/Dist: best_mods_Q2.dist_list
+### HEIGHT: height_lmer_subtr_01
+## Q2/Urb score: best_mods_Q2.urbscore_list
+### HEIGHT: u_height_lmer_subtr_01
+
+# ALTERNATIVE MODELS
+## Q2/Dist: alt_best_mods_Q2.dist_list (7)- 1 pollinia, 2 everything else
+### HEIGHT: height_lmer_subtr_08
+## Q2/Urb score: alt_best_mods_Q2.urbscore_list (6)- 2 ped, 1 pod, 3 pod/ped
+### HEIGHT: u_height_lmer_subtr_09
+
+AIC_df.Q2 <- data.frame(matrix(nrow = 25, 
+                            ncol = 6))
+
+colnames(AIC_df.Q2) <- c("Model", "Urbanization_Metric", "Best_or_Alt_Model", "Variable", "AIC", "Delta_AIC_from_Best_Model")
+AIC_df.Q2$Model <- seq.int(nrow(AIC_df.Q2))
+AIC_df.Q2[c(1:5, 11:18),  2] <- "Distance from City Center"
+AIC_df.Q2[c(6:10, 19:25), 2] <- "Urbanization Score"
+AIC_df.Q2[1:10,  3] <- "Best Model"
+AIC_df.Q2[11:25, 3] <- "Alternative Model"
+AIC_df.Q2 %<>%
+  mutate(Delta_AIC_from_Best_Model = case_when(
+    Best_or_Alt_Model == "Best Model" ~ "-"))
+
+# Q2/Dist- BEST- main vars
+for (i in 1:length(best_mods_Q2.dist_list)){
+  AIC_df.Q2[i, 4] <- as.character(formula(best_mods_Q2.dist_list[[i]])[2])
+  AIC_df.Q2[i, 5] <- as.double(AIC(best_mods_Q2.dist_list[[i]])) %>%
+    round(., 3)
+}
+# Q2/Dist- BEST- height
+AIC_df.Q2[5, 4] <- as.character(formula(height_lmer_subtr_01)[2])
+AIC_df.Q2[5, 5] <- as.double(AIC(height_lmer_subtr_01)) %>%
+  round(., 3)
+  
+
+# Q2/Urb score- BEST
+for (i in 1:length(best_mods_Q2.urbscore_list)){
+  AIC_df.Q2[(i + 5), 4] <- as.character(formula(best_mods_Q2.urbscore_list[[i]])[2])
+  AIC_df.Q2[(i + 5), 5] <- as.double(AIC(best_mods_Q2.urbscore_list[[i]])) %>%
+    round(., 3)
+}
+# Q2/Urb score- BEST- height
+AIC_df.Q2[10, 4] <- as.character(formula(u_height_lmer_subtr_01)[2])
+AIC_df.Q2[10, 5] <- as.double(AIC(u_height_lmer_subtr_01)) %>%
+  round(., 3)
+  
+
+
+# Q2/Dist- ALTERNATIVE
+for (i in 1:length(alt_best_mods_Q2.dist_list)){
+  AIC_df.Q2[(i + 10), 4] <- as.character(formula(alt_best_mods_Q2.dist_list[[i]])[2])
+  AIC_df.Q2[(i + 10), 5] <- as.double(AIC(alt_best_mods_Q2.dist_list[[i]])) %>%
+    round(., 3)
+}
+## now calculate Delta AIC
+AIC_df.Q2[11, 6] <- as.numeric(AIC_df.Q2[11, 5] - AIC_df.Q2[1, 5]) %>% 
+  round(3)
+AIC_df.Q2[12, 6] <- as.numeric(AIC_df.Q2[12, 5] - AIC_df.Q2[1, 5]) %>% 
+  round(3)
+AIC_df.Q2[13, 6] <- as.numeric(AIC_df.Q2[13, 5] - AIC_df.Q2[2, 5]) %>% 
+  round(3)
+AIC_df.Q2[14, 6] <- as.numeric(AIC_df.Q2[14, 5] - AIC_df.Q2[3, 5]) %>% 
+  round(3)
+AIC_df.Q2[15, 6] <- as.numeric(AIC_df.Q2[15, 5] - AIC_df.Q2[3, 5]) %>% 
+  round(3)
+AIC_df.Q2[16, 6] <- as.numeric(AIC_df.Q2[16, 5] - AIC_df.Q2[4, 5]) %>% 
+  round(3)
+AIC_df.Q2[17, 6] <- as.numeric(AIC_df.Q2[17, 5] - AIC_df.Q2[4, 5]) %>% 
+  round(3)
+# Q2/Dist- ALTERNATIVE- height
+AIC_df.Q2[18, 4] <- as.character(formula(height_lmer_subtr_08)[2])
+AIC_df.Q2[18, 5] <- as.double(AIC(height_lmer_subtr_08)) %>%
+  round(., 3)
+## now calculate Delta AIC
+AIC_df.Q2[18, 6] <- as.numeric(AIC_df.Q2[18, 5] - AIC_df.Q2[5, 5]) %>% 
+  round(3)
+
+# Q2/Urb score- ALTERNATIVE
+for (i in 1:length(alt_best_mods_Q2.urbscore_list)){
+  AIC_df.Q2[(i + 18), 4] <- as.character(formula(alt_best_mods_Q2.urbscore_list[[i]])[2])
+  AIC_df.Q2[(i + 18), 5] <- as.double(AIC(alt_best_mods_Q2.urbscore_list[[i]])) %>%
+    round(., 3)
+}
+## now calculate Delta AIC
+AIC_df.Q2[19, 6] <- as.numeric(AIC_df.Q2[19, 5] - AIC_df.Q2[6, 5]) %>% 
+  round(3)
+AIC_df.Q2[20, 6] <- as.numeric(AIC_df.Q2[20, 5] - AIC_df.Q2[6, 5]) %>% 
+  round(3)
+AIC_df.Q2[21, 6] <- as.numeric(AIC_df.Q2[21, 5] - AIC_df.Q2[8, 5]) %>% 
+  round(3)
+AIC_df.Q2[22, 6] <- as.numeric(AIC_df.Q2[22, 5] - AIC_df.Q2[9, 5]) %>% 
+  round(3)
+AIC_df.Q2[23, 6] <- as.numeric(AIC_df.Q2[23, 5] - AIC_df.Q2[9, 5]) %>% 
+  round(3)
+AIC_df.Q2[24, 6] <- as.numeric(AIC_df.Q2[24, 5] - AIC_df.Q2[9, 5]) %>% 
+  round(3)
+# Q2/Dist- ALTERNATIVE- height
+AIC_df.Q2[25, 4] <- as.character(formula(u_height_lmer_subtr_09)[2])
+AIC_df.Q2[25, 5] <- as.double(AIC(u_height_lmer_subtr_09)) %>%
+  round(., 3)
+## now calculate Delta AIC
+AIC_df.Q2[25, 6] <- as.numeric(AIC_df.Q2[25, 5] - AIC_df.Q2[10, 5]) %>% 
+  round(3)
+
+
+
+# Now make variable names nice
+AIC_df.Q2 %<>%
+  mutate(Variable = case_when(
+    str_detect(Variable, "Peduncles") ~ "Inflorescences",
+    str_detect(Variable, "Pollinia")  ~ "Pollinaria Removed",
+    str_detect(Variable, "Viable_Pods") ~ "Follicles",
+    str_detect(Variable, "pods_per")  ~ "Follicles per Inflorescence",
+    str_detect(Variable, "Sept")  ~ "Height"
+    )
+  )
+
+
+
+write.table(AIC_df.Q2, file = here::here("./Figures_Tables/AIC_df_Q2.txt"), sep = ",", quote = FALSE, row.names = F)
+```
+
 
 
 ### Figures- NOT USING THESE- THESE USE POP MEANS. LOOK TO GGPREDICT_FIGURES.R SCRIPT INSTEAD FOR GGPREDICT-GENERATED PLOTS.
