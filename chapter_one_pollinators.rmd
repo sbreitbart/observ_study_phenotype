@@ -2260,6 +2260,248 @@ lm.even.urbsubs.u %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Supplement/Alternative_Models/Alt_models_evenness/Q3_Dist_ANOVA_altmodels_evenness_urbscore.png"))
 ```
 
+##### Creating table with AIC scores
+###### Question 3
+```{r}
+
+# FOR QUESTION 4:
+## Dist, urb score: best_mods_Q3urban.dist_list; best_mods_Q3urban.usc_list
+## Evenness: lm.even.urbsubs; lm.even.urbsubs.u_ME
+## Alt models: alt_best_mods_Q3.dist_list; alt_best_mods_Q3.urbsc_list
+## Alt models: Evenness- lm.even.urbsubs_ME; lm.even.urbsubs.u
+
+# Lists of models
+
+# BEST MODELS
+## Q3/Dist: best_mods_Q3.dist_list
+### Evenness: lm.even
+
+## Q3/Urb score: best_mods_Q3.usc_list
+### Evenness: lm.even.u
+
+
+
+AIC_df.Q3 <- data.frame(matrix(nrow = 8,
+                            ncol = 5)) #6))
+
+colnames(AIC_df.Q3) <- c("Model", "Urbanization_Metric", "Best_or_Alt_Model", "Variable", "AIC"
+                         #, "Delta_AIC_from_Best_Model"
+                         )
+AIC_df.Q3$Model <- seq.int(nrow(AIC_df.Q3))
+AIC_df.Q3[c(1:4),  2] <- "Distance to Urban Center"
+AIC_df.Q3[c(5:8), 2] <- "Urbanization Score"
+AIC_df.Q3[1:8,  3] <- "Best Model"
+# AIC_df.Q3[11:14, 3] <- "Alternative Model"
+# AIC_df.Q3 %<>%
+#   mutate(Delta_AIC_from_Best_Model = case_when(
+#     Best_or_Alt_Model == "Best Model" ~ "-"))
+
+# Q3/Dist- BEST- main vars
+for (i in 1:length(best_mods_Q3.dist_list)){
+  AIC_df.Q3[i, 4] <- as.character(formula(best_mods_Q3.dist_list[[i]])[2])
+  AIC_df.Q3[i, 5] <- as.double(AIC(best_mods_Q3.dist_list[[i]])) %>%
+    round(., 3)
+}
+# Q3/Dist- BEST- evenness
+AIC_df.Q3[4, 4] <- as.character(formula(lm.even)[2])
+AIC_df.Q3[4, 5] <- as.double(AIC(lm.even)) %>%
+  round(., 3)
+
+
+
+# Q3/Urb score- BEST- main vars
+for (i in 1:length(best_mods_Q3.usc_list)){
+  AIC_df.Q3[(i + 4), 4] <- as.character(formula(best_mods_Q3.usc_list[[i]])[2])
+  AIC_df.Q3[(i + 4), 5] <- as.double(AIC(best_mods_Q3.usc_list[[i]])) %>%
+    round(., 3)
+}
+
+# Q3/Urb score- BEST- evenness
+AIC_df.Q3[8, 4] <- as.character(formula(lm.even.u)[2])
+AIC_df.Q3[8, 5] <- as.double(AIC(lm.even.u)) %>%
+  round(., 3)
+
+# ----
+# 
+# # Q3/Dist- ALTERNATIVE- main vars
+# AIC_df.Q3[11, 4] <- as.character(formula(podsperped_lmer_gradient_01)[2])
+# AIC_df.Q3[11, 5] <- as.double(AIC(podsperped_lmer_gradient_01)) %>%
+#   round(., 3)
+# ## now calculate Delta AIC
+# AIC_df.Q3[11, 6] <- as.numeric(AIC_df.Q3[11, 5] - AIC_df.Q3[4, 5]) %>% 
+#   round(3)
+# 
+# # Q3/Dist- ALTERNATIVE- height
+# AIC_df.Q3[12, 4] <- as.character(formula(height_lmer_gradient_01)[2])
+# AIC_df.Q3[12, 5] <- as.double(AIC(height_lmer_gradient_01)) %>%
+#   round(., 3)
+# ## now calculate Delta AIC
+# AIC_df.Q3[12, 6] <- as.numeric(AIC_df.Q3[12, 5] - AIC_df.Q3[5, 5]) %>% 
+#   round(3)
+# 
+# 
+# 
+# 
+# # Q3/Urb score- ALTERNATIVE- main vars
+# AIC_df.Q3[13, 4] <- as.character(formula(u_podsperped_lmer_gradient_01)[2])
+# AIC_df.Q3[13, 5] <- as.double(AIC(u_podsperped_lmer_gradient_01)) %>%
+#     round(., 3)
+# ## now calculate Delta AIC
+# AIC_df.Q3[13, 6] <- as.numeric(AIC_df.Q3[13, 5] - AIC_df.Q3[9, 5]) %>% 
+#   round(3)
+# 
+# # Q3/Urb score- ALTERNATIVE- height
+# AIC_df.Q3[14, 4] <- as.character(formula(u_height_lmer_gradient_02)[2])
+# AIC_df.Q3[14, 5] <- as.double(AIC(u_height_lmer_gradient_02)) %>%
+#   round(., 3)
+# ## now calculate Delta AIC
+# AIC_df.Q3[14, 6] <- as.numeric(AIC_df.Q3[14, 5] - AIC_df.Q3[10, 5]) %>% 
+#   round(3)
+
+
+
+# Now make variable names nice
+AIC_df.Q3 %<>%
+  mutate(Variable = case_when(
+    str_detect(Variable, "total") ~ "Abundance",
+    str_detect(Variable, "2")  ~ "Simpson's Diversity",
+    str_detect(Variable, "index") ~ "Species Richness",
+    str_detect(Variable, "equit")  ~ "Evenness"
+    )
+  )
+
+
+write.table(AIC_df.Q3, file = here::here("./Figures_Tables/AIC_df_Q3.txt"), sep = ",", quote = FALSE, row.names = F)
+
+```
+
+
+###### Question 4
+```{r}
+
+# Lists of models
+
+# BEST MODELS
+## Q4/Dist: best_mods_Q3urban.dist_list
+### Evenness: lm.even.urbsubs
+
+## Q4/Urb score: best_mods_Q3urban.usc_list
+### Evenness: lm.even.urbsubs.u_ME
+
+
+# ALTERNATIVE MODELS
+## Q4/Dist: alt_best_mods_Q3.dist_list
+### Evenness: lm.even.urbsubs_ME
+
+## Q4/Urb score: alt_best_mods_Q3.urbsc_list
+### Evenness: lm.even.urbsubs.u
+
+
+AIC_df.Q4 <- data.frame(matrix(nrow = 16,
+                            ncol = 6))
+
+colnames(AIC_df.Q4) <- c("Model", "Urbanization_Metric", "Best_or_Alt_Model", "Variable", "AIC", "Delta_AIC_from_Best_Model" )
+AIC_df.Q4$Model <- seq.int(nrow(AIC_df.Q4))
+AIC_df.Q4[c(1:4, 9:12),  2] <- "Distance to Urban Center"
+AIC_df.Q4[c(5:8, 13:16), 2] <- "Urbanization Score"
+AIC_df.Q4[1:8,  3] <- "Best Model"
+AIC_df.Q4[9:16, 3] <- "Alternative Model"
+AIC_df.Q4 %<>%
+  mutate(Delta_AIC_from_Best_Model = case_when(
+    Best_or_Alt_Model == "Best Model" ~ "-"))
+
+# Q4/Dist- BEST- main vars
+for (i in 1:length(best_mods_Q3urban.dist_list)){
+  AIC_df.Q4[i, 4] <- as.character(formula(best_mods_Q3urban.dist_list[[i]])[2])
+  AIC_df.Q4[i, 5] <- as.double(AIC(best_mods_Q3urban.dist_list[[i]])) %>%
+    round(., 3)
+}
+# Q4/Dist- BEST- evenness
+AIC_df.Q4[4, 4] <- as.character(formula(lm.even.urbsubs)[2])
+AIC_df.Q4[4, 5] <- as.double(AIC(lm.even.urbsubs)) %>%
+  round(., 3)
+
+
+
+# Q4/Urb score- BEST- main vars
+for (i in 1:length(best_mods_Q3urban.usc_list)){
+  AIC_df.Q4[(i + 4), 4] <- as.character(formula(best_mods_Q3urban.usc_list[[i]])[2])
+  AIC_df.Q4[(i + 4), 5] <- as.double(AIC(best_mods_Q3urban.usc_list[[i]])) %>%
+    round(., 3)
+}
+
+# Q4/Urb score- BEST- evenness
+AIC_df.Q4[8, 4] <- as.character(formula(lm.even.urbsubs.u_ME)[2])
+AIC_df.Q4[8, 5] <- as.double(AIC(lm.even.urbsubs.u_ME)) %>%
+  round(., 3)
+
+# ----
+
+# Q4/Dist- ALTERNATIVE- main vars
+for (i in 1:length(alt_best_mods_Q3.dist_list)){
+  AIC_df.Q4[(i + 8), 4] <- as.character(formula(alt_best_mods_Q3.dist_list[[i]])[2])
+  AIC_df.Q4[(i + 8), 5] <- as.double(AIC(alt_best_mods_Q3.dist_list[[i]])) %>%
+    round(., 3)
+}
+## now calculate Delta AIC
+AIC_df.Q4[9, 6] <- as.numeric(AIC_df.Q4[9, 5] - AIC_df.Q4[1, 5]) %>%
+  round(3)
+AIC_df.Q4[10, 6] <- as.numeric(AIC_df.Q4[10, 5] - AIC_df.Q4[2, 5]) %>%
+  round(3)
+AIC_df.Q4[11, 6] <- as.numeric(AIC_df.Q4[11, 5] - AIC_df.Q4[3, 5]) %>%
+  round(3)
+
+# Q4/Dist- ALTERNATIVE- evenness
+AIC_df.Q4[12, 4] <- as.character(formula(lm.even.urbsubs_ME)[2])
+AIC_df.Q4[12, 5] <- as.double(AIC(lm.even.urbsubs_ME)) %>%
+  round(., 3)
+## now calculate Delta AIC
+AIC_df.Q4[12, 6] <- as.numeric(AIC_df.Q4[12, 5] - AIC_df.Q4[4, 5]) %>%
+  round(3)
+
+
+
+# Q4/Urb score- ALTERNATIVE- main vars
+for (i in 1:length(alt_best_mods_Q3.urbsc_list)){
+  AIC_df.Q4[(i + 12), 4] <- as.character(formula(alt_best_mods_Q3.urbsc_list[[i]])[2])
+  AIC_df.Q4[(i + 12), 5] <- as.double(AIC(alt_best_mods_Q3.urbsc_list[[i]])) %>%
+    round(., 3)
+}
+## now calculate Delta AIC
+AIC_df.Q4[13, 6] <- as.numeric(AIC_df.Q4[13, 5] - AIC_df.Q4[5, 5]) %>%
+  round(3)
+AIC_df.Q4[14, 6] <- as.numeric(AIC_df.Q4[14, 5] - AIC_df.Q4[6, 5]) %>%
+  round(3)
+AIC_df.Q4[15, 6] <- as.numeric(AIC_df.Q4[15, 5] - AIC_df.Q4[7, 5]) %>%
+  round(3)
+
+# Q4/Urb score- ALTERNATIVE- evenness
+AIC_df.Q4[16, 4] <- as.character(formula(lm.even.urbsubs.u)[2])
+AIC_df.Q4[16, 5] <- as.double(AIC(lm.even.urbsubs.u)) %>%
+  round(., 3)
+## now calculate Delta AIC
+AIC_df.Q4[16, 6] <- as.numeric(AIC_df.Q4[16, 5] - AIC_df.Q4[8, 5]) %>%
+  round(3)
+
+
+
+# Now make variable names nice
+AIC_df.Q4 %<>%
+  mutate(Variable = case_when(
+    str_detect(Variable, "total") ~ "Abundance",
+    str_detect(Variable, "equit")  ~ "Evenness",
+    str_detect(Variable, "simpson")  ~ "Simpson's Diversity",
+    str_detect(Variable, "index") ~ "Species Richness"
+    )
+  )
+
+
+write.table(AIC_df.Q4, file = here::here("./Figures_Tables/AIC_df_Q4.txt"), sep = ",", quote = FALSE, row.names = F)
+
+```
+
+
+
 ## Tables
 ```{r}
 # Total pollinators observed per morphospecies:

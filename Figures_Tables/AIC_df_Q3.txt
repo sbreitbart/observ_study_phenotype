@@ -1,0 +1,9 @@
+Model,Urbanization_Metric,Best_or_Alt_Model,Variable,AIC
+1,Distance to Urban Center,Best Model,Abundance,179.929
+2,Distance to Urban Center,Best Model,Simpson's Diversity,-21.187
+3,Distance to Urban Center,Best Model,Species Richness,108.914
+4,Distance to Urban Center,Best Model,Evenness,24.56
+5,Urbanization Score,Best Model,Abundance,180.808
+6,Urbanization Score,Best Model,Simpson's Diversity,-23.829
+7,Urbanization Score,Best Model,Species Richness,105.806
+8,Urbanization Score,Best Model,Evenness,23.158
