@@ -50,56 +50,56 @@ output: html_document
 # library("tibble", lib.loc="~/R/win-library/3.5")
 # library(agricolae)
 # library(apaTables)
-library(car)
-library(data.table)
+library(car) # Companion to Applied Regression
+library(data.table) # Extension of `data.frame`
 # library(devtools)
 # library(DHARMa)
-library(dplyr)
-library(e1071)
+library(dplyr) # A Grammar of Data Manipulation
+library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien
 # library(factoextra)
-library(flextable)
-library(forcats)
-library(geosphere)
+library(flextable) # Functions for Tabular Reporting
+library(forcats) # Tools for Working with Categorical Variables (Factors)
+library(geosphere) # Spherical Trigonometry
 # library(ggbiplot)
-library(ggmap)
-library(ggpubr)
-library(ggsn)
-library(ggspatial)
-library(GISTools)
-library(glmmTMB)
-library(gridExtra)
-library(here)
-library(Hmisc)
+library(ggmap) # Spatial Visualization with ggplot2
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
+library(ggsn) # North Symbols and Scale Bars for Maps Created with 'ggplot2' or 'ggmap'
+library(ggspatial) # Spatial Data Framework for ggplot2
+library(GISTools) # Some further GIS capabilities for R
+library(glmmTMB) # Generalized Linear Mixed Models using Template Model Builder
+library(gridExtra) # Miscellaneous Functions for "Grid" Graphics
+library(here) # A Simpler Way to Find Your Files
+library(Hmisc) # Harrell Miscellaneous
 # library(hrbrthemes)
 # library(ISLR)
 # library(janitor)
 # library(lindia)
-library(lme4)
-library(lmerTest)
+library(lme4) # Linear Mixed-Effects Models using 'Eigen' and S4
+library(lmerTest) # Tests in Linear Mixed Effects Models
 # library(lsmeans)
-library(MASS)
-library(multcomp)
+library(MASS) # Support Functions and Datasets for Venables and Ripley's MASS
+library(multcomp) # Simultaneous Inference in General Parametric Models
 # library(MuMIn)
-library(nlme)
-library(officer)
-library(patchwork)
-library(plyr)
-library(reshape)
-library(reshape2)
-library(Rmisc)
-library(rpart)
-library(sjPlot)
+library(nlme) # Linear and Nonlinear Mixed Effects Models
+library(officer) # Manipulation of Microsoft Word and PowerPoint Documents
+library(patchwork) # The Composer of Plots
+library(plyr) # Tools for Splitting, Applying and Combining Data
+library(reshape) # Flexibly Reshape Data
+library(reshape2) # Flexibly Reshape Data: A Reboot of the Reshape Package
+library(Rmisc) # Rmisc: Ryan Miscellaneous
+library(rpart) # Recursive Partitioning and Regression Trees
+library(sjPlot) # Data Visualization for Statistics in Social Science
 # library(stargazer)
-library(tibble)
-library(tidyr)
-library(tidyverse)
-library(vegan)
-library(viridis)
-require(ggiraph)
-require(ggiraphExtra)
-require(ggplot2)
+library(tibble) # Simple Data Frames
+library(tidyr) # Tidy Messy Data
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+library(vegan) # Community Ecology Package
+library(viridis) # Colorblind-Friendly Color Maps for R
+require(ggiraph) # Make 'ggplot2' Graphics Interactive
+require(ggiraphExtra) # Make Interactive 'ggplot2'. Extension to 'ggplot2' and 'ggiraph'
+require(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
 # require(MASS)
-require(scales)
+require(scales) # Scale Functions for Visualization
 
 ```
 
@@ -2660,22 +2660,23 @@ abun.u <- ggplot(sum_abun,
               alpha = 0.15,
               color = "black") +
   labs(x = "Urbanization Score",
-       y = "Mean Pollinators Observed per Plant") +
+       y = "Mean Pollinators \n Observed per Plant") +
   xlim(4, -4) +
   ylim(0, 6) +
   # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  theme_bw() + 
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
-    ) +
-  theme_bw()
+    )
 # +
 #   labs(caption = "Error bars represent standard error")
 abun.u
@@ -2763,7 +2764,7 @@ abun_transect.u <- ggplot(sum_abun %>%
                             fill = Transect,
                             linetype = Transect)) +
   labs(x = "Urbanization Score",
-       y = "Mean Pollinators Observed per Plant",
+       y = "Mean Pollinators \n Observed per Plant",
        shape = "Subtransect",
        linetype = "Subtransect",
        color = "Subtransect",
@@ -2782,6 +2783,7 @@ abun_transect.u <- ggplot(sum_abun %>%
               alpha = 0.15) +
   xlim(4, -2) +
   ylim(0, 4) +
+  theme_bw() +
   # scale_shape(solid = F)+
   # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
@@ -2790,7 +2792,8 @@ abun_transect.u <- ggplot(sum_abun %>%
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
@@ -2806,8 +2809,7 @@ abun_transect.u <- ggplot(sum_abun %>%
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
                         labels = c("Urban: Non-Corridor",
-                                "Urban: Corridor")) +
-  theme_bw()
+                                "Urban: Corridor")) 
 # +
 #   labs(caption = "Error bars represent standard error")
 abun_transect.u
@@ -2962,6 +2964,7 @@ diversity_simpson.u <- ggplot(sum_diversity,
        y = expression("Simpson's Diversity Index "^2)) +
   xlim(4, -4) +
   ylim(0, 1) +
+  theme_bw() +
   # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
     legend.position = c(.99, .99),
@@ -2969,12 +2972,12 @@ diversity_simpson.u <- ggplot(sum_diversity,
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
-    ) +
-  theme_bw()
+    ) 
 # +
 #   labs(caption = "Error bars represent standard error")
 diversity_simpson.u
@@ -3066,6 +3069,7 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
               alpha = 0.3) +
   xlim(4, -2) +
   ylim(0, 1) +
+  theme_bw() +
   # scale_shape(solid = F)+
   theme(
     legend.position = c(.99, .99),
@@ -3073,7 +3077,8 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
@@ -3089,8 +3094,7 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
                         labels = c("Urban: Non-Corridor",
-                                "Urban: Corridor")) +
-  theme_bw()
+                                "Urban: Corridor")) 
 # +
 #   labs(caption = "Error bars represent standard error")
 diversity_simpson_transect.u
@@ -3146,9 +3150,10 @@ rich.u <- ggplot(sum_richness,
               alpha = 0.3,
               color = "black") +
   labs(x = "Urbanization Score",
-       y = "Menhinick's Species Richness") +
+       y = "Menhinick's \n Species Richness") +
   xlim(4, -4) +
   ylim(0, 4) +
+  theme_bw() +
   # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
     legend.position = c(.99, .99),
@@ -3156,12 +3161,12 @@ rich.u <- ggplot(sum_richness,
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
-    ) +
-  theme_bw()
+    ) 
 # +
 #   labs(caption = "Error bars represent standard error")
 rich.u
@@ -3238,7 +3243,7 @@ rich_transect.u <- ggplot(sum_richness %>%
                             fill = Transect,
                             linetype = Transect)) +
   labs(x = "Urbanization Score",
-       y = "Menhinick's Species Richness",
+       y = "Menhinick's \n Species Richness",
        shape = "Subtransect",
        linetype = "Subtransect",
        color = "Subtransect",
@@ -3254,6 +3259,7 @@ rich_transect.u <- ggplot(sum_richness %>%
               alpha = 0.3) +
   xlim(4, -2) +
   ylim(0, 4) +
+  theme_bw() +
   # scale_shape(solid = F)+
   theme(
     legend.position = c(.99, .99),
@@ -3261,7 +3267,8 @@ rich_transect.u <- ggplot(sum_richness %>%
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
@@ -3277,8 +3284,7 @@ rich_transect.u <- ggplot(sum_richness %>%
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
                         labels = c("Urban: Non-Corridor",
-                                "Urban: Corridor")) +
-  theme_bw()
+                                "Urban: Corridor")) 
 # +
 #   labs(caption = "Error bars represent standard error")
 rich_transect.u
@@ -3288,7 +3294,7 @@ rich_transect.u
 ##### Gradient
 ```{r}
 
-library(ggpubr)
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
 # Q3_regressions <- ggarrange(abun,
 #                             diversity_simpson,
 #                             rich,
@@ -3320,7 +3326,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollina
 
 ##### Transects
 ```{r}
-library(ggpubr)
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
 # Q3_regressions.transects <- ggarrange(abun_transect,
 #                             diversity_simpson_transect,
 #                             rich_transect,
@@ -3370,18 +3376,19 @@ even <- ggplot(sum_evenness,
        y = "Simpson's Evenness") +
   xlim(0,70) +
   # ylim(0, 4) +
+  theme_bw() +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
-    ) +
-  theme_bw()
+    ) 
 # +
 #   labs(caption = "Error bars represent standard error")
 even
@@ -3419,6 +3426,7 @@ even.u <- ggplot(sum_evenness,
 # +
 #   labs(caption = "Error bars represent standard error")
 even.u
+
 ```
 
 ###### Transects
@@ -3448,6 +3456,7 @@ even_transect <- ggplot(sum_evenness %>%
               size = 1,
               alpha = 0.3) +
   xlim(0, 40) +
+  theme_bw() +
   # ylim(0, 4) +
   # scale_shape(solid = F)+
   theme(
@@ -3456,7 +3465,8 @@ even_transect <- ggplot(sum_evenness %>%
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
@@ -3472,8 +3482,7 @@ even_transect <- ggplot(sum_evenness %>%
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
                         labels = c("Urban: Non-Corridor",
-                                "Urban: Corridor")) +
-  theme_bw()
+                                "Urban: Corridor")) 
 # +
 #   labs(caption = "Error bars represent standard error")
 even_transect
@@ -3505,6 +3514,7 @@ even_transect.u <- ggplot(sum_evenness %>%
               size = 1,
               alpha = 0.3) +
   xlim(4, -2) +
+  theme_bw() +
   # ylim(0, 4) +
   # scale_shape(solid = F)+
   theme(
@@ -3513,7 +3523,8 @@ even_transect.u <- ggplot(sum_evenness %>%
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
@@ -3529,8 +3540,7 @@ even_transect.u <- ggplot(sum_evenness %>%
                                 "Urban: Corridor")) +
   scale_linetype_manual(values = c('solid', 'dashed'),
                         labels = c("Urban: Non-Corridor",
-                                "Urban: Corridor")) +
-  theme_bw()
+                                "Urban: Corridor")) 
 # +
 #   labs(caption = "Error bars represent standard error")
 even_transect.u
@@ -3540,7 +3550,7 @@ even_transect.u
 ####### Gradient & transect figs together
 ```{r}
 
-library(ggpubr)
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
 Q3_regressions.evenness <- ggarrange(even,
                             even_transect,
                             even.u,
@@ -3559,7 +3569,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplem
 ######## Gradient figs
 ```{r}
 
-library(ggpubr)
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
 Q3_regressions.evenness.gradient <- ggarrange(even,
                             even.u,
                             ncol = 2, nrow = 1, align = "h",
@@ -3570,12 +3580,25 @@ Q3_regressions.evenness.gradient
 
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_Evenness_gradientfigs.pdf", width = 6, height = 2.5)
+
+
+
+##### ADD OTHER URB_SCORE VARS TOO
+ggarrange(even,
+          abun.u,
+          diversity_simpson.u,
+          rich.u,
+          even.u,
+          ncol = 3, nrow = 2, align = "hv",
+          labels = list("A", "B", "C", "D", "E"),
+          font.label = (size =16),
+          common.legend = TRUE)
 ```
 
 ######## Transect figs
 ```{r}
 
-library(ggpubr)
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
 Q3_regressions.evenness.transects <- ggarrange(
                             even_transect,
                             even_transect.u,
@@ -3587,6 +3610,18 @@ Q3_regressions.evenness.transects
 
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_Evenness_transects.pdf", width = 6, height = 3)
+
+
+##### ADD OTHER URB_SCORE VARS TOO
+ggarrange(even_transect,
+          abun_transect.u,
+          diversity_simpson_transect.u,
+          rich_transect.u,
+          even_transect.u,
+          ncol = 3, nrow = 2, align = "hv",
+          labels = list("A", "B", "C", "D", "E"),
+          font.label = (size =14),
+          common.legend = TRUE)
 ```
 
 
@@ -3989,7 +4024,7 @@ diversity_simpson_transect.u.nohoney
 ####### Gradient
 ```{r}
 
-library(ggpubr)
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
 Q3_regressions.nohoney <- ggarrange(abun.nohoney,
                             diversity_simpson.nohoney,
                             abun.u.nohoney,
@@ -4007,7 +4042,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplem
 
 ####### Transects
 ```{r}
-library(ggpubr)
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
 Q3_regressions.transects.nohoney <- ggarrange(abun_transect.nohoney,
                             diversity_simpson_transect.nohoney,
                             abun_transect.u.nohoney,
@@ -4022,3 +4057,4 @@ Q3_regressions.transects.nohoney
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_transects_nohoneybees.pdf", width = 12, height = 7)
 ```
+

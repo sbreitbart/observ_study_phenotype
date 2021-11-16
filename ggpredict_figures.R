@@ -219,7 +219,7 @@ ggpred_Q1.urbscore_peds <- (ggplot(peds_gradient_01_pred.u) +
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    axis.title.x = element_blank(),
+    # axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) ) + 
@@ -249,7 +249,7 @@ ggpred_Q1.urbscore_poll <- (ggplot(poll_gradient_01_pred.u) +
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    axis.title.x = element_blank(),
+    # axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) ) + 
@@ -279,7 +279,7 @@ ggpred_Q1.urbscore_pods <- (ggplot(pods_gradient_01_pred.u) +
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    axis.title.x = element_blank(),
+    # axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) ) + 
@@ -309,7 +309,7 @@ ggpred_Q1.urbscore_podsperped <- (ggplot(podsperped_gradient_01_pred.u) +
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    axis.title.x = element_blank(),
+    # axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) ) + 
@@ -317,20 +317,19 @@ ggpred_Q1.urbscore_podsperped <- (ggplot(podsperped_gradient_01_pred.u) +
        y = "Follicles per Inflorescence") 
 
 
-
-Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.urbscore_peds ,
-                                            ggpred_Q1.urbscore_poll,
-                                            ggpred_Q1.urbscore_pods,
-                                            ggpred_Q1.urbscore_podsperped +
-                                              font("x.text"),
-                                            ncol = 4,
-                                            nrow = 1,
-                                            align = "hv",
-                                            labels = list("A", "B", "C", "D"),
-                                            font.label = (size =16),
-                                            common.legend = T,
-                                            legend = "none") %T>%
-  plot
+# Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.urbscore_peds ,
+#                                             ggpred_Q1.urbscore_poll,
+#                                             ggpred_Q1.urbscore_pods,
+#                                             ggpred_Q1.urbscore_podsperped +
+#                                               font("x.text"),
+#                                             ncol = 4,
+#                                             nrow = 1,
+#                                             align = "hv",
+#                                             labels = list("A", "B", "C", "D"),
+#                                             font.label = (size =16),
+#                                             common.legend = T,
+#                                             legend = "none") %T>%
+#   plot
 
 # PUT THIS PLOT INTO MAIN TEXT 
 city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
@@ -339,6 +338,25 @@ city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
 urbscore_plots.ggpred <- annotate_figure(Q1_regressions_urbscore_ggpred,
                                          bottom = text_grob("Urbanization Score",
                                                             size=14))
+
+# this is now going into supplement. Going to add height
+Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.citydist_height, # city_dist
+                                            ggpred_Q1.urbscore_peds , # urb_score
+                                            ggpred_Q1.urbscore_poll, # urb_score
+                                            ggpred_Q1.urbscore_pods, # urb_score
+                                            ggpred_Q1.urbscore_podsperped, # urb_score
+                                            ggpred_Q1.citydist_height.u + # urb_score
+                                              font("x.text"),
+                                            ncol = 3,
+                                            nrow = 2,
+                                            align = "hv",
+                                            labels = list("A", "B", "C",
+                                                          "D", "E", "F"),
+                                            font.label = (size =16),
+                                            common.legend = T,
+                                            legend = "right") %T>%
+  plot
+########################
 
 city_plots.ggpred/urbscore_plots.ggpred
 
@@ -898,7 +916,7 @@ ggpred_Q2.urbscore_peds <- (ggplot(peds_subtr_01_pred.u) +
         legend.box.just = "right",
         legend.margin = margin(5,5,5,5),
         text = element_text(size=14),
-        axis.title.x = element_blank(),
+        # axis.title.x = element_blank(),
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
@@ -961,7 +979,7 @@ ggpred_Q2.urbscore_poll <- (ggplot(poll_subtr_01_pred.u) +
         legend.box.just = "right",
         legend.margin = margin(5,5,5,5),
         text = element_text(size=14),
-        axis.title.x = element_blank(),
+        # axis.title.x = element_blank(),
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
@@ -1024,7 +1042,7 @@ ggpred_Q2.urbscore_pods <- (ggplot(pods_subtr_01_pred.u) +
         legend.box.just = "right",
         legend.margin = margin(5,5,5,5),
         text = element_text(size=14),
-        axis.title.x = element_blank(),
+        # axis.title.x = element_blank(),
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
@@ -1087,7 +1105,7 @@ ggpred_Q2.urbscore_podsperped <- (ggplot(podsperped_subtr_01_pred.u) +
         legend.box.just = "right",
         legend.margin = margin(5,5,5,5),
         text = element_text(size=14),
-        axis.title.x = element_blank(),
+        # axis.title.x = element_blank(),
         panel.background = element_blank(),
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
@@ -1140,6 +1158,29 @@ city_plots.ggpred2/urbscore_plots.ggpred2
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/Subtransect_regressions_ggpredict.pdf",
              width = 12, height = 8)
 
+
+# this is now going into supplement. Going to add height
+Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.citydist_height, # city_dist
+                                            ggpred_Q2.urbscore_peds , # urb_score
+                                            ggpred_Q2.urbscore_poll, # urb_score
+                                            ggpred_Q2.urbscore_pods, # urb_score
+                                            ggpred_Q2.urbscore_podsperped, # urb_score
+                                            ggpred_Q2.citydist_height.u + # urb_score
+                                              font("x.text"),
+                                            ncol = 3,
+                                            nrow = 2,
+                                            align = "hv",
+                                            labels = list("A", "B", "C",
+                                                          "D", "E", "F"),
+                                            font.label = (size =16),
+                                            common.legend = T,
+                                            legend = "right") %T>%
+  plot
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/Supplement/Subtransect_regressions_ggpredict.pdf",
+             width = 12, height = 6.5)
+
+############################
 ## Find estimated marginal means at terminii-----
 ### Distance-----
 Perc_change_subtransects_ggpredict <- function(ggpredict_object){

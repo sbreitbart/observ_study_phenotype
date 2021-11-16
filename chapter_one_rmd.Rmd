@@ -71,61 +71,61 @@ For code comparing variable means  across years, urban to rural terminii, and su
 # library("tibble", lib.loc="~/R/win-library/3.5")
 # library(agricolae)
 # library(apaTables)
-library(broom.mixed)
-library(car)
-library(data.table)
+library(broom.mixed) # Tidying Methods for Mixed Models
+library(car) # Companion to Applied Regression
+library(data.table) # Extension of `data.frame` # Extension of `data.frame`
 # library(devtools)
-library(DHARMa)
-library(dplyr)
-library(e1071)
+library(DHARMa) # Residual Diagnostics for Hierarchical (Multi-Level / Mixed) Regression Models
+library(dplyr) # A Grammar of Data Manipulation # A Grammar of Data Manipulation
+library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien
 # library(factoextra)
-library(flextable)
-library(forcats)
-library(geosphere)
+library(flextable) # Functions for Tabular Reporting
+library(forcats) # Tools for Working with Categorical Variables (Factors)
+library(geosphere) # Spherical Trigonometry
 # library(ggbiplot)
-library(ggeffects)
-library(ggiraphExtra)
-library(ggmap)
-library(ggpubr)
-library(ggsn)
-library(ggspatial)
-library(GISTools)
-library(glmmTMB)
-library(gridExtra)
-library(here)
-library(Hmisc)
+library(ggeffects) # Create Tidy Data Frames of Marginal Effects for 'ggplot' from Model Outputs
+library(ggiraphExtra) # Make Interactive 'ggplot2'. Extension to 'ggplot2' and 'ggiraph'
+library(ggmap) # Spatial Visualization with ggplot2
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots
+library(ggsn) # North Symbols and Scale Bars for Maps Created with 'ggplot2' or'ggmap'
+library(ggspatial) # Spatial Data Framework for ggplot2
+library(GISTools) # Some further GIS capabilities for R
+library(glmmTMB) # Generalized Linear Mixed Models using Template Model Builder
+library(gridExtra) # Miscellaneous Functions for "Grid" Graphics
+library(here) # A Simpler Way to Find Your Files
+library(Hmisc) # Harrell Miscellaneous
 # library(hrbrthemes)
 # library(ISLR)
 # library(janitor)
 # library(lindia)
-library(lme4)
-library(lmerTest)
+library(lme4) # Linear Mixed-Effects Models using 'Eigen' and S4
+library(lmerTest) # Tests in Linear Mixed Effects Models
 # library(lsmeans)
-library(MASS)
-library(magrittr)
-library(multcomp)
+library(MASS) # Support Functions and Datasets for Venables and Ripley's MASS
+library(magrittr) # A Forward-Pipe Operator for R
+library(multcomp) # Simultaneous Inference in General Parametric Models
 # library(MuMIn)
-library(nlme)
-library(officer)
-library(patchwork)
-library(plyr)
-library(reshape)
-library(reshape2)
-library(Rmisc)
-library(rpart)
-library(sjPlot)
+library(nlme) # Linear and Nonlinear Mixed Effects Models
+library(officer) # Manipulation of Microsoft Word and PowerPoint Documents
+library(patchwork) # The Composer of Plots
+library(plyr) # Tools for Splitting, Applying and Combining Data
+library(reshape) # Flexibly Reshape Data
+library(reshape2) # Flexibly Reshape Data: A Reboot of the Reshape Package
+library(Rmisc) # Rmisc: Ryan Miscellaneous
+library(rpart) # Recursive Partitioning and Regression Trees
+library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 # library(stargazer)
-library(tibble)
-library(tidyr)
-library(tidyverse)
-library(vegan)
-library(viridis)
-library(xlsx)
-require(ggiraph)
-require(ggiraphExtra)
-require(ggplot2)
+library(tibble) # Simple Data Frames
+library(tidyr) # Tidy Messy Data
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+library(vegan) # Community Ecology Package
+library(viridis) # Colorblind-Friendly Color Maps for R
+library(xlsx) # Read, Write, Format Excel 2007 and Excel 97/2000/XP/2003 Files
+require(ggiraph) # Make 'ggplot2' Graphics Interactive
+require(ggiraphExtra) # Make Interactive 'ggplot2'. Extension to 'ggplot2' and 'ggiraph'
+require(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
 # require(MASS)
-require(scales)
+require(scales) # Scale Functions for Visualization
 
 ```
 
@@ -284,8 +284,8 @@ str(fertile_pops_all)
 
 ### Histograms of green corridor site proximities
 ```{r}
-library(ggplot2)
-library(dplyr)
+library(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
+library(dplyr) # A Grammar of Data Manipulation # A Grammar of Data Manipulation
 
 corridor_data <- read.csv(here("./Corridor_Analysis/SouthernUrbanSites_ProximitytoCorridor.csv"),  header=T, na.strings=c("","NA"))
 
@@ -306,7 +306,7 @@ corr_table <- cut(corr_dist,bins)
 
 corr_table1<- with(corridor_data, table(Corr_or_greenspace, cut(Distance, bins, include.lowest = TRUE)))
 # transform(corr_table1)
-library(data.table)
+library(data.table) # Extension of `data.frame` # Extension of `data.frame`
 corr_df <- setDT(corridor_data)[, .N, by = .(Corr_or_greenspace, Bin = cut(Distance, bins, include.lowest = TRUE))] 
 
 corr_df_spread <- tidyr::spread(corr_df, Corr_or_greenspace, N)
@@ -2104,8 +2104,8 @@ bound_podsperped <- bind_cols(formulas_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (2 is best)
 
 # check residuals
-library(effects)
-library(sjPlot)
+library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
+library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(podsperped_lmer_gradient_01, type='diag') # looks fine
 plot_model(podsperped_lmer_gradient_02, type='diag') # looks fine
 
@@ -2204,8 +2204,8 @@ bound_podsperped <- bind_cols(formulas_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 3,5, 8 lowest AIC (8 is lowest)
 
 # check residuals
-library(effects)
-library(sjPlot)
+library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
+library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(podsperped_lmer_subtr_03, type='diag') # looks fine
 plot_model(podsperped_lmer_subtr_05, type='diag') # looks fine
 plot_model(podsperped_lmer_subtr_08, type='diag') # looks fine
@@ -2277,8 +2277,8 @@ bound_u_podsperped <- bind_cols(formulas_u_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (2 is best)
 
 # check residuals
-library(effects)
-library(sjPlot)
+library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
+library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(u_podsperped_lmer_gradient_01, type='diag') # looks fine
 plot_model(u_podsperped_lmer_gradient_02, type='diag') # looks fine
 
@@ -2377,8 +2377,8 @@ bound_u_podsperped <- bind_cols(formulas_u_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 6,7,8,9 lowest AIC (9 is lowest)
 
 # check residuals
-library(effects)
-library(sjPlot)
+library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
+library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(u_podsperped_lmer_subtr_06, type='diag') # looks fine
 plot_model(u_podsperped_lmer_subtr_07, type='diag') # looks fine
 plot_model(u_podsperped_lmer_subtr_08, type='diag') # looks fine
@@ -2454,8 +2454,8 @@ bound_height <- bind_cols(formulas_height,
                           dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (2 is best)
 
 # check residuals
-library(effects)
-library(sjPlot)
+library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
+library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(height_lmer_gradient_01, type='diag') # looks fine
 plot_model(height_lmer_gradient_02, type='diag') # looks fine
 
@@ -2554,8 +2554,8 @@ bound_height <- bind_cols(formulas_height,
                           dplyr::select(AIC, BestModels)) # Models 1, 8 lowest AIC (1 is lowest)
 
 # check residuals
-library(effects)
-library(sjPlot)
+library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
+library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(height_lmer_subtr_01, type='diag') # looks fine
 plot_model(height_lmer_subtr_08, type='diag') # looks fine
 
@@ -3808,5 +3808,6 @@ AIC_df.Q2 %<>%
 
 write.table(AIC_df.Q2, file = here::here("./Figures_Tables/AIC_df_Q2.txt"), sep = ",", quote = FALSE, row.names = F)
 ```
+
 
 
