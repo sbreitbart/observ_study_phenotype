@@ -1340,55 +1340,47 @@ Perc_change_subtransects_ggpredict <- function(ggpredict_object){
 }
 
 Perc_change_subtransects_ggpredict(peds_subtr_01_pred)
-# mean num. inflors/urban terminus/2018/northern subtransect: 2.711
-# mean num. inflors/rural terminus/2018/northern subtransect: 8.398
-## MEAN: 2018/northern subtransect: (2.711 + 8.398) / 2 = 5.5545
 
-# mean num. inflors/urban terminus/2019/northern subtransect: 3.733
-# mean num. inflors/rural terminus/2019/northern subtransect: 8.595
-## MEAN: 2019/northern subtransect: (3.733 + 8.595) / 2 = 6.164
+# MEAN PEDUNCLES BY YEAR AND TRANSECT
+mean_peds <- peds_subtr_01_pred %>%
+  dplyr::filter(., x == 2 | x == 34) %>%
+  dplyr::group_by(group, facet) %>%
+  dplyr::summarise(mean_ped = mean(predicted)) %T>%
+  view()
 
-# mean num. inflors/urban terminus/2018/southern subtransect: 7.451
-# mean num. inflors/rural terminus/2018/southern subtransect: 4.236
-## MEAN: 2018/southern subtransect: (7.451 + 4.236) / 2 = 5.8435
+## PERCENT CHANGE, non-corr to corr subtransect:
+perc_chg_peds <- mean_peds %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA)
 
-# mean num. inflors/urban terminus/2019/southern subtransect: 6.904
-# mean num. inflors/rural terminus/2019/southern subtransect: 9.196
-## MEAN: 2019/southern subtransect: (6.904 + 9.196) / 2 = 8.05
+### percent change for 2018
+perc_chg_peds[1,4] <- (perc_chg_peds[1,3]-perc_chg_peds[2,3])/perc_chg_peds[2,3]
 
-
-# % change, non-corr to corr subtransect, 2018:
-#           there were (5.8435 - 5.5545)/5.5545 = 0.0520 = 5% more
-# inflors on corridor vs non-corridor subtransect in 2018.
-
-# % change, non-corr to corr subtransect, 2019:
-#           there were (8.05 - 6.164)/6.164 = 0.30597 = 31% more
-# inflors on corridor vs non-corridor subtransect in 2019.
+### percent change for 2019
+perc_chg_peds[3,4] <- (perc_chg_peds[3,3]-perc_chg_peds[4,3])/perc_chg_peds[4,3]
 
 
 
 
-# mean num. inflors at urban terminus in 2018: (2.711 + 7.451)/2 = 5.081
-# mean num. inflors at rural terminus in 2018: (8.398 + 6.904)/2 = 7.651
-# mean num. inflors at urban terminus in 2019: (3.733 + 4.236)/2 = 3.985
-# mean num. inflors at rural terminus in 2019: (8.595 + 9.196)/2 = 8.896
-# URBAN MEAN: (5.081 + 3.985) / 2 = 4.533
-# RURAL MEAN: (7.651 + 8.896) / 2 = 8.274
+## PERCENT CHANGE, rural to urban terminii:
+mean_peds2 <- peds_subtr_01_pred %>%
+  dplyr::filter(., x == 2 | x == 34) %>%
+  dplyr::group_by(x, group) %>%
+  dplyr::summarise(terminus_mean = mean(predicted)) %T>%
+  view()
 
-# % change: urban terminus had, on average, (4.533 - 8.274)/8.274 =
-#         -0.452 = 45% fewer inflors than rural terminus
+perc_chg_peds2 <- mean_peds2 %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA)
 
-# % change, urb:rural, 2018:
-#                         urb mean = 5.081
-#                         rur mean = 7.651
-#                         there were (5.081 - 7.651)/7.651 = -0.3359 = 34% fewer
-# inflors at urb terminus than rural terminus in 2018.
+### percent change for 2018
+perc_chg_peds2[1,4] <- (perc_chg_peds2[1,3]-perc_chg_peds2[3,3])/perc_chg_peds2[3,3]
 
-# % change, urb:rural, 2019:
-#                         urb mean = 3.985
-#                         rur mean = 8.896
-#                         there were (3.985 - 8.896)/8.896 = -0.552 = 55% fewer
-# inflors at urb terminus than rural terminus in 2019.
+### percent change for 2019
+perc_chg_peds2[2,4] <- (perc_chg_peds2[2,3]-perc_chg_peds2[4,3])/perc_chg_peds2[4,3]
+
+
+
 
 
 Perc_change_subtransects_ggpredict(poll_subtr_01_pred)
