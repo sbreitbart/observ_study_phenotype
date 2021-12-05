@@ -2989,7 +2989,7 @@ diversity_simpson_transect <- ggplot(sum_diversity %>%
                             shape = Transect,
                             fill = Transect,
                             linetype = Transect)) +
-  labs(x = "Distance to Urban Center (km)",
+  labs(x = " ",
        y = expression("Simpson's Diversity Index "^3),
        shape = "Subtransect",
        linetype = "Subtransect",
@@ -3178,8 +3178,7 @@ rich_transect <- ggplot(sum_richness %>%
                             shape = Transect,
                             fill = Transect,
                             linetype = Transect)) +
-  labs(x = " ",
-    # x = "Distance to Urban Center (km)",
+  labs(x = "Distance to Urban Center (km)",
        y = "Menhinick's Species Richness",
        shape = "Subtransect",
        linetype = "Subtransect",
@@ -3289,7 +3288,8 @@ rich_transect.u
 ##### Gradient
 ```{r}
 
-library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots
+
 # Q3_regressions <- ggarrange(abun,
 #                             diversity_simpson,
 #                             rich,
@@ -3321,7 +3321,8 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollina
 
 ##### Transects
 ```{r}
-library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
+library(ggpubr) # 'ggplot2' Based Publication Ready Plots 
+
 # Q3_regressions.transects <- ggarrange(abun_transect,
 #                             diversity_simpson_transect,
 #                             rich_transect,
@@ -3335,19 +3336,22 @@ library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publ
 # Q3_regressions.transects
 
 # REORDERED FOR MAIN TEXT (AND WITHOUT URB SCORE PANELS)
-Q3_regressions.transects <- ggarrange(rich_transect,
+Q3_regressions.transects <- ggarrange(abun_transect,
+                                      rich_transect,
                                       diversity_simpson_transect,
-                                      abun_transect,
                             ncol = 3, nrow = 1, align = "h",
                             labels = list("A", "B", "C"),
-                            font.label = (size =16),
+                            font.label = (size =14),
                             common.legend = T)
 Q3_regressions.transects
 
 
 # annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_transects.pdf", width = 12, height = 7)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_transects.pdf", width = 12, height = 4.5)
+
+ggsave(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_transects.png", width = 12, height = 4.5)
+
 ```
 
 
