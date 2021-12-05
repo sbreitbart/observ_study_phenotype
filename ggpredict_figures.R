@@ -409,164 +409,128 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/URBSCOREG
 
 ## Find estimated marginal means at terminii-----
 ### Distance-----
-Perc_change_gradient_ggpredict <- function(ggpredict_object){
-  
-  urban_estimate_2018 <- ggpredict_object %>%
-    tibble %>%
-    filter(x == 0 & group == "2018") %>%
-    dplyr::select("predicted") %>%
-    as.numeric() %>%
-    round(3)
-  
-  urban_estimate_2019 <- ggpredict_object %>%
-    tibble %>%
-    filter(x == 0 & group == "2019") %>%
-    dplyr::select("predicted") %>%
-    as.numeric() %>%
-    round(3)
-  
-  
-  rural_estimate_2018 <- ggpredict_object %>%
-    tibble %>%
-    filter(x == 70 & group == "2018") %>%
-    dplyr::select("predicted") %>%
-    as.numeric() %>%
-    round(3)
-  
-  rural_estimate_2019 <- ggpredict_object %>%
-    tibble %>%
-    filter(x == 70 & group == "2019") %>%
-    dplyr::select("predicted") %>%
-    as.numeric() %>%
-    round(3)
-    
-    
-  print(paste(noquote(c("There are an average of", urban_estimate_2018,
-                        "[variable] per plant at the urban terminus in 2018")),
-              collapse = ' '))
-  
-  print(paste(noquote(c("There are an average of", urban_estimate_2019,
-                        "[variable] per plant at the urban terminus in 2019")),
-              collapse = ' '))
-  
-  print(paste(noquote(c("There are an average of", rural_estimate_2018,
-                        "[variable] per plant at the rural terminus in 2018")),
-              collapse = ' '))
-  
-  print(paste(noquote(c("There are an average of", rural_estimate_2019,
-                        "[variable] per plant at the rural terminus in 2019")),
-              collapse = ' '))
-  
-  
-  
-  # AVG (var) FROM URBAN TO RURAL TERMINUS:
-  avg_diff_2018 <- abs( urban_estimate_2018 - rural_estimate_2018 )  /
-    (0.5* (    urban_estimate_2018 + rural_estimate_2018  )  ) # %T>%
-  # print()
-  
-  # % CHANGE
-  percent_change_2018 <- (((rural_estimate_2018 - urban_estimate_2018) /
-                        abs(urban_estimate_2018)) * 100) # %T>%
-  # print()
-  
-  # % CHANGE
-  percent_change_2018.2 <- (((urban_estimate_2018 - rural_estimate_2018) /
-                             abs(rural_estimate_2018)) * 100) # %T>%
-  # print()
-  
-  
-  
-  
-  avg_diff_2019 <- abs( urban_estimate_2019 - rural_estimate_2019 )  /
-    (0.5* (    urban_estimate_2019 + rural_estimate_2019  )  ) # %T>%
-  # print()
-  
-  # % CHANGE
-  percent_change_2019 <- (((rural_estimate_2019 - urban_estimate_2019) /
-                             abs(urban_estimate_2019)) * 100) # %T>%
-  # print()
-  
-  # % CHANGE
-  percent_change_2019.2 <- (((urban_estimate_2019 - rural_estimate_2019) /
-                               abs(rural_estimate_2019)) * 100) # %T>%
-  # print()
-  
-  
-  
-  
-  print(paste(noquote(c("On average, the most rural plants produced",
-                        round(percent_change_2018, 1), "% more",
-                        "[variable] per plant than the most urban plants in 2018")),
-              collapse = ' '))
-  
-  print(paste(noquote(c("On average, the most urban plants produced",
-                        round(percent_change_2018.2, 1), "% more",
-                        "[variable] per plant than the most rural plants in 2018")),
-              collapse = ' '))
-  
-  print(paste(noquote(c("On average, the most rural plants produced",
-                        round(percent_change_2019, 1), "% more",
-                        "[variable] per plant than the most urban plants in 2019")),
-              collapse = ' '))
-  
-  print(paste(noquote(c("On average, the most urban plants produced",
-                        round(percent_change_2019.2, 1), "% more",
-                        "[variable] per plant than the most rural plants in 2019")),
-              collapse = ' '))
-  
-}
-Perc_change_gradient_ggpredict_byyear <- function(ggpredict_object){
-  mean_2018.1 <- ggpredict_object %>%
-    tibble %>%
-    filter(group == "2018") %>%
-    dplyr::select("predicted")
-  
-  mean_2018 <- mean(mean_2018.1$predicted)
-  
-  mean_2019.1 <- ggpredict_object %>%
-    tibble %>%
-    filter(group == "2019") %>%
-    dplyr::select("predicted") 
-  
-  mean_2019 <- mean(mean_2019.1$predicted)
-  
-  print(paste(noquote(c("2018 mean:", mean_2018)),
-              collapse = ' '))
-  
-  print(paste(noquote(c("2019 mean:", mean_2019)),
-              collapse = ' '))
-  
-  print(paste(noquote(c("2018 had", ((mean_2018 - mean_2019)/mean_2019),
-                      "more [variable] than 2019")),
-              collapse = ' '))
-  
-  print(paste(noquote(c("2019 had", ((mean_2019 - mean_2018)/mean_2018),
-                      "more [variable] than 2018")),
-              collapse = ' '))
-}
+# PEDUNCLES----------------
+
+# MEAN PEDUNCLES BY YEAR
+mean_peds_q1 <- peds_gradient_01_pred %>%
+  dplyr::group_by(group) %>%
+  dplyr::summarise(mean_ped = mean(predicted)) %T>%
+  view()
+
+## PERCENT CHANGE, non-corr to corr subtransect:
+perc_chg_peds_q1 <- mean_peds_q1 %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA)
+
+### percent change for 2018-2019
+perc_chg_peds_q1[2,3] <- (perc_chg_peds_q1[2,2]-perc_chg_peds_q1[1,2])/perc_chg_peds_q1[1,2]
 
 
 
-Perc_change_gradient_ggpredict(peds_gradient_01_pred)
-Perc_change_gradient_ggpredict_byyear(peds_gradient_01_pred)
+## PERCENT CHANGE, rural to urban terminii:
+mean_peds_q1_2 <- peds_gradient_01_pred %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
 
-Perc_change_gradient_ggpredict(poll_gradient_01_pred)
-# per flower: urban/2018: 0.983/5 = 0.200 (20%)
-#             urban/2019: 0.562/5 = 0.112 (11%)
-#             rural/2018: 1.958/5 = 0.392 (39%)
-#             rural/2019: 1.896/5 = 0.379 (38%)
-Perc_change_gradient_ggpredict_byyear(poll_gradient_01_pred)
+### percent change for 2018
+mean_peds_q1_2[1,7] <- (mean_peds_q1_2[1,2]-mean_peds_q1_2[3,2])/mean_peds_q1_2[3,2]
+
+### percent change for 2019
+mean_peds_q1_2[2,7] <- (mean_peds_q1_2[2,2]-mean_peds_q1_2[4,2])/mean_peds_q1_2[4,2]
 
 
 
-Perc_change_gradient_ggpredict(pods_gradient_01_pred) # remember this is squared
-Perc_change_gradient_ggpredict_byyear(pods_gradient_01_pred)
-# per plant: urban/2018: sqrt(150.314) = 12.26
-#            urban/2019: sqrt(139.956) = 11.83
-#            rural/2018: sqrt(121.149) = 11.01
-#            rural/2019: sqrt(151.400) = 12.3
 
-Perc_change_gradient_ggpredict(podsperped_gradient_01_pred)
+
+
+
+# POLLINIA: along gradient & by year-----
+
+# MEAN POLLINIA BY YEAR
+mean_poll_q1 <- poll_gradient_01_pred %>%
+  mutate(poll_per_flower = predicted / 5) %>%
+  dplyr::group_by(group) %>%
+  dplyr::summarise(mean_poll = mean(poll_per_flower)) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA) %T>%
+  view()
+
+### percent change for 2018-2019
+mean_poll_q1[2,3] <- (mean_poll_q1[2,2]-mean_poll_q1[1,2])/mean_poll_q1[1,2]
+
+
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_poll2_q1 <- poll_gradient_01_pred %>%
+  mutate(poll_per_flower = predicted / 5) %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  dplyr::group_by(group) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
+
+### percent change for 2018
+mean_poll2_q1[1,8] <- (mean_poll2_q1[1,7]-mean_poll2_q1[3,7])/mean_poll2_q1[3,7]
+
+### percent change for 2019
+mean_poll2_q1[2,8] <- (mean_poll2_q1[2,7]-mean_poll2_q1[4,7])/mean_poll2_q1[4,7]
+
+
+
+# PODS: along gradient & by year-----
+
+
+# MEAN PODS BY YEAR
+mean_pods_q1 <- pods_gradient_01_pred %>%
+  dplyr::group_by(group) %>%
+  dplyr::mutate(mean_pod_sqrt = sqrt(predicted)) %>%
+  dplyr::summarise(mean_pod_sqrt = mean(mean_pod_sqrt)) %T>%
+  view()
+
+## PERCENT CHANGE, non-corr to corr subtransect:
+perc_chg_pods_q1 <- mean_pods_q1 %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA)
+
+### percent change for 2018-2019
+perc_chg_pods_q1[2,3] <- (perc_chg_pods_q1[2,2]-perc_chg_pods_q1[1,2])/perc_chg_pods_q1[1,2]
+
+
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_pods_q1_2 <- pods_gradient_01_pred %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  dplyr::mutate(mean_pod_sqrt = sqrt(predicted)) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
+
+### percent change for 2018
+mean_pods_q1_2[1,8] <- (mean_pods_q1_2[1,7]-mean_pods_q1_2[3,7])/mean_pods_q1_2[3,7]
+
+### percent change for 2019
+mean_pods_q1_2[2,8] <- (mean_pods_q1_2[2,7]-mean_pods_q1_2[4,7])/mean_pods_q1_2[4,7]
+
+
+
+# PODS PER PED: along gradient-----
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_ppp_q1_2 <- podsperped_gradient_01_pred %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
+
+### percent change for 2018
+mean_ppp_q1_2[1,7] <- (mean_ppp_q1_2[1,2]-mean_ppp_q1_2[3,2])/mean_ppp_q1_2[3,2]
+
+### percent change for 2019
+mean_ppp_q1_2[2,7] <- (mean_ppp_q1_2[2,2]-mean_ppp_q1_2[4,2])/mean_ppp_q1_2[4,2]
+
+
 
 
 # Q2 / Subtransects---------------------
@@ -1184,118 +1148,11 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/
 ## Find estimated marginal means at terminii-----
 ### Distance-----
 
-# Perc_change_subtransects_ggpredict <- function(ggpredict_object){
-#   
-#   urban_estimate_2018.north <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == min(x) & group == "2018" & facet == "North") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   urban_estimate_2018.south <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == min(x) & group == "2018" & facet == "South") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   urban_estimate_2019.north <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == min(x) & group == "2019" & facet == "North") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   urban_estimate_2019.south <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == min(x) & group == "2019" & facet == "South") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   
-#   rural_estimate_2018.north <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == max(x) & group == "2018" & facet == "North") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   rural_estimate_2018.south <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == max(x) & group == "2018" & facet == "South") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   rural_estimate_2019.north <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == max(x) & group == "2019" & facet == "North") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   rural_estimate_2019.south <- ggpredict_object %>%
-#     tibble %>%
-#     filter(x == max(x) & group == "2019" & facet == "South") %>%
-#     dplyr::select("predicted") %>%
-#     as.numeric() %>%
-#     round(3)
-#   
-#   
-#   print(paste(noquote(c("There are an average of", urban_estimate_2018.north,
-#                         "[variable] per plant at the urban terminus of
-#                         the North subtransect in 2018")),
-#               collapse = ' '))
-#   
-#   print(paste(noquote(c("There are an average of", urban_estimate_2018.south,
-#                         "[variable] per plant at the urban terminus of
-#                         the South subtransect in 2018")),
-#               collapse = ' '))
-#   
-#   print(paste(noquote(c("There are an average of", urban_estimate_2019.north,
-#                         "[variable] per plant at the urban terminus of
-#                         the North subtransect in 2019")),
-#               collapse = ' '))
-#   
-#   print(paste(noquote(c("There are an average of", urban_estimate_2019.south,
-#                         "[variable] per plant at the urban terminus of
-#                         the South subtransect in 2019")),
-#               collapse = ' '))
-#   
-#   
-#   
-#   
-#   print(paste(noquote(c("There are an average of", rural_estimate_2018.north,
-#                         "[variable] per plant at the rural terminus of
-#                         the North subtransect in 2018")),
-#               collapse = ' '))
-#   
-#   print(paste(noquote(c("There are an average of", rural_estimate_2018.south,
-#                         "[variable] per plant at the rural terminus of
-#                         the South subtransect in 2018")),
-#               collapse = ' '))
-#   
-#   print(paste(noquote(c("There are an average of", rural_estimate_2019.north,
-#                         "[variable] per plant at the rural terminus of
-#                         the North subtransect in 2019")),
-#               collapse = ' '))
-#   
-#   print(paste(noquote(c("There are an average of", rural_estimate_2019.south,
-#                         "[variable] per plant at the rural terminus of
-#                         the South subtransect in 2019")),
-#               collapse = ' '))
-# }
-
-
-
 
 # PEDUNCLES----------------
 
 # MEAN PEDUNCLES BY YEAR AND TRANSECT
 mean_peds <- peds_subtr_01_pred %>%
-  dplyr::filter(., x == 2 | x == 34) %>%
   dplyr::group_by(group, facet) %>%
   dplyr::summarise(mean_ped = mean(predicted)) %T>%
   view()
@@ -1310,6 +1167,7 @@ perc_chg_peds[1,4] <- (perc_chg_peds[1,3]-perc_chg_peds[2,3])/perc_chg_peds[2,3]
 
 ### percent change for 2019
 perc_chg_peds[3,4] <- (perc_chg_peds[3,3]-perc_chg_peds[4,3])/perc_chg_peds[4,3]
+
 
 
 
@@ -1340,7 +1198,6 @@ perc_chg_peds2[2,4] <- (perc_chg_peds2[2,3]-perc_chg_peds2[4,3])/perc_chg_peds2[
 # MEAN POLLINIA REMOVED BY YEAR AND TRANSECT
 mean_poll <- poll_subtr_01_pred %>%
   mutate(poll_per_flower = predicted / 5) %>%
-  dplyr::filter(., x == 2 | x == 34) %>%
   dplyr::group_by(group, facet) %>%
   dplyr::summarise(mean_poll = mean(poll_per_flower)) %T>%
   view()
@@ -1385,7 +1242,6 @@ perc_chg_poll2[2,4] <- (perc_chg_poll2[2,3]-perc_chg_poll2[4,3])/perc_chg_poll2[
 
 # MEAN PODS BY YEAR AND TRANSECT
 mean_pods <- pods_subtr_01_pred %>%
-  dplyr::filter(., x == 2 | x == 34) %>%
   dplyr::mutate(sqrt_pods = sqrt(predicted)) %>%
   dplyr::group_by(x, group) %>%
   dplyr::summarise(mean_sqrt_pods = mean(sqrt_pods)) %>%
