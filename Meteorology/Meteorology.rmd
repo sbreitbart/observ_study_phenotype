@@ -66,13 +66,13 @@ weather %<>%
 ## Aggregate by month
 ```{r}
 monthly_data <- weather %>% 
-  group_by(Year, Month) %>% # group by the month column
-  summarise(n=n(), 
+  dplyr::group_by(Year, Month) %>% # group by the month column
+  dplyr::summarise(n=n(), 
             total_precip=sum(Total.Precip), 
             mean_temp=mean(Mean.Temp_C),
             mean_max_temp = mean(Max.Temp_C),
-            mean_min_temp = mean(Min.Temp_C)) %T>%
-  print(head())
+            mean_min_temp = mean(Min.Temp_C))
+head(monthly_data)
 
 monthly_data$Year <- as.factor(monthly_data$Year)
 
@@ -96,21 +96,40 @@ weather %<>%
                              Year == 2019 & Month < 13 ~ 8) )
 
 quarterly_data <- weather %>% 
-  group_by(Quarter) %>% # group by the quarter column
-  summarise(n=n(), 
+  dplyr::group_by(Quarter) %>% # group by the quarter column
+  dplyr::summarise(n=n(), 
             year = first(Year),
             total_precip=sum(Total.Precip), 
             mean_temp=mean(Mean.Temp_C),
             mean_max_temp = mean(Max.Temp_C),
-            mean_min_temp = mean(Min.Temp_C)) %T>%
-  print(head())
+            mean_min_temp = mean(Min.Temp_C))
+head(quarterly_data)
+```
+
+## Focus on annual growing season differences
+```{r}
+growing_seasons <- quarterly_data %>%
+  dplyr::filter(Quarter == 2 |
+                  Quarter == 3 |
+                  Quarter == 6 |
+                  Quarter == 7) %>%
+  dplyr::group_by(year) %>%
+  dplyr::summarise(mean_precip = mean(total_precip),
+                   mean_temp = mean(mean_temp))
+
+# % change in precip from 2018-2019: 19% decrease
+(growing_seasons[2,2]-growing_seasons[1,2])/growing_seasons[1,2]
+
+# % change in temp from 2018-2019: 8% decrease
+(growing_seasons[2,3]-growing_seasons[1,3])/growing_seasons[1,3]
+  
 ```
 
 # Analyze by experimental period
 ## Monthly mean precipitation data
 ```{r fig.height=3.5, fig.width=9}
 # line graph
-monthly_data %>%
+line_precip <- monthly_data %>%
   ggplot(aes(x = Month,
              y = total_precip,
              color = Year,
@@ -152,7 +171,7 @@ ggsave(here::here("./Figures_Tables/Meteorology/Monthly_precip_bargraph.png"),
 ```{r fig.height=3.5, fig.width=9}
 
 # line graph
-monthly_data %>%
+line_temp <- monthly_data %>%
   ggplot(aes(x = Month,
              y = mean_temp,
              color = Year,
@@ -186,6 +205,16 @@ monthly_data %>%
 # export
 ggsave(here::here("./Figures_Tables/Meteorology/Monthly_temp_bargraph.png"),
          width = 18, height = 8, units = "cm")
+```
+
+# Export composite line graph figure
+```{r}
+library(patchwork)
+line_precip / line_temp + plot_annotation(tag_levels = 'A')
+
+# export
+ggsave(here::here("./Figures_Tables/Meteorology/Combined_linegraph.png"),
+         width = 21, height = 16, units = "cm")
 ```
 
 
