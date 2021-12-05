@@ -138,26 +138,10 @@ ggpred_Q1.citydist_podsperped <- (ggplot(podsperped_gradient_01_pred) +
        y = "Follicles per Inflorescence") 
 
 
-# 
-# Q1_regressions_citydist_ggpred <- ggarrange(ggpred_Q1.citydist_peds ,
-#                                             ggpred_Q1.citydist_poll,
-#                                             ggpred_Q1.citydist_pods,
-#                                             ggpred_Q1.citydist_podsperped +
-#                                        font("x.text"),
-#                                      ncol = 4,
-#                                      nrow = 1,
-#                                      align = "hv",
-#                                      labels = list("A", "B", "C", "D"),
-#                                      font.label = (size =16),
-#                                      common.legend = T,
-#                                      legend = "top") %T>%
-#   plot
-
-
-# REARRANGED FOR PAPER
+# COMBINE
 Q1_regressions_citydist_ggpred <- ggarrange(ggpred_Q1.citydist_poll,
-          ggpred_Q1.citydist_podsperped,
           ggpred_Q1.citydist_pods,
+          ggpred_Q1.citydist_podsperped,
           ggpred_Q1.citydist_peds+
             font("x.text"),
           ncol = 4,
@@ -388,34 +372,25 @@ ggpred_Q1.citydist_height.u <- (ggplot(height_gradient_01_pred.u) +
 ggpred_Q1.citydist_height.u
 
 
-# Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.urbscore_peds ,
-#                                             ggpred_Q1.urbscore_poll,
-#                                             ggpred_Q1.urbscore_pods,
-#                                             ggpred_Q1.urbscore_podsperped +
-#                                               font("x.text"),
-#                                             ncol = 4,
-#                                             nrow = 1,
-#                                             align = "hv",
-#                                             labels = list("A", "B", "C", "D"),
-#                                             font.label = (size =16),
-#                                             common.legend = T,
-#                                             legend = "none") %T>%
-#   plot
 
 # PUT THIS PLOT INTO MAIN TEXT 
 city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
                                      bottom = text_grob("Distance to Urban Center (km)",
                                                         size=14))
-# urbscore_plots.ggpred <- annotate_figure(Q1_regressions_urbscore_ggpred,
-#                                          bottom = text_grob("Urbanization Score",
-#                                                             size=14))
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/DISTGradient_regressions.pdf",
+             width = 12, height = 3.75)
+
+
+
+
 
 # this is now going into supplement. Going to add height
 Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.citydist_height, # city_dist
-                                            ggpred_Q1.urbscore_peds , # urb_score
                                             ggpred_Q1.urbscore_poll, # urb_score
                                             ggpred_Q1.urbscore_pods, # urb_score
                                             ggpred_Q1.urbscore_podsperped, # urb_score
+                                            ggpred_Q1.urbscore_peds , # urb_score
                                             ggpred_Q1.citydist_height.u + # urb_score
                                               font("x.text"),
                                             ncol = 3,
@@ -427,12 +402,9 @@ Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.citydist_height, # city_di
                                             common.legend = T,
                                             legend = "right") %T>%
   plot
-########################
 
-city_plots.ggpred/urbscore_plots.ggpred
-
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/Gradient_regressions_ggpredict.pdf",
-             width = 12, height = 8)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/URBSCOREGradient_regressions.pdf",
+             width = 12, height = 7)
 
 
 ## Find estimated marginal means at terminii-----
@@ -1447,7 +1419,6 @@ perc_chg_ppp2[1,4] <- (perc_chg_ppp2[1,3]-perc_chg_ppp2[3,3])/perc_chg_ppp2[3,3]
 
 ### percent change for 2019
 perc_chg_ppp2[2,4] <- (perc_chg_ppp2[2,3]-perc_chg_ppp2[4,3])/perc_chg_ppp2[4,3]
-
 
 
 
