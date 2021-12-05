@@ -61,6 +61,7 @@ For code comparing variable means  across years, urban to rural terminii, and su
 # install.packages("tibble")
 # install.packages("tidyverse")
 # install.packages("vegan")
+# install.packages("webshot")
 # install.packages("XLConnect")
 # install.packages('backports')
 # install.packages(c("slidify", "ggplot2", "devtools"))
@@ -121,6 +122,7 @@ library(tidyverse) # Easily Install and Load the 'Tidyverse'
 library(vegan) # Community Ecology Package
 library(viridis) # Colorblind-Friendly Color Maps for R
 library(xlsx) # Read, Write, Format Excel 2007 and Excel 97/2000/XP/2003 Files
+library(webshot)
 require(ggiraph) # Make 'ggplot2' Graphics Interactive
 require(ggiraphExtra) # Make Interactive 'ggplot2'. Extension to 'ggplot2' and 'ggiraph'
 require(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
@@ -2740,7 +2742,6 @@ u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09) %T>%
 ```{r}
 # tidy anovas
 tidy_sb <- function(model){
-  
   return(
     car::Anova(model) %>%
       broom.mixed::tidy() %>%
@@ -2757,7 +2758,7 @@ tidy_sb <- function(model){
                                              p.value < 0.01 ~ "**",
                                              p.value <= 0.05 ~ "*")) %>%
       dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
-      mutate_if(is.numeric, round, 3))      %>%
+      mutate_if(is.numeric, round, 3)      %>%
       dplyr::mutate(p.value = replace(p.value, Significance == "***", "<0.001"))  %>%
       dplyr::select(., -df) %>%
       dplyr::rename(., Chi_sq = statistic,
@@ -2804,7 +2805,7 @@ tidy_sb <- function(model){
         #         str_replace_all,
         #         pattern = c("Distance to City Center x Year x Subtransect"),
         #         replacement = c("Year x Subtransect x Distance to City Center"))
-}
+    )}
 
 # combine anovas into publication-quality tables
 make_Q1Q2_Anova <- function(anova_list){
@@ -2834,33 +2835,27 @@ make_Q1Q2_Anova <- function(anova_list){
                   'p  ' = 7,
                   'X2   ' = 8,
                   'p   ' = 9) %>%
-    flextable::flextable() %>%
-    add_header_row(
-      values = c(" ",
-                 "Inflorescences",
-                 "Pollinaria Removed",
-                 "Follicles",
-                 "Follicles per Inflorescence"),
-      colwidths = c(1, 2, 2, 2, 2)) %>%
-    align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:9, align = "center", part = "body") %>%
-    align(j = 2:9, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2 ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2  ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2   ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      flextable::flextable() %>%
+      add_header_row(
+        values = c(" ",
+                   "Pollinaria Removed",
+                   "Follicles",
+                   "Follicles per Inflorescence",
+                    "Inflorescences"),
+        colwidths = c(1, 2, 2, 2, 2)) %>%
+      align(j = 1, align = "left", part = "all") %>%
+      align(j = 2:9, align = "center", part = "body") %>%
+      align(j = 2:9, align = "center", part = "header") %>%
+      flextable::compose(i = 2, j = 2, part = "header",
+              value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = 4, part = "header",
+              value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = 6, part = "header",
+              value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = 8, part = "header",
+              value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = c(3,5,7,9), part = "header",
+              value = as_paragraph(as_i("p"))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body")
     )
@@ -2872,33 +2867,32 @@ make_Q1Q2_Anova <- function(anova_list){
 ## ALL SITES
 
 best_mods_Q1.dist_list <- list(
-### Peduncles
-  peds_glmer_gradient_01,  
 ### Pollinia
   poll_glmer_gradient_01.v2,
 ### Pods
   pods_glmer_gradient_01,
 ### Pods/Peduncle
-  podsperped_lmer_gradient_02
-
+  podsperped_lmer_gradient_02,
+### Peduncles
+  peds_glmer_gradient_01 
 )
 
 make_Q1Q2_Anova(best_mods_Q1.dist_list) %>%
   width(j = 1, width = 2.7) %>%
   width(j = 2:9, width = 0.8) %>%
-  italic(i = 2, j = 2:9, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Inflorescences: ",
-                          AIC(peds_glmer_gradient_01) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
-                          AIC(poll_glmer_gradient_01.v2) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles: ",
-                          AIC(pods_glmer_gradient_01) %>% round(., 3))) %>%  
-  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
-                          AIC(podsperped_lmer_gradient_02) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:9, part = "header") %>%
+  # add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Inflorescences: ",
+  #                         AIC(peds_glmer_gradient_01) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+  #                         AIC(poll_glmer_gradient_01.v2) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles: ",
+  #                         AIC(pods_glmer_gradient_01) %>% round(., 3))) %>%  
+  # add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+  #                         AIC(podsperped_lmer_gradient_02) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Dist_ANOVA.png"))
 
 
@@ -2906,34 +2900,34 @@ make_Q1Q2_Anova(best_mods_Q1.dist_list) %>%
 
 ## URBAN SITES
 best_mods_Q2.dist_list <- list(
-### Peduncles
-  peds_glmer_subtr_01,  
+  
 ### Pollinia
   poll_glmer_subtr_01,
 ### Pods
   pods_glmer_subtr_03,
 ### Pods/Peduncle
-  podsperped_lmer_subtr_08
-
+  podsperped_lmer_subtr_08,
+### Peduncles
+  peds_glmer_subtr_01
 )
 
 
 make_Q1Q2_Anova(best_mods_Q2.dist_list) %>%
   width(j = 1, width = 3.7) %>%
   width(j = 2:9, width = 0.9) %>%
-  italic(i = 2, j = 2:9, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Inflorescences: ",
-                          AIC(peds_glmer_subtr_01) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
-                          AIC(poll_glmer_subtr_01) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles: ",
-                          AIC(pods_glmer_subtr_03) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
-                          AIC(podsperped_lmer_subtr_08) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:9, part = "header") %>%
+  # add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Inflorescences: ",
+  #                         AIC(peds_glmer_subtr_01) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+  #                         AIC(poll_glmer_subtr_01) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles: ",
+  #                         AIC(pods_glmer_subtr_03) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+  #                         AIC(podsperped_lmer_subtr_08) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Dist_ANOVA.png"))
 
 
@@ -2941,34 +2935,34 @@ make_Q1Q2_Anova(best_mods_Q2.dist_list) %>%
 ## ALL SITES
 
 best_mods_Q1.urbscore_list <- list(
-### Peduncles
-  u_peds_glmer_gradient_01,  
+ 
 ### Pollinia
   u_poll_glmer_gradient_1,
 ### Pods
   u_pods_glmer_gradient_1,
 ### Pods/Peduncle
-  u_podsperped_lmer_gradient_02
-
+  u_podsperped_lmer_gradient_02,
+### Peduncles
+  u_peds_glmer_gradient_01
 )
 
 
 make_Q1Q2_Anova(best_mods_Q1.urbscore_list) %>%
   width(j = 1, width = 2.4) %>%
   width(j = 2:9, width = 0.8) %>%
-  italic(i = 2, j = 2:9, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Inflorescences: ",
-                          AIC(u_peds_glmer_gradient_01) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
-                          AIC(u_poll_glmer_gradient_1) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles: ",
-                          AIC(u_pods_glmer_gradient_1) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
-                          AIC(u_podsperped_lmer_gradient_02) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:9, part = "header") %>%
+  # add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization on 4 traits: pollinaria removed, follicles, inflorescences, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Inflorescences: ",
+  #                         AIC(u_peds_glmer_gradient_01) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+  #                         AIC(u_poll_glmer_gradient_1) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles: ",
+  #                         AIC(u_pods_glmer_gradient_1) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+  #                         AIC(u_podsperped_lmer_gradient_02) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q1_Urbscore_ANOVA.png"))
 
 
@@ -2980,34 +2974,34 @@ make_Q1Q2_Anova(best_mods_Q1.urbscore_list) %>%
 ## URBAN SITES
 
 best_mods_Q2.urbscore_list <- list(
-### Peduncles
-  u_peds_glmer_subtr_06,  
+
 ### Pollinia
   u_poll_glmer_subtr_01,
 ### Pods
   u_pods_glmer_subtr_03,
 ### Pods/Peduncle
-  u_podsperped_lmer_subtr_09
-
+  u_podsperped_lmer_subtr_09,
+### Peduncles
+  u_peds_glmer_subtr_06
 )
 
 
 make_Q1Q2_Anova(best_mods_Q2.urbscore_list) %>%
   width(j = 1, width = 3.3) %>%
   width(j = 2:9, width = 0.9) %>%
-  italic(i = 2, j = 2:9, part = "header") %>%
-  add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Inflorescences: ",
-                          AIC(u_peds_glmer_subtr_06) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Pollinaria Removed: ",
-                          AIC(u_poll_glmer_subtr_01) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles: ",
-                          AIC(u_pods_glmer_subtr_03) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
-                          AIC(u_podsperped_lmer_subtr_09) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:9, part = "header") %>%
+  # add_footer_lines("Table X: Results from general and generalized linear mixed models examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via urbanization score. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Inflorescences: ",
+  #                         AIC(u_peds_glmer_subtr_06) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Pollinaria Removed: ",
+  #                         AIC(u_poll_glmer_subtr_01) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles: ",
+  #                         AIC(u_pods_glmer_subtr_03) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles per Inflorescence: ",
+  #                         AIC(u_podsperped_lmer_subtr_09) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Urbscore_ANOVA.png"))
 
 ```
@@ -3018,17 +3012,18 @@ make_Q1Q2_Anova.height <- function(anova){
   return(
     tidy_sb(anova) %>%
     as.data.frame() %>%
-    arrange(factor(Predictor, levels = c("Distance to City Center",
-                                         "Urbanization Score",
-                                         "Year",
-                                         "Subtransect",
-                                         "Distance to City Center x Subtransect",
-                                         "Urbanization Score x Subtransect",
-                                         "Distance to City Center x Year",
-                                         "Urbanization Score x Year",
-                                         "Year x Subtransect",
-                                         "Urbanization Score x Year x Subtransect",
-                                         "Distance to City Center x Year x Subtransect"
+    arrange(factor(Predictor,
+                   levels = c("Distance to City Center",
+                              "Urbanization Score",
+                              "Year",
+                              "Subtransect",
+                              "Distance to City Center x Subtransect",
+                              "Urbanization Score x Subtransect",
+                              "Distance to City Center x Year",
+                              "Urbanization Score x Year",
+                              "Year x Subtransect",
+                              "Urbanization Score x Year x Subtransect",
+                              "Distance to City Center x Year x Subtransect"
                                          ))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
     replace(., is.na(.), "-") %>%
@@ -3042,10 +3037,10 @@ make_Q1Q2_Anova.height <- function(anova){
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:3, align = "center", part = "body") %>%
     align(j = 2:3, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) 
+      flextable::compose(i = 2, j = 2, part = "header",
+        value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = 3, part = "header",
+              value = as_paragraph(as_i("p")))
     )
 }
 
@@ -3058,12 +3053,12 @@ make_Q1Q2_Anova.height <- function(anova){
 make_Q1Q2_Anova.height(height_lmer_gradient_02) %>%
   width(j = 1, width = 1.8) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%  add_footer_lines(paste0("AIC, Height: ",
-                          AIC(height_lmer_gradient_02) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%  add_footer_lines(paste0("AIC, Height: ",
+  #                         AIC(height_lmer_gradient_02) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q1_Dist_ANOVA_HEIGHT.png"))
 
 
@@ -3076,13 +3071,13 @@ make_Q1Q2_Anova.height(height_lmer_gradient_02) %>%
 make_Q1Q2_Anova.height(height_lmer_subtr_01) %>%
   width(j = 1, width = 3.3) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Height: ",
-                          AIC(height_lmer_subtr_01) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Height: ",
+  #                         AIC(height_lmer_subtr_01) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q2_Dist_ANOVA_HEIGHT.png"))
 
 
@@ -3095,13 +3090,13 @@ make_Q1Q2_Anova.height(height_lmer_subtr_01) %>%
 make_Q1Q2_Anova.height(u_height_lmer_gradient_01) %>%
   width(j = 1, width = 2) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-    add_footer_lines(paste0("AIC, Height: ",
-                          AIC(u_height_lmer_gradient_01) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  #   add_footer_lines(paste0("AIC, Height: ",
+  #                         AIC(u_height_lmer_gradient_01) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q1_Urbscore_ANOVA_HEIGHT.png"))
 
 
@@ -3115,13 +3110,13 @@ make_Q1Q2_Anova.height(u_height_lmer_gradient_01) %>%
 make_Q1Q2_Anova.height(u_height_lmer_subtr_01) %>%
   width(j = 1, width = 3.2) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-    add_footer_lines(paste0("AIC, Height: ",
-                          AIC(u_height_lmer_subtr_01) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from general linear mixed models examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  #   add_footer_lines(paste0("AIC, Height: ",
+  #                         AIC(u_height_lmer_subtr_01) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Best_models_Height/Q2_Urbscore_ANOVA_HEIGHT.png"))
 
 ```
@@ -3166,21 +3161,21 @@ podsperped_lmer_gradient_01 %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:3, align = "center", part = "body") %>%
     align(j = 2:3, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      flextable::compose(i = 2, j = 2, part = "header",
+        value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = 3, part = "header",
+              value = as_paragraph(as_i("p"))) %>%
   width(j = 1, width = 2.3) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
   # merge_at(i = 1:2, j = 4 ) %>%
   # fix_border_issues() %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC: ",
-                          AIC(podsperped_lmer_gradient_01) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC: ",
+  #                         AIC(podsperped_lmer_gradient_01) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q1_Dist_ANOVA_altmodels.png"))
 
 
@@ -3251,39 +3246,15 @@ lapply(alt_best_mods_Q2.dist_list, tidy_sb) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:15, align = "center", part = "body") %>%
     align(j = 2:15, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2 ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2  ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2   ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2    ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2    ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2     ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2     ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2      ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2      ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      flextable::compose(i = 2, j = c(2,4,6,8,10,12,14), part = "header",
+        value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = c(3,5,7,9,11,13,15), part = "header",
+              value = as_paragraph(as_i("p"))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 1.8) %>%
   width(j = 2:15, width = 1) %>%
-  italic(i = 2, j = 2:15, part = "header") %>%
+  # italic(i = 2, j = 2:15, part = "header") %>%
   # merge_at(i = 1:6, j = 4 ) %>%
   # merge_at(i = 1:6, j = 7 ) %>%
   # merge_at(i = 1:6, j = 10 ) %>%
@@ -3292,18 +3263,18 @@ lapply(alt_best_mods_Q2.dist_list, tidy_sb) %>%
   # merge_at(i = 1:6, j = 19) %>%
   # merge_at(i = 1:6, j = 22) %>%
   # fix_border_issues() %>%
-  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
-                          AIC(peds_glmer_subtr_03) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 2: ",
-                          AIC(peds_glmer_subtr_06) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
-                          AIC(poll_glmer_subtr_03) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles, Alt. Model 1: ",
-                          AIC(pods_glmer_subtr_02) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles, Alt. Model 2: ",
-                          AIC(pods_glmer_subtr_08) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
-                          AIC(podsperped_lmer_subtr_03) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 2: ",
-                          AIC(podsperped_lmer_subtr_05) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, pollinaria removed, follicles, and mean no. follicles per inflorescence. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
+  #                         AIC(peds_glmer_subtr_03) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 2: ",
+  #                         AIC(peds_glmer_subtr_06) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
+  #                         AIC(poll_glmer_subtr_03) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles, Alt. Model 1: ",
+  #                         AIC(pods_glmer_subtr_02) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles, Alt. Model 2: ",
+  #                         AIC(pods_glmer_subtr_08) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
+  #                         AIC(podsperped_lmer_subtr_03) %>% round(., 3))) %>%  add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 2: ",
+  #                         AIC(podsperped_lmer_subtr_05) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q2_Dist_ANOVA_altmodels.png"))
 
 
@@ -3343,31 +3314,24 @@ lapply(alt_best_mods_Q1.urbscore_list, tidy_sb) %>%
                                  "Response"))) %>%
     replace(., is.na(.), "-") %>%
     dplyr::rename('X2' = 2,
-                  'p' = 3,
-                  'X2 ' = 4,
-                  'p ' = 5) %>%
+                  'p' = 3) %>%
     flextable::flextable() %>%
     add_header_row(
       values = c(" ",
-                 "Pollinaria Removed, Alt. Model 1",
                  "Follicles per Inflorescence, Alt. Model 1"),
-      colwidths = c(1, 2, 2)) %>%
+      colwidths = c(1, 2)) %>%
     align(j = 1, align = "left", part = "all") %>%
-    align(j = 2:5, align = "center", part = "body") %>%
-    align(j = 2:5, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2 ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+    align(j = 2:3, align = "center", part = "body") %>%
+    align(j = 2:3, align = "center", part = "header") %>%
+      flextable::compose(i = 2, j = 2, part = "header",
+        value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = 3, part = "header",
+              value = as_paragraph(as_i("p"))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 2.5) %>%
-  width(j = 2:5, width = 1) %>%
-  italic(i = 2, j = 2:5, part = "header") %>%
+  width(j = 2:3, width = 1) %>%
+  # italic(i = 2, j = 2:5, part = "header") %>%
   # merge_at(i = 1:6, j = 4 ) %>%
   # merge_at(i = 1:6, j = 7 ) %>%
   # merge_at(i = 1:6, j = 10 ) %>%
@@ -3376,14 +3340,14 @@ lapply(alt_best_mods_Q1.urbscore_list, tidy_sb) %>%
   # merge_at(i = 1:6, j = 19) %>%
   # merge_at(i = 1:6, j = 22) %>%
   # fix_border_issues() %>%
-  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best models examining the effects of urbanization on 2 traits: pollinaria removed and mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
-                          AIC(u_poll_glmer_gradient_1.1) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
-                          AIC(u_podsperped_lmer_gradient_01) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best models examining the effects of urbanization on 2 traits: pollinaria removed and mean no. follicles per inflorescence. Alternative models of other estimates of reproductive success were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Pollinaria Removed, Alt. Model 1: ",
+  #                         AIC(u_poll_glmer_gradient_1.1) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
+  #                         AIC(u_podsperped_lmer_gradient_01) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q1_Urbscore_ANOVA_altmodels.png"))
 
 
@@ -3450,35 +3414,15 @@ lapply(alt_best_mods_Q2.urbscore_list, tidy_sb) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:13, align = "center", part = "body") %>%
     align(j = 2:13, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2 ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2  ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2  ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2   ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2   ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2    ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2    ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2     ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2     ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-      fontsize(size = 12, part = "header") %>%
+    flextable::compose(i = 2, j = c(2,4,6,8,10,12), part = "header",
+      value = as_paragraph("χ", as_sup("2"))) %>%
+    flextable::compose(i = 2, j = c(3,5,7,9,11,13), part = "header",
+              value = as_paragraph(as_i("p"))) %>%
+  fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body") %>%
   width(j = 1, width = 1.8) %>%
   width(j = 2:13, width = 1) %>%
-  italic(i = 2, j = 2:13, part = "header") %>%
+  # italic(i = 2, j = 2:13, part = "header") %>%
   # merge_at(i = 1:6, j = 4 ) %>%
   # merge_at(i = 1:6, j = 7 ) %>%
   # merge_at(i = 1:6, j = 10 ) %>%
@@ -3487,22 +3431,22 @@ lapply(alt_best_mods_Q2.urbscore_list, tidy_sb) %>%
   # merge_at(i = 1:6, j = 19) %>%
   # merge_at(i = 1:6, j = 22) %>%
   # fix_border_issues() %>%
-  add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, follicles, and mean no. follicles per inflorescence. Alternative models of pollinaria removed were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-    add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
-                          AIC(u_peds_glmer_subtr_03) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 2: ",
-                          AIC(u_peds_glmer_subtr_04) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Follicles, Alt. Model 1: ",
-                          AIC(u_pods_glmer_subtr_02) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
-                          AIC(u_podsperped_lmer_subtr_06) %>% round(., 3))) %>% 
-    add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 2: ",
-                          AIC(u_podsperped_lmer_subtr_07) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 3: ",
-                          AIC(u_podsperped_lmer_subtr_08) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # add_footer_lines("Table X: Results from alternative general linear mixed models within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on 4 traits: inflorescences, follicles, and mean no. follicles per inflorescence. Alternative models of pollinaria removed were >2 AIC of the best models and are not shown. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  #   add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 1: ",
+  #                         AIC(u_peds_glmer_subtr_03) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Inflorescences, Alt. Model 2: ",
+  #                         AIC(u_peds_glmer_subtr_04) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Follicles, Alt. Model 1: ",
+  #                         AIC(u_pods_glmer_subtr_02) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 1: ",
+  #                         AIC(u_podsperped_lmer_subtr_06) %>% round(., 3))) %>% 
+  #   add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 2: ",
+  #                         AIC(u_podsperped_lmer_subtr_07) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Follicles per Inflorescence, Alt. Model 3: ",
+  #                         AIC(u_podsperped_lmer_subtr_08) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Q2_Urbscore_ANOVA_altmodels.png"))
 
 
@@ -3514,13 +3458,13 @@ lapply(alt_best_mods_Q2.urbscore_list, tidy_sb) %>%
 make_Q1Q2_Anova.height(height_lmer_gradient_01) %>%
   width(j = 1, width = 2.4) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-    add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
-                          AIC(height_lmer_gradient_01) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via distance to city center and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  #   add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+  #                         AIC(height_lmer_gradient_01) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q1_Dist_ANOVA_altmodels_HEIGHT.png"))
 
 
@@ -3528,13 +3472,13 @@ make_Q1Q2_Anova.height(height_lmer_gradient_01) %>%
 make_Q1Q2_Anova.height(height_lmer_subtr_08) %>%
   width(j = 1, width = 2.4) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-      add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
-                          AIC(height_lmer_subtr_08) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via distance to city center and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  #     add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+  #                         AIC(height_lmer_subtr_08) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q2_Dist_ANOVA_altmodels_HEIGHT.png"))
 
 
@@ -3542,13 +3486,13 @@ make_Q1Q2_Anova.height(height_lmer_subtr_08) %>%
 make_Q1Q2_Anova.height(u_height_lmer_gradient_02) %>%
   width(j = 1, width = 2.4) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-        add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
-                          AIC(u_height_lmer_gradient_02) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization on plant height. Urbanization was quantified via urbanization score and all populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  #       add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+  #                         AIC(u_height_lmer_gradient_02) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q1_Urbscore_ANOVA_altmodels_HEIGHT.png"))
 
 
@@ -3556,13 +3500,13 @@ make_Q1Q2_Anova.height(u_height_lmer_gradient_02) %>%
 make_Q1Q2_Anova.height(u_height_lmer_subtr_09) %>%
   width(j = 1, width = 2.4) %>%
   width(j = 2:3, width = 1) %>%
-  italic(i = 2, j = 2:3, part = "header") %>%
-  add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
-        add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
-                          AIC(u_height_lmer_subtr_09) %>% round(., 3))) %>% 
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:3, part = "header") %>%
+  # add_footer_lines("Table X: Results from an alternative general linear mixed model within 2 AIC from the best model examining the effects of urbanization and proximity to an urban corridor on plant height. Urbanization was quantified via urbanization score and only urban populations were included. Shown are maximum likelihood chi-square (X2) and p-values (p) obtained from a type II ANOVA.") %>%
+  #       add_footer_lines(paste0("AIC, Height, Alt. Model 1: ",
+  #                         AIC(u_height_lmer_subtr_09) %>% round(., 3))) %>% 
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Supplement/lmer/Alternative_Models/Alt_models_Height/Q2_Urbscore_ANOVA_altmodels_HEIGHT.png"))
 ```
 
