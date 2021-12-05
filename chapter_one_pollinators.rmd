@@ -1293,7 +1293,7 @@ tidy_sb.pollinators_lm <- function(model){
                                              p.value < 0.01 ~ "**",
                                              p.value <= 0.05 ~ "*")) %>%
       dplyr::mutate(., AIC = as.numeric(AIC(model))) %>%
-      mutate_if(is.numeric, round, 3))  %>%
+      mutate_if(is.numeric, round, 3)  %>%
       dplyr::mutate(p.value = replace(p.value, Significance == "***", "<0.001"))  %>%
       dplyr::rename(., 
                     # "F" = statistic,
@@ -1320,7 +1320,7 @@ tidy_sb.pollinators_lm <- function(model){
                 str_replace_all,
                 pattern = c(":"),
                 replacement = c(" x "))
-  
+  )
 }
 
 
@@ -1349,14 +1349,10 @@ make_Q3_Anova.pollinators <- function(anova_list){
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:5, align = "center", part = "body") %>%
     align(j = 2:5, align = "center", part = "header") %>%
-    display(i = 2, col_key = "X2", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
-    display(i = 2, col_key = "X2 ", 
-      pattern = "{{val}}{{pow}}", part = "header",
-      formatters = list(val ~ as.character("X"), pow ~ as.character("2 ") ),
-      fprops = list(pow = fp_text(vertical.align = "superscript", font.size = 12))) %>%
+      flextable::compose(i = 2, j = c(2,4), part = "header",
+        value = as_paragraph("χ", as_sup("2"))) %>%
+      flextable::compose(i = 2, j = c(3,5), part = "header",
+              value = as_paragraph(as_i("p"))) %>%
       fontsize(size = 12, part = "header") %>%
       fontsize(size = 12, part = "body")
     )
@@ -1372,10 +1368,10 @@ make_Q3_Anova.pollinators <- function(anova_list){
 best_mods_Q3.dist_list <- list(
 ### abundance
   lm_abun1,  
-### diversity
-lm_diversity,
 ## richness
-lm.rich
+lm.rich,
+### diversity
+lm_diversity
 )
 
 lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
@@ -1403,8 +1399,8 @@ lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
-                 "Simpson's Diversity",
-                 "Species Richness"),
+                 "Menhinick's Species Richness",
+                 "Simpson's Diversity"),
       colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:13, align = "center", part = "body") %>%
@@ -1416,20 +1412,17 @@ lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
   width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
   width(j = c(3,7,11), width = 0.3) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Abundance: ",
-                          AIC(lm_abun1) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Diversity: ",
-                          AIC(lm_diversity) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Richness: ",
-                          AIC(lm.rich) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Abundance: ",
+  #                         AIC(lm_abun1) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Diversity: ",
+  #                         AIC(lm_diversity) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Richness: ",
+  #                         AIC(lm.rich) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Dist_ANOVA.png"))
-
-
-
 
 
 
@@ -1439,11 +1432,12 @@ lapply(best_mods_Q3.dist_list, tidy_sb.pollinators_lm) %>%
 
 best_mods_Q3urban.dist_list <- list(
 ### abundance
-  lm_abun1.urbsubs_ME,  
+  lm_abun1.urbsubs_ME,
+  ## richness
+lm.rich.urbsubs_ME,
 ### diversity
-lm_diversity.urbsubs,
-## richness
-lm.rich.urbsubs_ME
+lm_diversity.urbsubs
+
 )
 
 lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
@@ -1472,8 +1466,8 @@ lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
-                 "Simpson's Diversity",
-                 "Species Richness"),
+                 "Menhinick's Species Richness",
+                 "Simpson's Diversity"),
       colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:13, align = "center", part = "body") %>%
@@ -1485,16 +1479,16 @@ lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
   width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
   width(j = c(3,7,11), width = 0.3) %>%
   italic(i = 2, j = 2:13, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Abundance: ",
-                          AIC(lm_abun1.urbsubs_ME) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Diversity: ",
-                          AIC(lm_diversity.urbsubs) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Richness: ",
-                          AIC(lm.rich.urbsubs_ME) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via distance to city center and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Abundance: ",
+  #                         AIC(lm_abun1.urbsubs_ME) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Diversity: ",
+  #                         AIC(lm_diversity.urbsubs) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Richness: ",
+  #                         AIC(lm.rich.urbsubs_ME) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Dist_urban_ANOVA.png"))
 
 
@@ -1503,11 +1497,12 @@ lapply(best_mods_Q3urban.dist_list, tidy_sb.pollinators_lm) %>%
 
 best_mods_Q3.usc_list <- list(
 ### abundance
-  lm_abun1.u,  
+  lm_abun1.u,
+  ## richness
+lm.rich.u,
 ### diversity
-lm_diversity.u,
-## richness
-lm.rich.u
+lm_diversity.u
+
 )
 
 lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
@@ -1535,8 +1530,8 @@ lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
-                 "Simpson's Diversity",
-                 "Species Richness"),
+                 "Menhinick's Species Richness",
+                 "Simpson's Diversity"),
       colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:13, align = "center", part = "body") %>%
@@ -1547,17 +1542,17 @@ lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
   width(j = c(2, 6, 10), width = 1) %>%
   width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
   width(j = c(3,7,10), width = 0.5) %>%
-  italic(i = 2, j = 2:13, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p),  and F-statistics (F) obtained from type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Abundance: ",
-                          AIC(lm_abun1.u) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Diversity: ",
-                          AIC(lm_diversity.u) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Richness: ",
-                          AIC(lm.rich.u) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:13, part = "header") %>%
+  # add_footer_lines("Table X: Results from general linear models examining the effects of urbanization on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and all populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p),  and F-statistics (F) obtained from type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Abundance: ",
+  #                         AIC(lm_abun1.u) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Diversity: ",
+  #                         AIC(lm_diversity.u) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Richness: ",
+  #                         AIC(lm.rich.u) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Usc_ANOVA.png"))
 
 
@@ -1566,11 +1561,11 @@ lapply(best_mods_Q3.usc_list, tidy_sb.pollinators_lm) %>%
 ## URBAN sites
 best_mods_Q3urban.usc_list <- list(
 ### abundance
-  lm_abun1.urbsubs.u_ME,  
-### diversity
-lm_diversity.urbsubs.u_ME,
+  lm_abun1.urbsubs.u_ME,
 ## richness
-lm.rich.urbsubs.u_ME
+lm.rich.urbsubs.u_ME,  
+### diversity
+lm_diversity.urbsubs.u_ME
 )
 
 lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
@@ -1598,8 +1593,8 @@ lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
     add_header_row(
       values = c(" ",
                  "Abundance",
-                 "Simpson's Diversity",
-                 "Species Richness"),
+                 "Menhinick's Species Richness",
+                 "Simpson's Diversity"),
       colwidths = c(1, 4, 4, 4)) %>%
     align(j = 1, align = "left", part = "all") %>%
     align(j = 2:13, align = "center", part = "body") %>%
@@ -1610,17 +1605,17 @@ lapply(best_mods_Q3urban.usc_list, tidy_sb.pollinators_lm) %>%
   width(j = c(2, 6, 10), width = 1) %>%
   width(j = c(4:5, 8:9, 12:13), width = 0.7) %>%
   width(j = c(3,7,10), width = 0.5) %>%
-  italic(i = 2, j = 2:13, part = "header") %>%
-  add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
-  add_footer_lines(paste0("AIC, Abundance: ",
-                          AIC(lm_abun1.urbsubs.u_ME) %>% round(., 3))) %>%
-  add_footer_lines(paste0("AIC, Diversity: ",
-                          AIC(lm_diversity.urbsubs.u_ME) %>% round(., 3))) %>%
-    add_footer_lines(paste0("AIC, Richness: ",
-                          AIC(lm.rich.urbsubs.u_ME) %>% round(., 3))) %>%
-  add_footer_lines("*: p-value <= 0.05") %>%
-  add_footer_lines("**: p-value <= 0.01") %>%
-  add_footer_lines("***: p-value <= 0.001") %>%
+  # italic(i = 2, j = 2:13, part = "header") %>%
+  # add_footer_lines("Table X: Results from general linear models examining the effects of urbanization and distance to an urban corridor on pollinator abundance, diversity, and richness. Urbanization was quantified via urbanization score and only urban populations were included. Shown are sums of squares, degrees of freedom (df), p-values (p), and F-statistics (F) obtained from type II ANOVA.") %>%
+  # add_footer_lines(paste0("AIC, Abundance: ",
+  #                         AIC(lm_abun1.urbsubs.u_ME) %>% round(., 3))) %>%
+  # add_footer_lines(paste0("AIC, Diversity: ",
+  #                         AIC(lm_diversity.urbsubs.u_ME) %>% round(., 3))) %>%
+  #   add_footer_lines(paste0("AIC, Richness: ",
+  #                         AIC(lm.rich.urbsubs.u_ME) %>% round(., 3))) %>%
+  # add_footer_lines("*: p-value <= 0.05") %>%
+  # add_footer_lines("**: p-value <= 0.01") %>%
+  # add_footer_lines("***: p-value <= 0.001") %>%
   save_as_image(., path = here::here("./Figures_Tables/Q3_ANOVA/Q3_Usc_urban_ANOVA.png"))
 
 ```
