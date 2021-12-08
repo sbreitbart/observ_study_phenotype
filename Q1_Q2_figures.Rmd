@@ -1,5 +1,7 @@
-# Q1 / Gradient---------------------
-## Distance from City Center----------
+# Q1 / Gradient
+## Distance from City Center
+### Create ggpredict objects
+```{r}
 
 ### Peduncles
 peds_glmer_gradient_01
@@ -26,7 +28,15 @@ podsperped_gradient_01_pred <- ggpredict(podsperped_lmer_gradient_02,
                                          type = "zero_inflated")
 
 
+# Height
+height_lmer_gradient_02
+height_gradient_01_pred <- ggpredict(height_lmer_gradient_02,
+                                     terms = c("City_dist", "Year"),
+                                     type = "fe")
+```
 
+### Create plots
+```{r}
 
 ### Peduncles
 ggpred_Q1.citydist_peds <- (ggplot(peds_gradient_01_pred) + 
@@ -80,7 +90,6 @@ ggpred_Q1.citydist_poll <- (ggplot(poll_gradient_01_pred) +
     legend.key = element_rect(fill = NA) ) + 
   labs(x = "Distance to city center (km)", 
        y = "Pollinaria Removed")
-
 
 
 
@@ -138,7 +147,39 @@ ggpred_Q1.citydist_podsperped <- (ggplot(podsperped_gradient_01_pred) +
        y = "Follicles per Inflorescence") 
 
 
-# COMBINE
+
+# HEIGHT- DISTANCE
+ggpred_Q1.citydist_height <- (ggplot(height_gradient_01_pred) + 
+                                geom_smooth(aes(x = x, y = predicted, color = group),
+                                            se = F) +
+                                geom_ribbon(aes(x = x, ymin = predicted - std.error,
+                                                ymax = predicted + std.error, fill = group),
+                                            alpha = 0.3) + 
+                                geom_point(data = fertile_pops_all, 
+                                           aes(x = City_dist, y = Height_Sept,
+                                               colour = Year, shape = Year), size = 2)
+)+
+  labs(x = "Distance to Urban Center (km)", 
+       y = "Height (cm)") +
+  scale_shape(solid = F)+
+  labs(color="Year", size="Year", fill = "Year") +
+  scale_y_continuous(limits=c(0,200)) +
+  labs(linetype="Year", color="Year", shape = "Year") +
+  theme(legend.position = c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box.just = "right",
+        legend.box = 'horizontal',
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA) )
+ggpred_Q1.citydist_height
+
+```
+
+### Combine plots into one figure
+```{r}
 Q1_regressions_citydist_ggpred <- ggarrange(ggpred_Q1.citydist_poll,
           ggpred_Q1.citydist_pods,
           ggpred_Q1.citydist_podsperped,
@@ -152,9 +193,134 @@ Q1_regressions_citydist_ggpred <- ggarrange(ggpred_Q1.citydist_poll,
           common.legend = T,
           legend = "top") %T>%
   plot
+```
+
+### Find estimated marginal means at terminii
+#### Peduncles
+```{r}
+# MEAN PEDUNCLES BY YEAR
+mean_peds_q1 <- peds_gradient_01_pred %>%
+  dplyr::group_by(group) %>%
+  dplyr::summarise(mean_ped = mean(predicted)) %T>%
+  view()
+
+## PERCENT CHANGE, non-corr to corr subtransect:
+perc_chg_peds_q1 <- mean_peds_q1 %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA)
+
+### percent change for 2018-2019
+perc_chg_peds_q1[2,3] <- (perc_chg_peds_q1[2,2]-perc_chg_peds_q1[1,2])/perc_chg_peds_q1[1,2]
 
 
-## Urbanization Score----------
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_peds_q1_2 <- peds_gradient_01_pred %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
+
+### percent change for 2018
+mean_peds_q1_2[1,7] <- (mean_peds_q1_2[1,2]-mean_peds_q1_2[3,2])/mean_peds_q1_2[3,2]
+
+### percent change for 2019
+mean_peds_q1_2[2,7] <- (mean_peds_q1_2[2,2]-mean_peds_q1_2[4,2])/mean_peds_q1_2[4,2]
+
+```
+
+#### Pollinia
+```{r}
+# POLLINIA: along gradient & by year-----
+
+# MEAN POLLINIA BY YEAR
+mean_poll_q1 <- poll_gradient_01_pred %>%
+  mutate(poll_per_flower = predicted / 5) %>%
+  dplyr::group_by(group) %>%
+  dplyr::summarise(mean_poll = mean(poll_per_flower)) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA) %T>%
+  view()
+
+### percent change for 2018-2019
+mean_poll_q1[2,3] <- (mean_poll_q1[2,2]-mean_poll_q1[1,2])/mean_poll_q1[1,2]
+
+
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_poll2_q1 <- poll_gradient_01_pred %>%
+  mutate(poll_per_flower = predicted / 5) %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  dplyr::group_by(group) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
+
+### percent change for 2018
+mean_poll2_q1[1,8] <- (mean_poll2_q1[1,7]-mean_poll2_q1[3,7])/mean_poll2_q1[3,7]
+
+### percent change for 2019
+mean_poll2_q1[2,8] <- (mean_poll2_q1[2,7]-mean_poll2_q1[4,7])/mean_poll2_q1[4,7]
+
+```
+
+#### Pods
+```{r}
+# PODS: along gradient & by year-----
+# MEAN PODS BY YEAR
+mean_pods_q1 <- pods_gradient_01_pred %>%
+  dplyr::group_by(group) %>%
+  dplyr::mutate(mean_pod_sqrt = sqrt(predicted)) %>%
+  dplyr::summarise(mean_pod_sqrt = mean(mean_pod_sqrt)) %T>%
+  view()
+
+## PERCENT CHANGE, non-corr to corr subtransect:
+perc_chg_pods_q1 <- mean_pods_q1 %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA)
+
+### percent change for 2018-2019
+perc_chg_pods_q1[2,3] <- (perc_chg_pods_q1[2,2]-perc_chg_pods_q1[1,2])/perc_chg_pods_q1[1,2]
+
+
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_pods_q1_2 <- pods_gradient_01_pred %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  dplyr::mutate(mean_pod_sqrt = sqrt(predicted)) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
+
+### percent change for 2018
+mean_pods_q1_2[1,8] <- (mean_pods_q1_2[1,7]-mean_pods_q1_2[3,7])/mean_pods_q1_2[3,7]
+
+### percent change for 2019
+mean_pods_q1_2[2,8] <- (mean_pods_q1_2[2,7]-mean_pods_q1_2[4,7])/mean_pods_q1_2[4,7]
+
+```
+
+#### Pods per peduncle
+```{r}
+# PODS PER PED: along gradient-----
+## PERCENT CHANGE, rural to urban terminii:
+mean_ppp_q1_2 <- podsperped_gradient_01_pred %>%
+  dplyr::filter(., x == 0 | x == 70) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %T>%
+  view()
+
+### percent change for 2018
+mean_ppp_q1_2[1,7] <- (mean_ppp_q1_2[1,2]-mean_ppp_q1_2[3,2])/mean_ppp_q1_2[3,2]
+
+### percent change for 2019
+mean_ppp_q1_2[2,7] <- (mean_ppp_q1_2[2,2]-mean_ppp_q1_2[4,2])/mean_ppp_q1_2[4,2]
+
+```
+
+## Urbanization Score
+### Create ggpredict objects
+```{r}
 
 ### Peduncles
 u_peds_glmer_gradient_01
@@ -182,6 +348,17 @@ podsperped_gradient_01_pred.u <- ggpredict(u_podsperped_lmer_gradient_02,
 
 
 
+# HEIGHT- URB SCORE
+u_height_lmer_gradient_01
+height_gradient_01_pred.u <- ggpredict(u_height_lmer_gradient_01,
+                                       terms = c("Urb_score", "Year"),
+                                       type = "fe")
+
+
+```
+
+### Create plots
+```{r}
 
 ### Peduncles
 ggpred_Q1.urbscore_peds <- (ggplot(peds_gradient_01_pred.u) + 
@@ -302,45 +479,6 @@ ggpred_Q1.urbscore_podsperped <- (ggplot(podsperped_gradient_01_pred.u) +
 
 
 
-# HEIGHT- DISTANCE
-height_lmer_gradient_02
-height_gradient_01_pred <- ggpredict(height_lmer_gradient_02,
-                                     terms = c("City_dist", "Year"),
-                                     type = "fe")
-
-ggpred_Q1.citydist_height <- (ggplot(height_gradient_01_pred) + 
-                                geom_smooth(aes(x = x, y = predicted, color = group),
-                                            se = F) +
-                                geom_ribbon(aes(x = x, ymin = predicted - std.error,
-                                                ymax = predicted + std.error, fill = group),
-                                            alpha = 0.3) + 
-                                geom_point(data = fertile_pops_all, 
-                                           aes(x = City_dist, y = Height_Sept,
-                                               colour = Year, shape = Year), size = 2)
-)+
-  labs(x = "Distance to Urban Center (km)", 
-       y = "Height (cm)") +
-  scale_shape(solid = F)+
-  labs(color="Year", size="Year", fill = "Year") +
-  scale_y_continuous(limits=c(0,200)) +
-  labs(linetype="Year", color="Year", shape = "Year") +
-  theme(legend.position = c(.99, .99),
-        legend.justification = c("right", "top"),
-        legend.box.just = "right",
-        legend.box = 'horizontal',
-        legend.margin = margin(5,5,5,5),
-        text = element_text(size=14),
-        panel.background = element_blank(),
-        axis.line = element_line(colour = "black"),
-        legend.key = element_rect(fill = NA) )
-ggpred_Q1.citydist_height
-
-
-# HEIGHT- URB SCORE
-u_height_lmer_gradient_01
-height_gradient_01_pred.u <- ggpredict(u_height_lmer_gradient_01,
-                                       terms = c("Urb_score", "Year"),
-                                       type = "fe")
 
 ggpred_Q1.citydist_height.u <- (ggplot(height_gradient_01_pred.u) + 
                                   geom_smooth(aes(x = x, y = predicted, color = group),
@@ -370,10 +508,12 @@ ggpred_Q1.citydist_height.u <- (ggplot(height_gradient_01_pred.u) +
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA) )
 ggpred_Q1.citydist_height.u
+```
 
+### Combine plots into one figure
+## Final Figure: Main text
+```{r}
 
-
-# PUT THIS PLOT INTO MAIN TEXT 
 city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
                                      bottom = text_grob("Distance to Urban Center (km)",
                                                         size=14))
@@ -381,11 +521,10 @@ city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/DISTGradient_regressions.pdf",
              width = 12, height = 3.75)
 
+```
 
-
-
-
-# this is now going into supplement. Going to add height
+## Final Figure: Supplement
+```{r}
 Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.citydist_height, # city_dist
                                             ggpred_Q1.urbscore_poll, # urb_score
                                             ggpred_Q1.urbscore_pods, # urb_score
@@ -407,134 +546,13 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/URBSCOREG
              width = 12, height = 7)
 
 
-## Find estimated marginal means at terminii-----
-### Distance-----
-# PEDUNCLES----------------
-
-# MEAN PEDUNCLES BY YEAR
-mean_peds_q1 <- peds_gradient_01_pred %>%
-  dplyr::group_by(group) %>%
-  dplyr::summarise(mean_ped = mean(predicted)) %T>%
-  view()
-
-## PERCENT CHANGE, non-corr to corr subtransect:
-perc_chg_peds_q1 <- mean_peds_q1 %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_year = NA)
-
-### percent change for 2018-2019
-perc_chg_peds_q1[2,3] <- (perc_chg_peds_q1[2,2]-perc_chg_peds_q1[1,2])/perc_chg_peds_q1[1,2]
+```
 
 
-
-## PERCENT CHANGE, rural to urban terminii:
-mean_peds_q1_2 <- peds_gradient_01_pred %>%
-  dplyr::filter(., x == 0 | x == 70) %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_urbrur = NA) %T>%
-  view()
-
-### percent change for 2018
-mean_peds_q1_2[1,7] <- (mean_peds_q1_2[1,2]-mean_peds_q1_2[3,2])/mean_peds_q1_2[3,2]
-
-### percent change for 2019
-mean_peds_q1_2[2,7] <- (mean_peds_q1_2[2,2]-mean_peds_q1_2[4,2])/mean_peds_q1_2[4,2]
-
-
-
-
-
-
-
-# POLLINIA: along gradient & by year-----
-
-# MEAN POLLINIA BY YEAR
-mean_poll_q1 <- poll_gradient_01_pred %>%
-  mutate(poll_per_flower = predicted / 5) %>%
-  dplyr::group_by(group) %>%
-  dplyr::summarise(mean_poll = mean(poll_per_flower)) %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_year = NA) %T>%
-  view()
-
-### percent change for 2018-2019
-mean_poll_q1[2,3] <- (mean_poll_q1[2,2]-mean_poll_q1[1,2])/mean_poll_q1[1,2]
-
-
-
-## PERCENT CHANGE, rural to urban terminii:
-mean_poll2_q1 <- poll_gradient_01_pred %>%
-  mutate(poll_per_flower = predicted / 5) %>%
-  dplyr::filter(., x == 0 | x == 70) %>%
-  dplyr::group_by(group) %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_urbrur = NA) %T>%
-  view()
-
-### percent change for 2018
-mean_poll2_q1[1,8] <- (mean_poll2_q1[1,7]-mean_poll2_q1[3,7])/mean_poll2_q1[3,7]
-
-### percent change for 2019
-mean_poll2_q1[2,8] <- (mean_poll2_q1[2,7]-mean_poll2_q1[4,7])/mean_poll2_q1[4,7]
-
-
-
-# PODS: along gradient & by year-----
-
-
-# MEAN PODS BY YEAR
-mean_pods_q1 <- pods_gradient_01_pred %>%
-  dplyr::group_by(group) %>%
-  dplyr::mutate(mean_pod_sqrt = sqrt(predicted)) %>%
-  dplyr::summarise(mean_pod_sqrt = mean(mean_pod_sqrt)) %T>%
-  view()
-
-## PERCENT CHANGE, non-corr to corr subtransect:
-perc_chg_pods_q1 <- mean_pods_q1 %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_year = NA)
-
-### percent change for 2018-2019
-perc_chg_pods_q1[2,3] <- (perc_chg_pods_q1[2,2]-perc_chg_pods_q1[1,2])/perc_chg_pods_q1[1,2]
-
-
-
-## PERCENT CHANGE, rural to urban terminii:
-mean_pods_q1_2 <- pods_gradient_01_pred %>%
-  dplyr::filter(., x == 0 | x == 70) %>%
-  dplyr::mutate(mean_pod_sqrt = sqrt(predicted)) %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_urbrur = NA) %T>%
-  view()
-
-### percent change for 2018
-mean_pods_q1_2[1,8] <- (mean_pods_q1_2[1,7]-mean_pods_q1_2[3,7])/mean_pods_q1_2[3,7]
-
-### percent change for 2019
-mean_pods_q1_2[2,8] <- (mean_pods_q1_2[2,7]-mean_pods_q1_2[4,7])/mean_pods_q1_2[4,7]
-
-
-
-# PODS PER PED: along gradient-----
-
-## PERCENT CHANGE, rural to urban terminii:
-mean_ppp_q1_2 <- podsperped_gradient_01_pred %>%
-  dplyr::filter(., x == 0 | x == 70) %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_urbrur = NA) %T>%
-  view()
-
-### percent change for 2018
-mean_ppp_q1_2[1,7] <- (mean_ppp_q1_2[1,2]-mean_ppp_q1_2[3,2])/mean_ppp_q1_2[3,2]
-
-### percent change for 2019
-mean_ppp_q1_2[2,7] <- (mean_ppp_q1_2[2,2]-mean_ppp_q1_2[4,2])/mean_ppp_q1_2[4,2]
-
-
-
-
-# Q2 / Subtransects---------------------
-## Distance from City Center----------
+# Q2 / Subtransects
+## Distance from City Center
+### Create ggpredict objects
+```{r}
 
 ### Peduncles
 peds_glmer_subtr_01
@@ -560,10 +578,15 @@ podsperped_subtr_01_pred <- ggpredict(podsperped_lmer_subtr_08,
                                          terms = c("City_dist", "Year", "Transect_ID"),
                                          type = "fe") %T>% view()
 
+### Height- DISTANCE
+height_lmer_subtr_01
+height_subtr_01_pred <- ggpredict(height_lmer_subtr_01,
+                                  terms = c("City_dist", "Year", "Transect_ID"),
+                                  type = "fe")
+```
 
-
-
-
+### Create plots
+```{r}
 ggpred_Q2.citydist_peds <- (ggplot(peds_subtr_01_pred) +
                               geom_smooth(aes(x = x,
                                               y = predicted,
@@ -725,52 +748,193 @@ ggpred_Q2.citydist_podsperped <- (ggplot(podsperped_subtr_01_pred) +
 
 
 
-# reordering for main text
-Q2_regressions_citydist_ggpred <- ggarrange( ggpred_Q2.citydist_poll,
-                                             ggpred_Q2.citydist_pods,
-                                             ggpred_Q2.citydist_podsperped,
-                                             ggpred_Q2.citydist_peds +
-                                              font("x.text"),
-                                            ncol = 4,
-                                            nrow = 1,
-                                            align = "hv",
-                                            labels = list("A", "B", "C", "D"),
-                                            font.label = (size =16),
-                                            common.legend = T,
-                                            legend = "none") %T>%
-  plot
+## factors (transects) for this object are North, then South
+## so to keep legend consistent, have to reorder levels first
+height_subtr_01_pred$facet <- factor(height_subtr_01_pred$facet,
+                                     levels(height_subtr_01_pred$facet)[c(2,1)])
+levels(height_subtr_01_pred$facet)
 
-library(patchwork)
-Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend.png"),
-                    native = TRUE)
+ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
+                                geom_smooth(aes(x = x,
+                                                y = predicted,
+                                                color = facet,
+                                                linetype = group),
+                                            method = "loess",
+                                            se = F) +
+                                geom_ribbon(aes(x = x,
+                                                ymin = predicted - std.error,
+                                                ymax = predicted + std.error,
+                                                fill = facet,
+                                                linetype = group),
+                                            alpha = 0.2)) + 
+  geom_point(data = fertile_pops_all %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = City_dist, y = Height_Sept,
+                 colour = Transect_ID,
+                 shape = interaction(Year, Transect_ID)),
+             size = 3) +
+  scale_y_continuous(limits=c(0,200)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Height (cm)") +
+  scale_shape_manual(values = c(16,2,17,1)) +
+  theme( #legend.position = c(.97, .99),
+    legend.justification = c("center"),
+    legend.box = 'horizontal',
+    legend.box.just = "center",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    # axis.title.x = element_blank(),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA),
+    legend.key.size = unit(2, "line") )
+
+```
 
 
-city_plots.ggpred2 <- annotate_figure(Q2_regressions_citydist_ggpred,
-                bottom = text_grob("Distance to Urban Center (km)",
-                                   size=14)) +                  # Combine plot & image
-  Q2_legend +
-  patchwork::plot_layout(design =
- "#######B
-  AAAAAAAA
-  AAAAAAAA
-  AAAAAAAA
-  AAAAAAAA")
-
-# annotate_figure(Q2_regressions_citydist_ggpred,
-#                                       bottom = text_grob("Distance to Urban Center (km)",
-#                                                          size=14)) +                  # Combine plot & image
-#   Q2_legend +
-#   patchwork::plot_layout(design = "AAAAAAAB
-#                          AAAAAAA#
-#                          AAAAAAA#")
-
-# export to PDF
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/DISTSubtransect_regressions_ggpredict.pdf",
-             width = 12, height = 4.5)
 
 
 
-## Urbanization Score----------
+
+
+### Find estimated marginal means at terminii
+#### PEDUNCLES
+```{r}
+
+# MEAN PEDUNCLES BY YEAR AND TRANSECT
+mean_peds <- peds_subtr_01_pred %>%
+  dplyr::group_by(group, facet) %>%
+  dplyr::summarise(mean_ped = mean(predicted)) %T>%
+  view()
+
+## PERCENT CHANGE, non-corr to corr subtransect:
+perc_chg_peds <- mean_peds %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA)
+
+### percent change for 2018
+perc_chg_peds[1,4] <- (perc_chg_peds[1,3]-perc_chg_peds[2,3])/perc_chg_peds[2,3]
+
+### percent change for 2019
+perc_chg_peds[3,4] <- (perc_chg_peds[3,3]-perc_chg_peds[4,3])/perc_chg_peds[4,3]
+
+
+
+
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_peds2 <- peds_subtr_01_pred %>%
+  dplyr::filter(., x == 2 | x == 34) %>%
+  dplyr::group_by(x, group) %>%
+  dplyr::summarise(terminus_mean = mean(predicted)) %T>%
+  view()
+
+perc_chg_peds2 <- mean_peds2 %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA)
+
+### percent change for 2018
+perc_chg_peds2[1,4] <- (perc_chg_peds2[1,3]-perc_chg_peds2[3,3])/perc_chg_peds2[3,3]
+
+### percent change for 2019
+perc_chg_peds2[2,4] <- (perc_chg_peds2[2,3]-perc_chg_peds2[4,3])/perc_chg_peds2[4,3]
+
+```
+
+#### Pollinia
+```{r}
+
+# MEAN POLLINIA REMOVED BY YEAR AND TRANSECT
+mean_poll <- poll_subtr_01_pred %>%
+  mutate(poll_per_flower = predicted / 5) %>%
+  dplyr::group_by(group, facet) %>%
+  dplyr::summarise(mean_poll = mean(poll_per_flower)) %T>%
+  view()
+
+## PERCENT CHANGE, non-corr to corr subtransect:
+perc_chg_poll <- mean_poll %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_year = NA)
+
+### percent change for 2018
+perc_chg_poll[2,4] <- (perc_chg_poll[2,3]-perc_chg_poll[1,3])/perc_chg_poll[1,3]
+
+### percent change for 2019
+perc_chg_poll[4,4] <- (perc_chg_poll[4,3]-perc_chg_poll[3,3])/perc_chg_poll[3,3]
+
+
+
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_poll2 <- poll_subtr_01_pred %>%
+  mutate(poll_per_flower = predicted / 5) %>%
+  dplyr::filter(., x == 2 | x == 34) %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA) %>%
+  # dplyr::group_by(x, group, facet) %>%
+  # dplyr::summarise(terminus_mean = mean(poll_per_flower))  %T>%
+  view()
+
+### percent change for 2018: rural to urban terminus, NON-CORRIDOR
+mean_poll2[1,9] <- (mean_poll2[1,8]-mean_poll2[5,8])/mean_poll2[5,8]
+
+### percent change for 2018: rural to urban terminus, CORRIDOR
+mean_poll2[2,9] <- (mean_poll2[2,8]-mean_poll2[6,8])/mean_poll2[6,8]
+
+
+### percent change for 2019: rural to urban terminus, NON-CORRIDOR
+mean_poll2[3,9] <- (mean_poll2[3,8]-mean_poll2[7,8])/mean_poll2[7,8]
+
+### percent change for 2019: rural to urban terminus, CORRIDOR
+mean_poll2[4,9] <- (mean_poll2[4,8]-mean_poll2[8,8])/mean_poll2[8,8]
+
+```
+
+#### Pods
+```{r}
+
+# MEAN PODS BY YEAR AND TRANSECT
+mean_pods <- pods_subtr_01_pred %>%
+  dplyr::mutate(sqrt_pods = sqrt(predicted)) %>%
+  dplyr::group_by(x, group) %>%
+  dplyr::summarise(mean_sqrt_pods = mean(sqrt_pods)) %>%
+  dplyr::group_by(group) %>%
+  dplyr::summarise(mean_sqrt_pods = mean(mean_sqrt_pods)) %>%
+  dplyr::mutate(perc_chg_year = NA) %T>%
+  view()
+
+### percent change from 2018-2019
+mean_pods[1,3] <- (mean_pods[2,2]-mean_pods[1,2])/mean_pods[1,2]
+
+
+```
+
+#### Pods per Peduncle
+```{r}
+
+## PERCENT CHANGE, rural to urban terminii:
+mean_ppp2 <- podsperped_subtr_01_pred %>%
+  dplyr::filter(., x == 2 | x == 34) %>%
+  dplyr::group_by(x, group) %>%
+  dplyr::summarise(terminus_mean = mean(predicted)) %T>%
+  view()
+
+perc_chg_ppp2 <- mean_ppp2 %>%
+  as.data.frame() %>%
+  dplyr::mutate(perc_chg_urbrur = NA)
+
+### percent change for 2018
+perc_chg_ppp2[1,4] <- (perc_chg_ppp2[1,3]-perc_chg_ppp2[3,3])/perc_chg_ppp2[3,3]
+
+### percent change for 2019
+perc_chg_ppp2[2,4] <- (perc_chg_ppp2[2,3]-perc_chg_ppp2[4,3])/perc_chg_ppp2[4,3]
+
+
+```
+
+## Urbanization Score
+### Create ggpredict objects
+```{r}
 
 ### Peduncles
 u_peds_glmer_subtr_06
@@ -797,8 +961,15 @@ podsperped_subtr_01_pred.u <- ggpredict(u_podsperped_lmer_subtr_09,
                                       type = "fe") 
 
 
+### Height- URB SCORE
+u_height_lmer_subtr_01
+height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
+                                    terms = c("Urb_score", "Year", "Transect_ID"),
+                                    type = "fe")
+```
 
-
+### Create plots
+```{r}
 
 ggpred_Q2.urbscore_peds <- (ggplot(peds_subtr_01_pred.u) +
                               geom_smooth(aes(x = x,
@@ -962,61 +1133,6 @@ ggpred_Q2.urbscore_podsperped <- (ggplot(podsperped_subtr_01_pred.u) +
 
 
 
-### Height- DISTANCE
-height_lmer_subtr_01
-height_subtr_01_pred <- ggpredict(height_lmer_subtr_01,
-                                  terms = c("City_dist", "Year", "Transect_ID"),
-                                  type = "fe")
-
-## factors (transects) for this object are North, then South
-## so to keep legend consistent, have to reorder levels first
-height_subtr_01_pred$facet <- factor(height_subtr_01_pred$facet,
-                                     levels(height_subtr_01_pred$facet)[c(2,1)])
-levels(height_subtr_01_pred$facet)
-
-ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
-                                geom_smooth(aes(x = x,
-                                                y = predicted,
-                                                color = facet,
-                                                linetype = group),
-                                            method = "loess",
-                                            se = F) +
-                                geom_ribbon(aes(x = x,
-                                                ymin = predicted - std.error,
-                                                ymax = predicted + std.error,
-                                                fill = facet,
-                                                linetype = group),
-                                            alpha = 0.2)) + 
-  geom_point(data = fertile_pops_all %>%
-               filter(Transect_ID != "Rural"),
-             aes(x = City_dist, y = Height_Sept,
-                 colour = Transect_ID,
-                 shape = interaction(Year, Transect_ID)),
-             size = 3) +
-  scale_y_continuous(limits=c(0,200)) +
-  labs(x = "Distance to Urban Center (km)",
-       y = "Height (cm)") +
-  scale_shape_manual(values = c(16,2,17,1)) +
-  theme( #legend.position = c(.97, .99),
-    legend.justification = c("center"),
-    legend.box = 'horizontal',
-    legend.box.just = "center",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
-    # axis.title.x = element_blank(),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA),
-    legend.key.size = unit(2, "line") )
-
-
-
-### Height- URB SCORE
-u_height_lmer_subtr_01
-height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
-                                    terms = c("Urb_score", "Year", "Transect_ID"),
-                                    type = "fe")
-
 
 ## factors (transects) for this object are North, then South
 ## so to keep legend consistent, have to reorder levels first
@@ -1061,8 +1177,63 @@ ggpred_Q2.citydist_height.u <- (ggplot(height_subtr_01_pred.u) +
     legend.key = element_rect(fill = NA),
     legend.key.size = unit(2, "line") )
 
+```
 
 
+
+
+
+
+
+
+
+## Final Figure: Main text (Combine plots into one figure)
+```{r}
+Q2_regressions_citydist_ggpred <- ggarrange( ggpred_Q2.citydist_poll,
+                                             ggpred_Q2.citydist_pods,
+                                             ggpred_Q2.citydist_podsperped,
+                                             ggpred_Q2.citydist_peds +
+                                              font("x.text"),
+                                            ncol = 4,
+                                            nrow = 1,
+                                            align = "hv",
+                                            labels = list("A", "B", "C", "D"),
+                                            font.label = (size =16),
+                                            common.legend = T,
+                                            legend = "none") %T>%
+  plot
+
+library(patchwork)
+Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend.png"),
+                    native = TRUE)
+
+
+city_plots.ggpred2 <- annotate_figure(Q2_regressions_citydist_ggpred,
+                bottom = text_grob("Distance to Urban Center (km)",
+                                   size=14)) +                  # Combine plot & image
+  Q2_legend +
+  patchwork::plot_layout(design =
+ "#######B
+  AAAAAAAA
+  AAAAAAAA
+  AAAAAAAA
+  AAAAAAAA")
+
+# annotate_figure(Q2_regressions_citydist_ggpred,
+#                                       bottom = text_grob("Distance to Urban Center (km)",
+#                                                          size=14)) +                  # Combine plot & image
+#   Q2_legend +
+#   patchwork::plot_layout(design = "AAAAAAAB
+#                          AAAAAAA#
+#                          AAAAAAA#")
+
+# export to PDF
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/DISTSubtransect_regressions_ggpredict.pdf",
+             width = 12, height = 4.5)
+```
+
+## Final Figure: Supplement (Combine plots into one figure)
+```{r}
 # reordering for main text
 # Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.urbscore_poll,
 #                                             ggpred_Q2.urbscore_pods,
@@ -1098,9 +1269,6 @@ ggpred_Q2.citydist_height.u <- (ggplot(height_subtr_01_pred.u) +
 # # export to PDF
 # dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/URBSCORESubtransect_regressions_ggpredict.pdf",
 #              width = 12, height = 4.5)
-
-
-
 
 
 
@@ -1141,141 +1309,6 @@ urbscore_plots.ggpred2 <- Q2_regressions_urbscore_ggpred +    # Combine plot & i
 # export to PDF
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/URBSCORESubtransect_regressions_ggpredict.pdf",
              width = 12, height = 8.5)
-
-
-
-############################
-## Find estimated marginal means at terminii-----
-### Distance-----
-
-
-# PEDUNCLES----------------
-
-# MEAN PEDUNCLES BY YEAR AND TRANSECT
-mean_peds <- peds_subtr_01_pred %>%
-  dplyr::group_by(group, facet) %>%
-  dplyr::summarise(mean_ped = mean(predicted)) %T>%
-  view()
-
-## PERCENT CHANGE, non-corr to corr subtransect:
-perc_chg_peds <- mean_peds %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_year = NA)
-
-### percent change for 2018
-perc_chg_peds[1,4] <- (perc_chg_peds[1,3]-perc_chg_peds[2,3])/perc_chg_peds[2,3]
-
-### percent change for 2019
-perc_chg_peds[3,4] <- (perc_chg_peds[3,3]-perc_chg_peds[4,3])/perc_chg_peds[4,3]
-
-
-
-
-
-## PERCENT CHANGE, rural to urban terminii:
-mean_peds2 <- peds_subtr_01_pred %>%
-  dplyr::filter(., x == 2 | x == 34) %>%
-  dplyr::group_by(x, group) %>%
-  dplyr::summarise(terminus_mean = mean(predicted)) %T>%
-  view()
-
-perc_chg_peds2 <- mean_peds2 %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_urbrur = NA)
-
-### percent change for 2018
-perc_chg_peds2[1,4] <- (perc_chg_peds2[1,3]-perc_chg_peds2[3,3])/perc_chg_peds2[3,3]
-
-### percent change for 2019
-perc_chg_peds2[2,4] <- (perc_chg_peds2[2,3]-perc_chg_peds2[4,3])/perc_chg_peds2[4,3]
-
-
-
-
-
-# POLLINIA ----------------
-
-# MEAN POLLINIA REMOVED BY YEAR AND TRANSECT
-mean_poll <- poll_subtr_01_pred %>%
-  mutate(poll_per_flower = predicted / 5) %>%
-  dplyr::group_by(group, facet) %>%
-  dplyr::summarise(mean_poll = mean(poll_per_flower)) %T>%
-  view()
-
-## PERCENT CHANGE, non-corr to corr subtransect:
-perc_chg_poll <- mean_poll %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_year = NA)
-
-### percent change for 2018
-perc_chg_poll[2,4] <- (perc_chg_poll[2,3]-perc_chg_poll[1,3])/perc_chg_poll[1,3]
-
-### percent change for 2019
-perc_chg_poll[4,4] <- (perc_chg_poll[4,3]-perc_chg_poll[3,3])/perc_chg_poll[3,3]
-
-
-
-
-## PERCENT CHANGE, rural to urban terminii:
-mean_poll2 <- poll_subtr_01_pred %>%
-  mutate(poll_per_flower = predicted / 5) %>%
-  dplyr::filter(., x == 2 | x == 34) %>%
-  dplyr::group_by(x, group) %>%
-  dplyr::summarise(terminus_mean = mean(poll_per_flower)) %T>%
-  view()
-
-perc_chg_poll2 <- mean_poll2 %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_urbrur = NA)
-
-### percent change for 2018
-perc_chg_poll2[1,4] <- (perc_chg_poll2[1,3]-perc_chg_poll2[3,3])/perc_chg_poll2[3,3]
-
-### percent change for 2019
-perc_chg_poll2[2,4] <- (perc_chg_poll2[2,3]-perc_chg_poll2[4,3])/perc_chg_poll2[4,3]
-
-
-
-
-
-# PODS ----------------
-
-# MEAN PODS BY YEAR AND TRANSECT
-mean_pods <- pods_subtr_01_pred %>%
-  dplyr::mutate(sqrt_pods = sqrt(predicted)) %>%
-  dplyr::group_by(x, group) %>%
-  dplyr::summarise(mean_sqrt_pods = mean(sqrt_pods)) %>%
-  dplyr::group_by(group) %>%
-  dplyr::summarise(mean_sqrt_pods = mean(mean_sqrt_pods)) %>%
-  dplyr::mutate(perc_chg_year = NA) %T>%
-  view()
-
-### percent change from 2018-2019
-mean_pods[1,3] <- (mean_pods[2,2]-mean_pods[1,2])/mean_pods[1,2]
-
-
-
-
-
-# PODS PER PEDUNCLE ----------------
-
-## PERCENT CHANGE, rural to urban terminii:
-mean_ppp2 <- podsperped_subtr_01_pred %>%
-  dplyr::filter(., x == 2 | x == 34) %>%
-  dplyr::group_by(x, group) %>%
-  dplyr::summarise(terminus_mean = mean(predicted)) %T>%
-  view()
-
-perc_chg_ppp2 <- mean_ppp2 %>%
-  as.data.frame() %>%
-  dplyr::mutate(perc_chg_urbrur = NA)
-
-### percent change for 2018
-perc_chg_ppp2[1,4] <- (perc_chg_ppp2[1,3]-perc_chg_ppp2[3,3])/perc_chg_ppp2[3,3]
-
-### percent change for 2019
-perc_chg_ppp2[2,4] <- (perc_chg_ppp2[2,3]-perc_chg_ppp2[4,3])/perc_chg_ppp2[4,3]
-
-
+```
 
 
