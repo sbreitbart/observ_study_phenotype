@@ -16,12 +16,7 @@ output:
 editor_options: 
   chunk_output_type: console
 
-WHEN TOTALLY DONE, type this:
-renv::activate()
-renv::snapshot()
 ---
-
-For code comparing variable means  across years, urban to rural terminii, and subtransects, run "set up notebook" chunk, "Linear Models (lmer and glmer)" chunk under Results, and then open "ggpredict_figures.R" script.
 
 # Set up notebook
 ## Install, load packages
@@ -328,7 +323,7 @@ write.csv(corr_df_spread, here::here("./Corridor_Analysis/corr_df_spread.csv"), 
 ### Model Selection
 #### Linear Models (lmer and glmer)
 ##### Peduncles
-###### GLMER (be sure to indicate that model is zero-inflated and minus 1, so results need to be explained with that in mind!!)
+###### GLMER
 ####### City_dist, not urb_score
 ######## All sites: NO TRANSFORMATION NEEDED
 ```{r}
