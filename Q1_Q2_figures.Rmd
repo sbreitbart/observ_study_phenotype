@@ -36,19 +36,162 @@ height_gradient_01_pred <- ggpredict(height_lmer_gradient_02,
 ```
 
 ### Create plots
+#### Include points, no stats (not included in paper)
+```{r}
+# 
+# ### Peduncles
+# ggpred_Q1.citydist_peds <- (ggplot(peds_gradient_01_pred) + 
+#     geom_smooth(aes(x = x, y = predicted, color = group),
+#                 se = F) +
+#     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
+#     geom_point(data = fertile_pops_all, 
+#                aes(x = City_dist, y = Peduncles, colour = Year, shape = Year), size = 2)
+# )+
+#   scale_shape(solid = F)+
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   ylim(0, 15) +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) + 
+#   labs(x = "Distance to city center (km)", 
+#        y = "Inflorescences") 
+# 
+# 
+# 
+# 
+# ### Pollen Removal
+# ggpred_Q1.citydist_poll <- (ggplot(poll_gradient_01_pred) + 
+#   geom_smooth(aes(x = x, y = predicted, color = group),
+#               se = F) +
+#   geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
+#   geom_point(data = AvgVars_notNA_Poll_18_19, 
+#              aes(x = City_dist, y = Average_Pollinia, colour = Year, shape = Year), size = 2)
+# )+
+#   scale_shape(solid = F)+
+#   scale_y_continuous(breaks=c(0,1,2,3,4,5), limits=c(0,5)) +
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) + 
+#   labs(x = "Distance to city center (km)", 
+#        y = "Pollinaria Removed")
+# 
+# 
+# 
+# # Pods
+# ggpred_Q1.citydist_pods <- (ggplot(pods_gradient_01_pred) + 
+#     geom_smooth(aes(x = x, y = predicted, color = group),
+#                 se = F) +
+#     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
+#     geom_point(data = fertile_pops_all, 
+#                aes(x = City_dist, y = Viable_Pods^2, colour = Year, shape = Year), size = 2)
+# )+
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   ylim(0, 350) +
+#   scale_shape(solid = F)+
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) + 
+#   labs(x = "Distance to city center (km)", 
+#        y = expression(Follicles^{2}))
+# 
+# 
+# 
+# 
+# # Pods per Peduncle
+# ggpred_Q1.citydist_podsperped <- (ggplot(podsperped_gradient_01_pred) + 
+#     geom_smooth(aes(x = x, y = predicted, color = group),
+#                 se = F) +
+#     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
+#     geom_point(data = fertile_pops_all, 
+#                aes(x = City_dist, y = pods_per_ped, colour = Year, shape = Year), size = 2)
+# )+
+#   scale_shape(solid = F)+
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   ylim(0, 3) +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) + 
+#   labs(x = "Distance to city center (km)", 
+#        y = "Follicles per Inflorescence") 
+# 
+# 
+# 
+# # HEIGHT- DISTANCE
+# ggpred_Q1.citydist_height <- (ggplot(height_gradient_01_pred) + 
+#                                 geom_smooth(aes(x = x, y = predicted, color = group),
+#                                             se = F) +
+#                                 geom_ribbon(aes(x = x, ymin = predicted - std.error,
+#                                                 ymax = predicted + std.error, fill = group),
+#                                             alpha = 0.3) + 
+#                                 geom_point(data = fertile_pops_all, 
+#                                            aes(x = City_dist, y = Height_Sept,
+#                                                colour = Year, shape = Year), size = 2)
+# )+
+#   labs(x = "Distance to Urban Center (km)", 
+#        y = "Height (cm)") +
+#   scale_shape(solid = F)+
+#   labs(color="Year", size="Year", fill = "Year") +
+#   scale_y_continuous(limits=c(0,200)) +
+#   labs(linetype="Year", color="Year", shape = "Year") +
+#   theme(legend.position = c(.99, .99),
+#         legend.justification = c("right", "top"),
+#         legend.box.just = "right",
+#         legend.box = 'horizontal',
+#         legend.margin = margin(5,5,5,5),
+#         text = element_text(size=14),
+#         panel.background = element_blank(),
+#         axis.line = element_line(colour = "black"),
+#         legend.key = element_rect(fill = NA) )
+# ggpred_Q1.citydist_height
+
+```
+
+#### Exclude points and ADD STATS (as in paper)
 ```{r}
 
 ### Peduncles
-ggpred_Q1.citydist_peds <- (ggplot(peds_gradient_01_pred) + 
+ggpred_Q1.citydist_peds <- ggplot(peds_gradient_01_pred) +
     geom_smooth(aes(x = x, y = predicted, color = group),
                 se = F) +
-    geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-    geom_point(data = fertile_pops_all, 
-               aes(x = City_dist, y = Peduncles, colour = Year, shape = Year), size = 2)
-)+
+    geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) +
+#     geom_point(data = fertile_pops_all,
+#                aes(x = City_dist, y = Peduncles, colour = Year, shape = Year), size = 2)
   scale_shape(solid = F)+
   labs( color="Year", shape="Year", fill = "Year") +
-  ylim(0, 15) +
+  ylim(0, 10) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -59,23 +202,31 @@ ggpred_Q1.citydist_peds <- (ggplot(peds_gradient_01_pred) +
     axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) ) + 
-  labs(x = "Distance to city center (km)", 
-       y = "Inflorescences") 
+    legend.key = element_rect(fill = NA) ) +
+  labs(x = "Distance to city center (km)",
+       y = "Inflorescences") +
+  # adding stats from ANOVA
+  geom_text(size = 4.25, x=0, y=2.5, label = "Distance: p = 0.226", hjust = 0) +
+  geom_text(size = 4.25, x=0, y=1.6, label = "Year: p = 0.085", hjust = 0) +
+  geom_text(size = 4.25, x=0, y=0.7, label = "Distance x Year: p = 0.791", hjust = 0) 
 
+
+ggpred_Q1.citydist_peds
 
 
 
 ### Pollen Removal
-ggpred_Q1.citydist_poll <- (ggplot(poll_gradient_01_pred) + 
+ggpred_Q1.citydist_poll <- ggplot(poll_gradient_01_pred) + 
   geom_smooth(aes(x = x, y = predicted, color = group),
               se = F) +
   geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-  geom_point(data = AvgVars_notNA_Poll_18_19, 
-             aes(x = City_dist, y = Average_Pollinia, colour = Year, shape = Year), size = 2)
-)+
+#   geom_point(data = AvgVars_notNA_Poll_18_19, 
+#              aes(x = City_dist, y = Average_Pollinia, colour = Year, shape = Year), size = 2)
+# )+
   scale_shape(solid = F)+
-  scale_y_continuous(breaks=c(0,1,2,3,4,5), limits=c(0,5)) +
+  scale_y_continuous(
+    # breaks=c(0,1,2,3,4,5),
+    limits=c(0,2.5)) +
   labs( color="Year", shape="Year", fill = "Year") +
   theme(
     legend.position = c(.99, .99),
@@ -89,20 +240,26 @@ ggpred_Q1.citydist_poll <- (ggplot(poll_gradient_01_pred) +
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) ) + 
   labs(x = "Distance to city center (km)", 
-       y = "Pollinaria Removed")
+       y = "Pollinaria Removed") +
+  # adding stats from ANOVA
+  geom_text(size = 4.25, x=5, y=0.4, label = "Distance: p <0.001", hjust = 0) +
+  geom_text(size = 4.25, x=5, y=0.25, label = "Year: p <0.001", hjust = 0) +
+  geom_text(size = 4.25, x=5, y=0.1, label = "Distance x Year: p = 0.002", hjust = 0) 
+
+ggpred_Q1.citydist_poll
 
 
 
 # Pods
-ggpred_Q1.citydist_pods <- (ggplot(pods_gradient_01_pred) + 
+ggpred_Q1.citydist_pods <- ggplot(pods_gradient_01_pred) + 
     geom_smooth(aes(x = x, y = predicted, color = group),
                 se = F) +
     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-    geom_point(data = fertile_pops_all, 
-               aes(x = City_dist, y = Viable_Pods^2, colour = Year, shape = Year), size = 2)
-)+
+#     geom_point(data = fertile_pops_all, 
+#                aes(x = City_dist, y = Viable_Pods^2, colour = Year, shape = Year), size = 2)
+# )+
   labs( color="Year", shape="Year", fill = "Year") +
-  ylim(0, 350) +
+  ylim(0, 200) +
   scale_shape(solid = F)+
   theme(
     legend.position = c(.99, .99),
@@ -116,22 +273,27 @@ ggpred_Q1.citydist_pods <- (ggplot(pods_gradient_01_pred) +
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) ) + 
   labs(x = "Distance to city center (km)", 
-       y = expression(Follicles^{2}))
+       y = expression(Follicles^{2})) +
+  # adding stats from ANOVA
+  geom_text(size = 4.25, x=0, y=50, label = "Distance: p = 0.851", hjust = 0) +
+  geom_text(size = 4.25, x=0, y=30, label = "Year: p <0.001", hjust = 0) +
+  geom_text(size = 4.25, x=0, y=10, label = "Distance x Year: p <0.001", hjust = 0) 
 
+ggpred_Q1.citydist_pods
 
 
 
 # Pods per Peduncle
-ggpred_Q1.citydist_podsperped <- (ggplot(podsperped_gradient_01_pred) + 
+ggpred_Q1.citydist_podsperped <- ggplot(podsperped_gradient_01_pred) + 
     geom_smooth(aes(x = x, y = predicted, color = group),
                 se = F) +
     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-    geom_point(data = fertile_pops_all, 
-               aes(x = City_dist, y = pods_per_ped, colour = Year, shape = Year), size = 2)
-)+
+#     geom_point(data = fertile_pops_all, 
+#                aes(x = City_dist, y = pods_per_ped, colour = Year, shape = Year), size = 2)
+# )+
   scale_shape(solid = F)+
   labs( color="Year", shape="Year", fill = "Year") +
-  ylim(0, 3) +
+  ylim(0, 2) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -144,26 +306,33 @@ ggpred_Q1.citydist_podsperped <- (ggplot(podsperped_gradient_01_pred) +
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA) ) + 
   labs(x = "Distance to city center (km)", 
-       y = "Follicles per Inflorescence") 
+       y = "Follicles per Inflorescence") +
+  # adding stats from ANOVA
+  geom_text(size = 4.25, x=0, y=.5, label = "Distance: p = 0.065", hjust = 0) +
+  geom_text(size = 4.25, x=0, y=.3, label = "Year: p = 0.438", hjust = 0)
 
+ggpred_Q1.citydist_podsperped
 
 
 # HEIGHT- DISTANCE
-ggpred_Q1.citydist_height <- (ggplot(height_gradient_01_pred) + 
-                                geom_smooth(aes(x = x, y = predicted, color = group),
-                                            se = F) +
-                                geom_ribbon(aes(x = x, ymin = predicted - std.error,
-                                                ymax = predicted + std.error, fill = group),
-                                            alpha = 0.3) + 
-                                geom_point(data = fertile_pops_all, 
-                                           aes(x = City_dist, y = Height_Sept,
-                                               colour = Year, shape = Year), size = 2)
-)+
+ggpred_Q1.citydist_height <- ggplot(height_gradient_01_pred) + 
+  geom_smooth(aes(x = x, y = predicted, color = group),
+              se = F) +
+  geom_ribbon(aes(x = x, ymin = predicted - std.error,
+                  ymax = predicted + std.error, fill = group),
+              alpha = 0.3) + 
+#   geom_point(data = fertile_pops_all, 
+#              aes(x = City_dist,
+#                  y = Height_Sept,
+#                  colour = Year,
+#                  shape = Year),
+#              size = 2)
+# )+
   labs(x = "Distance to Urban Center (km)", 
        y = "Height (cm)") +
   scale_shape(solid = F)+
   labs(color="Year", size="Year", fill = "Year") +
-  scale_y_continuous(limits=c(0,200)) +
+  scale_y_continuous(limits=c(0,120)) +
   labs(linetype="Year", color="Year", shape = "Year") +
   theme(legend.position = c(.99, .99),
         legend.justification = c("right", "top"),
@@ -518,7 +687,7 @@ city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
                                      bottom = text_grob("Distance to Urban Center (km)",
                                                         size=14))
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/DISTGradient_regressions.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/DISTGradient_regressions_nopoints.pdf",
              width = 12, height = 3.75)
 
 ```
@@ -586,6 +755,7 @@ height_subtr_01_pred <- ggpredict(height_lmer_subtr_01,
 ```
 
 ### Create plots
+#### Include points, no stats (not included in paper)
 ```{r}
 ggpred_Q2.citydist_peds <- (ggplot(peds_subtr_01_pred) +
                               geom_smooth(aes(x = x,
@@ -795,6 +965,222 @@ ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
 
 
 
+
+
+#### Exclude points, and ADD stats (as in paper)
+```{r}
+ggpred_Q2.citydist_peds <- (ggplot(peds_subtr_01_pred) +
+                              geom_smooth(aes(x = x,
+                                              y = predicted,
+                                              color = facet,
+                                              linetype = group),
+                                          method = "loess",
+                                          se = F) +
+                              geom_ribbon(aes(x = x,
+                                              ymin = predicted - std.error,
+                                              ymax = predicted + std.error,
+                                              fill = facet,
+                                              linetype = group),
+                                          alpha = 0.2)) + 
+  # geom_point(data = fertile_pops_all %>%
+  #              filter(Transect_ID != "Rural"),
+  #            aes(x = City_dist, y = Peduncles,
+  #                colour = Transect_ID,
+  #                shape = interaction(Year, Transect_ID)),
+  #            size = 3) +
+  scale_y_continuous(limits=c(0,10), breaks = c(0,2,4,6,8,10)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Inflorescences") +
+  # scale_shape_manual(values = c(16,2,17,1)) +
+  theme(legend.position = c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") ) 
+  
+ggpred_Q2.citydist_peds
+
+
+
+
+## factors (transects) for this object are North, then South
+## for some reason (peduncles and at least one more is South, North)
+## so to keep legend consistent, have to reorder levels first
+poll_subtr_01_pred$facet <- factor(poll_subtr_01_pred$facet,
+                                   levels(poll_subtr_01_pred$facet)[c(2,1)])
+levels(poll_subtr_01_pred$facet)
+
+ggpred_Q2.citydist_poll <- (ggplot(poll_subtr_01_pred) +
+                              geom_smooth(aes(x = x,
+                                              y = predicted,
+                                              color = facet,
+                                              linetype = group),
+                                          method = "loess",
+                                          se = F) +
+                              geom_ribbon(aes(x = x,
+                                              ymin = predicted - std.error,
+                                              ymax = predicted + std.error,
+                                              fill = facet,
+                                              linetype = group),
+                                          alpha = 0.2)) + 
+  # geom_point(data = AvgVars_notNA_Poll_18_19 %>%
+  #              filter(Transect_ID != "Rural"),
+  #            aes(x = City_dist, y = Average_Pollinia,
+  #                colour = Transect_ID,
+  #                shape = interaction(Year, Transect_ID)),
+  #            size = 3) +
+  scale_y_continuous(
+    # breaks=c(0,1,2,3),
+    limits=c(0,2.5)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Pollinaria Removed") +
+  # scale_shape_manual(values = c(16,2,17,1)) +
+  theme(legend.position = c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") ) 
+ggpred_Q2.citydist_poll
+
+
+
+ggpred_Q2.citydist_pods <- (ggplot(pods_subtr_01_pred) +
+                              geom_smooth(aes(x = x,
+                                              y = predicted,
+                                              color = facet,
+                                              linetype = group),
+                                          method = "loess",
+                                          se = F) +
+                              geom_ribbon(aes(x = x,
+                                              ymin = predicted - std.error,
+                                              ymax = predicted + std.error,
+                                              fill = facet,
+                                              linetype = group),
+                                          alpha = 0.2)) + 
+  # geom_point(data = fertile_pops_all %>%
+  #              filter(Transect_ID != "Rural"),
+  #            aes(x = City_dist, y = Viable_Pods^2,
+  #                colour = Transect_ID,
+  #                shape = interaction(Year, Transect_ID)),
+  #            size = 3) +
+  # scale_y_continuous(limits=c(0,350)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = expression(Follicles^{2})) +
+  # scale_shape_manual(values = c(16,2,17,1)) +
+  theme(legend.position = c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
+ggpred_Q2.citydist_pods
+
+
+
+## factors (transects) for this object are North, then South
+## so to keep legend consistent, have to reorder levels first
+podsperped_subtr_01_pred$facet <- factor(podsperped_subtr_01_pred$facet,
+                                         levels(podsperped_subtr_01_pred$facet)[c(2,1)])
+levels(podsperped_subtr_01_pred$facet)
+
+ggpred_Q2.citydist_podsperped <- (ggplot(podsperped_subtr_01_pred) +
+                                    geom_smooth(aes(x = x,
+                                                    y = predicted,
+                                                    color = facet,
+                                                    linetype = group),
+                                                method = "loess",
+                                                se = F) +
+                                    geom_ribbon(aes(x = x,
+                                                    ymin = predicted - std.error,
+                                                    ymax = predicted + std.error,
+                                                    fill = facet,
+                                                    linetype = group),
+                                                alpha = 0.2)) + 
+  # geom_point(data = fertile_pops_all %>%
+  #              filter(Transect_ID != "Rural"),
+  #            aes(x = City_dist, y = pods_per_ped,
+  #                colour = Transect_ID,
+  #                shape = interaction(Year, Transect_ID)),
+  #            size = 3) +
+  scale_y_continuous(limits=c(0,2.5)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Follicles per Inflorescence") +
+  # scale_shape_manual(values = c(16,2,17,1)) +
+  theme(legend.position = c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
+ggpred_Q2.citydist_podsperped
+
+
+
+
+## factors (transects) for this object are North, then South
+## so to keep legend consistent, have to reorder levels first
+height_subtr_01_pred$facet <- factor(height_subtr_01_pred$facet,
+                                     levels(height_subtr_01_pred$facet)[c(2,1)])
+levels(height_subtr_01_pred$facet)
+
+ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
+                                geom_smooth(aes(x = x,
+                                                y = predicted,
+                                                color = facet,
+                                                linetype = group),
+                                            method = "loess",
+                                            se = F) +
+                                geom_ribbon(aes(x = x,
+                                                ymin = predicted - std.error,
+                                                ymax = predicted + std.error,
+                                                fill = facet,
+                                                linetype = group),
+                                            alpha = 0.2)) + 
+  geom_point(data = fertile_pops_all %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = City_dist, y = Height_Sept,
+                 colour = Transect_ID,
+                 shape = interaction(Year, Transect_ID)),
+             size = 3) +
+  scale_y_continuous(limits=c(0,200)) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Height (cm)") +
+  scale_shape_manual(values = c(16,2,17,1)) +
+  theme( #legend.position = c(.97, .99),
+    legend.justification = c("center"),
+    legend.box = 'horizontal',
+    legend.box.just = "center",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    # axis.title.x = element_blank(),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA),
+    legend.key.size = unit(2, "line") )
+
+```
 
 
 ### Find estimated marginal means at terminii
@@ -1204,7 +1590,8 @@ Q2_regressions_citydist_ggpred <- ggarrange( ggpred_Q2.citydist_poll,
   plot
 
 library(patchwork)
-Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend.png"),
+library(png)
+Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend_nopoints.png"),
                     native = TRUE)
 
 
@@ -1228,7 +1615,7 @@ city_plots.ggpred2 <- annotate_figure(Q2_regressions_citydist_ggpred,
 #                          AAAAAAA#")
 
 # export to PDF
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/DISTSubtransect_regressions_ggpredict.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/DISTSubtransect_regressions_nopoints.pdf",
              width = 12, height = 4.5)
 ```
 

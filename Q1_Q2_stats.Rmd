@@ -329,11 +329,11 @@ write.csv(corr_df_spread, here::here("./Corridor_Analysis/corr_df_spread.csv"), 
 ```{r}
 # OLD- BEFORE ZERO-INFLATED MODEL -----
 # peds_glmer_gradient_01 <- glmer(Peduncles ~ (1|Patch_ID) +
-#                                   
+# 
 #                                   City_dist:Year +
 #                                   City_dist +
 #                                   Year,
-#                                 
+# 
 #                                 fertile,
 #                                 family = "poisson",
 #                                 glmerControl(optimizer="bobyqa",
@@ -2101,8 +2101,8 @@ bound_podsperped <- bind_cols(formulas_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (2 is best)
 
 # check residuals
-library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
-library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
+library(effects) 
+library(sjPlot) 
 plot_model(podsperped_lmer_gradient_01, type='diag') # looks fine
 plot_model(podsperped_lmer_gradient_02, type='diag') # looks fine
 
