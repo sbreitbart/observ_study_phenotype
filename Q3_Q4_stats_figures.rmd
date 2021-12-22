@@ -2594,29 +2594,70 @@ four_popfams_summary <- four_popfams %>%
 #### Abundance
 ##### Gradient
 ###### City_dist
+####### Include points, no stats (not included in paper)
+```{r}
+# abun <- ggplot(sum_abun,
+#                aes(x = Dist_city,
+#                    y = Count)) +
+#   geom_pointrange(aes(ymin = Count - se, 
+#                       ymax = Count + se),
+#                   size = 0.5,
+#                    color = "black"
+#                   # ,
+#                   # position = position_jitterdodge(dodge.width = .5)
+#                                                   ) +
+#     scale_shape(solid = F)+
+#   geom_smooth(method = lm,
+#               se = F,
+#               size = 1,
+#               alpha = 0.15,
+#               color = "black") +
+#   labs( x = " ",
+#     # x = "Distance to Urban Center (km)",
+#        y = "Mean Pollinators Observed per Plant") +
+#   xlim(0,70) +
+#   ylim(0, 6) +
+#   theme_bw() +
+#   # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     axis.title.x = element_blank(),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=12),
+#     axis.text = element_text(size=12),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA)
+#     ) 
+# # +
+# #   labs(caption = "Error bars represent standard error")
+# abun
+```
+
+####### Exclude points, ADD stats (as in paper)
 ```{r}
 abun <- ggplot(sum_abun,
                aes(x = Dist_city,
                    y = Count)) +
-  geom_pointrange(aes(ymin = Count - se, 
-                      ymax = Count + se),
-                  size = 0.5,
-                   color = "black"
-                  # ,
-                  # position = position_jitterdodge(dodge.width = .5)
-                                                  ) +
-    scale_shape(solid = F)+
+  # geom_pointrange(aes(ymin = Count - se, 
+  #                     ymax = Count + se),
+  #                 size = 0.5,
+  #                  color = "black"
+  #                 # ,
+  #                 # position = position_jitterdodge(dodge.width = .5)
+  #                                                 ) +
+    # scale_shape(solid = F)+
   geom_smooth(method = lm,
-              se = F,
+              se = T,
               size = 1,
               alpha = 0.15,
-              color = "black") +
-  labs( x = " ",
-    # x = "Distance to Urban Center (km)",
-       y = "Mean Pollinators Observed per Plant") +
+              color = "#00BFC4",
+              fill = "#00BFC4")  +
   xlim(0,70) +
-  ylim(0, 6) +
-  theme_bw() +
+  scale_y_continuous(limits = c(0, NA)) +
   # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
     legend.position = c(.99, .99),
@@ -2625,16 +2666,23 @@ abun <- ggplot(sum_abun,
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=12),
+    text = element_text(size=14),
     axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
-    ) 
+    ) +
+  labs( x = " ",
+    # x = "Distance to Urban Center (km)",
+       y = "Mean Pollinators per Plant") +
 # +
 #   labs(caption = "Error bars represent standard error")
+
+  # adding stats from ANOVA
+  geom_text(size = 4.25, x=10, y=0.08, label = "Distance: p = 0.01", hjust = 0) 
 abun
 ```
+
 
 ###### Urb_score
 ```{r}
@@ -2906,39 +2954,79 @@ ggsave(here::here("Figures_Tables/Q3_Pollinator/Supplement", "Honeybees_per_plan
 #### Diversity
 ##### Gradient
 ###### City_dist
+####### Include points, no stats (not included in paper)
+```{r}
+# diversity_simpson <- ggplot(sum_diversity,
+#                aes(x = Dist_city,
+#                    y = simpson^2)) +
+#   geom_point(color = "black",
+#                   size = 2) +
+#     scale_shape(solid = F)+
+#   geom_smooth(method = lm,
+#               se = T,
+#               size = 1,
+#               alpha = 0.3,
+#               color = "black") +
+#   labs(x = " ",
+#     # x = "Distance to Urban Center (km)",
+#        y = expression("Simpson's Diversity Index "^2)) +
+#   xlim(0,70) +
+#   ylim(0, 1) +
+#   theme_bw() +
+#   # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=12),
+#     axis.text = element_text(size=12),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA)
+#     ) 
+# # +
+# #   labs(caption = "Error bars represent standard error")
+# diversity_simpson
+```
+
+####### Exclude points, ADD stats (as in paper)
 ```{r}
 diversity_simpson <- ggplot(sum_diversity,
                aes(x = Dist_city,
                    y = simpson^2)) +
-  geom_point(color = "black",
-                  size = 2) +
-    scale_shape(solid = F)+
+  # geom_point(color = "black",
+  #                 size = 2) +
+    # scale_shape(solid = F)+
   geom_smooth(method = lm,
               se = T,
               size = 1,
-              alpha = 0.3,
-              color = "black") +
-  labs(x = " ",
-    # x = "Distance to Urban Center (km)",
-       y = expression("Simpson's Diversity Index "^2)) +
+              alpha = 0.15,
+              color = "#00BFC4",
+              fill = "#00BFC4") +
   xlim(0,70) +
-  ylim(0, 1) +
-  theme_bw() +
-  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  ylim(0, NA) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=12),
+    text = element_text(size=14),
     axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
-    ) 
+    ) +
+  labs(x = " ",
+    # x = "Distance to Urban Center (km)",
+       y = expression("Simpson's Diversity Index "^2)) +
 # +
 #   labs(caption = "Error bars represent standard error")
+    
+  # adding stats from ANOVA
+  geom_text(size = 4.25, x=10, y=0.02, label = "Distance: p = 0.204", hjust = 0) 
 diversity_simpson
 ```
 
@@ -3098,37 +3186,76 @@ diversity_simpson_transect.u
 #### Richness
 ##### Gradient
 ###### City_dist
+####### Include points, without stats (as NOT paper)
+```{r}
+# rich <- ggplot(sum_richness,
+#                aes(x = Dist_city,
+#                    y = Menhinicks_index)) +
+#   geom_point(color = "black",
+#                   size = 2) +
+#     scale_shape(solid = F)+
+#   geom_smooth(method = lm,
+#               se = T,
+#               size = 1,
+#               alpha = 0.3,
+#               color = "black") +
+#   labs(x = "Distance to Urban Center (km)",
+#        y = "Menhinick's Species Richness") +
+#   xlim(0,70) +
+#   ylim(0, 4) +
+#   theme_bw() +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=12),
+#     axis.text = element_text(size=12),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA)
+#     ) 
+# # +
+# #   labs(caption = "Error bars represent standard error")
+# rich
+```
+
+
+####### Exclude points, ADD stats (as in paper)
 ```{r}
 rich <- ggplot(sum_richness,
                aes(x = Dist_city,
                    y = Menhinicks_index)) +
-  geom_point(color = "black",
-                  size = 2) +
-    scale_shape(solid = F)+
+  # geom_point(color = "black",
+  #                 size = 2) +
+  #   scale_shape(solid = F)+
   geom_smooth(method = lm,
               se = T,
               size = 1,
-              alpha = 0.3,
-              color = "black") +
-  labs(x = "Distance to Urban Center (km)",
-       y = "Menhinick's Species Richness") +
+              alpha = 0.15,
+              color = "#00BFC4",
+              fill = "#00BFC4")  +
   xlim(0,70) +
-  ylim(0, 4) +
-  theme_bw() +
+  ylim(0, NA) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
-    text = element_text(size=12),
+    text = element_text(size=14),
     axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
-    ) 
+    ) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Menhinick's Species Richness") +
 # +
 #   labs(caption = "Error bars represent standard error")
+  # adding stats from ANOVA
+  geom_text(size = 4.25, x=10, y=0.15, label = "Distance: p = 0.013", hjust = 0) 
 rich
 ```
 
@@ -3314,9 +3441,9 @@ Q3_regressions <- ggarrange(abun,
                             )
 Q3_regressions
 
-annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
+# annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions.pdf", width = 12, height = 7)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_NOPOINTS.pdf", width = 11, height = 3.75)
 ```
 
 ##### Transects
@@ -3348,9 +3475,8 @@ Q3_regressions.transects
 
 # annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_transects.pdf", width = 12, height = 4.5)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_transects_NOPOINTS.pdf", width = 12, height = 4.5)
 
-ggsave(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollinator_regressions_transects.png", width = 12, height = 4.5)
 
 ```
 
