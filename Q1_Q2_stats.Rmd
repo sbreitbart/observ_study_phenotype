@@ -109,7 +109,7 @@ library(reshape) # Flexibly Reshape Data
 library(reshape2) # Flexibly Reshape Data: A Reboot of the Reshape Package
 library(Rmisc) # Rmisc: Ryan Miscellaneous
 library(rpart) # Recursive Partitioning and Regression Trees
-library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
+library(sjPlot) # Data Visualization for Statistics in Social Science 
 # library(stargazer)
 library(tibble) # Simple Data Frames
 library(tidyr) # Tidy Messy Data

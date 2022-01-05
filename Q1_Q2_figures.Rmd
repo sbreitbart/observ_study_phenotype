@@ -963,10 +963,6 @@ ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
 
 
 
-
-
-
-
 #### Exclude points, and ADD stats (as in paper)
 ```{r}
 ggpred_Q2.citydist_peds <- (ggplot(peds_subtr_01_pred) +
