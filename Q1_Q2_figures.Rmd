@@ -968,15 +968,15 @@ ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
 ggpred_Q2.citydist_peds <- (ggplot(peds_subtr_01_pred) +
                               geom_smooth(aes(x = x,
                                               y = predicted,
-                                              color = facet,
-                                              linetype = group),
+                                              color = group,
+                                              linetype = facet),
                                           method = "loess",
                                           se = F) +
                               geom_ribbon(aes(x = x,
                                               ymin = predicted - std.error,
                                               ymax = predicted + std.error,
-                                              fill = facet,
-                                              linetype = group),
+                                              fill = group,
+                                              linetype = facet),
                                           alpha = 0.2)) + 
   # geom_point(data = fertile_pops_all %>%
   #              filter(Transect_ID != "Rural"),
@@ -1015,15 +1015,15 @@ levels(poll_subtr_01_pred$facet)
 ggpred_Q2.citydist_poll <- (ggplot(poll_subtr_01_pred) +
                               geom_smooth(aes(x = x,
                                               y = predicted,
-                                              color = facet,
-                                              linetype = group),
+                                              color = group,
+                                              linetype = facet),
                                           method = "loess",
                                           se = F) +
                               geom_ribbon(aes(x = x,
                                               ymin = predicted - std.error,
                                               ymax = predicted + std.error,
-                                              fill = facet,
-                                              linetype = group),
+                                              fill = group,
+                                              linetype = facet),
                                           alpha = 0.2)) + 
   # geom_point(data = AvgVars_notNA_Poll_18_19 %>%
   #              filter(Transect_ID != "Rural"),
@@ -1055,15 +1055,15 @@ ggpred_Q2.citydist_poll
 ggpred_Q2.citydist_pods <- (ggplot(pods_subtr_01_pred) +
                               geom_smooth(aes(x = x,
                                               y = predicted,
-                                              color = facet,
-                                              linetype = group),
+                                              color = group,
+                                              linetype = facet),
                                           method = "loess",
                                           se = F) +
                               geom_ribbon(aes(x = x,
                                               ymin = predicted - std.error,
                                               ymax = predicted + std.error,
-                                              fill = facet,
-                                              linetype = group),
+                                              fill = group,
+                                              linetype = facet),
                                           alpha = 0.2)) + 
   # geom_point(data = fertile_pops_all %>%
   #              filter(Transect_ID != "Rural"),
@@ -1099,15 +1099,15 @@ levels(podsperped_subtr_01_pred$facet)
 ggpred_Q2.citydist_podsperped <- (ggplot(podsperped_subtr_01_pred) +
                                     geom_smooth(aes(x = x,
                                                     y = predicted,
-                                                    color = facet,
-                                                    linetype = group),
+                                                   color = group, 
+                                                   linetype = facet),
                                                 method = "loess",
                                                 se = F) +
                                     geom_ribbon(aes(x = x,
                                                     ymin = predicted - std.error,
                                                     ymax = predicted + std.error,
-                                                    fill = facet,
-                                                    linetype = group),
+                                                    fill = group,
+                                                    linetype = facet),
                                                 alpha = 0.2)) + 
   # geom_point(data = fertile_pops_all %>%
   #              filter(Transect_ID != "Rural"),
@@ -1144,26 +1144,26 @@ levels(height_subtr_01_pred$facet)
 ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
                                 geom_smooth(aes(x = x,
                                                 y = predicted,
-                                                color = facet,
-                                                linetype = group),
+                                                color = group,
+                                              linetype = facet),
                                             method = "loess",
                                             se = F) +
                                 geom_ribbon(aes(x = x,
                                                 ymin = predicted - std.error,
                                                 ymax = predicted + std.error,
-                                                fill = facet,
-                                                linetype = group),
+                                                fill = group,
+                                                linetype = facet),
                                             alpha = 0.2)) + 
-  geom_point(data = fertile_pops_all %>%
-               filter(Transect_ID != "Rural"),
-             aes(x = City_dist, y = Height_Sept,
-                 colour = Transect_ID,
-                 shape = interaction(Year, Transect_ID)),
-             size = 3) +
-  scale_y_continuous(limits=c(0,200)) +
+  # geom_point(data = fertile_pops_all %>%
+  #              filter(Transect_ID != "Rural"),
+  #            aes(x = City_dist, y = Height_Sept,
+  #                colour = Transect_ID,
+  #                shape = interaction(Year, Transect_ID)),
+  #            size = 3) +
+  ylim(0, NA) +
   labs(x = "Distance to Urban Center (km)",
        y = "Height (cm)") +
-  scale_shape_manual(values = c(16,2,17,1)) +
+  # scale_shape_manual(values = c(16,2,17,1)) +
   theme( #legend.position = c(.97, .99),
     legend.justification = c("center"),
     legend.box = 'horizontal',
@@ -1587,7 +1587,7 @@ Q2_regressions_citydist_ggpred <- ggarrange( ggpred_Q2.citydist_poll,
 
 library(patchwork)
 library(png)
-Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend_nopoints.png"),
+Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend_nopoints_updated.png"),
                     native = TRUE)
 
 
@@ -1596,11 +1596,11 @@ city_plots.ggpred2 <- annotate_figure(Q2_regressions_citydist_ggpred,
                                    size=14)) +                  # Combine plot & image
   Q2_legend +
   patchwork::plot_layout(design =
- "#######B
-  AAAAAAAA
-  AAAAAAAA
-  AAAAAAAA
-  AAAAAAAA")
+ "#######BB
+  AAAAAAAAA
+  AAAAAAAAA
+  AAAAAAAAA
+  AAAAAAAAA")
 
 # annotate_figure(Q2_regressions_citydist_ggpred,
 #                                       bottom = text_grob("Distance to Urban Center (km)",
