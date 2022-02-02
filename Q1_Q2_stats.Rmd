@@ -488,8 +488,13 @@ bound_peds <- bind_cols(formulas_peds,
 
 
 summary(peds_glmer_gradient_01)
-peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01) %T>%
+peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01, type = "III" ) %T>%
+  print() # interaction not sig, so will redo with type II ANOVA
+
+peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01, type = "II" ) %T>%
   print() # year marg sig
+
+
 
 # check residuals
 plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
@@ -720,17 +725,29 @@ plot(simulateResiduals(peds_glmer_subtr_06)) # looks good
 
 
 summary(peds_glmer_subtr_01)
-peds_glmer_subtr_01_anova <- car::Anova(peds_glmer_subtr_01) %T>%
-  print()
+peds_glmer_subtr_01_anova <- car::Anova(peds_glmer_subtr_01, type = "III") %T>%
+  print() # interactions not sig, so will redo with type II ANOVA
+
+peds_glmer_subtr_01_anova <- car::Anova(peds_glmer_subtr_01, type = "II") %T>%
+  print() # transect marg sig
+
+
 
 summary(peds_glmer_subtr_03)
-peds_glmer_subtr_03_anova <- car::Anova(peds_glmer_subtr_03) %T>%
+peds_glmer_subtr_03_anova <- car::Anova(peds_glmer_subtr_03, type = "III") %T>%
+  print() # interactions not sig, so will redo with type II ANOVA
+
+peds_glmer_subtr_03_anova <- car::Anova(peds_glmer_subtr_03, type = "II") %T>%
   print()
+
+
 
 summary(peds_glmer_subtr_06)
-peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06) %T>%
-  print()
+peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06, type = "III") %T>%
+  print() # interactions not sig, so will redo with type II ANOVA
 
+peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06, type = "II") %T>%
+  print() 
 
 ```
 
@@ -802,7 +819,10 @@ bound_u_peds <- bind_cols(formulas_u_peds,
 
 
 summary(u_peds_glmer_gradient_01)
-u_peds_glmer_gradient_01_anova <- car::Anova(u_peds_glmer_gradient_01) %T>%
+u_peds_glmer_gradient_01_anova <- car::Anova(u_peds_glmer_gradient_01, type = "III") %T>%
+  print() # interaction not sig, so will redo with type II ANOVA
+
+u_peds_glmer_gradient_01_anova <- car::Anova(u_peds_glmer_gradient_01, type = "II") %T>%
   print() # year marg sig
 
 # check residuals
@@ -1034,16 +1054,20 @@ plot(simulateResiduals(u_peds_glmer_subtr_06)) # looks good
 
 
 summary(u_peds_glmer_subtr_03)
-u_peds_glmer_subtr_03_anova <- car::Anova(u_peds_glmer_subtr_03) %T>%
-  print()
+u_peds_glmer_subtr_03_anova <- car::Anova(u_peds_glmer_subtr_03, type = "III") %T>%
+  print() # interaction marg sig
 
 summary(u_peds_glmer_subtr_04)
-u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04) %T>%
-  print()
+u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04, type = "III") %T>%
+  print() # no interactions sig so will use type II SS
+
+u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04, type = "II") %T>%
+  print() # tarnsect sig
+
 
 summary(u_peds_glmer_subtr_06)
-u_peds_glmer_subtr_06_anova <- car::Anova(u_peds_glmer_subtr_06) %T>%
-  print()
+u_peds_glmer_subtr_06_anova <- car::Anova(u_peds_glmer_subtr_06, type = "III") %T>%
+  print() # interaction marg sig
 
 
 ```
@@ -1109,6 +1133,26 @@ poll_glmer_gradient_01.v2 <- glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/
         family = "poisson") # this works
 
 # I've checked that glmer's annual results are identical to glmmtmb's, so I'll use glmmtmb for this Q.
+
+
+
+
+
+poll_glmer_gradient_02.v2 <- glmmTMB(as.numeric(Pollinia_removed) ~ (1|Patch_ID/Plant_Num/Inflor) + City_dist + Year,
+        long_Transect_Data_18_19,
+        family = "poisson")
+
+AIC(poll_glmer_gradient_01.v2, # lower AIC by >2
+    poll_glmer_gradient_02.v2)
+
+
+# check residuals
+plot(simulateResiduals(poll_glmer_gradient_01.v2)) # looks fine
+
+
+summary(poll_glmer_gradient_01.v2)
+poll_glmer_gradient_01.v2_anova <- car::Anova(poll_glmer_gradient_01.v2, type = "III" ) %T>%
+  print() # interaction  sig
 
 ```
 
@@ -1205,10 +1249,11 @@ plot(simulateResiduals(poll_glmer_subtr_03)) # looks good
 
 summary(poll_glmer_subtr_01)
 summary(poll_glmer_subtr_03)
-poll_glmer_subtr_01_anova <- car::Anova(poll_glmer_subtr_01) %T>%
-  print()
-poll_glmer_subtr_03_anova <- car::Anova(poll_glmer_subtr_03) %T>%
-  print()
+poll_glmer_subtr_01_anova <- car::Anova(poll_glmer_subtr_01, type = "III") %T>%
+  print() # interactions sig
+
+poll_glmer_subtr_03_anova <- car::Anova(poll_glmer_subtr_03, type = "III") %T>%
+  print() # interactions sig
 
 ```
 
@@ -1267,8 +1312,8 @@ plot(simulateResiduals(u_poll_glmer_gradient_1)) # looks good
 
 
 summary(u_poll_glmer_gradient_1)
-u_poll_glmer_gradient_1_anova <- car::Anova(u_poll_glmer_gradient_1) %T>%
-  print()
+u_poll_glmer_gradient_1_anova <- car::Anova(u_poll_glmer_gradient_1, type = "III") %T>%
+  print() # interaction sig
 
 ```
 
@@ -1364,8 +1409,8 @@ plot(simulateResiduals(u_poll_glmer_subtr_01)) # looks good
 
 
 summary(u_poll_glmer_subtr_01)
-u_poll_glmer_subtr_01_anova <- car::Anova(u_poll_glmer_subtr_01) %T>%
-  print()
+u_poll_glmer_subtr_01_anova <- car::Anova(u_poll_glmer_subtr_01, type = "III") %T>%
+  print() # interaction sig
 
 
 ```
