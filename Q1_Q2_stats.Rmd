@@ -74,6 +74,7 @@ library(data.table) # Extension of `data.frame` # Extension of `data.frame`
 library(DHARMa) # Residual Diagnostics for Hierarchical (Multi-Level / Mixed) Regression Models
 library(dplyr) # A Grammar of Data Manipulation # A Grammar of Data Manipulation
 library(e1071) # Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien
+library(effects) 
 # library(factoextra)
 library(flextable) # Functions for Tabular Reporting
 library(forcats) # Tools for Working with Categorical Variables (Factors)
@@ -749,6 +750,7 @@ peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06, type = "III") %T>%
 peds_glmer_subtr_06_anova <- car::Anova(peds_glmer_subtr_06, type = "II") %T>%
   print() 
 
+AIC(peds_glmer_subtr_06)
 ```
 
 
@@ -1055,7 +1057,9 @@ plot(simulateResiduals(u_peds_glmer_subtr_06)) # looks good
 
 summary(u_peds_glmer_subtr_03)
 u_peds_glmer_subtr_03_anova <- car::Anova(u_peds_glmer_subtr_03, type = "III") %T>%
-  print() # interaction marg sig
+  print() # interaction marg sig & transect is sig
+# model 19
+
 
 summary(u_peds_glmer_subtr_04)
 u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04, type = "III") %T>%
@@ -1063,11 +1067,13 @@ u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04, type = "III") %
 
 u_peds_glmer_subtr_04_anova <- car::Anova(u_peds_glmer_subtr_04, type = "II") %T>%
   print() # tarnsect sig
+AIC(u_peds_glmer_subtr_04) # model 20
+
 
 
 summary(u_peds_glmer_subtr_06)
 u_peds_glmer_subtr_06_anova <- car::Anova(u_peds_glmer_subtr_06, type = "III") %T>%
-  print() # interaction marg sig
+  print() # interaction marg sig and transect and year are sig
 
 
 ```
@@ -2519,14 +2525,15 @@ bound_height <- bind_cols(formulas_height,
                           dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (2 is best)
 
 # check residuals
-library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
-library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(height_lmer_gradient_01, type='diag') # looks fine
 plot_model(height_lmer_gradient_02, type='diag') # looks fine
 
 
 summary(height_lmer_gradient_01)
-height_lmer_gradient_01_anova <- car::Anova(height_lmer_gradient_01) %T>%
+height_lmer_gradient_01_anova <- car::Anova(height_lmer_gradient_01, type = "III") %T>%
+  print() # interaction not sig so will use type II
+
+height_lmer_gradient_01_anova <- car::Anova(height_lmer_gradient_01, type = "II") %T>%
   print() # year sig
 
 summary(height_lmer_gradient_02)
@@ -2619,19 +2626,17 @@ bound_height <- bind_cols(formulas_height,
                           dplyr::select(AIC, BestModels)) # Models 1, 8 lowest AIC (1 is lowest)
 
 # check residuals
-library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
-library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
 plot_model(height_lmer_subtr_01, type='diag') # looks fine
 plot_model(height_lmer_subtr_08, type='diag') # looks fine
 
 
 summary(height_lmer_subtr_01)
-height_lmer_subtr_01_anova <- car::Anova(height_lmer_subtr_01) %T>%
-  print()
+height_lmer_subtr_01_anova <- car::Anova(height_lmer_subtr_01, type = "III") %T>%
+  print() 
 
 summary(height_lmer_subtr_08)
-height_lmer_subtr_08_anova <- car::Anova(height_lmer_subtr_08) %T>%
-  print()
+height_lmer_subtr_08_anova <- car::Anova(height_lmer_subtr_08, type = "III") %T>%
+  print() 
 
 
 ```
@@ -2690,11 +2695,11 @@ plot(simulateResiduals(u_height_lmer_gradient_02)) # looks good
 
 
 summary(u_height_lmer_gradient_01)
-u_height_lmer_gradient_01_anova <- car::Anova(u_height_lmer_gradient_01) %T>%
+u_height_lmer_gradient_01_anova <- car::Anova(u_height_lmer_gradient_01, type = "III") %T>%
   print() # year sig, interaxn marg sig
 
 summary(u_height_lmer_gradient_02)
-u_height_lmer_gradient_02_anova <- car::Anova(u_height_lmer_gradient_02) %T>%
+u_height_lmer_gradient_02_anova <- car::Anova(u_height_lmer_gradient_02, type = "II") %T>%
   print() # year sig
 
 ```
@@ -2789,11 +2794,11 @@ plot(simulateResiduals(u_height_lmer_subtr_09)) # looks good
 
 
 summary(u_height_lmer_subtr_01)
-u_height_lmer_subtr_01_anova <- car::Anova(u_height_lmer_subtr_01) %T>%
+u_height_lmer_subtr_01_anova <- car::Anova(u_height_lmer_subtr_01, type = "III") %T>%
   print()
 
 summary(u_height_lmer_subtr_09)
-u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09) %T>%
+u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09, type = "II") %T>%
   print()
 
 
@@ -2803,10 +2808,24 @@ u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09) %T>%
 #### Combine models into one df
 ##### Best models: Inflors, pollen, pods, pods/inflor
 ```{r}
+# function that IDs if there is >= 1 sig interaction in the type III anova
+ID_intxn <- function(model){
+  model.df <- broom.mixed::tidy(model)
+  intxn.df <- model.df[grep(":", model.df$term), "p.value"]
+  sig.intxns <- sum(intxn.df < 0.1)
+  return(sig.intxns)
+}
+
+ID_intxn(u_peds_glmer_subtr_06)
+
+
 # tidy anovas
 tidy_sb <- function(model){
+      type.choice <- ifelse(ID_intxn(model) > 0,
+                          3,
+                          2)
   return(
-    car::Anova(model) %>%
+    car::Anova(model, type = type.choice) %>%
       broom.mixed::tidy() %>%
       # as.data.frame() %>%
       dplyr::mutate(Response = as.character(formula(model)[2]),
@@ -2890,6 +2909,7 @@ make_Q1Q2_Anova <- function(anova_list){
                                          ))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
     replace(., is.na(.), "-") %>%
+        dplyr::filter(Predictor != "(Intercept)") %>%
     dplyr::rename('X2' = 2,
                   'p' = 3,
                   'X2 ' = 4,

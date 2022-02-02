@@ -1,15 +1,15 @@
 Model,Urbanization_Metric,Best_or_Alt_Model,Variable,AIC,Delta_AIC_from_Best_Model
-1,Distance to Urban Center,Best Model,Inflorescences,2572.89,-
-2,Distance to Urban Center,Best Model,Pollinaria Removed,8665.667,-
-3,Distance to Urban Center,Best Model,Follicles,40409.962,-
-4,Distance to Urban Center,Best Model,Follicles per Inflorescence,1404.405,-
+1,Distance to Urban Center,Best Model,Pollinaria Removed,8665.667,-
+2,Distance to Urban Center,Best Model,Follicles,40409.962,-
+3,Distance to Urban Center,Best Model,Follicles per Inflorescence,1404.405,-
+4,Distance to Urban Center,Best Model,Inflorescences,2572.89,-
 5,Distance to Urban Center,Best Model,Height,4713.787,-
-6,Urbanization Score,Best Model,Inflorescences,2574.018,-
-7,Urbanization Score,Best Model,Pollinaria Removed,8671.383,-
-8,Urbanization Score,Best Model,Follicles,800665.975,-
-9,Urbanization Score,Best Model,Follicles per Inflorescence,1408.854,-
+6,Urbanization Score,Best Model,Pollinaria Removed,8671.383,-
+7,Urbanization Score,Best Model,Follicles,800665.975,-
+8,Urbanization Score,Best Model,Follicles per Inflorescence,1408.854,-
+9,Urbanization Score,Best Model,Inflorescences,2574.018,-
 10,Urbanization Score,Best Model,Height,4740.032,-
-11,Distance to Urban Center,Alternative Model,Follicles per Inflorescence,1405.294,0.889
+11,Distance to Urban Center,Alternative Model,Follicles per Inflorescence,1405.294,-1167.596
 12,Distance to Urban Center,Alternative Model,Height,4714.723,0.936
-13,Urbanization Score,Alternative Model,Follicles per Inflorescence,1410.854,2
+13,Urbanization Score,Alternative Model,Follicles per Inflorescence,1410.854,-1163.164
 14,Urbanization Score,Alternative Model,Height,4740.879,0.847

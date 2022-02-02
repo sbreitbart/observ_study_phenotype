@@ -979,7 +979,8 @@ summary(lm_abun1)
 
 ######## Transects
 ```{r}
-car::Anova(lm_abun1.urbsubs) # not sig
+car::Anova(lm_abun1.urbsubs, type = "III") # interaxn not sig
+car::Anova(lm_abun1.urbsubs, type = "II") # interaxn not sig
 car::Anova(lm_abun1.urbsubs_ME) # not sig
 
 AIC(lm_abun1.urbsubs, lm_abun1.urbsubs_ME) # ME has lower AIC but <2 away
@@ -993,7 +994,8 @@ car::Anova(lm_abun1.u) # sig
 
 ######## Transects
 ```{r}
-car::Anova(lm_abun1.urbsubs.u) # not sig
+car::Anova(lm_abun1.urbsubs.u, type = "III") # not sig
+car::Anova(lm_abun1.urbsubs.u, type = "II") # not sig
 car::Anova(lm_abun1.urbsubs.u_ME) # not sig
 
 AIC(lm_abun1.urbsubs.u, lm_abun1.urbsubs.u_ME) # ME has lower AIC (not <2 away though)
@@ -1041,7 +1043,8 @@ car::Anova(lm_abun1.nohoney) # not sig- stark contrast to dataset WITH honeybees
 
 ######## Transects
 ```{r}
-car::Anova(lm_abun1.urbsubs.nohoney) # not sig
+car::Anova(lm_abun1.urbsubs.nohoney, type = "III") # not sig
+car::Anova(lm_abun1.urbsubs.nohoney, type = "II") # not sig
 car::Anova(lm_abun1.urbsubs.nohoney_ME) # not sig
 
 AIC(lm_abun1.urbsubs.nohoney, lm_abun1.urbsubs.nohoney_ME) # ME has lower AIC but <2 away
@@ -1056,7 +1059,8 @@ car::Anova(lm_abun1.u_nohoney) # not sig- stark contrast to dataset WITH honeybe
 
 ######## Transects
 ```{r}
-car::Anova(lm_abun1.urbsubs.u_nohoney) # nothing sig
+car::Anova(lm_abun1.urbsubs.u_nohoney, type = "III") # nothing sig
+car::Anova(lm_abun1.urbsubs.u_nohoney, type = "II") # nothing sig
 car::Anova(lm_abun1.urbsubs.u_nohoney_ME) # nothing sig
 
 AIC(lm_abun1.urbsubs.u_nohoney, lm_abun1.urbsubs.u_nohoney_ME) # Full has lower AIC (not <2 away though)
@@ -1075,7 +1079,8 @@ car::Anova(lm_diversity)
 
 ######### Transects
 ```{r}
-car::Anova(lm_diversity.urbsubs) # transect sig
+car::Anova(lm_diversity.urbsubs, type = "III") # transect sig
+car::Anova(lm_diversity.urbsubs, type = "II") # transect sig
 car::Anova(lm_diversity.urbsubs_ME) # transect sig
 
 AIC(lm_diversity.urbsubs, lm_diversity.urbsubs_ME) # full model has lower AIC but <2 away
@@ -1113,7 +1118,8 @@ car::Anova(lm.diversity_nohoney) ## Nothing sig
 
 ######### Transects
 ```{r}
-car::Anova(lm.diversity_nohoney.urbsubs) # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs, type = "III") # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs, type = "II") # transect sig
 car::Anova(lm.diversity_nohoney.urbsubs_ME) # transect sig
 
 AIC(lm.diversity_nohoney.urbsubs, lm.diversity_nohoney.urbsubs_ME) # ME model has lower AIC but <2 away
@@ -1144,7 +1150,8 @@ car::Anova(lm_diversity.u)
 
 ######### Transects
 ```{r}
-car::Anova(lm_diversity.urbsubs.u) # transect sig
+car::Anova(lm_diversity.urbsubs.u, type = "III") # transect sig
+car::Anova(lm_diversity.urbsubs.u, type = "II") # transect sig
 car::Anova(lm_diversity.urbsubs.u_ME) #  transect sig
 
 AIC(lm_diversity.urbsubs.u, lm_diversity.urbsubs.u_ME) # ME has lower AIC (but <2 away)
@@ -1160,7 +1167,8 @@ car::Anova(lm.diversity_nohoney.u) ## urb_score sig
 
 ######### Transects
 ```{r}
-car::Anova(lm.diversity_nohoney.urbsubs.u) # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs.u, type = "III") # transect sig
+car::Anova(lm.diversity_nohoney.urbsubs.u, type = "II") # transect sig
 car::Anova(lm.diversity_nohoney.urbsubs.u_ME) # transect sig
 
 AIC(lm.diversity_nohoney.urbsubs.u, lm.diversity_nohoney.urbsubs.u_ME) # full model has lower AIC (<2 away)
@@ -1208,7 +1216,8 @@ central_mean_q.1
 
 ####### Transects
 ```{r}
-car::Anova(lm.rich.urbsubs) # transect sig
+car::Anova(lm.rich.urbsubs, type = "III") # transect sig
+car::Anova(lm.rich.urbsubs, type = "II") # transect sig
 car::Anova(lm.rich.urbsubs_ME) # transect sig
 
 AIC(lm.rich.urbsubs, lm.rich.urbsubs_ME) # ME model lower AIC but <2
@@ -1235,7 +1244,8 @@ car::Anova(lm.rich.u) # highly sig
 ```
 ####### Transects
 ```{r}
-car::Anova(lm.rich.urbsubs.u) # transect marg sig
+car::Anova(lm.rich.urbsubs.u, type = "III") # transect marg sig
+car::Anova(lm.rich.urbsubs.u, type = "II") # transect marg sig
 car::Anova(lm.rich.urbsubs.u_ME) # transect marg sig
 
 AIC(lm.rich.urbsubs.u, lm.rich.urbsubs.u_ME) # ME model lower AIC but <2
@@ -1251,7 +1261,8 @@ car::Anova(lm.even) # not sig
 
 ####### Transects
 ```{r}
-car::Anova(lm.even.urbsubs) # transect sig
+car::Anova(lm.even.urbsubs, type = "III") # transect sig
+car::Anova(lm.even.urbsubs, type = "II") # transect sig
 car::Anova(lm.even.urbsubs_ME) # transect sig
 
 AIC(lm.even.urbsubs,lm.even.urbsubs_ME ) # full model lower AIC but <2
@@ -1269,7 +1280,8 @@ car::Anova(lm.even.u) # not sig
 
 ####### Transects
 ```{r}
-car::Anova(lm.even.urbsubs.u) # transect sig
+car::Anova(lm.even.urbsubs.u, type = "III") # transect sig
+car::Anova(lm.even.urbsubs.u, type = "II") # transect sig
 car::Anova(lm.even.urbsubs.u_ME) # transect sig
 
 AIC(lm.even.urbsubs.u,lm.even.urbsubs.u_ME ) # ME model lower AIC (but <2 away)
