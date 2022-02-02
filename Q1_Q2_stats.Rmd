@@ -2276,19 +2276,18 @@ plot_model(podsperped_lmer_subtr_08, type='diag') # looks fine
 
 summary(podsperped_lmer_subtr_03)
 podsperped_lmer_subtr_03_anova <- car::Anova(podsperped_lmer_subtr_03, type = "III") %T>%
-  print() 
+  print() # Model 16
 
 summary(podsperped_lmer_subtr_05)
 podsperped_lmer_subtr_05_anova <- car::Anova(podsperped_lmer_subtr_05, type = "III") %T>%
-  print() 
+  print() # city_dist isn't marg sig anymore
+AIC(podsperped_lmer_subtr_05) # Model 17
 
 summary(podsperped_lmer_subtr_08)
 podsperped_lmer_subtr_08_anova <- car::Anova(podsperped_lmer_subtr_08, type = "III") %T>%
   print() 
 
-
 ```
-
 
 ####### Urb_score, not City_dist
 ######## All sites
@@ -2450,8 +2449,13 @@ plot_model(u_podsperped_lmer_subtr_08, type='diag') # looks fine
 plot_model(u_podsperped_lmer_subtr_09, type='diag') # looks fine
 
 summary(u_podsperped_lmer_subtr_06)
-u_podsperped_lmer_subtr_06_anova <- car::Anova(u_podsperped_lmer_subtr_06) %T>%
-  print() #nothing sig
+u_podsperped_lmer_subtr_06_anova <- car::Anova(u_podsperped_lmer_subtr_06, type = "III") %T>%
+  print() #nothing sig so will use type II SS
+
+u_podsperped_lmer_subtr_06_anova <- car::Anova(u_podsperped_lmer_subtr_06, type = "II") %T>%
+  print()
+AIC(u_podsperped_lmer_subtr_06) # Model 22
+
 
 summary(u_podsperped_lmer_subtr_07)
 u_podsperped_lmer_subtr_07_anova <- car::Anova(u_podsperped_lmer_subtr_07, type = "III") %T>%
@@ -2459,6 +2463,8 @@ u_podsperped_lmer_subtr_07_anova <- car::Anova(u_podsperped_lmer_subtr_07, type 
 
 u_podsperped_lmer_subtr_07_anova <- car::Anova(u_podsperped_lmer_subtr_07, type = "II") %T>%
   print()
+AIC(u_podsperped_lmer_subtr_07) # Model 23
+
 
 summary(u_podsperped_lmer_subtr_08)
 u_podsperped_lmer_subtr_08_anova <- car::Anova(u_podsperped_lmer_subtr_08, type = "III") %T>%
@@ -2466,6 +2472,8 @@ u_podsperped_lmer_subtr_08_anova <- car::Anova(u_podsperped_lmer_subtr_08, type 
 
 u_podsperped_lmer_subtr_08_anova <- car::Anova(u_podsperped_lmer_subtr_08, type = "II") %T>%
   print()  
+AIC(u_podsperped_lmer_subtr_08) # Model 24
+
 
 summary(u_podsperped_lmer_subtr_09)
 u_podsperped_lmer_subtr_09_anova <- car::Anova(u_podsperped_lmer_subtr_09, type = "II") %T>%
@@ -2697,10 +2705,12 @@ plot(simulateResiduals(u_height_lmer_gradient_02)) # looks good
 summary(u_height_lmer_gradient_01)
 u_height_lmer_gradient_01_anova <- car::Anova(u_height_lmer_gradient_01, type = "III") %T>%
   print() # year sig, interaxn marg sig
+AIC(u_height_lmer_gradient_01)
 
 summary(u_height_lmer_gradient_02)
 u_height_lmer_gradient_02_anova <- car::Anova(u_height_lmer_gradient_02, type = "II") %T>%
   print() # year sig
+AIC(u_height_lmer_gradient_02)
 
 ```
 
@@ -2810,11 +2820,12 @@ u_height_lmer_subtr_09_anova <- car::Anova(u_height_lmer_subtr_09, type = "II") 
 ```{r}
 # function that IDs if there is >= 1 sig interaction in the type III anova
 ID_intxn <- function(model){
-  model.df <- broom.mixed::tidy(model)
+  model.df <- broom.mixed::tidy(car::Anova(model, type = "III"))
   intxn.df <- model.df[grep(":", model.df$term), "p.value"]
-  sig.intxns <- sum(intxn.df < 0.1)
+  sig.intxns <- sum(intxn.df <= 0.1)
   return(sig.intxns)
 }
+
 
 # tidy anovas
 tidy_sb <- function(model){
