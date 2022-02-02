@@ -1525,7 +1525,7 @@ plot(simulateResiduals(pods_glmer_gradient_01)) # looks good
 
 
 summary(pods_glmer_gradient_01)
-pods_glmer_gradient_01_anova <- car::Anova(pods_glmer_gradient_01) %T>%
+pods_glmer_gradient_01_anova <- car::Anova(pods_glmer_gradient_01, type = "III") %T>%
   print() # year and interaxn sig
 
 
@@ -1751,16 +1751,28 @@ bound_pods <- bind_cols(formulas_pods,
                           dplyr::select(AIC, BestModels)) # Models 2, 3, 8 lowest AIC (3 is lowest)
 
 summary(pods_glmer_subtr_02)
-pods_glmer_subtr_02_anova <- car::Anova(pods_glmer_subtr_02) %T>%
-  print()
+pods_glmer_subtr_02_anova <- car::Anova(pods_glmer_subtr_02, type = "III") %T>%
+  print() # no sig interactions, so will use type II SS
+
+pods_glmer_subtr_02_anova <- car::Anova(pods_glmer_subtr_02, type = "II") %T>%
+  print() 
+
 
 summary(pods_glmer_subtr_03)
-pods_glmer_subtr_03_anova <- car::Anova(pods_glmer_subtr_03) %T>%
+pods_glmer_subtr_03_anova <- car::Anova(pods_glmer_subtr_03, type = "III") %T>%
+  print() # no sig interactions, so will use type II SS
+
+pods_glmer_subtr_03_anova <- car::Anova(pods_glmer_subtr_03, type = "II") %T>%
   print()
 
+
 summary(pods_glmer_subtr_08)
-pods_glmer_subtr_08_anova <- car::Anova(pods_glmer_subtr_08) %T>%
-  print() #year is sig
+pods_glmer_subtr_08_anova <- car::Anova(pods_glmer_subtr_08, type = "III") %T>%
+  print() # no sig interactions, so will use type II SS) 
+
+pods_glmer_subtr_08_anova <- car::Anova(pods_glmer_subtr_08, type = "II") %T>%
+  print()
+
 
 
 # check residuals
@@ -1849,7 +1861,7 @@ plot(simulateResiduals(u_pods_glmer_gradient_1)) # looks good
 
 
 summary(u_pods_glmer_gradient_1)
-u_pods_glmer_gradient_1_anova <- car::Anova(u_pods_glmer_gradient_1) %T>%
+u_pods_glmer_gradient_1_anova <- car::Anova(u_pods_glmer_gradient_1, type = "III") %T>%
   print() # year and interaxn sig
 
 ```
@@ -2083,14 +2095,12 @@ plot(simulateResiduals(u_pods_glmer_subtr_03)) # looks fine
 
 
 summary(u_pods_glmer_subtr_02)
-u_pods_glmer_subtr_02_anova <- car::Anova(u_pods_glmer_subtr_02) %T>%
+u_pods_glmer_subtr_02_anova <- car::Anova(u_pods_glmer_subtr_02, type = "III") %T>%
   print()
 
 summary(u_pods_glmer_subtr_03)
-u_pods_glmer_subtr_03_anova <- car::Anova(u_pods_glmer_subtr_03) %T>%
+u_pods_glmer_subtr_03_anova <- car::Anova(u_pods_glmer_subtr_03, type = "III") %T>%
   print()
-
-
 
 ```
 
@@ -2153,11 +2163,15 @@ plot_model(podsperped_lmer_gradient_02, type='diag') # looks fine
 
 
 summary(podsperped_lmer_gradient_01)
-podsperped_lmer_gradient_01_anova <- car::Anova(podsperped_lmer_gradient_01) %T>%
+podsperped_lmer_gradient_01_anova <- car::Anova(podsperped_lmer_gradient_01, type = "III") %T>%
+  print() # interaction not sig so will use type II SS
+
+podsperped_lmer_gradient_01_anova <- car::Anova(podsperped_lmer_gradient_01, type = "II") %T>%
   print() # city_dist marg sig
 
+
 summary(podsperped_lmer_gradient_02)
-podsperped_lmer_gradient_02_anova <- car::Anova(podsperped_lmer_gradient_02) %T>%
+podsperped_lmer_gradient_02_anova <- car::Anova(podsperped_lmer_gradient_02, type = "II") %T>%
   print() #  city_dist marg sig
 
 ```
@@ -2246,8 +2260,8 @@ bound_podsperped <- bind_cols(formulas_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 3,5, 8 lowest AIC (8 is lowest)
 
 # check residuals
-library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
-library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
+library(effects) 
+library(sjPlot)
 plot_model(podsperped_lmer_subtr_03, type='diag') # looks fine
 plot_model(podsperped_lmer_subtr_05, type='diag') # looks fine
 plot_model(podsperped_lmer_subtr_08, type='diag') # looks fine
@@ -2255,16 +2269,16 @@ plot_model(podsperped_lmer_subtr_08, type='diag') # looks fine
 
 
 summary(podsperped_lmer_subtr_03)
-podsperped_lmer_subtr_03_anova <- car::Anova(podsperped_lmer_subtr_03) %T>%
-  print()
+podsperped_lmer_subtr_03_anova <- car::Anova(podsperped_lmer_subtr_03, type = "III") %T>%
+  print() 
 
 summary(podsperped_lmer_subtr_05)
-podsperped_lmer_subtr_05_anova <- car::Anova(podsperped_lmer_subtr_05) %T>%
-  print()
+podsperped_lmer_subtr_05_anova <- car::Anova(podsperped_lmer_subtr_05, type = "III") %T>%
+  print() 
 
 summary(podsperped_lmer_subtr_08)
-podsperped_lmer_subtr_08_anova <- car::Anova(podsperped_lmer_subtr_08) %T>%
-  print()
+podsperped_lmer_subtr_08_anova <- car::Anova(podsperped_lmer_subtr_08, type = "III") %T>%
+  print() 
 
 
 ```
@@ -2319,18 +2333,21 @@ bound_u_podsperped <- bind_cols(formulas_u_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 1 & 2 lowest AIC (2 is best)
 
 # check residuals
-library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
-library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
+library(effects) 
+library(sjPlot)
 plot_model(u_podsperped_lmer_gradient_01, type='diag') # looks fine
 plot_model(u_podsperped_lmer_gradient_02, type='diag') # looks fine
 
 
 summary(u_podsperped_lmer_gradient_01)
-u_podsperped_lmer_gradient_01_anova <- car::Anova(u_podsperped_lmer_gradient_01) %T>%
-  print() # Urb_score sig
+u_podsperped_lmer_gradient_01_anova <- car::Anova(u_podsperped_lmer_gradient_01, type = "III") %T>%
+  print()  # itneraction not sig so will use type II SS
+
+u_podsperped_lmer_gradient_01_anova <- car::Anova(u_podsperped_lmer_gradient_01, type = "II") %T>%
+  print()  # Urb_score sig
 
 summary(u_podsperped_lmer_gradient_02)
-u_podsperped_lmer_gradient_02_anova <- car::Anova(u_podsperped_lmer_gradient_02) %T>%
+u_podsperped_lmer_gradient_02_anova <- car::Anova(u_podsperped_lmer_gradient_02, type = "II") %T>%
   print() #  Urb_score sig
 
 ```
@@ -2419,8 +2436,8 @@ bound_u_podsperped <- bind_cols(formulas_u_podsperped,
                           dplyr::select(AIC, BestModels)) # Models 6,7,8,9 lowest AIC (9 is lowest)
 
 # check residuals
-library(effects) # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models # Effect Displays for Linear, Generalized Linear, and Other Models
-library(sjPlot) # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science # Data Visualization for Statistics in Social Science
+library(effects) 
+library(sjPlot) 
 plot_model(u_podsperped_lmer_subtr_06, type='diag') # looks fine
 plot_model(u_podsperped_lmer_subtr_07, type='diag') # looks fine
 plot_model(u_podsperped_lmer_subtr_08, type='diag') # looks fine
@@ -2431,16 +2448,22 @@ u_podsperped_lmer_subtr_06_anova <- car::Anova(u_podsperped_lmer_subtr_06) %T>%
   print() #nothing sig
 
 summary(u_podsperped_lmer_subtr_07)
-u_podsperped_lmer_subtr_07_anova <- car::Anova(u_podsperped_lmer_subtr_07) %T>%
+u_podsperped_lmer_subtr_07_anova <- car::Anova(u_podsperped_lmer_subtr_07, type = "III") %T>%
+  print() # interaction not sig so will use type II SS
+
+u_podsperped_lmer_subtr_07_anova <- car::Anova(u_podsperped_lmer_subtr_07, type = "II") %T>%
   print()
 
 summary(u_podsperped_lmer_subtr_08)
-u_podsperped_lmer_subtr_08_anova <- car::Anova(u_podsperped_lmer_subtr_08) %T>%
-  print()
+u_podsperped_lmer_subtr_08_anova <- car::Anova(u_podsperped_lmer_subtr_08, type = "III") %T>%
+  print()  # interaction not sig so will use type II SS
+
+u_podsperped_lmer_subtr_08_anova <- car::Anova(u_podsperped_lmer_subtr_08, type = "II") %T>%
+  print()  
 
 summary(u_podsperped_lmer_subtr_09)
-u_podsperped_lmer_subtr_09_anova <- car::Anova(u_podsperped_lmer_subtr_09) %T>%
-  print()
+u_podsperped_lmer_subtr_09_anova <- car::Anova(u_podsperped_lmer_subtr_09, type = "II") %T>%
+  print() 
 
 ```
 
