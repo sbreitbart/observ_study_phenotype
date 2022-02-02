@@ -2816,9 +2816,6 @@ ID_intxn <- function(model){
   return(sig.intxns)
 }
 
-ID_intxn(u_peds_glmer_subtr_06)
-
-
 # tidy anovas
 tidy_sb <- function(model){
       type.choice <- ifelse(ID_intxn(model) > 0,
@@ -2909,7 +2906,7 @@ make_Q1Q2_Anova <- function(anova_list){
                                          ))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
     replace(., is.na(.), "-") %>%
-        dplyr::filter(Predictor != "(Intercept)") %>%
+    dplyr::filter(Predictor != "(Intercept)") %>%
     dplyr::rename('X2' = 2,
                   'p' = 3,
                   'X2 ' = 4,
@@ -3088,12 +3085,14 @@ make_Q1Q2_Anova(best_mods_Q2.urbscore_list) %>%
   save_as_image(., path = here::here("./Figures_Tables/Q1_Q2_ANOVA/Q2_Urbscore_ANOVA.png"))
 
 ```
+
 ##### Best models: height
 ```{r}
 # make_anova function tweaked to handle one model- height- instead of a list
-make_Q1Q2_Anova.height <- function(anova){
+make_Q1Q2_Anova.height <- function(model){
+  
   return(
-    tidy_sb(anova) %>%
+    tidy_sb(model) %>%
     as.data.frame() %>%
     arrange(factor(Predictor,
                    levels = c("Distance to City Center",
@@ -3110,6 +3109,7 @@ make_Q1Q2_Anova.height <- function(anova){
                                          ))) %>%
     dplyr::select(-starts_with(c("Sites", "Significance", "AIC", "Response"))) %>%
     replace(., is.na(.), "-") %>%
+    dplyr::filter(Predictor != "(Intercept)") %>%
     dplyr::rename('X2' = 2,
                   'p' = 3) %>%
     flextable::flextable() %>%
