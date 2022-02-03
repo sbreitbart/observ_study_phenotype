@@ -2654,14 +2654,6 @@ four_popfams_summary <- four_popfams %>%
 abun <- ggplot(sum_abun,
                aes(x = Dist_city,
                    y = Count)) +
-  # geom_pointrange(aes(ymin = Count - se, 
-  #                     ymax = Count + se),
-  #                 size = 0.5,
-  #                  color = "black"
-  #                 # ,
-  #                 # position = position_jitterdodge(dodge.width = .5)
-  #                                                 ) +
-    # scale_shape(solid = F)+
   geom_smooth(method = lm,
               se = T,
               size = 1,
@@ -2697,6 +2689,7 @@ abun
 
 
 ###### Urb_score
+####### Include points, no stats (not included in paper)
 ```{r}
 abun.u <- ggplot(sum_abun,
                aes(x = Urb_score,
@@ -2736,6 +2729,42 @@ abun.u <- ggplot(sum_abun,
 #   labs(caption = "Error bars represent standard error")
 abun.u
 ```
+
+####### Exclude points, ADD stats (as in paper)
+```{r}
+abun.u <- ggplot(sum_abun,
+               aes(x = Urb_score,
+                   y = Count)) +
+ geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.15,
+              color = "#00BFC4",
+              fill = "#00BFC4")  +
+  xlim(4, -4) +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    # axis.title.x = element_blank(),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    axis.text = element_text(size=12),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  labs(x = "Urbanization Score",
+       y = "Mean Pollinators per Plant") +
+        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+                    label = " Urb. Score: p = 0.016"),
+                size = 4.5)
+
+abun.u
+```
+
 
 ##### Transects
 ###### City_dist
@@ -3107,6 +3136,7 @@ diversity_simpson
 ```
 
 ###### Urb_score
+####### Include points, no stats (not as in paper)
 ```{r}
 diversity_simpson.u <- ggplot(sum_diversity,
                aes(x = Urb_score,
@@ -3139,6 +3169,41 @@ diversity_simpson.u <- ggplot(sum_diversity,
     ) 
 # +
 #   labs(caption = "Error bars represent standard error")
+diversity_simpson.u
+```
+
+####### Exclude points, ADD stats (as in paper)
+```{r}
+diversity_simpson.u <- ggplot(sum_diversity,
+               aes(x = Urb_score,
+                   y = simpson^2)) +
+ geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.15,
+              color = "#00BFC4",
+              fill = "#00BFC4")  +
+  xlim(4, -4) +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    # axis.title.x = element_blank(),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    axis.text = element_text(size=12),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  labs(x = "Urbanization Score",
+       y = expression("Simpson's Diversity Index "^2)) +
+        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+                    label = " Urb. Score: p = 0.042"),
+                size = 4.5)
+
 diversity_simpson.u
 ```
 
@@ -3268,6 +3333,7 @@ diversity_simpson_transect
 ```
 
 ###### Urb_score
+####### Include points, no stats (not included in paper)
 ```{r}
 diversity_simpson_transect.u <- ggplot(sum_diversity %>%
                           filter(Transect != "Rural"),
@@ -3325,6 +3391,65 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
 diversity_simpson_transect.u
 ```
 
+####### Exclude points, ADD stats (as in paper)
+```{r}
+diversity_simpson_transect.u <- ggplot(sum_diversity %>%
+                          filter(Transect != "Rural"),
+                        aes(x = Urb_score,
+                            y = simpson^3,
+                            color = Transect,
+                            shape = Transect,
+                            fill = Transect,
+                            linetype = Transect)) +
+  labs(x = "Urbanization Score",
+       y = expression("Simpson's Diversity Index "^3),
+       shape = "Subtransect",
+       linetype = "Subtransect",
+       color = "Subtransect",
+       fill = "Subtransect") +
+  geom_point(aes(color = Transect,
+                            shape = Transect,
+                            fill = Transect),
+                  size = 2) +
+  geom_smooth(aes(color = Transect),
+              method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.3) +
+  xlim(4, -2) +
+  ylim(0, 1) +
+  theme_bw() +
+  # scale_shape(solid = F)+
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=12),
+    axis.text = element_text(size=12),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  scale_shape_manual(values = c(0,1),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_color_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) + 
+  scale_fill_manual(values = c("dark green", "slateblue4"),
+                     labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) +
+  scale_linetype_manual(values = c('solid', 'dashed'),
+                        labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor")) 
+# +
+#   labs(caption = "Error bars represent standard error")
+diversity_simpson_transect.u
+```
+
+
 #### Richness
 ##### Gradient
 ###### City_dist
@@ -3369,9 +3494,6 @@ diversity_simpson_transect.u
 rich <- ggplot(sum_richness,
                aes(x = Dist_city,
                    y = Menhinicks_index)) +
-  # geom_point(color = "black",
-  #                 size = 2) +
-  #   scale_shape(solid = F)+
   geom_smooth(method = lm,
               se = T,
               size = 1,
@@ -3402,6 +3524,7 @@ rich
 ```
 
 ###### Urb_score
+####### Include points, without stats (as NOT paper)
 ```{r}
 rich.u <- ggplot(sum_richness,
                aes(x = Urb_score,
@@ -3433,6 +3556,41 @@ rich.u <- ggplot(sum_richness,
     ) 
 # +
 #   labs(caption = "Error bars represent standard error")
+rich.u
+```
+
+####### Exclude points, ADD stats (as in paper)
+```{r}
+rich.u <- ggplot(sum_richness,
+               aes(x = Urb_score,
+                   y = Menhinicks_index)) +
+ geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.15,
+              color = "#00BFC4",
+              fill = "#00BFC4")  +
+  xlim(4, -4) +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    # axis.title.x = element_blank(),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    axis.text = element_text(size=12),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  labs(x = "Urbanization Score",
+       y = "Menhinick's Species Richness") +
+        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+                    label = " Urb. Score: p = 0.003"),
+                size = 4.5)
+
 rich.u
 ```
 
@@ -3691,6 +3849,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Pollina
 ##### Evenness
 ###### Gradient
 ####### City_dist
+######## Include points, without stats (as NOT in paper)
 ```{r}
 even <- ggplot(sum_evenness,
                aes(x = Dist_city,
@@ -3725,37 +3884,73 @@ even <- ggplot(sum_evenness,
 even
 ```
 
+######## Exclude points, ADD stats (as in paper)
+```{r}
+even <- ggplot(sum_evenness,
+               aes(x = Dist_city,
+                   y = simpson_equit)) +
+ geom_smooth(method = lm,
+              se = T,
+              size = 1,
+              alpha = 0.15,
+              color = "#00BFC4",
+              fill = "#00BFC4")  +
+  xlim(0,70) +
+  scale_y_continuous(limits = c(0, NA)) +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    # axis.title.x = element_blank(),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    axis.text = element_text(size=12),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA)
+    ) +
+  labs(x = "Distance to Urban Center (km)",
+       y = "Simpson's Evenness") +
+        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+                    label = " Distance: p = 0.389"),
+                size = 4.5)
+
+even
+```
+
+
 ####### Urb_score
 ```{r}
 even.u <- ggplot(sum_evenness,
                aes(x = Urb_score,
                    y = simpson_equit)) +
-  geom_point(color = "black",
-                  size = 2) +
-  geom_smooth(method = lm,
+ geom_smooth(method = lm,
               se = T,
               size = 1,
-              alpha = 0.3,
-              color = "black") +
-  labs(x = "Urbanization Score",
-       y = "Simpson's Evenness") +
+              alpha = 0.15,
+              color = "#00BFC4",
+              fill = "#00BFC4")  +
   xlim(4, -4) +
-  # ylim(0, 4) +
-  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
+  scale_y_continuous(limits = c(0, NA)) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
+    # axis.title.x = element_blank(),
     legend.box = 'horizontal',
     legend.box.just = "right",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
+    axis.text = element_text(size=12),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA)
     ) +
-  theme_bw()
-# +
-#   labs(caption = "Error bars represent standard error")
+  labs(x = "Urbanization Score",
+       y = "Simpson's Evenness") +
+  geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+                    label = " Urb. Score: p = 0.15"),
+                size = 4.5)
 even.u
 
 ```
@@ -3900,20 +4095,6 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplem
 ######## Gradient figs
 ```{r}
 
-library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
-Q3_regressions.evenness.gradient <- ggarrange(even,
-                            even.u,
-                            ncol = 2, nrow = 1, align = "h",
-                            labels = list("A", "B"),
-                            font.label = (size =16),
-                            common.legend = TRUE)
-Q3_regressions.evenness.gradient
-
-
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_Evenness_gradientfigs.pdf", width = 6, height = 2.5)
-
-
-
 ##### ADD OTHER URB_SCORE VARS TOO
 ggarrange(even,
           abun.u,
@@ -3924,12 +4105,14 @@ ggarrange(even,
           labels = list("A", "B", "C", "D", "E"),
           font.label = (size =16),
           common.legend = TRUE)
+
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Pollinator/Supplement/Pollinator_regressions_urbscore_gradientfigs_nopoints.pdf", width = 12, height = 7.5)
 ```
 
 ######## Transect figs
 ```{r}
 
-library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
+library(ggpubr) 
 Q3_regressions.evenness.transects <- ggarrange(
                             even_transect,
                             even_transect.u,
