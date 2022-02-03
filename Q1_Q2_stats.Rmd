@@ -83,6 +83,7 @@ library(geosphere) # Spherical Trigonometry
 library(ggeffects) # Create Tidy Data Frames of Marginal Effects for 'ggplot' from Model Outputs
 library(ggiraphExtra) # Make Interactive 'ggplot2'. Extension to 'ggplot2' and 'ggiraph'
 library(ggmap) # Spatial Visualization with ggplot2
+library(ggpmisc)
 library(ggpubr) # 'ggplot2' Based Publication Ready Plots
 library(ggsn) # North Symbols and Scale Bars for Maps Created with 'ggplot2' or'ggmap'
 library(ggspatial) # Spatial Data Framework for ggplot2
