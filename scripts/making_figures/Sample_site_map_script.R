@@ -7,6 +7,9 @@
 library(ggmap)
 library(cowplot)
 library(ggsn)
+library(dplyr)
+library(here)
+library(magick)
 
 #---------------------
 # Import data
@@ -67,6 +70,11 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/SampleSiteMaps/Sample
 
 
 # add climate graph insets
+##############################################################
+#### NOT USING BECAUSE IT NEEDS TO BE BIGGER TO BE READ PROPERLY.
+#### INSET IS TOO SMALL.
+##############################################################
+
 # precip_bar <- system.file("extdata", "logo.png", package = "cowplot")
 # 
 # map1_legendmoved <- base_map +
@@ -92,14 +100,14 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/SampleSiteMaps/Sample
 #   scale_shape_manual(values = c(23,24,21),
 #                      breaks = c("North", "South", "Rural"),
 #                      labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
-#                      name = "Sample Site Subtransect") 
+#                      name = "Sample Site Subtransect")
 # 
-# ggdraw(map1) +
+# map_precip <- ggdraw(map1) +
 #   draw_image(here::here("./Figures_Tables/Meteorology/Monthly_precip_bargraph.png"),
 #              x = .5, y = 1,
 #              hjust = 1, vjust = 1,
 #              width = 0.25, height = 0.25)
-# north2(map1, x = .59, y = .2, scale = 0.11, symbol = 1)
+# north2(map_precip, x = .59, y = .2, scale = 0.11, symbol = 1)
 
 
 map1_urbscore <- base_map +
@@ -115,35 +123,41 @@ map1_urbscore <- base_map +
            st.bottom = FALSE, st.color = "black",
            transform = TRUE, model = 'WGS84',
            st.dist=.03) +
-  theme(legend.position = "bottom",
-        legend.background = element_rect(fill = "white"),
+  theme( #legend.position = c(0.2, 0.8),
+        # legend.background = element_rect(fill = "white"),
         legend.box.margin = margin(6, 6, 6, 6),
         legend.text = element_text(size=12),
         legend.title = element_text(size = 14),
         axis.text=element_text(size=12),
         axis.title=element_text(size=14),
         legend.title.align=0.5,
-        legend.box = "vertical")+
+        #legend.box = "vertical"
+        )+
   scale_shape_manual(values = c(23,24,21),
                      breaks = c("North", "South", "Rural"),
                      labels = c("Urban: Non-Corridor", "Urban: Corridor", "Rural"),
                      name = "Sample Site Subtransect") +
   scale_fill_gradient(low = "white", high = "dark red",
-                      breaks=c(-3.5, 0, 3.5),
-                      labels=c("Rural",0, "Urban"),
-                      limits=c(-3.6, 3.6),
-                      name = "Urbanization\nScore"
-                      ) 
+                      breaks=c(-4, -2, 0, 2, 4),
+                      labels=c("4 (Rural)", 2, 0, -2, "-4 (Urban)"),
+                      limits=c(-4, 4),
+                      name = "Urbanization Score"
+                      ) +
+  guides(fill = guide_colorbar(title = "Urbanization Score",
+                               # label.position = "top",
+                               title.position = "top",
+                               # title.vjust = 1,
+                               # draw border around the legend
+                               frame.colour = "black",
+                               frame.linewidth = 1.5,
+                               barwidth = 1,
+                               barheight = 5)) 
 
-
-north2(map1_urbscore, x = .6, y = .37, scale = 0.11, symbol = 1)
+# north2(map1, x = .59, y = .2, scale = 0.11, symbol = 1)
+north2(map1_urbscore, x = .6, y = .41, scale = 0.11, symbol = 1)
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/SampleSiteMaps/SampleSiteMap_terrain_color_urbscore.pdf",
-             width = 8, height = 7)
-
-
-
-
+             width = 8, height = 5)
 
 
 #---------------------
