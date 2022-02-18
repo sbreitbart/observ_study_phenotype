@@ -871,7 +871,7 @@ city_plots.ggpred <- annotate_figure(Q1_regressions_citydist_ggpred,
                                      bottom = text_grob("Distance to Urban Center (km)",
                                                         size=14))
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/DISTGradient_regressions_nopoints.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Regressions_Plants/DISTGradient_regressions_nopoints.pdf",
              width = 12.5, height = 3.75)
 
 ```
@@ -895,7 +895,7 @@ Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.citydist_height, # city_di
                                             legend = "right") %T>%
   plot
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Gradient/URBSCOREGradient_regressions_nopoints.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Regressions_Plants/URBSCOREGradient_regressions_nopoints.pdf",
              width = 12, height = 7)
 
 
@@ -1948,7 +1948,7 @@ Q2_regressions_citydist_ggpred <- ggarrange( ggpred_Q2.citydist_poll,
 
 library(patchwork)
 library(png)
-Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend_nopoints_updated.png"),
+Q2_legend <- readPNG(here::here("./Figures_Tables//Q2_Regressions_Plants/Q2_legend_nopoints_updated.png"),
                     native = TRUE)
 
 
@@ -1972,7 +1972,7 @@ city_plots.ggpred2 <- annotate_figure(Q2_regressions_citydist_ggpred,
 #                          AAAAAAA#")
 
 # export to PDF
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/DISTSubtransect_regressions_nopoints.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables//Q2_Regressions_Plants/DISTSubtransect_regressions_nopoints.pdf",
              width = 12, height = 4.5)
 ```
 
@@ -1994,7 +1994,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/
 #   plot
 
 # library(patchwork)
-# Q2_legend <- readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend.png"),
+# Q2_legend <- readPNG(here::here("./Figures_Tables//Q2_Regressions_Plants/Q2_legend.png"),
 #                      native = TRUE)
 # 
 # 
@@ -2011,7 +2011,7 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/
 # 
 # 
 # # export to PDF
-# dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/URBSCORESubtransect_regressions_ggpredict.pdf",
+# dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables//Q2_Regressions_Plants/URBSCORESubtransect_regressions_ggpredict.pdf",
 #              width = 12, height = 4.5)
 
 
@@ -2037,7 +2037,7 @@ Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.citydist_height, # city_di
 
 library(patchwork)
 library(png)
-Q2_legend <- png::readPNG(here::here("./Figures_Tables/Q2_UrbanSubtransects/Q2_legend.png"),
+Q2_legend <- png::readPNG(here::here("./Figures_Tables//Q2_Regressions_Plants/Q2_legend.png"),
                      native = TRUE)
 
 
@@ -2052,7 +2052,7 @@ urbscore_plots.ggpred2 <- Q2_regressions_urbscore_ggpred +    # Combine plot & i
 urbscore_plots.ggpred2
 
 # export to PDF
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q2_UrbanSubtransects/URBSCORESubtransect_regressions_ggpredict_nopoints.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables//Q2_Regressions_Plants/URBSCORESubtransect_regressions_ggpredict_nopoints.pdf",
              width = 12, height = 8.5)
 ```
 
