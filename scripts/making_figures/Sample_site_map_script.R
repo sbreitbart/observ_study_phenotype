@@ -20,7 +20,7 @@ sites <- sites_all[,2:6]
 sites <- sites[c(1:3, 5,10,14,17,21:93),]
 
 # Import urb_index values for each of these rows
-urb_scores <- read.csv(here::here("./Figures_Tables/UrbanizationScore/Urbanization_Scores_Table.csv"),
+urb_scores <- read.csv(here::here("./Urbanization_Score_files/Urbanization_Scores_Table.csv"),
                        header=T, na.strings=c("","NA")) %>%
   dplyr::select(2,8)
 

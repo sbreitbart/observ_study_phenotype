@@ -20,7 +20,7 @@ na.strings=c("","NA")) %>%
   
 
 # Import urb_index values for each of these rows
-urb_scores <- read.csv(here::here("./Figures_Tables/UrbanizationScore/Urbanization_Scores_Table.csv"),  header=T, na.strings=c("","NA"))
+urb_scores <- read.csv(here::here("./Urbanization_Score_files/UrbanizationScore/Urbanization_Scores_Table.csv"),  header=T, na.strings=c("","NA"))
 
 Pops_patches <- Transect_Data[,c(2,3)] %>%
 dplyr::distinct() %>% 
