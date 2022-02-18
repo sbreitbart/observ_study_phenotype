@@ -61,3 +61,6 @@ AS082: 0 points for other
 AS083: 0 points for forest, 0 for other
 AS084: 0 points for other
 AS093: 0 points for other
+
+
+NOTE: used pca_result_clean as basis for urbanization scores in analysis. Since I generated urbanization scores for each of my 93 AS### sites (93) and I only need them for MW### sites (80). Since some AS sites as associated with a single MW site, I averaged those AS site values to get the final MW site value. Example: AS003 and AS004 make up MW003. So MW003's urbanization score = mean of AS003 and AS004 values.
