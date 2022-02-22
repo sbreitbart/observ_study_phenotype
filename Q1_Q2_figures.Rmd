@@ -44,7 +44,7 @@ height_gradient_01_pred <- ggpredict(height_lmer_gradient_02,
 #     geom_smooth(aes(x = x, y = predicted, color = group),
 #                 se = F) +
 #     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#     geom_point(data = fertile_pops_all, 
+#     geom_point(data = fertile, 
 #                aes(x = City_dist, y = Peduncles, colour = Year, shape = Year), size = 2)
 # )+
 #   scale_shape(solid = F)+
@@ -99,7 +99,7 @@ height_gradient_01_pred <- ggpredict(height_lmer_gradient_02,
 #     geom_smooth(aes(x = x, y = predicted, color = group),
 #                 se = F) +
 #     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#     geom_point(data = fertile_pops_all, 
+#     geom_point(data = fertile, 
 #                aes(x = City_dist, y = Viable_Pods^2, colour = Year, shape = Year), size = 2)
 # )+
 #   labs( color="Year", shape="Year", fill = "Year") +
@@ -127,7 +127,7 @@ height_gradient_01_pred <- ggpredict(height_lmer_gradient_02,
 #     geom_smooth(aes(x = x, y = predicted, color = group),
 #                 se = F) +
 #     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#     geom_point(data = fertile_pops_all, 
+#     geom_point(data = fertile, 
 #                aes(x = City_dist, y = pods_per_ped, colour = Year, shape = Year), size = 2)
 # )+
 #   scale_shape(solid = F)+
@@ -156,7 +156,7 @@ height_gradient_01_pred <- ggpredict(height_lmer_gradient_02,
 #                                 geom_ribbon(aes(x = x, ymin = predicted - std.error,
 #                                                 ymax = predicted + std.error, fill = group),
 #                                             alpha = 0.3) + 
-#                                 geom_point(data = fertile_pops_all, 
+#                                 geom_point(data = fertile, 
 #                                            aes(x = City_dist, y = Height_Sept,
 #                                                colour = Year, shape = Year), size = 2)
 # )+
@@ -530,7 +530,7 @@ height_gradient_01_pred.u <- ggpredict(u_height_lmer_gradient_01,
 #                               geom_smooth(aes(x = x, y = predicted, color = group),
 #                                           se = F) +
 #                               geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#                               geom_point(data = fertile_pops_all, 
+#                               geom_point(data = fertile, 
 #                                          aes(x = Urb_score, y = Peduncles, colour = Year, shape = Year), size = 2)
 # )+
 #   scale_shape(solid = F)+
@@ -590,7 +590,7 @@ height_gradient_01_pred.u <- ggpredict(u_height_lmer_gradient_01,
 #                               geom_smooth(aes(x = x, y = predicted, color = group),
 #                                           se = F) +
 #                               geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#                               geom_point(data = fertile_pops_all, 
+#                               geom_point(data = fertile, 
 #                                          aes(x = Urb_score, y = Viable_Pods^3, colour = Year, shape = Year), size = 2)
 # )+
 #   labs( color="Year", shape="Year", fill = "Year") +
@@ -620,7 +620,7 @@ height_gradient_01_pred.u <- ggpredict(u_height_lmer_gradient_01,
 #                                     geom_smooth(aes(x = x, y = predicted, color = group),
 #                                                 se = F) +
 #                                     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#                                     geom_point(data = fertile_pops_all, 
+#                                     geom_point(data = fertile, 
 #                                                aes(x = Urb_score, y = pods_per_ped, colour = Year, shape = Year), size = 2)
 # )+
 #   scale_shape(solid = F)+
@@ -651,7 +651,7 @@ height_gradient_01_pred.u <- ggpredict(u_height_lmer_gradient_01,
 #                                   geom_ribbon(aes(x = x, ymin = predicted - std.error,
 #                                                   ymax = predicted + std.error, fill = group),
 #                                               alpha = 0.3) + 
-#                                   geom_point(data = fertile_pops_all, 
+#                                   geom_point(data = fertile, 
 #                                              aes(x = Urb_score, y = Height_Sept,
 #                                                  colour = Year, shape = Year), size = 2)
 # )+
@@ -954,7 +954,7 @@ ggpred_Q2.citydist_peds <- (ggplot(peds_subtr_01_pred) +
                                               fill = facet,
                                               linetype = group),
                                           alpha = 0.2)) + 
-  geom_point(data = fertile_pops_all %>%
+  geom_point(data = fertile %>%
                filter(Transect_ID != "Rural"),
              aes(x = City_dist, y = Peduncles,
                  colour = Transect_ID,
@@ -1036,7 +1036,7 @@ ggpred_Q2.citydist_pods <- (ggplot(pods_subtr_01_pred) +
                                               fill = facet,
                                               linetype = group),
                                           alpha = 0.2)) + 
-  geom_point(data = fertile_pops_all %>%
+  geom_point(data = fertile %>%
                filter(Transect_ID != "Rural"),
              aes(x = City_dist, y = Viable_Pods^2,
                  colour = Transect_ID,
@@ -1078,7 +1078,7 @@ ggpred_Q2.citydist_podsperped <- (ggplot(podsperped_subtr_01_pred) +
                                                     fill = facet,
                                                     linetype = group),
                                                 alpha = 0.2)) + 
-  geom_point(data = fertile_pops_all %>%
+  geom_point(data = fertile %>%
                filter(Transect_ID != "Rural"),
              aes(x = City_dist, y = pods_per_ped,
                  colour = Transect_ID,
@@ -1121,7 +1121,7 @@ ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +
                                                 fill = facet,
                                                 linetype = group),
                                             alpha = 0.2)) + 
-  geom_point(data = fertile_pops_all %>%
+  geom_point(data = fertile %>%
                filter(Transect_ID != "Rural"),
              aes(x = City_dist, y = Height_Sept,
                  colour = Transect_ID,
@@ -1162,12 +1162,6 @@ ggpred_Q2.citydist_peds <- (ggplot(peds_subtr_01_pred) +
                                               fill = group,
                                               linetype = facet),
                                           alpha = 0.2)) + 
-  # geom_point(data = fertile_pops_all %>%
-  #              filter(Transect_ID != "Rural"),
-  #            aes(x = City_dist, y = Peduncles,
-  #                colour = Transect_ID,
-  #                shape = interaction(Year, Transect_ID)),
-  #            size = 3) +
   scale_y_continuous(limits=c(0,10), breaks = c(0,2,4,6,8,10)) +
   labs(x = "Distance to Urban Center (km)",
        y = "Inflorescences") +
@@ -1249,13 +1243,6 @@ ggpred_Q2.citydist_pods <- (ggplot(pods_subtr_01_pred) +
                                               fill = group,
                                               linetype = facet),
                                           alpha = 0.2)) + 
-  # geom_point(data = fertile_pops_all %>%
-  #              filter(Transect_ID != "Rural"),
-  #            aes(x = City_dist, y = Viable_Pods^2,
-  #                colour = Transect_ID,
-  #                shape = interaction(Year, Transect_ID)),
-  #            size = 3) +
-  # scale_y_continuous(limits=c(0,350)) +
   labs(x = "Distance to Urban Center (km)",
        y = expression(Follicles^{2})) +
   # scale_shape_manual(values = c(16,2,17,1)) +
@@ -1292,13 +1279,7 @@ ggpred_Q2.citydist_podsperped <- (ggplot(podsperped_subtr_01_pred) +
                                                     ymax = predicted + std.error,
                                                     fill = group,
                                                     linetype = facet),
-                                                alpha = 0.2)) + 
-  # geom_point(data = fertile_pops_all %>%
-  #              filter(Transect_ID != "Rural"),
-  #            aes(x = City_dist, y = pods_per_ped,
-  #                colour = Transect_ID,
-  #                shape = interaction(Year, Transect_ID)),
-  #            size = 3) +
+                                                alpha = 0.2)) +
   scale_y_continuous(limits=c(0,2.5)) +
   labs(x = "Distance to Urban Center (km)",
        y = "Follicles per Inflorescence") +
@@ -1545,7 +1526,7 @@ height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
 #                                               fill = facet,
 #                                               linetype = group),
 #                                           alpha = 0.2)) + 
-#   geom_point(data = fertile_pops_all %>%
+#   geom_point(data = fertile %>%
 #                filter(Transect_ID != "Rural"),
 #              aes(x = Urb_score, y = Peduncles,
 #                  colour = Transect_ID,
@@ -1629,7 +1610,7 @@ height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
 #                                               fill = facet,
 #                                               linetype = group),
 #                                           alpha = 0.2)) + 
-#   geom_point(data = fertile_pops_all %>%
+#   geom_point(data = fertile %>%
 #                filter(Transect_ID != "Rural"),
 #              aes(x = Urb_score, y = Viable_Pods^3,
 #                  colour = Transect_ID,
@@ -1668,7 +1649,7 @@ height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
 #                                                     fill = facet,
 #                                                     linetype = group),
 #                                                 alpha = 0.2)) + 
-#   geom_point(data = fertile_pops_all %>%
+#   geom_point(data = fertile %>%
 #                filter(Transect_ID != "Rural"),
 #              aes(x = Urb_score, y = pods_per_ped,
 #                  colour = Transect_ID,
@@ -1714,7 +1695,7 @@ height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
 #                                                   fill = facet,
 #                                                   linetype = group),
 #                                               alpha = 0.2)) + 
-#   geom_point(data = fertile_pops_all %>%
+#   geom_point(data = fertile %>%
 #                filter(Transect_ID != "Rural"),
 #              aes(x = Urb_score, y = Height_Sept,
 #                  colour = Transect_ID,
@@ -2037,7 +2018,7 @@ Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.citydist_height, # city_di
 
 library(patchwork)
 library(png)
-Q2_legend <- png::readPNG(here::here("./Figures_Tables//Q2_Regressions_Plants/Q2_legend_nopoints.png"),
+Q2_legend <- png::readPNG(here::here("./Figures_Tables/Q2_Regressions_Plants/Q2_legend_nopoints.png"),
                      native = TRUE)
 
 
@@ -2055,5 +2036,3 @@ urbscore_plots.ggpred2
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables//Q2_Regressions_Plants/URBSCORESubtransect_regressions_ggpredict_nopoints.pdf",
              width = 12, height = 8.5)
 ```
-
-
