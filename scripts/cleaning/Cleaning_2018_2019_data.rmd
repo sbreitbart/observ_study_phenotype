@@ -262,12 +262,6 @@ inner_join(sterile_pops_bothyears, fertile_pops_all)
 # remove rows with cells that match both the year and population of sterile pops list
 sterile_list <- as.list(sterile_pops_bothyears %>% dplyr::select(Patch_ID))
 
-## THIS LISTS EACH ROW AS A FLOWER... BE CAREFUL
-fertile_long <- long_Transect_Data_18_19 %>%
-filter(., Patch_ID != sterile_list) 
-write.csv(fertile_long,
-          here::here("./clean_data/fertile_long.csv"))
-
 
 fertile <- anti_join(Transect_Data_18_19, sterile_pops_bothyears, by = "Patch_ID") %>%
 dplyr::mutate(., pods_per_ped = Total_Pods / Peduncles)
