@@ -251,9 +251,6 @@ sterile_pops_bothyears_list <- sterile_pops_bothyears$Patch_ID
 fertile_pops_all <- AvgVars_byPatch %>% 
   filter(!Patch_ID %in% sterile_pops_bothyears_list) %>%
   dplyr::mutate(pods_per_ped = Total_Pods / Peduncles)
-write.csv(fertile_pops_all,
-          here::here("./clean_data/fertile_pops_all.csv"))
-
 
 # check that fertile_pops_all has no populations in common with sterile_pops_bothyears
 inner_join(sterile_pops_bothyears, fertile_pops_all)

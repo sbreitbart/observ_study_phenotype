@@ -134,21 +134,20 @@ long_Transect_Data_18_19 <-
   read.csv(here::here("./clean_data/long_Transect_Data_18_19.csv"),
            header=T,
            na.strings=c("","NA")) %>%
-  dplyr::select(-1)
+  dplyr::select(-c(1, 32:55))
 
 
 fertile <-
   read.csv(here::here("./clean_data/fertile.csv"),
            header=T,
            na.strings=c("","NA")) %>%
-  dplyr::select(-1)
+  dplyr::select(-c(1, 36:58))
 
 ```
 
 ## Make sure classes are correct
 ```{r}
 # long_Transect_Data_18_19-----
-
 str(long_Transect_Data_18_19)
 
 # Make columns numeric
@@ -167,7 +166,6 @@ long_Transect_Data_18_19$Pollinia_removed <- as.integer(as.character(long_Transe
 
 
 # fertile-----
-
 str(fertile)
 
 # make patch ID, plant, year, and inflor cols factors
@@ -176,26 +174,32 @@ fertile$Plant_Num <- as.factor(as.character(fertile$Plant_Num))
 fertile$Year <- as.factor(as.character(fertile$Year))
 
 str(fertile)
-
 ```
 
 ## Variable key
 
 DATA FRAME: long_Transect_Data_18_19
+RELEVANT VARIABLES: 
+
+* Pollinia_removed
+: Number of pollinia removed per flower (0-5). Was measured in July of 2018 and 2019.
 
 
 
-DATA FRAME:
+DATA FRAME: fertile
+RELEVANT VARIABLES: 
+
+* Peduncles
+: Number of peduncles per plant. Each peduncle is associated with one inflorescence.
+
+* Viable_Pods
+: Number of viable follicles per plant. These follicles were usually around 6-10 cm long, compared to aborted follicles, which were usually about 1 cm long and seemed to have stopped growing based on size and color (oftentimes brown/dried up).
+
+* Height_Sept
+: Height of sampled plant in September (when performing follicle, peduncle survey), in centimeters
 
 
-
-ALL DATA FRAMES:
-
-
-
-
-* Average_Pollinia
-: Average number of pollinia removed per flower, per plant, per population (0-5). Was measured in July of 2018 and 2019.
+BOTH DATA FRAMES
 
 * City_dist
 : Population's distance from urban center (Yonge & Dundas in Toronto), in kilometers.
@@ -207,29 +211,10 @@ ALL DATA FRAMES:
 
     See [link](https://www.google.com/maps/d/u/0/edit?hl=en&mid=1T6o02xqdFY49LpaV5fgpNYcgUNfy6hWJ&ll=43.54856560494681%2C-79.7330821595105&z=10) for a map of the 3 transects.  
   
-* Peduncles
-: Average number of peduncles per plant per population
-
-* Height_July
-: Average height of sampled plants in July (when performing pollinia removal survey), in centimeters
 
 * Plants_present_2018
 : Number of plants present at the sampling site in 2018. Populations were spaced at least 500 meters apart to ensure population distinction.
 
-* Height_Sept
-: Average height of sampled plants in September (when performing follicle, peduncle survey), in centimeters
-
-* Viable_Pods
-: Average number of viable follciles per plant per population. These follicles were usually around 6-10 cm long, compared to aborted follicles, which were usually about 1 cm long and seemed to have stopped growing based on size and color (oftentimes brown/dried up).
-
-* Total_Pods
-: Average number of *combined* viable and aborted follciles per plant per population. In 2018, we did not distinguish between aborted and viable follicles, so this variable is used to compare follicle production over both years. Viable follicle production can only be measured for 2019 alone.
-
-* nPlants
-: Number of plants sampled per population.
-
-* Average_pod_length
-: Average length of all pods measured on surveyed plants in 2019, in centimeters. This data was not collected in 2018. In 2019, it was collected to understand whether there is a relationship between pod dimensions and seed number and/or seed mass. (As of October 2019, it seems there is a surprisingly weak relationship.)
 
 # Methods
 ## Sampling design stats
