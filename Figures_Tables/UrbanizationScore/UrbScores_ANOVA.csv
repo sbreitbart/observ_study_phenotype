@@ -1,0 +1,15 @@
+Urbanization Scores- Q1
+Urb_score ~ City_dist
+Main Effect"","Sum Sq","Df","F value","Pr(>F)"
+"City_dist",270.375689779975,1,184.064566678248,3.18210049644865e-22
+"Residuals",114.575576296023,78,NA,NA
+
+Urbanization Scores- Q3
+Urb_score ~ City_dist * Transect
+Main Effect"","Sum Sq","Df","F value","Pr(>F)"
+"City_dist",3.85982423886094,1,4.19962536230874,0.0454933024287234
+"Transect",0.162476634765376,1,0.176780328304433,0.675887389350164
+"City_dist:Transect",7.58669640146964,1,8.25459416078251,0.00587248855631495
+"Residuals",47.7925631705464,52,NA,NA
+
+
