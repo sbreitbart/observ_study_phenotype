@@ -137,12 +137,6 @@ long_Transect_Data_18_19 <-
   dplyr::select(-1)
 
 
-AvgVars_notNA_Poll_18_19 <-
-  read.csv(here::here("./clean_data/AvgVars_notNA_Poll_18_19.csv"),
-           header=T,
-           na.strings=c("","NA")) %>%
-  dplyr::select(-1)
-
 fertile_long <-
   read.csv(here::here("./clean_data/fertile_long.csv"),
            header=T,
@@ -162,6 +156,7 @@ fertile_pops_all <-
            na.strings=c("","NA")) %>%
   dplyr::select(-1)
 ```
+
 ## Make sure classes are correct
 ```{r}
 # long_Transect_Data_18_19-----
@@ -181,15 +176,6 @@ long_Transect_Data_18_19$Year <- as.factor(as.character(long_Transect_Data_18_19
 
 # make pollinia removed an integer
 long_Transect_Data_18_19$Pollinia_removed <- as.integer(as.character(long_Transect_Data_18_19$Pollinia_removed))
-
-
-# AvgVars_notNA_Poll_18_19------
-
-str(AvgVars_notNA_Poll_18_19)
-
-# make cols factors
-AvgVars_notNA_Poll_18_19$Patch_ID <- as.factor(as.character(AvgVars_notNA_Poll_18_19$Patch_ID))
-AvgVars_notNA_Poll_18_19$Year <- as.factor(as.character(AvgVars_notNA_Poll_18_19$Year))
 
 
 # fertile_long-----
@@ -233,6 +219,19 @@ str(fertile_pops_all)
 ```
 
 ## Variable key
+
+DATA FRAME: long_Transect_Data_18_19
+
+
+
+DATA FRAME:
+
+
+
+ALL DATA FRAMES:
+
+
+
 
 * Average_Pollinia
 : Average number of pollinia removed per flower, per plant, per population (0-5). Was measured in July of 2018 and 2019.

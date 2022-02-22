@@ -5,14 +5,15 @@ library("factoextra")
 library(MASS)
 library(patchwork)
 library(ggpubr)
+library(here)
 
 # Set style
 theme_set(theme_bw())
 
 # Read in data
-pca_res <- read.csv("~/R_Projects/Chapter1/Corridor_Analysis/UrbIndex_2020/pca_result_clean.csv",
+pca_res <- read.csv(here::here("./Urbanization_Score_files/UrbIndex_2020/pca_result_clean.csv"),
                     header = T, na.strings=c("","NA"), fileEncoding="UTF-8-BOM")
-distances <- read.csv("~/R_Projects/Chapter1/SummerMilkweed19Data/80_Sites.csv",
+distances <- read.csv(here::here("./raw_data/80_Sites.csv"),
                       header = T, na.strings=c("","NA"),fileEncoding="UTF-8-BOM")
 
 # Clean up data
@@ -46,7 +47,7 @@ group_by(Patch_ID) %>%
 
 
 # Export
-write.csv(scores, "~/R_Projects/Chapter1/Figures_Tables/Urbanization_Scores_Table.csv")
+write.csv(scores, here::here("./Urbanization_Score_files/Urbanization_Scores_Table.csv"))
 
 
 
@@ -77,7 +78,7 @@ scores_subtransects <- ggplot(scores, aes(x = City_dist, y = Urb_score, color = 
 ## Export 
 both_scores <- scores_gradient + scores_subtransects
 both_scores
-dev.copy2pdf(file="~/R_Projects/Chapter1/Figures_Tables/UrbanizationScores_Regressions.pdf",
+dev.copy2pdf(file = here::here("./Figures_Tables/UrbanizationScores_Regressions.pdf"),
              width = 10, height = 5)
 
 # Plot buildings vs vegetation
