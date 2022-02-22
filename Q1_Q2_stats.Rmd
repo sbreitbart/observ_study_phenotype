@@ -137,13 +137,6 @@ long_Transect_Data_18_19 <-
   dplyr::select(-1)
 
 
-fertile_long <-
-  read.csv(here::here("./clean_data/fertile_long.csv"),
-           header=T,
-           na.strings=c("","NA")) %>%
-  dplyr::select(-1)
-
-
 fertile <-
   read.csv(here::here("./clean_data/fertile.csv"),
            header=T,
@@ -176,24 +169,6 @@ long_Transect_Data_18_19$Year <- as.factor(as.character(long_Transect_Data_18_19
 
 # make pollinia removed an integer
 long_Transect_Data_18_19$Pollinia_removed <- as.integer(as.character(long_Transect_Data_18_19$Pollinia_removed))
-
-
-# fertile_long-----
-
-str(fertile_long)
-
-# Make columns numeric
-fertile_long$Inflor <- as.numeric(as.character(fertile_long$Inflor))
-fertile_long$Pollinia_removed <- as.numeric(as.character(fertile_long$Pollinia_removed))
-fertile_long$Flower <- as.numeric(as.character(fertile_long$Flower))
-
-# make patch ID, plant, year, and inflor cols factors
-fertile_long$Patch_ID <- as.factor(as.character(fertile_long$Patch_ID))
-fertile_long$Plant_Num <- as.factor(as.character(fertile_long$Plant_Num))
-fertile_long$Inflor <- as.factor(as.character(fertile_long$Inflor))
-fertile_long$Year <- as.factor(as.character(fertile_long$Year))
-
-str(fertile_long)
 
 
 # fertile-----
