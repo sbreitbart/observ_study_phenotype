@@ -143,11 +143,6 @@ fertile <-
            na.strings=c("","NA")) %>%
   dplyr::select(-1)
 
-fertile_pops_all <-
-  read.csv(here::here("./clean_data/fertile_pops_all.csv"),
-           header=T,
-           na.strings=c("","NA")) %>%
-  dplyr::select(-1)
 ```
 
 ## Make sure classes are correct
@@ -181,15 +176,6 @@ fertile$Plant_Num <- as.factor(as.character(fertile$Plant_Num))
 fertile$Year <- as.factor(as.character(fertile$Year))
 
 str(fertile)
-
-
-# fertile_pops_all-----
-
-str(fertile_pops_all)
-
-fertile_pops_all$Year <- as.factor(as.character(fertile_pops_all$Year))
-
-str(fertile_pops_all)
 
 ```
 
