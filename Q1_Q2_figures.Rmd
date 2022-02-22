@@ -2037,7 +2037,7 @@ Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.citydist_height, # city_di
 
 library(patchwork)
 library(png)
-Q2_legend <- png::readPNG(here::here("./Figures_Tables//Q2_Regressions_Plants/Q2_legend.png"),
+Q2_legend <- png::readPNG(here::here("./Figures_Tables//Q2_Regressions_Plants/Q2_legend_nopoints.png"),
                      native = TRUE)
 
 
