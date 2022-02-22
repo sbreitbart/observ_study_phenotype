@@ -1,4 +1,4 @@
-# Urbanization and Green Corridors Influence Reproductive Success and Pollinators of Common Milkweed
+# Urbanization and green corridors influence reproductive success and pollinators of common milkweed
 
 ## Manuscript Journal: TBD
 

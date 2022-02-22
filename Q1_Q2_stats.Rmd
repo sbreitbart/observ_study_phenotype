@@ -215,56 +215,6 @@ BOTH DATA FRAMES
 * Plants_present_2018
 : Number of plants present at the sampling site in 2018. Populations were spaced at least 500 meters apart to ensure population distinction.
 
-
-# Methods
-## Sampling design stats
-### How many plants are within transects?
-```{r}
-# For the southern urban (green corridor) subtransect, these sites are within the green corridor: MW032, MW014, MW013, MW003, MW004, MW069, MW050
-# **MW013 isn't technically within the green corridor itself but it's perpendicular and connected through a different green corridor, so I'm counting it. It's ~100m from the corridor.
-
-# 29 southern urban sites total, 7 within the corridor itself (<25%)
-```
-
-### Histograms of green corridor site proximities
-```{r}
-library(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
-library(dplyr) # A Grammar of Data Manipulation # A Grammar of Data Manipulation
-
-corridor_data <- read.csv(here("./Corridor_Analysis/SouthernUrbanSites_ProximitytoCorridor.csv"),  header=T, na.strings=c("","NA"))
-
-
-corridor_data %>%
-  ggplot( aes(x=Distance, fill = Corr_or_greenspace)) +
-    geom_histogram( alpha=0.5, position = 'identity', binwidth = 50) +
-  facet_wrap(~Corr_or_greenspace) +
-  scale_x_continuous(name="Site Distance to...",
-                     breaks = seq(0,2800,500),
-                     labels = seq(0,2800,500)) +
-  theme(legend.position = 'none')
-
-corr_dist <- (corridor_data$Distance)
-bins <- seq(0,2700,by=50)
-corr_table <- cut(corr_dist,bins)
-# transform(table(corr_table))
-
-corr_table1<- with(corridor_data, table(Corr_or_greenspace, cut(Distance, bins, include.lowest = TRUE)))
-# transform(corr_table1)
-library(data.table) # Extension of `data.frame` # Extension of `data.frame`
-corr_df <- setDT(corridor_data)[, .N, by = .(Corr_or_greenspace, Bin = cut(Distance, bins, include.lowest = TRUE))] 
-
-corr_df_spread <- tidyr::spread(corr_df, Corr_or_greenspace, N)
-
-corr_df_spread$Percent_Corridor <- as.numeric(corr_df_spread$Corridor) / .34
-corr_df_spread$Percent_Greenspace <- as.numeric(corr_df_spread$Greenspace) / .34
-corr_df_spread[is.na(corr_df_spread)] <- 0
-corr_df_spread$Perc_Corr_Cumulative <- cumsum(corr_df_spread[, 4])
-corr_df_spread$Perc_Greensp_Cumulative <- cumsum(corr_df_spread[, 5])
-
-write.csv(corr_df_spread, here::here("./Corridor_Analysis/corr_df_spread.csv"), row.names = FALSE)
-
-```
-
 # Results
 ## Questions 1-2 (Milkweed data)
 ### Model Selection
