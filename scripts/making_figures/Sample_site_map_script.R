@@ -139,7 +139,7 @@ map1_urbscore <- base_map +
                      name = "Sample Site Subtransect") +
   scale_fill_gradient(low = "white", high = "dark red",
                       breaks=c(-4, -2, 0, 2, 4),
-                      labels=c("4 (Rural)", 2, 0, -2, "-4 (Urban)"),
+                      labels=c("-4 (Rural)", -2, 0, 2, "4 (Urban)"),
                       limits=c(-4, 4),
                       name = "Urbanization Score"
                       ) +
