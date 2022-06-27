@@ -74,6 +74,8 @@ The same notation style is used for the latter two files (Q2_Dist_ANOVA and Q2_U
 
 - Contains regression figures of main variables where urbanization was quantified using distance from the urban center (Q4_Dist_urban_ANOVA.png) and urbanization score (Q4_Usc_urban_ANOVA.png).
 
+- Contains table summarizing pollinator diversity for Question 4 (Q4_Pollinators_Table.csv) as well as both Questions 3-4 (Q3and4_Pollinators_Table.csv).
+
 - Supplement folder contains
 
   - regressions of pollinator evenness ("Pollinator_regressions_Evenness_transects.pdf")

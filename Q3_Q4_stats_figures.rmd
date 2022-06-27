@@ -77,6 +77,7 @@ library(Hmisc) # Harrell Miscellaneous
 library(lme4) # Linear Mixed-Effects Models using 'Eigen' and S4
 library(lmerTest) # Tests in Linear Mixed Effects Models
 # library(lsmeans)
+library(magrittr)
 library(MASS) # Support Functions and Datasets for Venables and Ripley's MASS
 library(multcomp) # Simultaneous Inference in General Parametric Models
 # library(MuMIn)
@@ -106,28 +107,22 @@ require(scales) # Scale Functions for Visualization
 ### Import data
 ```{r}
 pollinators <- read.csv(here::here("./raw_data/Pollinator_PivotTable_byPop_Coded.csv"),  header=T, na.strings=c("","NA")) %>%
-  dplyr::rename(Patch_ID = 1)
-
-
-### Add City_dist values with Haversine formula
-# Ref lat and longs are for Yonge & Dundas intersection in downtown Toronto
-pollinators$Ref_Lat <- "43.656327"
-pollinators$Ref_Long <- "-79.380904"
-
-# Make lat/long cols numeric
-pollinators$Lat <- as.numeric(as.character(pollinators$Lat))
-pollinators$Long <- as.numeric(as.character(pollinators$Long))
-pollinators$Ref_Lat <- as.numeric(as.character(pollinators$Ref_Lat))
-pollinators$Ref_Long <- as.numeric(as.character(pollinators$Ref_Long))
-
+  dplyr::rename(Patch_ID = 1) %>%
+  dplyr::slice(-59) %>% # empty row
+  ### Add City_dist values with Haversine formula
+  # Ref lat and longs are for Yonge & Dundas intersection in downtown Toronto
+  dplyr::mutate(Ref_Lat = 43.656327,
+                Ref_Long = -79.380904,
+                Lat = as.numeric(Lat),
+                Long = as.numeric(Long),
+                Patch_ID = as.factor(Patch_ID),
+                Transect = as.factor(Transect)) %>%
 # Find distances from Yonge/Dundas to sample sites (in meters)
-pollinators <- pollinators %>% mutate(CTD_m = distHaversine(cbind(Long, Lat), cbind(Ref_Long, Ref_Lat)))
-
-# convert to km
-pollinators$Dist_city <- pollinators$CTD / 1000
-
+   dplyr::mutate(CTD_m = distHaversine(cbind(Long, Lat),
+                               cbind(Ref_Long, Ref_Lat))) %>%
+   dplyr::mutate(Dist_city = CTD_m / 1000) %>% # convert to km
 # drop ref lat, long, and city_dist (in m) cols
-pollinators <- pollinators[,-c(50:52)]
+   dplyr::select(-c(Ref_Lat, Ref_Long, CTD_m))
 
 
 ## Import taxonomy table-----
@@ -2511,23 +2506,54 @@ write.table(AIC_df.Q4, file = here::here("./Figures_Tables/AIC_df_Q4.txt"), sep 
 
 ## Tables
 ```{r}
+# ALL POPULATIONS-----
 # Total pollinators observed per morphospecies:
 Morphospecies_table <- colSums(pollinators[,c(7:48)]) %>%
   as.data.frame() %>%
   tibble::rownames_to_column("Morphospecies_Code") %>%
-  # dplyr::rename(Morphospecies_Code = 0) %>%
   dplyr::rename(Individuals_observed = 2) %>%
-  # as.data.frame() %>%
+  full_join(., diversity %>%
+              dplyr::select(c(1,14)),
+            by = "Morphospecies_Code") %>%
+  dplyr::distinct() %T>%
+  write.csv(here::here("./Figures_Tables/Q3_Regressions_Pollinators/Q3_Pollinators_Table.csv"))
+
+Morphospecies_table %>%
+  dplyr::arrange(desc(Individuals_observed),
+                 ) %>%
+  dplyr::slice(1:5) %>%
+  view() # top 5 most popular morphospecies
+
+Morphospecies_table %>%
+dplyr::summarise(sum = sum(Individuals_observed)) # total number of pollinators observed = 307
+
+# ONLY URBAN POPULATIONS-----
+# Total pollinators observed per morphospecies:
+urb_pollinators <- pollinators %>%
+  dplyr::filter(Transect != "Rural") 
+
+Morphospecies_table_urb <- colSums(urb_pollinators[,c(7:48)]) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column("Morphospecies_Code") %>%
+  dplyr::rename(Individuals_observed = 2) %>%
   left_join(., diversity %>%
               dplyr::select(c(1,14)),
             by = "Morphospecies_Code") %>%
-  write.csv(here::here("./Figures_Tables/Q3_Regressions_Pollinators/Q3_Pollinators_Table.csv"))
-# top 4 abundant morphospecies: MW 6, 14, 2, 10.
-#   6: Apis mellifera (Large)
-#   14: (small) black sweat bee (Halictidae spp.)
-#   2: orange beetle (Rhagoycha fulva)
-#   10: small black sweat bee (yellow face) (Hylaeus spp.)
+  dplyr::distinct() %T>%
+  write.csv(here::here("./Figures_Tables/Q4_Regressions_Pollinators/Q4_Pollinators_Table.csv"))
 
+Morphospecies_table_urb %>%
+  dplyr::arrange(desc(Individuals_observed),
+                 ) %>%
+  dplyr::slice(1:5) %>%
+  view() # top 5 most popular morphospecies
+
+Morphospecies_table_urb %>%
+dplyr::summarise(sum = sum(Individuals_observed)) # total number of pollinators observed = 158
+
+Morphospecies_table_urb %>%
+  dplyr::filter(Individuals_observed >0) %>%
+  dim() # total number of morphospecies observed = 36
 
 
 ####### Table of each family's most common morphospecies vs dist city ctr ------

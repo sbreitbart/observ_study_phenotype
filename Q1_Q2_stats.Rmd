@@ -21,52 +21,6 @@ editor_options:
 # Set up notebook
 ## Install, load packages
 ```{r message=FALSE, warning=FALSE}
-# devtools::install_github("cardiomoon/ggiraphExtra")
-# devtools::install_github("dkahle/ggmap")
-# devtools::install_github("hadley/devtools")
-# install.packages("agricolae")
-# install.packages("BH")
-# install.packages("car")
-# install.packages("cowplot")
-# install.packages("DHARMa")
-# install.packages("digest", type="source")
-# install.packages("dplyr")
-# install.packages("factoextra")
-# install.packages("flextable")
-# install.packages("geosphere")
-# install.packages("ggiraphExtra")
-# install.packages("ggpubr")
-# install.packages("ggsn")
-# install.packages("ggspatial")
-# install.packages("GISTools")
-# install.packages("ISLR")
-# install.packages("janitor")
-# install.packages("lindia")
-# install.packages("lme4")
-# install.packages("lmerTest")
-# install.packages("mnormt")
-# install.packages("patchwork")
-# install.packages("plogr")
-# install.packages("psych")
-# install.packages("RcppEigen")
-# install.packages("rpart")
-# install.packages('sjPlot')
-# install.packages('stargazer')
-# install.packages("swirl")
-# install.packages("tibble")
-# install.packages("tidyverse")
-# install.packages("vegan")
-# install.packages("webshot")
-# install.packages("XLConnect")
-# install.packages('backports')
-# install.packages(c("slidify", "ggplot2", "devtools"))
-# install.packages('maps')
-# install.packages('rmarkdown')
-# install_github("vqv/ggbiplot")
-# library("FactoMineR")
-# library("tibble", lib.loc="~/R/win-library/3.5")
-# library(agricolae)
-# library(apaTables)
 library(broom.mixed) # Tidying Methods for Mixed Models
 library(car) # Companion to Applied Regression
 library(data.table) # Extension of `data.frame` # Extension of `data.frame`
@@ -92,10 +46,6 @@ library(glmmTMB) # Generalized Linear Mixed Models using Template Model Builder
 library(gridExtra) # Miscellaneous Functions for "Grid" Graphics
 library(here) # A Simpler Way to Find Your Files
 library(Hmisc) # Harrell Miscellaneous
-# library(hrbrthemes)
-# library(ISLR)
-# library(janitor)
-# library(lindia)
 library(lme4) # Linear Mixed-Effects Models using 'Eigen' and S4
 library(lmerTest) # Tests in Linear Mixed Effects Models
 # library(lsmeans)
@@ -112,7 +62,6 @@ library(reshape2) # Flexibly Reshape Data: A Reboot of the Reshape Package
 library(Rmisc) # Rmisc: Ryan Miscellaneous
 library(rpart) # Recursive Partitioning and Regression Trees
 library(sjPlot) # Data Visualization for Statistics in Social Science 
-# library(stargazer)
 library(tibble) # Simple Data Frames
 library(tidyr) # Tidy Messy Data
 library(tidyverse) # Easily Install and Load the 'Tidyverse'
@@ -123,7 +72,6 @@ library(webshot)
 require(ggiraph) # Make 'ggplot2' Graphics Interactive
 require(ggiraphExtra) # Make Interactive 'ggplot2'. Extension to 'ggplot2' and 'ggiraph'
 require(ggplot2) # Create Elegant Data Visualisations Using the Grammar of Graphics
-# require(MASS)
 require(scales) # Scale Functions for Visualization
 
 ```
@@ -142,6 +90,13 @@ fertile <-
            header=T,
            na.strings=c("","NA")) %>%
   dplyr::select(-c(1, 36:58))
+
+AvgVars_notNA_Poll_18_19 <- read.csv(here::here("./clean_data/AvgVars_notNA_Poll_18_19.csv"),
+           header=T,
+           na.strings=c("","NA")) %>%
+  dplyr::select(-1) %>%
+    dplyr::mutate_at(vars(c("Patch_ID", "Year", "Transect_ID")), as.factor) %T>%
+  str()
 
 ```
 
@@ -397,6 +352,59 @@ peds_glmer_gradient_01_anova <- car::Anova(peds_glmer_gradient_01, type = "II" )
 plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
 
 
+```
+
+######## Check for spatial autocorrelation
+```{r}
+DHARMa::testSpatialAutocorrelation(simulateResiduals(peds_glmer_gradient_01),
+                           x = fertile$Peduncles_minus1,
+                           y = fertile$City_dist)
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating x, y positions per population
+groupLocations <- fertile %>%
+  dplyr::select(City_dist, Peduncles_minus1, Patch_ID, Latitude, Longitude, Year) %>%
+  dplyr::group_by(Patch_ID, Year) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Latitude),
+                   Long = first(Longitude),
+                   Peduncles = mean(Peduncles_minus1, na.rm = TRUE)) %>%
+  # now take average of both years
+  dplyr::group_by(Patch_ID) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Lat),
+                   Long = first(Long),
+                   Peduncles = mean(Peduncles, na.rm = TRUE))
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(peds_glmer_gradient_01),
+                            group = fertile$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$Lat,
+                           groupLocations$Long)
+
+# p = 0.0086; reject null of no spatial autocorrelation
+
+
+
+
+# try model which accounts for S.A.
+
+# gls(
+#   model = Peduncles_minus1 ~ (1|Patch_ID) +
+#                                   City_dist +
+#                                   Year,
+#                               data = fertile,
+#               zi = ~City_dist + Year,
+#               family = truncated_poisson,
+#   correlation = corExp(form = ~ x + y, nugget = TRUE), 
+#   method = "REML"
+# )
 ```
 
 ######## Urban sites: NO TRANSFORMATION NEEDED
@@ -1058,6 +1066,40 @@ poll_glmer_gradient_01.v2_anova <- car::Anova(poll_glmer_gradient_01.v2, type = 
 
 ```
 
+######## Check for spatial autocorrelation
+```{r}
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating x, y positions per population
+groupLocations_pollinia <- long_Transect_Data_18_19 %>%
+  dplyr::select(City_dist,
+                Average_Pollinia,
+                Latitude,
+                Longitude,
+                Patch_ID) %>%
+  dplyr::group_by(Patch_ID) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Latitude),
+                   Long = first(Longitude),
+                   Pollinia = mean(Average_Pollinia, na.rm = TRUE))
+
+# calculating residuals per group
+res2 = recalculateResiduals(
+  simulateResiduals(poll_glmer_gradient_01.v2),
+  group = long_Transect_Data_18_19$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations_pollinia$Lat,
+                           groupLocations_pollinia$Long)
+
+# p = 0.1009; can't reject null of no spatial autocorrelation
+```
+
+
 ######## Just urban sites
 ```{r}
 # GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
@@ -1432,6 +1474,42 @@ pods_glmer_gradient_01_anova <- car::Anova(pods_glmer_gradient_01, type = "III")
 
 
 ```
+
+######## Check for spatial autocorrelation
+```{r}
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating x, y positions per population
+groupLocations <- fertile %>%
+  dplyr::select(City_dist, Viable_Pods_minus1, Patch_ID, Latitude, Longitude, Year) %>%
+  dplyr::group_by(Patch_ID, Year) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Latitude),
+                   Long = first(Longitude),
+                   Viable_Pods_minus1 = mean(Viable_Pods_minus1, na.rm = TRUE)) %>%
+  # now take average of both years
+  dplyr::group_by(Patch_ID) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Lat),
+                   Long = first(Long),
+                   Viable_Pods_minus1 = mean(Viable_Pods_minus1, na.rm = TRUE))
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(pods_glmer_gradient_01),
+                            group = fertile$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$Lat,
+                           groupLocations$Long)
+
+# p = 0.7408; can't reject null of no spatial autocorrelation
+
+```
+
 
 ######## Urban sites- SQUARING TRANSFORMATION
 ```{r}
@@ -2078,6 +2156,41 @@ podsperped_lmer_gradient_02_anova <- car::Anova(podsperped_lmer_gradient_02, typ
 
 ```
 
+######## Check for spatial autocorrelation
+```{r}
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating x, y positions per population
+groupLocations <- fertile %>%
+  dplyr::select(City_dist, pods_per_ped, Patch_ID, Latitude, Longitude, Year) %>%
+  dplyr::group_by(Patch_ID, Year) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Latitude),
+                   Long = first(Longitude),
+                   podsperped = mean(pods_per_ped, na.rm = TRUE)) %>%
+  # now take average of both years
+  dplyr::group_by(Patch_ID) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Lat),
+                   Long = first(Long),
+                   podsperped = mean(podsperped, na.rm = TRUE))
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(podsperped_lmer_gradient_02),
+                            group = fertile$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$Lat,
+                           groupLocations$Long)
+
+# p = 0.5123; can't reject null of no spatial autocorrelation
+
+```
+
 ######## Urban sites
 ```{r}
 # GET TABLE OF ALL POSSIBLE AND BEST MODELS -----
@@ -2445,6 +2558,42 @@ height_lmer_gradient_02_anova <- car::Anova(height_lmer_gradient_02) %T>%
   print() # year sig
 
 ```
+
+######## Check for spatial autocorrelation
+```{r}
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating x, y positions per population
+groupLocations <- fertile %>%
+  dplyr::select(City_dist, Height_Sept, Patch_ID, Latitude, Longitude, Year) %>%
+  dplyr::group_by(Patch_ID, Year) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Latitude),
+                   Long = first(Longitude),
+                   height = mean(Height_Sept, na.rm = TRUE)) %>%
+  # now take average of both years
+  dplyr::group_by(Patch_ID) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Lat),
+                   Long = first(Long),
+                   height = mean(height, na.rm = TRUE))
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(height_lmer_gradient_02),
+                            group = fertile$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$Lat,
+                           groupLocations$Long)
+
+# p = 0.3936; can't reject null of no spatial autocorrelation
+
+```
+
 
 ######## Urban sites
 ```{r}

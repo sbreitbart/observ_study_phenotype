@@ -19,3 +19,7 @@
 ### 80_Sites_urbindex.csv
 
 - Spreadsheet with basic information about sample sites but which does not include urbanization scores.
+
+### 80_Sites_SM.csv
+
+- Spreadsheet with basic information about sample sites which does  include urbanization scores. 
