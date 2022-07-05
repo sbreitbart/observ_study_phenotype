@@ -1497,7 +1497,7 @@ ggpred_Q2.citydist_height <- (ggplot(height_subtr_01_pred) +                    
     legend.box.just = "center",
     legend.margin = margin(5,5,5,5),
     text = element_text(size=14),
-    axis.title.x = element_blank(),
+  #  axis.title.x = element_blank(),
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA),
@@ -1868,7 +1868,8 @@ height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
 ```
 
 ### Create plots
-#### Include points, no stats (not included in paper)
+#### Include points
+##### Original version
 ```{r}
 # 
 # ggpred_Q2.urbscore_peds <- (ggplot(peds_subtr_01_pred.u) +
@@ -2080,42 +2081,55 @@ height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
 ```
 
 
-#### Exclude points, no stats (as in paper)
+##### Post-paper review version
 ```{r}
-
-ggpred_Q2.urbscore_peds <- ggplot(peds_subtr_01_pred.u) +
-                              geom_smooth(aes(x = x,
-                                              y = predicted,
-                                              color = group,
-                                              linetype = facet),
-                                          method = "loess",
-                                          se = F) +
-                              geom_ribbon(aes(x = x,
-                                              ymin = predicted - std.error,
-                                              ymax = predicted + std.error,
-                                              fill = group,
-                                              linetype = facet),
-                                          alpha = 0.2) + 
+# peduncles-----
+levels(peds_subtr_01_pred.u$facet)
+ggpred_Q2.urbscore_peds <- (ggplot(peds_subtr_01_pred.u) +
+         geom_smooth(aes(x = x,
+                 y = predicted,
+                 color = interaction(group, facet),
+                 fill = interaction(group, facet),
+                 linetype = (group)
+                 ),
+             method = "loess",
+             se = F) +
+     geom_ribbon(aes(x = x,
+                     ymin = predicted - std.error,
+                     ymax = predicted + std.error,
+                     fill = interaction(group, facet)
+                     ),
+                 alpha = 0.4)) + 
+  geom_point(data = fertile_pop_means %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = Urb_score,
+                 y = peds,
+                 colour = interaction(Year, Transect_ID),
+                 shape = (Transect_ID)),
+             size = 2) +
   xlim(4, -4) +
   scale_x_reverse() +
-  scale_y_continuous(limits=c(0,10)) +
+  scale_y_continuous(limits=c(0,15)) +
   labs(x = "Urbanization Score",
        y = "Inflorescences") +
-  theme( #legend.position = c(.97, .99),
-    legend.justification = c("center"),
-    legend.box = 'horizontal',
-    legend.box.just = "center",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
-    # axis.title.x = element_blank(),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA),
-    legend.key.size = unit(2, "line") )
+  scale_color_brewer(palette = "RdBu") +
+  scale_fill_brewer(palette = "RdBu") +
+  scale_shape(solid = FALSE) +
+  theme(legend.position =c(.99, .99), #"none", 
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        # axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
 ggpred_Q2.urbscore_peds
 
 
-
+# pollinia-----
 ## factors (transects) for this object are North, then South
 ## for some reason (peduncles and at least one more is South, North)
 ## so to keep legend consistent, have to reorder levels first
@@ -2123,136 +2137,183 @@ poll_subtr_01_pred.u$facet <- factor(poll_subtr_01_pred.u$facet,
                                      levels(poll_subtr_01_pred.u$facet)[c(2,1)])
 levels(poll_subtr_01_pred.u$facet)
 
-ggpred_Q2.urbscore_poll <- ggplot(poll_subtr_01_pred.u) +
-                              geom_smooth(aes(x = x,
-                                              y = predicted,
-                                              color = group,
-                                              linetype = facet),
-                                          method = "loess",
-                                          se = F) +
-                              geom_ribbon(aes(x = x,
-                                              ymin = predicted - std.error,
-                                              ymax = predicted + std.error,
-                                              fill = group,
-                                              linetype = facet),
-                                          alpha = 0.2) + 
+ggpred_Q2.urbscore_poll <- (ggplot(poll_subtr_01_pred.u) +
+    geom_smooth(aes(x = x,
+                 y = predicted,
+                 color = interaction(group, facet),
+                 fill = interaction(group, facet),
+                 linetype = (group)
+                 ),
+             method = "loess",
+             se = F) +
+     geom_ribbon(aes(x = x,
+                     ymin = predicted - std.error,
+                     ymax = predicted + std.error,
+                     fill = interaction(group, facet)
+                     ),
+                 alpha = 0.4)) + 
+  geom_point(data = AvgVars_notNA_Poll_18_19 %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = Urb_score, y = Average_Pollinia,
+                 colour = interaction(Year, Transect_ID),
+                 shape = (Transect_ID)),
+             size = 2) +
   xlim(4, -4) +
   scale_x_reverse() +
-  # scale_y_continuous(breaks=c(0,1,2,3), limits=c(0,3)) +
+  scale_y_continuous(breaks=c(0,1,2,3), limits=c(0,3)) +
   labs(x = "Urbanization Score",
        y = "Pollinaria Removed") +
-  theme( #legend.position = c(.97, .99),
-    legend.justification = c("center"),
-    legend.box = 'horizontal',
-    legend.box.just = "center",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
-    # axis.title.x = element_blank(),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA),
-    legend.key.size = unit(2, "line") )
+  scale_color_brewer(palette = "RdBu") +
+  scale_fill_brewer(palette = "RdBu") +
+  scale_shape(solid = FALSE) +
+  theme(legend.position =  c(.99, .99),#"none",
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        # axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
 ggpred_Q2.urbscore_poll
 
+# pods-----
+levels(pods_subtr_01_pred.u$facet)
 
-ggpred_Q2.urbscore_pods <- ggplot(pods_subtr_01_pred.u) +
-                              geom_smooth(aes(x = x,
-                                              y = predicted,
-                                              color = group,
-                                              linetype = facet),
-                                          method = "loess",
-                                          se = F) +
-                              geom_ribbon(aes(x = x,
-                                              ymin = predicted - std.error,
-                                              ymax = predicted + std.error,
-                                              fill = group,
-                                              linetype = facet),
-                                          alpha = 0.2) + 
+ggpred_Q2.urbscore_pods <- (ggplot(pods_subtr_01_pred.u) +
+    geom_smooth(aes(x = x,
+                 y = predicted,
+                 color = interaction(group, facet),
+                 fill = interaction(group, facet),
+                 linetype = (group)
+                 ),
+             method = "loess",
+             se = F) +
+     geom_ribbon(aes(x = x,
+                     ymin = predicted - std.error,
+                     ymax = predicted + std.error,
+                     fill = interaction(group, facet)
+                     ),
+                 alpha = 0.4)) + 
+  geom_point(data = fertile_pop_means %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = Urb_score,
+                 y = pods^3,
+                 colour = interaction(Year, Transect_ID),
+                 shape = (Transect_ID)),
+             size = 2) +
   xlim(4, -4) +
-  ylim(0, 8000) +
   scale_x_reverse() +
   labs(x = "Urbanization Score",
        y = expression(Follicles^{3})) +
-  theme( #legend.position = c(.97, .99),
-    legend.justification = c("center"),
-    legend.box = 'horizontal',
-    legend.box.just = "center",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
-    # axis.title.x = element_blank(),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA),
-    legend.key.size = unit(2, "line") )
+  scale_color_brewer(palette = "RdBu") +
+  scale_fill_brewer(palette = "RdBu") +
+  scale_shape(solid = FALSE) +
+  theme(legend.position = c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        # axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
 ggpred_Q2.urbscore_pods
 
 
+# pods per ped-----
 ## factors (transects) for this object are North, then South
 ## for some reason (peduncles and at least one more is South, North)
 ## so to keep legend consistent, have to reorder levels first
-podsperped_subtr_01_pred.u$facet <- factor(podsperped_subtr_01_pred.u$facet,
-                                     levels(podsperped_subtr_01_pred.u$facet)[c(2,1)])
+podsperped_subtr_01_pred.u$facet <- factor(podsperped_subtr_01_pred.u$facet,                                     levels(podsperped_subtr_01_pred.u$facet)[c(2,1)])
+
 levels(podsperped_subtr_01_pred.u$facet)
 
-ggpred_Q2.urbscore_podsperped <- ggplot(podsperped_subtr_01_pred.u) +
-                              geom_smooth(aes(x = x,
-                                              y = predicted,
-                                              color = group,
-                                              linetype = facet),
-                                          method = "loess",
-                                          se = F) +
-                              geom_ribbon(aes(x = x,
-                                              ymin = predicted - std.error,
-                                              ymax = predicted + std.error,
-                                              fill = group,
-                                              linetype = facet),
-                                          alpha = 0.2) + 
+ggpred_Q2.urbscore_podsperped <- (ggplot(podsperped_subtr_01_pred.u) +    geom_smooth(aes(x = x,
+                 y = predicted,
+                 color = interaction(group, facet),
+                 fill = interaction(group, facet),
+                 linetype = (group)
+                 ),
+             method = "loess",
+             se = F) +
+     geom_ribbon(aes(x = x,
+                     ymin = predicted - std.error,
+                     ymax = predicted + std.error,
+                     fill = interaction(group, facet)
+                     ),
+                 alpha = 0.4)) + 
+  geom_point(data = fertile_pop_means %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = Urb_score,
+                 y = pods_per_ped,
+                 colour = interaction(Year, Transect_ID),
+                 shape = (Transect_ID)),
+             size = 2) +
+  scale_color_brewer(palette = "RdBu") +
+  scale_fill_brewer(palette = "RdBu") +
+    scale_shape(solid = FALSE) +
   xlim(4, -4) +
   scale_x_reverse() +
-  scale_y_continuous(limits=c(1,2)) +
+  scale_y_continuous(limits=c(0,3)) +
   labs(x = "Urbanization Score",
-       y = "Inflorescences") +
-  theme( #legend.position = c(.97, .99),
-    legend.justification = c("center"),
-    legend.box = 'horizontal',
-    legend.box.just = "center",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
-    # axis.title.x = element_blank(),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA),
-    legend.key.size = unit(2, "line") ) +
-  labs(x = "Urbanization Score",
-       y = "Follicles per Inflorescence") 
+       y = "Follicles per Inflorescence") +
+  theme(legend.position = "none", # c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box = 'horizontal',
+        legend.box.just = "right",
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        # axis.title.x = element_blank(),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA),
+        legend.key.size = unit(2, "line") )
 ggpred_Q2.urbscore_podsperped
 
 
+# height-----
 ## factors (transects) for this object are North, then South
 ## so to keep legend consistent, have to reorder levels first
 height_subtr_01_pred.u$facet <- factor(height_subtr_01_pred.u$facet,
                                        levels(height_subtr_01_pred.u$facet)[c(2,1)])
 levels(height_subtr_01_pred.u$facet)
 
-ggpred_Q2.citydist_height.u <- ggplot(height_subtr_01_pred.u) +
-                              geom_smooth(aes(x = x,
-                                              y = predicted,
-                                              color = group,
-                                              linetype = facet),
-                                          method = "loess",
-                                          se = F) +
-                              geom_ribbon(aes(x = x,
-                                              ymin = predicted - std.error,
-                                              ymax = predicted + std.error,
-                                              fill = group,
-                                              linetype = facet),
-                                          alpha = 0.2) + 
-  xlim(4, -4) +
+ggpred_Q2.citydist_height.u <- (ggplot(height_subtr_01_pred.u) +
+                                 geom_smooth(aes(x = x,
+                 y = predicted,
+                 color = interaction(group, facet),
+                 fill = interaction(group, facet),
+                 linetype = (group)
+                 ),
+             method = "loess",
+             se = F) +
+     geom_ribbon(aes(x = x,
+                     ymin = predicted - std.error,
+                     ymax = predicted + std.error,
+                     fill = interaction(group, facet)
+                     ),
+                 alpha = 0.4)) + 
+  geom_point(data = fertile_pop_means %>%
+               filter(Transect_ID != "Rural"),
+             aes(x = Urb_score,
+                 y = height,
+                 colour = interaction(Year, Transect_ID),
+                 shape = (Transect_ID)),
+             size = 2) +
+  scale_color_brewer(palette = "RdBu") +
+  scale_fill_brewer(palette = "RdBu") +
+    scale_shape(solid = FALSE) +
   scale_x_reverse() +
-  scale_y_continuous(limits=c(50,200)) +
+  xlim(3.3, -1.5) +
+  scale_y_continuous(limits=c(0,200)) +
   labs(x = "Urbanization Score",
-       y = "Inflorescences") +
-  theme( #legend.position = c(.97, .99),
+       y = "Height (cm)") +
+  theme(legend.position =  c(.97, .99),# "none",
     legend.justification = c("center"),
     legend.box = 'horizontal',
     legend.box.just = "center",
@@ -2262,10 +2323,196 @@ ggpred_Q2.citydist_height.u <- ggplot(height_subtr_01_pred.u) +
     panel.background = element_blank(),
     axis.line = element_line(colour = "black"),
     legend.key = element_rect(fill = NA),
-    legend.key.size = unit(2, "line") ) +
-  labs(x = "Urbanization Score",
-       y = "Height (cm)") 
+    legend.key.size = unit(2, "line") )
 ggpred_Q2.citydist_height.u
+```
+
+#### Exclude points
+```{r}
+# 
+# ggpred_Q2.urbscore_peds <- ggplot(peds_subtr_01_pred.u) +
+#                               geom_smooth(aes(x = x,
+#                                               y = predicted,
+#                                               color = group,
+#                                               linetype = facet),
+#                                           method = "loess",
+#                                           se = F) +
+#                               geom_ribbon(aes(x = x,
+#                                               ymin = predicted - std.error,
+#                                               ymax = predicted + std.error,
+#                                               fill = group,
+#                                               linetype = facet),
+#                                           alpha = 0.2) + 
+#   xlim(4, -4) +
+#   scale_x_reverse() +
+#   scale_y_continuous(limits=c(0,10)) +
+#   labs(x = "Urbanization Score",
+#        y = "Inflorescences") +
+#   theme( #legend.position = c(.97, .99),
+#     legend.justification = c("center"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "center",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA),
+#     legend.key.size = unit(2, "line") )
+# ggpred_Q2.urbscore_peds
+# 
+# 
+# 
+# ## factors (transects) for this object are North, then South
+# ## for some reason (peduncles and at least one more is South, North)
+# ## so to keep legend consistent, have to reorder levels first
+# poll_subtr_01_pred.u$facet <- factor(poll_subtr_01_pred.u$facet,
+#                                      levels(poll_subtr_01_pred.u$facet)[c(2,1)])
+# levels(poll_subtr_01_pred.u$facet)
+# 
+# ggpred_Q2.urbscore_poll <- ggplot(poll_subtr_01_pred.u) +
+#                               geom_smooth(aes(x = x,
+#                                               y = predicted,
+#                                               color = group,
+#                                               linetype = facet),
+#                                           method = "loess",
+#                                           se = F) +
+#                               geom_ribbon(aes(x = x,
+#                                               ymin = predicted - std.error,
+#                                               ymax = predicted + std.error,
+#                                               fill = group,
+#                                               linetype = facet),
+#                                           alpha = 0.2) + 
+#   xlim(4, -4) +
+#   scale_x_reverse() +
+#   # scale_y_continuous(breaks=c(0,1,2,3), limits=c(0,3)) +
+#   labs(x = "Urbanization Score",
+#        y = "Pollinaria Removed") +
+#   theme( #legend.position = c(.97, .99),
+#     legend.justification = c("center"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "center",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA),
+#     legend.key.size = unit(2, "line") )
+# ggpred_Q2.urbscore_poll
+# 
+# 
+# ggpred_Q2.urbscore_pods <- ggplot(pods_subtr_01_pred.u) +
+#                               geom_smooth(aes(x = x,
+#                                               y = predicted,
+#                                               color = group,
+#                                               linetype = facet),
+#                                           method = "loess",
+#                                           se = F) +
+#                               geom_ribbon(aes(x = x,
+#                                               ymin = predicted - std.error,
+#                                               ymax = predicted + std.error,
+#                                               fill = group,
+#                                               linetype = facet),
+#                                           alpha = 0.2) + 
+#   xlim(4, -4) +
+#   ylim(0, 8000) +
+#   scale_x_reverse() +
+#   labs(x = "Urbanization Score",
+#        y = expression(Follicles^{3})) +
+#   theme( #legend.position = c(.97, .99),
+#     legend.justification = c("center"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "center",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA),
+#     legend.key.size = unit(2, "line") )
+# ggpred_Q2.urbscore_pods
+# 
+# 
+# ## factors (transects) for this object are North, then South
+# ## for some reason (peduncles and at least one more is South, North)
+# ## so to keep legend consistent, have to reorder levels first
+# podsperped_subtr_01_pred.u$facet <- factor(podsperped_subtr_01_pred.u$facet,
+#                                      levels(podsperped_subtr_01_pred.u$facet)[c(2,1)])
+# levels(podsperped_subtr_01_pred.u$facet)
+# 
+# ggpred_Q2.urbscore_podsperped <- ggplot(podsperped_subtr_01_pred.u) +
+#                               geom_smooth(aes(x = x,
+#                                               y = predicted,
+#                                               color = group,
+#                                               linetype = facet),
+#                                           method = "loess",
+#                                           se = F) +
+#                               geom_ribbon(aes(x = x,
+#                                               ymin = predicted - std.error,
+#                                               ymax = predicted + std.error,
+#                                               fill = group,
+#                                               linetype = facet),
+#                                           alpha = 0.2) + 
+#   xlim(4, -4) +
+#   scale_x_reverse() +
+#   scale_y_continuous(limits=c(1,2)) +
+#   labs(x = "Urbanization Score",
+#        y = "Inflorescences") +
+#   theme( #legend.position = c(.97, .99),
+#     legend.justification = c("center"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "center",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA),
+#     legend.key.size = unit(2, "line") ) +
+#   labs(x = "Urbanization Score",
+#        y = "Follicles per Inflorescence") 
+# ggpred_Q2.urbscore_podsperped
+# 
+# 
+# ## factors (transects) for this object are North, then South
+# ## so to keep legend consistent, have to reorder levels first
+# height_subtr_01_pred.u$facet <- factor(height_subtr_01_pred.u$facet,
+#                                        levels(height_subtr_01_pred.u$facet)[c(2,1)])
+# levels(height_subtr_01_pred.u$facet)
+# 
+# ggpred_Q2.citydist_height.u <- ggplot(height_subtr_01_pred.u) +
+#                               geom_smooth(aes(x = x,
+#                                               y = predicted,
+#                                               color = group,
+#                                               linetype = facet),
+#                                           method = "loess",
+#                                           se = F) +
+#                               geom_ribbon(aes(x = x,
+#                                               ymin = predicted - std.error,
+#                                               ymax = predicted + std.error,
+#                                               fill = group,
+#                                               linetype = facet),
+#                                           alpha = 0.2) + 
+#   xlim(4, -4) +
+#   scale_x_reverse() +
+#   scale_y_continuous(limits=c(50,200)) +
+#   labs(x = "Urbanization Score",
+#        y = "Inflorescences") +
+#   theme( #legend.position = c(.97, .99),
+#     legend.justification = c("center"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "center",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA),
+#     legend.key.size = unit(2, "line") ) +
+#   labs(x = "Urbanization Score",
+#        y = "Height (cm)") 
+# ggpred_Q2.citydist_height.u
 ```
 
 
@@ -2357,26 +2604,25 @@ dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables//Q2_Regressions_Plant
 
 # this is now going into supplement. Going to add height
 Q2_regressions_urbscore_ggpred <- ggarrange(ggpred_Q2.citydist_height, # city_dist
-                                            ggpred_Q2.urbscore_poll, # urb_score
-                                            ggpred_Q2.urbscore_pods, # urb_score
-                                            ggpred_Q2.urbscore_podsperped, # urb_score
-                                            ggpred_Q2.urbscore_peds , # urb_score
-                                            ggpred_Q2.citydist_height.u + # urb_score
-                                              font("x.text"),
-                                            ncol = 3,
-                                            nrow = 2,
-                                            align = "hv",
-                                            labels = list("A", "B", "C",
-                                                          "D", "E", "F"),
-                                            font.label = (size =16),
-                                            common.legend = T,
-                                            legend = "none") %T>%
+         ggpred_Q2.urbscore_poll, # urb_score
+         ggpred_Q2.urbscore_pods, # urb_score
+         ggpred_Q2.urbscore_podsperped, # urb_score
+         ggpred_Q2.urbscore_peds , # urb_score
+         ggpred_Q2.citydist_height.u + # urb_score
+            font("x.text"),
+          ncol = 3,
+          nrow = 2,
+          align = "hv",
+          labels = list("A", "B", "C", "D", "E", "F"),
+          font.label = (size =16),
+          common.legend = T,
+          legend = "none") %T>%
   plot
 
 
 library(patchwork)
 library(png)
-Q2_legend <- png::readPNG(here::here("./Figures_Tables/Q2_Regressions_Plants/Q2_legend_nopoints.png"),
+Q2_legend <- png::readPNG(here::here("./Figures_Tables/Q2_Regressions_Plants/Q2_legend_points_revised.png"),
                      native = TRUE)
 
 
@@ -2391,6 +2637,6 @@ urbscore_plots.ggpred2 <- Q2_regressions_urbscore_ggpred +    # Combine plot & i
 urbscore_plots.ggpred2
 
 # export to PDF
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables//Q2_Regressions_Plants/URBSCORESubtransect_regressions_ggpredict_nopoints.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables//Q2_Regressions_Plants/URBSCORESubtransect_regressions_ggpredict_points.pdf",
              width = 12, height = 8.5)
 ```
