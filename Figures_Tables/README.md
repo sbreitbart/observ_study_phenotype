@@ -51,11 +51,9 @@ The same notation style is used for the latter two files (Q2_Dist_ANOVA and Q2_U
 
 - Contains regression figures of main variables where urbanization was quantified using distance from the urban center (DISTGradient...) and urbanization score (URBSCOREGradient...) as PDFs and PNGs.
 
-- Figures_with_data_points_shown folder shows same regressions, without data points displayed.
-
 - legend_with_points folder contains files used to create legend, with points included in the legend.
 
-- Q2_legend_nopoints_updated files (png and pptx) are files used to create legend for distance from urban center models.
+- Q2_legend_points_revised files (png and pptx) are files used to create legend for distance from urban center models.
 
 - Q2_legend_nopoints is image used as legend for urbanization score models.
 
