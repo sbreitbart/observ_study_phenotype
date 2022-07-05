@@ -571,172 +571,30 @@ height_gradient_01_pred.u <- ggpredict(u_height_lmer_gradient_01,
 ```
 
 ### Create plots
-#### Include points, no stats (not included in paper)
+#### Include points and stats
 ```{r}
-# 
-# ### Peduncles
-# ggpred_Q1.urbscore_peds <- (ggplot(peds_gradient_01_pred.u) + 
-#                               geom_smooth(aes(x = x, y = predicted, color = group),
-#                                           se = F) +
-#                               geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#                               geom_point(data = fertile, 
-#                                          aes(x = Urb_score, y = Peduncles, colour = Year, shape = Year), size = 2)
-# )+
-#   scale_shape(solid = F)+
-#   xlim(-4, 4) +
-#   scale_x_reverse() +
-#   labs( color="Year", shape="Year", fill = "Year") +
-#   ylim(0, 15) +
-#   theme(
-#     legend.position = c(.99, .99),
-#     legend.justification = c("right", "top"),
-#     legend.box = 'horizontal',
-#     legend.box.just = "right",
-#     legend.margin = margin(5,5,5,5),
-#     text = element_text(size=14),
-#     # axis.title.x = element_blank(),
-#     panel.background = element_blank(),
-#     axis.line = element_line(colour = "black"),
-#     legend.key = element_rect(fill = NA) ) + 
-#   labs(x = "Urbanization Score", 
-#        y = "Inflorescences") 
-# 
-# 
-# 
-# 
-# ### Pollen Removal
-# ggpred_Q1.urbscore_poll <- (ggplot(poll_gradient_01_pred.u) + 
-#                               geom_smooth(aes(x = x, y = predicted, color = group),
-#                                           se = F) +
-#                               geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#                               geom_point(data = AvgVars_notNA_Poll_18_19, 
-#                                          aes(x = Urb_score, y = Average_Pollinia, colour = Year, shape = Year), size = 2)
-# )+
-#   scale_shape(solid = F)+
-#   xlim(-4, 4) +
-#   scale_x_reverse() +
-#   scale_y_continuous(breaks=c(0,1,2,3,4,5), limits=c(0,5)) +
-#   labs( color="Year", shape="Year", fill = "Year") +
-#   theme(
-#     legend.position = c(.99, .99),
-#     legend.justification = c("right", "top"),
-#     legend.box = 'horizontal',
-#     legend.box.just = "right",
-#     legend.margin = margin(5,5,5,5),
-#     text = element_text(size=14),
-#     # axis.title.x = element_blank(),
-#     panel.background = element_blank(),
-#     axis.line = element_line(colour = "black"),
-#     legend.key = element_rect(fill = NA) ) + 
-#   labs(x = "Urbanization Score", 
-#        y = "Pollinaria Removed")
-# 
-# 
-# 
-# 
-# # Pods
-# ggpred_Q1.urbscore_pods <- (ggplot(pods_gradient_01_pred.u) + 
-#                               geom_smooth(aes(x = x, y = predicted, color = group),
-#                                           se = F) +
-#                               geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#                               geom_point(data = fertile, 
-#                                          aes(x = Urb_score, y = Viable_Pods^3, colour = Year, shape = Year), size = 2)
-# )+
-#   labs( color="Year", shape="Year", fill = "Year") +
-#   # ylim(0, 350) +
-#   xlim(-4, 4) +
-#   scale_x_reverse() +
-#   scale_shape(solid = F)+
-#   theme(
-#     legend.position = c(.99, .99),
-#     legend.justification = c("right", "top"),
-#     legend.box = 'horizontal',
-#     legend.box.just = "right",
-#     legend.margin = margin(5,5,5,5),
-#     text = element_text(size=14),
-#     # axis.title.x = element_blank(),
-#     panel.background = element_blank(),
-#     axis.line = element_line(colour = "black"),
-#     legend.key = element_rect(fill = NA) ) + 
-#   labs(x = "Urbanization Score", 
-#        y = expression(Follicles^{3}))
-# 
-# 
-# 
-# 
-# # Pods per Peduncle
-# ggpred_Q1.urbscore_podsperped <- (ggplot(podsperped_gradient_01_pred.u) + 
-#                                     geom_smooth(aes(x = x, y = predicted, color = group),
-#                                                 se = F) +
-#                                     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) + 
-#                                     geom_point(data = fertile, 
-#                                                aes(x = Urb_score, y = pods_per_ped, colour = Year, shape = Year), size = 2)
-# )+
-#   scale_shape(solid = F)+
-#   xlim(-4, 4) +
-#   scale_x_reverse() +
-#   labs( color="Year", shape="Year", fill = "Year") +
-#   ylim(0, 3) +
-#   theme(
-#     legend.position = c(.99, .99),
-#     legend.justification = c("right", "top"),
-#     legend.box = 'horizontal',
-#     legend.box.just = "right",
-#     legend.margin = margin(5,5,5,5),
-#     text = element_text(size=14),
-#     # axis.title.x = element_blank(),
-#     panel.background = element_blank(),
-#     axis.line = element_line(colour = "black"),
-#     legend.key = element_rect(fill = NA) ) + 
-#   labs(x = "Urbanization Score", 
-#        y = "Follicles per Inflorescence") 
-# 
-# 
-# 
-# 
-# ggpred_Q1.citydist_height.u <- (ggplot(height_gradient_01_pred.u) + 
-#                                   geom_smooth(aes(x = x, y = predicted, color = group),
-#                                               se = F) +
-#                                   geom_ribbon(aes(x = x, ymin = predicted - std.error,
-#                                                   ymax = predicted + std.error, fill = group),
-#                                               alpha = 0.3) + 
-#                                   geom_point(data = fertile, 
-#                                              aes(x = Urb_score, y = Height_Sept,
-#                                                  colour = Year, shape = Year), size = 2)
-# )+
-#   labs(x = "Urbanization Score", 
-#        y = "Height (cm)") +
-#   scale_shape(solid = F)+
-#   labs(color="Year", size="Year", fill = "Year") +
-#   scale_x_reverse() +
-#   xlim(3.5, -4) +
-#   scale_y_continuous(limits=c(0,200)) +
-#   labs(linetype="Year", color="Year", shape = "Year") +
-#   theme(legend.position = c(.99, .99),
-#         legend.justification = c("right", "top"),
-#         legend.box.just = "right",
-#         legend.box = 'horizontal',
-#         legend.margin = margin(5,5,5,5),
-#         text = element_text(size=14),
-#         panel.background = element_blank(),
-#         axis.line = element_line(colour = "black"),
-#         legend.key = element_rect(fill = NA) )
-# ggpred_Q1.citydist_height.u
-```
-
-#### Exclude points, ADD stats (as in paper)
-```{r}
-
-### Peduncles
-ggpred_Q1.urbscore_peds <- ggplot(peds_gradient_01_pred.u) +
-    geom_smooth(aes(x = x, y = predicted, color = group),
-                se = F) +
-    geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) +
+### Peduncles-----
+ggpred_Q1.urbscore_peds <- (ggplot(peds_gradient_01_pred.u) +
+       geom_smooth(aes(x = x,
+                       y = predicted,
+                       color = group),
+                   se = F) +
+       geom_ribbon(aes(x = x,
+                       ymin = predicted - std.error,
+                       ymax = predicted + std.error,
+                       fill = group),
+                   alpha = 0.3) +
+     geom_point(data = fertile_pop_means,
+                aes(x = Urb_score,
+                    y = peds,
+                    colour = Year,
+                    shape = Year),
+                size = 2))+
+  scale_shape(solid = F)+
   xlim(-4, 4) +
   scale_x_reverse() +
-  scale_shape(solid = F)+
   labs( color="Year", shape="Year", fill = "Year") +
-  ylim(5, NA) +
+  ylim(0, 20) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -751,28 +609,34 @@ ggpred_Q1.urbscore_peds <- ggplot(peds_gradient_01_pred.u) +
   labs(x = "Urbanization Score",
        y = "Inflorescences") +
   # adding stats from ANOVA
-        geom_text_npc(aes(npcx = 0.05, npcy = 0.08,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.545\n Year: p = 0.081\n Urb. Score x Year: p = 0.876"),
-                size = 4.5)
-# geom_text(size = 4.25, x=-3, y=5.75, label = "Urb. Score: p = 0.545", hjust = 0) +
-#   geom_text(size = 4.25, x=-3, y=5.5, label = "Year: p = 0.081", hjust = 0)  +
-#   geom_text(size = 4.25, x=-3, y=5.25, label = "Urb. Score x Year: p = 0.876", hjust = 0) 
+                size = 4)
 ggpred_Q1.urbscore_peds
 
 
 
-
-### Pollen Removal
-ggpred_Q1.urbscore_poll <- ggplot(poll_gradient_01_pred.u) +
-                                 geom_smooth(aes(x = x,
-                                                 y = predicted,
-                                                 color = group),
-                                             se = F) +
-    geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) +
-  xlim(-4, 4) +
-  ylim(0, NA) +
-  scale_x_reverse() +
+### Pollen Removal-----
+ggpred_Q1.urbscore_poll <- (ggplot(poll_gradient_01_pred.u) +
+                             geom_smooth(aes(x = x,
+                       y = predicted,
+                       color = group),
+                   se = F) +
+       geom_ribbon(aes(x = x,
+                       ymin = predicted - std.error,
+                       ymax = predicted + std.error,
+                       fill = group),
+                   alpha = 0.3) +
+         geom_point(data = AvgVars_notNA_Poll_18_19,
+                    aes(x = Urb_score,
+                        y = Average_Pollinia,
+                        colour = Year,
+                        shape = Year),
+                    size = 2))+
   scale_shape(solid = F)+
+  xlim(-4, 4) +
+  scale_x_reverse() +
+  scale_y_continuous(breaks=c(0,1,2,3,4,5), limits=c(0,5)) +
   labs( color="Year", shape="Year", fill = "Year") +
   theme(
     legend.position = c(.99, .99),
@@ -788,30 +652,37 @@ ggpred_Q1.urbscore_poll <- ggplot(poll_gradient_01_pred.u) +
   labs(x = "Urbanization Score",
        y = "Pollinaria Removed")+
   # adding stats from ANOVA
-      geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+      geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.015\n Year: p<0.001\n Urb. Score x Year: p<0.001"),
-                size = 4.5)
-# geom_text(size = 4.25, x=-3, y=0.4, label = "Urb. Score: p = 0.015", hjust = 0) +
-#   geom_text(size = 4.25, x=-3, y=0.25, label = "Year: p<0.001", hjust = 0) +
-#   geom_text(size = 4.25, x=-3, y=0.1, label = "Urb. Score x Year: p<0.001", hjust = 0)
+                size = 4)
 ggpred_Q1.urbscore_poll
 
 
 
-# Pods
-ggpred_Q1.urbscore_pods <- ggplot(pods_gradient_01_pred.u) +
-                                 geom_smooth(aes(x = x,
-                                                 y = predicted,
-                                                 color = group),
-                                             se = F) +
-    geom_ribbon(aes(x = x, ymin = predicted - std.error,
-                    ymax = predicted + std.error, fill = group),
-                alpha = 0.3) +
+# Pods-----
+ggpred_Q1.urbscore_pods <- (ggplot(pods_gradient_01_pred.u) +
+                              geom_smooth(aes(x = x,
+                       y = predicted,
+                       color = group),
+                   se = F) +
+       geom_ribbon(aes(x = x,
+                       ymin = predicted - std.error,
+                       ymax = predicted + std.error,
+                       fill = group),
+                   alpha = 0.3) +
+      geom_point(data = fertile_pop_means,
+                 aes(x = Urb_score,
+                     y = pods^3,
+                     colour = Year,
+                     shape = Year),
+                 size = 2))+
+  labs( color="Year",
+        shape="Year",
+        fill = "Year") +
+  ylim(0, 9000) +
   xlim(-4, 4) +
-  ylim(1000, NA) +
   scale_x_reverse() +
   scale_shape(solid = F)+
-  labs( color="Year", shape="Year", fill = "Year") +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -826,17 +697,208 @@ ggpred_Q1.urbscore_pods <- ggplot(pods_gradient_01_pred.u) +
   labs(x = "Urbanization Score",
        y = expression(Follicles^{3}))+
   # adding stats from ANOVA
-    geom_text_npc(aes(npcx = 0.05, npcy = 0.08,
+    geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.62\n Year: p<0.001\n Urb. Score x Year: p<0.001"),
-                size = 4.5)
-  # geom_text(size = 4.25, x=-3, y=1450, label = "Urb. Score: p = 0.62", hjust = 0) +
-  # geom_text(size = 4.25, x=-3, y=1250, label = "Year: p<0.001", hjust = 0) +
-  # geom_text(size = 4.25, x=-3, y=1050, label = "Urb. Score x Year: p<0.001", hjust = 0)
+                size = 4)
 ggpred_Q1.urbscore_pods
 
 
 
-# Pods per Peduncle
+# Pods per Peduncle-----
+ggpred_Q1.urbscore_podsperped <- (ggplot(podsperped_gradient_01_pred.u) +
+       geom_smooth(aes(x = x,
+                       y = predicted,
+                       color = group),
+                   se = F) +
+       geom_ribbon(aes(x = x,
+                       ymin = predicted - std.error,
+                       ymax = predicted + std.error,
+                       fill = group),
+                   alpha = 0.3) +
+        geom_point(data = fertile_pop_means,
+                   aes(x = Urb_score,
+                       y = pods_per_ped,
+                       colour = Year,
+                       shape = Year),
+                   size = 2))+
+  scale_shape(solid = F)+
+  xlim(-4, 4) +
+  scale_x_reverse() +
+  labs( color="Year", shape="Year", fill = "Year") +
+  ylim(0, 4) +
+  theme(
+    legend.position = c(.99, .99),
+    legend.justification = c("right", "top"),
+    legend.box = 'horizontal',
+    legend.box.just = "right",
+    legend.margin = margin(5,5,5,5),
+    text = element_text(size=14),
+    # axis.title.x = element_blank(),
+    panel.background = element_blank(),
+    axis.line = element_line(colour = "black"),
+    legend.key = element_rect(fill = NA) ) +
+  labs(x = "Urbanization Score",
+       y = "Follicles per Inflorescence")+
+  # adding stats from ANOVA
+  geom_text_npc(aes(npcx =0, npcy = 1,
+                    label = " Urb. Score: p = 0.032\n Year: p = 0.347\n      "),
+                size = 4)
+ggpred_Q1.urbscore_podsperped
+
+
+# Height-----
+ggpred_Q1.citydist_height.u <- (ggplot(height_gradient_01_pred.u) +
+                                 geom_smooth(aes(x = x,
+                       y = predicted,
+                       color = group),
+                   se = F) +
+       geom_ribbon(aes(x = x,
+                       ymin = predicted - std.error,
+                       ymax = predicted + std.error,
+                       fill = group),
+                   alpha = 0.3) +
+         geom_point(data = fertile_pop_means,
+                    aes(x = Urb_score,
+                        y = height,
+                        colour = Year,
+                        shape = Year),
+                    size = 2))+
+  labs(x = "Urbanization Score",
+       y = "Height (cm)") +
+  scale_shape(solid = F)+
+  labs(color="Year", size="Year", fill = "Year") +
+  scale_x_reverse() +
+  xlim(3.5, -4) +
+  scale_y_continuous(limits=c(0,250)) +
+  labs(linetype="Year", color="Year", shape = "Year") +
+  theme(legend.position = c(.99, .99),
+        legend.justification = c("right", "top"),
+        legend.box.just = "right",
+        legend.box = 'horizontal',
+        legend.margin = margin(5,5,5,5),
+        text = element_text(size=14),
+        panel.background = element_blank(),
+        axis.line = element_line(colour = "black"),
+        legend.key = element_rect(fill = NA) )+
+  # adding stats from ANOVA
+  geom_text_npc(aes(npcx = 0, npcy = 1,
+                    label = " Urb. Score: p = 0.453\n Year: p = 0.085\n Urb. Score x Year: p = 0.088"),
+                size = 4)
+ggpred_Q1.citydist_height.u
+```
+
+#### Exclude points
+```{r}
+### Peduncles-----
+# ggpred_Q1.urbscore_peds <- ggplot(peds_gradient_01_pred.u) +
+#     geom_smooth(aes(x = x, y = predicted, color = group),
+#                 se = F) +
+#     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) +
+#   xlim(-4, 4) +
+#   scale_x_reverse() +
+#   scale_shape(solid = F)+
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   ylim(5, NA) +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) +
+#   labs(x = "Urbanization Score",
+#        y = "Inflorescences") +
+#   # adding stats from ANOVA
+#         geom_text_npc(aes(npcx = 0.05, npcy = 0.08,
+#                     label = " Urb. Score: p = 0.545\n Year: p = 0.081\n Urb. Score x Year: p = 0.876"),
+#                 size = 4.5)
+# # geom_text(size = 4.25, x=-3, y=5.75, label = "Urb. Score: p = 0.545", hjust = 0) +
+# #   geom_text(size = 4.25, x=-3, y=5.5, label = "Year: p = 0.081", hjust = 0)  +
+# #   geom_text(size = 4.25, x=-3, y=5.25, label = "Urb. Score x Year: p = 0.876", hjust = 0) 
+# ggpred_Q1.urbscore_peds
+
+
+
+
+### Pollen Removal-----
+# ggpred_Q1.urbscore_poll <- ggplot(poll_gradient_01_pred.u) +
+#                                  geom_smooth(aes(x = x,
+#                                                  y = predicted,
+#                                                  color = group),
+#                                              se = F) +
+#     geom_ribbon(aes(x = x, ymin = predicted - std.error, ymax = predicted + std.error, fill = group),  alpha = 0.3) +
+#   xlim(-4, 4) +
+#   ylim(0, NA) +
+#   scale_x_reverse() +
+#   scale_shape(solid = F)+
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) +
+#   labs(x = "Urbanization Score",
+#        y = "Pollinaria Removed")+
+#   # adding stats from ANOVA
+#       geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+#                     label = " Urb. Score: p = 0.015\n Year: p<0.001\n Urb. Score x Year: p<0.001"),
+#                 size = 4.5)
+# # geom_text(size = 4.25, x=-3, y=0.4, label = "Urb. Score: p = 0.015", hjust = 0) +
+# #   geom_text(size = 4.25, x=-3, y=0.25, label = "Year: p<0.001", hjust = 0) +
+# #   geom_text(size = 4.25, x=-3, y=0.1, label = "Urb. Score x Year: p<0.001", hjust = 0)
+# ggpred_Q1.urbscore_poll
+
+
+
+# Pods-----
+# ggpred_Q1.urbscore_pods <- ggplot(pods_gradient_01_pred.u) +
+#                                  geom_smooth(aes(x = x,
+#                                                  y = predicted,
+#                                                  color = group),
+#                                              se = F) +
+#     geom_ribbon(aes(x = x, ymin = predicted - std.error,
+#                     ymax = predicted + std.error, fill = group),
+#                 alpha = 0.3) +
+#   xlim(-4, 4) +
+#   ylim(1000, NA) +
+#   scale_x_reverse() +
+#   scale_shape(solid = F)+
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) +
+#   labs(x = "Urbanization Score",
+#        y = expression(Follicles^{3}))+
+#   # adding stats from ANOVA
+#     geom_text_npc(aes(npcx = 0.05, npcy = 0.08,
+#                     label = " Urb. Score: p = 0.62\n Year: p<0.001\n Urb. Score x Year: p<0.001"),
+#                 size = 4.5)
+#   # geom_text(size = 4.25, x=-3, y=1450, label = "Urb. Score: p = 0.62", hjust = 0) +
+#   # geom_text(size = 4.25, x=-3, y=1250, label = "Year: p<0.001", hjust = 0) +
+#   # geom_text(size = 4.25, x=-3, y=1050, label = "Urb. Score x Year: p<0.001", hjust = 0)
+# ggpred_Q1.urbscore_pods
+
+
+
+# Pods per Peduncle-----
 ggpred_Q1.urbscore_podsperped <- ggplot(podsperped_gradient_01_pred.u) +
                                  geom_smooth(aes(x = x,
                                                  y = predicted,
@@ -874,42 +936,42 @@ ggpred_Q1.urbscore_podsperped
 
 
 
-
-ggpred_Q1.citydist_height.u <- ggplot(height_gradient_01_pred.u) +
-                                  geom_smooth(aes(x = x,
-                                                 y = predicted,
-                                                 color = group),
-                                             se = F) +
-    geom_ribbon(aes(x = x, ymin = predicted - std.error,
-                    ymax = predicted + std.error, fill = group),
-                alpha = 0.3) +
-  xlim(-4, 4) +
-  ylim(70, 110) +
-  scale_x_reverse() +
-  scale_shape(solid = F)+
-  labs( color="Year", shape="Year", fill = "Year") +
-  theme(
-    legend.position = c(.99, .99),
-    legend.justification = c("right", "top"),
-    legend.box = 'horizontal',
-    legend.box.just = "right",
-    legend.margin = margin(5,5,5,5),
-    text = element_text(size=14),
-    # axis.title.x = element_blank(),
-    panel.background = element_blank(),
-    axis.line = element_line(colour = "black"),
-    legend.key = element_rect(fill = NA) ) +
-  labs(x = "Urbanization Score",
-       y = "Height (cm)") +
-  # adding stats from ANOVA
-  # geom_text(size = 4.25, x=-3, y=78, label = "Urb. Score: p = 0.453", hjust = 0) +
-  # geom_text(size = 4.25, x=-3, y=75, label = "Year: p = 0.085", hjust = 0) +
-  # geom_text(size = 4.25, x=-3, y=72, label = "Urb. Score x Year: p = 0.088", hjust = 0) +
-  geom_text_npc(aes(npcx = 0.05, npcy = 0.08,
-                    label = " Urb. Score: p = 0.453\n Year: p = 0.085\n Urb. Score x Year: p = 0.088"),
-                size = 4.5)
-
-ggpred_Q1.citydist_height.u
+# Height-----
+# ggpred_Q1.citydist_height.u <- ggplot(height_gradient_01_pred.u) +
+#                                   geom_smooth(aes(x = x,
+#                                                  y = predicted,
+#                                                  color = group),
+#                                              se = F) +
+#     geom_ribbon(aes(x = x, ymin = predicted - std.error,
+#                     ymax = predicted + std.error, fill = group),
+#                 alpha = 0.3) +
+#   xlim(-4, 4) +
+#   ylim(70, 110) +
+#   scale_x_reverse() +
+#   scale_shape(solid = F)+
+#   labs( color="Year", shape="Year", fill = "Year") +
+#   theme(
+#     legend.position = c(.99, .99),
+#     legend.justification = c("right", "top"),
+#     legend.box = 'horizontal',
+#     legend.box.just = "right",
+#     legend.margin = margin(5,5,5,5),
+#     text = element_text(size=14),
+#     # axis.title.x = element_blank(),
+#     panel.background = element_blank(),
+#     axis.line = element_line(colour = "black"),
+#     legend.key = element_rect(fill = NA) ) +
+#   labs(x = "Urbanization Score",
+#        y = "Height (cm)") +
+#   # adding stats from ANOVA
+#   # geom_text(size = 4.25, x=-3, y=78, label = "Urb. Score: p = 0.453", hjust = 0) +
+#   # geom_text(size = 4.25, x=-3, y=75, label = "Year: p = 0.085", hjust = 0) +
+#   # geom_text(size = 4.25, x=-3, y=72, label = "Urb. Score x Year: p = 0.088", hjust = 0) +
+#   geom_text_npc(aes(npcx = 0.05, npcy = 0.08,
+#                     label = " Urb. Score: p = 0.453\n Year: p = 0.085\n Urb. Score x Year: p = 0.088"),
+#                 size = 4.5)
+# 
+# ggpred_Q1.citydist_height.u
 ```
 
 ### Combine plots into one figure
@@ -959,12 +1021,10 @@ Q1_regressions_urbscore_ggpred <- ggarrange(ggpred_Q1.citydist_height, # city_di
           legend = "right") %T>%
   plot
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Regressions_Plants/URBSCOREGradient_regressions_nopoints.pdf",
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q1_Regressions_Plants/URBSCOREGradient_regressions_points.pdf",
              width = 12, height = 7)
 
-
 ```
-
 
 # Q2 / Subtransects
 ## Distance from City Center
