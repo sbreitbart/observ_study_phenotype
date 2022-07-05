@@ -2675,7 +2675,7 @@ four_popfams_summary <- four_popfams %>%
 # abun
 ```
 
-####### Exclude points, ADD stats (as in paper)
+####### Include points, ADD stats (as in paper)
 ```{r}
 abun <- ggplot(sum_abun,
                aes(x = Dist_city,
@@ -2687,8 +2687,11 @@ abun <- ggplot(sum_abun,
               color = "#00BFC4",
               fill = "#00BFC4")  +
   xlim(0,70) +
+  geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   scale_y_continuous(limits = c(0, NA)) +
-  # labs(title = 'Pollinator Abundance Along Urban-Rural Gradient') +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -2705,13 +2708,10 @@ abun <- ggplot(sum_abun,
   labs( x = " ",
     # x = "Distance to Urban Center (km)",
        y = "Mean Pollinators per Plant") +
-# +
-#   labs(caption = "Error bars represent standard error")
-
   # adding stats from ANOVA
-          geom_text_npc(aes(npcx = 0.05, npcy = 0.05,
+          geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Distance: p = 0.01"),
-                size = 4.5)
+                size = 4)
 # geom_text(size = 4.25, x=10, y=0.08, label = "Distance: p = 0.01", hjust = 0) 
 abun
 ```
@@ -3165,14 +3165,15 @@ ggsave(here::here("Figures_Tables/Q3_Regressions_Pollinators/Supplement", "Honey
 # diversity_simpson
 ```
 
-####### Exclude points, ADD stats (as in paper)
+####### Include points, ADD stats (as in paper)
 ```{r}
 diversity_simpson <- ggplot(sum_diversity,
                aes(x = Dist_city,
                    y = simpson^2)) +
-  # geom_point(color = "black",
-  #                 size = 2) +
-    # scale_shape(solid = F)+
+  geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   geom_smooth(method = lm,
               se = T,
               size = 1,
@@ -3180,7 +3181,7 @@ diversity_simpson <- ggplot(sum_diversity,
               color = "#00BFC4",
               fill = "#00BFC4") +
   xlim(0,70) +
-  ylim(0, NA) +
+  ylim(0, 0.8) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -3197,9 +3198,9 @@ diversity_simpson <- ggplot(sum_diversity,
     # x = "Distance to Urban Center (km)",
        y = expression("Simpson's Diversity Index "^2)) +
   # adding stats from ANOVA
-          geom_text_npc(aes(npcx = 0.05, npcy = 0.05,
+          geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Distance: p = 0.204"),
-                size = 4.5)
+                size = 4)
 # geom_text(size = 4.25, x=10, y=0.02, label = "Distance: p = 0.204", hjust = 0) 
 diversity_simpson
 ```
@@ -3543,7 +3544,7 @@ diversity_simpson_transect.u
 ```
 
 
-####### Exclude points, ADD stats (as in paper)
+####### Include points, ADD stats (as in paper)
 ```{r}
 rich <- ggplot(sum_richness,
                aes(x = Dist_city,
@@ -3554,8 +3555,12 @@ rich <- ggplot(sum_richness,
               alpha = 0.15,
               color = "#00BFC4",
               fill = "#00BFC4")  +
+    geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   xlim(0,70) +
-  ylim(0, NA) +
+  ylim(0, 4.5) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -3571,9 +3576,9 @@ rich <- ggplot(sum_richness,
   labs(x = "Distance to Urban Center (km)",
        y = "Menhinick's Species Richness") +
   # adding stats from ANOVA
-          geom_text_npc(aes(npcx = 0.05, npcy = 0.05,
+          geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Distance: p = 0.013"),
-                size = 4.5)
+                size = 4)
 # geom_text(size = 4.25, x=10, y=0.15, label = "Distance: p = 0.013", hjust = 0) 
 rich
 ```
@@ -3902,7 +3907,7 @@ Q3_regressions
 
 # annotate_figure(Q3_regressions, bottom = text_grob("Distance to Urban Center (km)", size=14))
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Regressions_Pollinators/Pollinator_regressions_NOPOINTS.pdf", width = 11, height = 3.75)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Regressions_Pollinators/Pollinator_regressions_POINTS.pdf", width = 11, height = 3.75)
 ```
 
 ##### Transects
