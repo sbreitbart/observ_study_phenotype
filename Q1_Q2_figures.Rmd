@@ -1867,6 +1867,87 @@ height_subtr_01_pred.u <- ggpredict(u_height_lmer_subtr_01,
                                     type = "fe")
 ```
 
+### Create table of ggpredict objects for supplement
+```{r}
+# Create one table with 4 variables-----
+## can't add suffixes if I try to join 2 tables, then a third, then a fourth, so I'll create 2 tables with suffixes for variables, then join those
+## DO SEPARATELY FOR POLLINIA- MORE ESTIMATES THAN OTHER VARIABLES
+
+
+# For pods, pods per ped, and peds
+urbsc_estimates1 <- full_join(
+                            # poll_subtr_01_pred.u,
+                             pods_subtr_01_pred.u,
+                             podsperped_subtr_01_pred.u,
+                             by = c("x", "group", "facet"),
+                             suffix = c(#"_poll",
+                                        "_pods",
+                                        "_ppp"))
+
+urbsc_estimates <- full_join(urbsc_estimates1,
+                             peds_subtr_01_pred.u,
+                             by = c("x", "group", "facet")) %>%
+  dplyr::relocate(group, .after = 1) %>%
+  dplyr::relocate(facet, .after = 2) %>%
+  dplyr::rename("Urbanization Score" = 1,
+                "Year" = 2,
+                "Subtransect" = 3) %>%
+  dplyr::mutate(Subtransect = case_when(Subtransect == "South" ~ "Urban: Corridor",
+                                        Subtransect == "North" ~ "Urban: Non-Corridor")) %>%
+  dplyr::select(-starts_with("conf")) %>% # remove confidence interval cols
+  dplyr::mutate_at(4:9, round, 3) %>%
+  dplyr::rename("Estimate" = 4,
+                "Estimate " = 6,
+                "Estimate  " = 8,
+                "SE" = 5,
+                "SE " = 7,
+                "SE  " = 9
+                ) %>%
+  flextable() %>%
+  add_header_row(
+    values = c("",
+               "Follicles",
+               "Follicles per Inflorescence",
+               "Inflorescences"),
+    colwidths = c(3,2,2,2)) %>%
+    align(align = "center", part = "all") %>%
+  autofit()
+urbsc_estimates
+
+save_as_html("Urbanization Score Estimates" = urbsc_estimates,
+             path = here::here("./Figures_Tables/Q2_Estimates_Plants/3_estimates.html"))
+
+
+
+# For pollinia
+urbsc_estimates_pollinia <- poll_subtr_01_pred.u %>%
+  dplyr::relocate(group, .after = 1) %>%
+  dplyr::relocate(facet, .after = 2) %>%
+  dplyr::rename("Urbanization Score" = 1,
+                "Year" = 2,
+                "Subtransect" = 3) %>%
+  dplyr::mutate(Subtransect = case_when(Subtransect == "South" ~ "Urban: Corridor",
+                                        Subtransect == "North" ~ "Urban: Non-Corridor")) %>%
+  dplyr::select(-starts_with("conf")) %>% # remove confidence interval cols
+  dplyr::mutate_at(4:5, round, 3) %>%
+  dplyr::rename("Estimate" = 4,
+                "SE" = 5
+                ) %>%
+  flextable() %>%
+  add_header_row(
+    values = c("",
+               "Pollinaria Removed"),
+    colwidths = c(3,2)) %>%
+    align(align = "center", part = "all") %>%
+  autofit()
+urbsc_estimates_pollinia
+
+save_as_html("Urbanization Score Estimates" = urbsc_estimates_pollinia,
+             path = here::here("./Figures_Tables/Q2_Estimates_Plants/Pollinia_estimates.html"))
+
+```
+
+
 ### Create plots
 #### Include points
 ##### Original version

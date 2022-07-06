@@ -57,6 +57,9 @@ The same notation style is used for the latter two files (Q2_Dist_ANOVA and Q2_U
 
 - Q2_legend_nopoints is image used as legend for urbanization score models.
 
+### Q2_Estimates_Plants
+
+- Contains csvs with estimates of each variable at each urbanization score level for each year.
 
 
 ### Q3_Regressions_Pollinators

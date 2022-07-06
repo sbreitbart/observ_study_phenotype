@@ -1,7 +1,4 @@
----
-title: "chapter_one_pollinators"
-output: html_document
----
+
 # Question 3 (Pollinator data)
 ## Set up notebook
 ### Install, load packages
