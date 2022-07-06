@@ -2759,7 +2759,7 @@ abun.u <- ggplot(sum_abun,
 abun.u
 ```
 
-####### Exclude points, ADD stats (as in paper)
+####### Include points, ADD stats (as in paper)
 ```{r}
 abun.u <- ggplot(sum_abun,
                aes(x = Urb_score,
@@ -2770,6 +2770,10 @@ abun.u <- ggplot(sum_abun,
               alpha = 0.15,
               color = "#00BFC4",
               fill = "#00BFC4")  +
+   geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   xlim(4, -4) +
   scale_y_continuous(limits = c(0, NA)) +
   theme(
@@ -2787,9 +2791,9 @@ abun.u <- ggplot(sum_abun,
     ) +
   labs(x = "Urbanization Score",
        y = "Mean Pollinators per Plant") +
-        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.016"),
-                size = 4.5)
+                size = 4)
 
 abun.u
 ```
@@ -3242,7 +3246,7 @@ diversity_simpson.u <- ggplot(sum_diversity,
 diversity_simpson.u
 ```
 
-####### Exclude points, ADD stats (as in paper)
+####### Include points, ADD stats (as in paper)
 ```{r}
 diversity_simpson.u <- ggplot(sum_diversity,
                aes(x = Urb_score,
@@ -3253,8 +3257,12 @@ diversity_simpson.u <- ggplot(sum_diversity,
               alpha = 0.15,
               color = "#00BFC4",
               fill = "#00BFC4")  +
+  geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   xlim(4, -4) +
-  scale_y_continuous(limits = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 0.8)) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -3270,9 +3278,9 @@ diversity_simpson.u <- ggplot(sum_diversity,
     ) +
   labs(x = "Urbanization Score",
        y = expression("Simpson's Diversity Index "^2)) +
-        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.042"),
-                size = 4.5)
+                size = 4)
 
 diversity_simpson.u
 ```
@@ -3619,7 +3627,7 @@ rich.u <- ggplot(sum_richness,
 rich.u
 ```
 
-####### Exclude points, ADD stats (as in paper)
+####### Include points, ADD stats (as in paper)
 ```{r}
 rich.u <- ggplot(sum_richness,
                aes(x = Urb_score,
@@ -3630,8 +3638,12 @@ rich.u <- ggplot(sum_richness,
               alpha = 0.15,
               color = "#00BFC4",
               fill = "#00BFC4")  +
+  geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   xlim(4, -4) +
-  scale_y_continuous(limits = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 4.5)) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -3647,9 +3659,9 @@ rich.u <- ggplot(sum_richness,
     ) +
   labs(x = "Urbanization Score",
        y = "Menhinick's Species Richness") +
-        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.003"),
-                size = 4.5)
+                size = 4)
 
 rich.u
 ```
@@ -3982,7 +3994,7 @@ even <- ggplot(sum_evenness,
 even
 ```
 
-######## Exclude points, ADD stats (as in paper)
+######## Include points, ADD stats (as in paper)
 ```{r}
 even <- ggplot(sum_evenness,
                aes(x = Dist_city,
@@ -3993,8 +4005,13 @@ even <- ggplot(sum_evenness,
               alpha = 0.15,
               color = "#00BFC4",
               fill = "#00BFC4")  +
+    geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   xlim(0,70) +
-  scale_y_continuous(limits = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 1.1),
+                     breaks = c(0,0.25,0.5,0.75,1)) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -4010,9 +4027,9 @@ even <- ggplot(sum_evenness,
     ) +
   labs(x = "Distance to Urban Center (km)",
        y = "Simpson's Evenness") +
-        geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Distance: p = 0.389"),
-                size = 4.5)
+                size = 4)
 
 even
 ```
@@ -4029,8 +4046,13 @@ even.u <- ggplot(sum_evenness,
               alpha = 0.15,
               color = "#00BFC4",
               fill = "#00BFC4")  +
+    geom_point(
+             size = 2,
+             color = "#00BFC4",
+             shape = 1) +
   xlim(4, -4) +
-  scale_y_continuous(limits = c(0, NA)) +
+  scale_y_continuous(limits = c(0, 1.1),
+                     breaks = c(0, 0.25, 0.5, 0.75, 1)) +
   theme(
     legend.position = c(.99, .99),
     legend.justification = c("right", "top"),
@@ -4046,9 +4068,9 @@ even.u <- ggplot(sum_evenness,
     ) +
   labs(x = "Urbanization Score",
        y = "Simpson's Evenness") +
-  geom_text_npc(aes(npcx = 0.1, npcy = 0.04,
+  geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.15"),
-                size = 4.5)
+                size = 4)
 even.u
 
 ```
@@ -4293,7 +4315,7 @@ ggarrange(even,
           font.label = (size =16),
           common.legend = TRUE)
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Regressions_Pollinators/Supplement/Pollinator_regressions_urbscore_gradientfigs_nopoints.pdf", width = 12, height = 7.5)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Regressions_Pollinators/Supplement/Pollinator_regressions_urbscore_gradientfigs_points.pdf", width = 12, height = 7.5)
 ```
 
 ######## Transect figs
