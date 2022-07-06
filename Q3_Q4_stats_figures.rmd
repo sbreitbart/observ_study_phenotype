@@ -3008,7 +3008,7 @@ abun_transect.u
 
 ```
 
-####### Exclude points, add stats (as in paper)
+####### Include points, add stats (as in paper)
 ```{r}
 
 abun_transect.u <- ggplot(sum_abun %>%
@@ -3017,18 +3017,38 @@ abun_transect.u <- ggplot(sum_abun %>%
                             y = Count,
                             color = Transect,
                             fill = Transect,
-                            linetype = Transect)) +
+                            shape = Transect)) +
   labs(x = "Urbanization Score",
        y = "Mean Pollinators per Plant",
-       linetype = "Subtransect") +
- geom_smooth(method = lm,
+       shape = "Subtransect",
+       fill = "Subtransect",
+       color = "Subtransect"       ) +
+  geom_point(aes(color = Transect,
+                shape = Transect),
+             size = 2) +
+  geom_smooth(aes(fill = Transect,
+                  color = Transect,
+                  shape = Transect),
+              method = lm,
               se = T,
               size = 1,
-              alpha = 0.15,
-              color = "#00BFC4",
-              fill = "#00BFC4")  +
+              alpha = 0.15
+              ) +
+  scale_shape(solid = FALSE) +
+  scale_color_manual(labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor"),
+                     values = c("mediumvioletred",
+                                 "forestgreen"))+
+  scale_fill_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c("mediumvioletred",
+                               "forestgreen"))+
+    scale_shape_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c(2,1))+
+  
   xlim(4, -2) +
-  ylim(0, 2) +
+  ylim(0, 2.5) +
   theme(legend.position = c(.99, .99),
         legend.justification = c("right", "top"),
         legend.box = 'horizontal',
@@ -3040,13 +3060,10 @@ abun_transect.u <- ggplot(sum_abun %>%
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
         legend.key.size = unit(2, "line") )  +
-  scale_linetype_manual(values = c('dashed', 'solid'),
-                        labels = c("Urban: Corridor",
-                                "Urban: Non-Corridor")) +
   # adding stats from ANOVA
-        geom_text_npc(aes(npcx = 0.9, npcy = 0.9,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.844\n Subtransect: p = 0.988"),
-                size = 4.5)
+                size = 4)
 
 abun_transect.u
 ```
@@ -3492,7 +3509,7 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
 diversity_simpson_transect.u
 ```
 
-####### Exclude points, ADD stats (as in paper)
+####### Include points, ADD stats (as in paper)
 ```{r}
 diversity_simpson_transect.u <- ggplot(sum_diversity %>%
                           filter(Transect != "Rural"),
@@ -3500,16 +3517,36 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
                             y = simpson^3,
                             color = Transect,
                             fill = Transect,
-                            linetype = Transect)) +
+                            shape = Transect)) +
   labs(x = "Urbanization Score",
        y = expression("Simpson's Diversity Index "^3),
-       linetype = "Subtransect") +
- geom_smooth(method = lm,
+       shape = "Subtransect",
+       fill = "Subtransect",
+       color = "Subtransect"       ) +
+  geom_point(aes(color = Transect,
+                shape = Transect),
+             size = 2) +
+  geom_smooth(aes(fill = Transect,
+                  color = Transect,
+                  shape = Transect),
+              method = lm,
               se = T,
               size = 1,
-              alpha = 0.15,
-              color = "#00BFC4",
-              fill = "#00BFC4")  +
+              alpha = 0.15
+              ) +
+  scale_shape(solid = FALSE) +
+  scale_color_manual(labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor"),
+                     values = c("mediumvioletred",
+                                 "forestgreen"))+
+  scale_fill_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c("mediumvioletred",
+                               "forestgreen"))+
+    scale_shape_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c(2,1))+
+  
   xlim(4, -2) +
   ylim(0, 0.8) +
   theme(legend.position = c(.99, .99),
@@ -3523,13 +3560,10 @@ diversity_simpson_transect.u <- ggplot(sum_diversity %>%
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
         legend.key.size = unit(2, "line") )  +
-  scale_linetype_manual(values = c('dashed', 'solid'),
-                        labels = c("Urban: Corridor",
-                                "Urban: Non-Corridor")) +
   # adding stats from ANOVA
-        geom_text_npc(aes(npcx = 0.9, npcy = 0.9,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.132\n Subtransect: p = 0.029"),
-                size = 4.5)
+                size = 4)
 
 diversity_simpson_transect.u
 ```
@@ -3876,7 +3910,7 @@ rich_transect.u <- ggplot(sum_richness %>%
 rich_transect.u
 ```
 
-####### Exclude points, add stats (as in paper)
+####### Include points, add stats (as in paper)
 ```{r}
 rich_transect.u <- ggplot(sum_richness %>%
                           filter(Transect != "Rural"),
@@ -3884,18 +3918,38 @@ rich_transect.u <- ggplot(sum_richness %>%
                             y = Menhinicks_index,
                             color = Transect,
                             fill = Transect,
-                            linetype = Transect)) +
+                            shape = Transect)) +
   labs(x = "Urbanization Score",
        y = "Menhinick's Species Richness",
-       linetype = "Subtransect") +
- geom_smooth(method = lm,
+       shape = "Subtransect",
+       fill = "Subtransect",
+       color = "Subtransect"       ) +
+  geom_point(aes(color = Transect,
+                shape = Transect),
+             size = 2) +
+  geom_smooth(aes(fill = Transect,
+                  color = Transect,
+                  shape = Transect),
+              method = lm,
               se = T,
               size = 1,
-              alpha = 0.15,
-              color = "#00BFC4",
-              fill = "#00BFC4")  +
+              alpha = 0.15
+              ) +
+  scale_shape(solid = FALSE) +
+  scale_color_manual(labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor"),
+                     values = c("mediumvioletred",
+                                 "forestgreen"))+
+  scale_fill_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c("mediumvioletred",
+                               "forestgreen"))+
+    scale_shape_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c(2,1))+
+  
   xlim(4, -2) +
-  ylim(0, NA) +
+  ylim(0, 5) +
   theme(legend.position = c(.99, .99),
         legend.justification = c("right", "top"),
         legend.box = 'horizontal',
@@ -3907,13 +3961,10 @@ rich_transect.u <- ggplot(sum_richness %>%
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
         legend.key.size = unit(2, "line") )  +
-  scale_linetype_manual(values = c('dashed', 'solid'),
-                        labels = c("Urban: Corridor",
-                                "Urban: Non-Corridor")) +
   # adding stats from ANOVA
-        geom_text_npc(aes(npcx = 0.9, npcy = 0.9,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.19\n Subtransect: p = 0.081"),
-                size = 4.5)
+                size = 4)
 
 rich_transect.u
 ```
@@ -4167,7 +4218,7 @@ even_transect <- ggplot(sum_evenness %>%
 even_transect
 ```
 
-######## Exclude points, ADD stats (as in paper)
+######## Include points, ADD stats (as in paper)
 ```{r}
 even_transect <- ggplot(sum_evenness %>%
                           filter(Transect != "Rural"),
@@ -4175,19 +4226,38 @@ even_transect <- ggplot(sum_evenness %>%
                             y = simpson_equit^3,
                             color = Transect,
                             fill = Transect,
-                            linetype = Transect)) +
+                            shape = Transect)) +
   labs(x = "Distance to Urban Center (km)",
        y = expression("Simpson's Evenness "^3),
-       linetype = "Subtransect") +
-  xlim(0, 35) +
-   geom_smooth(method = lm,
+       shape = "Subtransect",
+       fill = "Subtransect",
+       color = "Subtransect"       ) +
+  geom_point(aes(color = Transect,
+                shape = Transect),
+             size = 2) +
+  geom_smooth(aes(fill = Transect,
+                  color = Transect,
+                  shape = Transect),
+              method = lm,
               se = T,
               size = 1,
-              alpha = 0.15,
-              color = "#00BFC4",
-              fill = "#00BFC4")  +
-  ylim(0, 1.25) +
-  theme(legend.position = c(.99, .99),
+              alpha = 0.15
+              ) +
+  scale_shape(solid = FALSE) +
+  scale_color_manual(labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor"),
+                     values = c("mediumvioletred",
+                                 "forestgreen"))+
+  scale_fill_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c("mediumvioletred",
+                               "forestgreen"))+
+    scale_shape_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c(2,1))+
+  ylim(0, 1.5) +
+  xlim(0, 35) +
+ theme(legend.position = c(.99, .99),
         legend.justification = c("right", "top"),
         legend.box = 'horizontal',
         legend.box.just = "right",
@@ -4198,13 +4268,10 @@ even_transect <- ggplot(sum_evenness %>%
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
         legend.key.size = unit(2, "line") )  +
-  scale_linetype_manual(values = c('dashed', 'solid'),
-                        labels = c("Urban: Corridor",
-                                "Urban: Non-Corridor")) +
   # adding stats from ANOVA
-        geom_text_npc(aes(npcx = 0.9, npcy = 0.99,
-                    label = " Distance: p = 0.316\n Subtransect: p = 0.009\n Distance x Subtransect: p = 135"),
-                size = 4.5)
+        geom_text_npc(aes(npcx = 0, npcy = 1,
+                    label = " Distance: p = 0.316\n Subtransect: p = 0.009\n Distance x Subtransect: p = 0.135"),
+                size = 4)
 
 
 even_transect
@@ -4270,7 +4337,7 @@ even_transect.u <- ggplot(sum_evenness %>%
 even_transect.u
 ```
 
-######## Exclude points, ADD stats (as in paper)
+######## Include points, ADD stats (as in paper)
 ```{r}
 even_transect.u <- ggplot(sum_evenness %>%
                           filter(Transect != "Rural"),
@@ -4278,16 +4345,36 @@ even_transect.u <- ggplot(sum_evenness %>%
                             y = simpson_equit^3,
                             color = Transect,
                             fill = Transect,
-                            linetype = Transect)) +
+                            shape = Transect)) +
   labs(x = "Urbanization Score",
        y = expression("Simpson's Evenness "^3),
-       linetype = "Subtransect") +
-   geom_smooth(method = lm,
+       shape = "Subtransect",
+       fill = "Subtransect",
+       color = "Subtransect"       ) +
+  geom_point(aes(color = Transect,
+                shape = Transect),
+             size = 2) +
+  geom_smooth(aes(fill = Transect,
+                  color = Transect,
+                  shape = Transect),
+              method = lm,
               se = T,
               size = 1,
-              alpha = 0.15,
-              color = "#00BFC4",
-              fill = "#00BFC4")  +
+              alpha = 0.15
+              ) +
+  scale_shape(solid = FALSE) +
+  scale_color_manual(labels = c("Urban: Non-Corridor",
+                                "Urban: Corridor"),
+                     values = c("mediumvioletred",
+                                 "forestgreen"))+
+  scale_fill_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c("mediumvioletred",
+                               "forestgreen"))+
+    scale_shape_manual(labels = c("Urban: Non-Corridor",
+                               "Urban: Corridor"),
+                    values = c(2,1))+
+  
   xlim(4, -2) +
   ylim(0, 1.5) +
   theme(legend.position = c(.99, .99),
@@ -4301,20 +4388,17 @@ even_transect.u <- ggplot(sum_evenness %>%
         axis.line = element_line(colour = "black"),
         legend.key = element_rect(fill = NA),
         legend.key.size = unit(2, "line") )  +
-  scale_linetype_manual(values = c('dashed', 'solid'),
-                        labels = c("Urban: Corridor",
-                                "Urban: Non-Corridor")) +
   # adding stats from ANOVA
-        geom_text_npc(aes(npcx = 0.9, npcy = 0.9,
+        geom_text_npc(aes(npcx = 0, npcy = 1,
                     label = " Urb. Score: p = 0.132\n Subtransect: p = 0.029"),
-                size = 4.5)
+                size = 4)
 
 even_transect.u
 ```
 
 
-###### Composite Figure
-####### Gradient & transect figs together
+##### Composite Figure
+###### Gradient & transect figs together
 ```{r}
 
 library(ggpubr) # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots # 'ggplot2' Based Publication Ready Plots
@@ -4332,8 +4416,8 @@ Q3_regressions.evenness
 
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Regressions_Pollinators/Supplement/Pollinator_regressions_Evenness.pdf", width = 12, height = 7)
 ```
-####### Gradient & transect figs separate
-######## Gradient figs
+###### Gradient & transect figs separate
+####### Gradient figs
 ```{r}
 
 ##### ADD OTHER URB_SCORE VARS TOO
@@ -4350,7 +4434,7 @@ ggarrange(even,
 dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q3_Regressions_Pollinators/Supplement/Pollinator_regressions_urbscore_gradientfigs_points.pdf", width = 12, height = 7.5)
 ```
 
-######## Transect figs
+####### Transect figs
 ```{r}
 
 ##### ADD OTHER URB_SCORE VARS TOO
@@ -4364,7 +4448,7 @@ ggarrange(even_transect,
           font.label = (size =14),
           common.legend = TRUE)
 
-dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q4_Regressions_Pollinators/Supplement/Pollinator_regressions_urbscore_transects_nopoints.pdf", width = 12, height = 7.5)
+dev.copy2pdf(file="~/R_Projects/chapter_one/Figures_Tables/Q4_Regressions_Pollinators/Supplement/Pollinator_regressions_urbscore_transects_points.pdf", width = 12, height = 7.5)
 ```
 
 
