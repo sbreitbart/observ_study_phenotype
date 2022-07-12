@@ -336,6 +336,7 @@ plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
 
 ######## Check for spatial autocorrelation
 ```{r}
+# check for S.A.-----
 DHARMa::testSpatialAutocorrelation(simulateResiduals(peds_glmer_gradient_01),
                            x = fertile$Peduncles_minus1,
                            y = fertile$City_dist)
@@ -374,17 +375,57 @@ testSpatialAutocorrelation(res2,
 
 
 # try model which accounts for S.A.
+# account for S.A.-----
+## try using glmmtmb-----
+### generate a factor representing (x,y) coordinates
+### (help from this site: https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html)
+### and this site: https://r-sig-mixed-models.r-project.narkive.com/wT6u4PG6/r-sig-me-spatial-autocorrelation-as-random-effect-with-count-data
+### and this site: https://github.com/glmmTMB/glmmTMB/issues/552
 
-# gls(
-#   model = Peduncles_minus1 ~ (1|Patch_ID) +
-#                                   City_dist +
-#                                   Year,
-#                               data = fertile,
-#               zi = ~City_dist + Year,
-#               family = truncated_poisson,
-#   correlation = corExp(form = ~ x + y, nugget = TRUE), 
-#   method = "REML"
-# )
+pos <- numFactor(fertile$Latitude, fertile$Longitude)
+
+### run SA model
+#### model w/ exp(pos + 0|Patch_ID) doesn't converge unless Patch_ID is removed as random effect
+#### model w/ mat(pos + 0|Patch_ID) doesn't converge unless Patch_ID is removed as random effect
+#### model w/ gau(pos + 0|Patch_ID) isn't appropriate
+peds_glmer_gradient_01_SA.exp <- glmmTMB(Peduncles_minus1 ~
+                              #          (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year +
+        # add to account for spatial autocorrelation             
+                                 exp(pos + 0|Patch_ID),
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson)
+
+peds_glmer_gradient_01_SA.mat <- glmmTMB(Peduncles_minus1 ~
+                                 #       (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year +
+        # add to account for spatial autocorrelation             
+                                 mat(pos + 0|Patch_ID),
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson)
+
+# When (1|Patch_ID) IS removed, the ANOVA results for the models accounting for spatial autocorrelation are qualitatively identical to the original model. The AIC scores are all less than or equal to 2 AIC from the original model for each added degree of freedom.
+# This is also true when the spatial autocorrelation term is changed to exp(pos + 0|City_dist) (and for the mat model).
+
+car::Anova(peds_glmer_gradient_01_SA.exp) # this is qualitatively identical to original model
+car::Anova(peds_glmer_gradient_01_SA.mat) # this is qualitatively identical to original model
+car::Anova(peds_glmer_gradient_01)
+
+AIC(peds_glmer_gradient_01,
+    peds_glmer_gradient_01_SA.exp, # qualitatively identical (<=2 AIC apart per df)
+    peds_glmer_gradient_01_SA.mat) # qualitatively identical (<=2 AIC apart per df)
+
+
+
+## try using nlme-----
+# not sure I can do this- can't find a model that can account for zero-inflation with this package
+
 ```
 
 ######## Urban sites: NO TRANSFORMATION NEEDED

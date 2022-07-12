@@ -135,7 +135,7 @@ long_Transect_Data_18_19 <-
 ```
 
 ## Manipulate pollinator, taxonomy tables
-#### All data
+### All data
 ```{r}
 # Create new table with average pollinator sightings per plant
 poll_pp <- pollinators %>%
@@ -246,7 +246,7 @@ div_transects <- diversity %>%
 
 ```
  
-#### Without honeybee data
+### Without honeybee data
 ```{r}
 # remove honeybee data
 diversity_no_honey <- diversity %>% filter(Morphospecies != "Apis mellifera (Large)")
@@ -310,22 +310,22 @@ div_transects_no_honey <- diversity_no_honey %>%
 ```
 
 
-#### SummarySE
-##### Abundance
+### SummarySE
+#### Abundance
 ```{r}
 sum_abun <- summarySE(diversity,
                    measurevar = "Count",
                    groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
                    na.rm = T)
 ```
-##### Diversity
+#### Diversity
 ```{r}
 sum_diversity <- summarySE(div_sum,
                    measurevar = "simpson",
                    groupvars = c("Transect", "Patch_ID", "Dist_city", "Urb_score"),
                    na.rm = T)
 ```
-##### Richness
+#### Richness
 ```{r}
 sum_richness <- summarySE(div_sum,
                    measurevar = "Menhinicks_index",
@@ -333,7 +333,7 @@ sum_richness <- summarySE(div_sum,
                    na.rm = T)
 ```
 
-##### Evenness
+#### Evenness
 ```{r}
 sum_evenness <- summarySE(div_sum,
                    measurevar = "simpson_equit",
@@ -341,7 +341,7 @@ sum_evenness <- summarySE(div_sum,
                    na.rm = T)
 ```
 
-##### Abundance: No honeybees
+#### Abundance: No honeybees
 ```{r}
 sum_abun.nohoney <- summarySE(diversity_no_honey,
                    measurevar = "Count",
@@ -349,7 +349,7 @@ sum_abun.nohoney <- summarySE(diversity_no_honey,
                    na.rm = T)
 ```
 
-##### Diversity: No honeybees
+#### Diversity: No honeybees
 ```{r}
 sum_diversity.nohoney <- summarySE(div_sum_no_honey,
                    measurevar = "simpson",
@@ -357,8 +357,8 @@ sum_diversity.nohoney <- summarySE(div_sum_no_honey,
                    na.rm = T)
 ```
 ## Statistical Analysis
-#### Linear Models
-##### Abundance
+### Linear Models
+#### Abundance
 ###### All data
 ####### City_dist
 ######## Without transects- NO TRANSFORMATION
@@ -370,6 +370,157 @@ lm_abun1 <- lm(total_indivs ~ Dist_city,
 par(mfrow=c(2,2))
 plot(lm_abun1) # looks good
 
+```
+
+
+######## Check for spatial autocorrelation
+```{r}
+DHARMa::testSpatialAutocorrelation(simulateResiduals(lm_abun1),
+                           x = div_sum$total_indivs,
+                           y = div_sum$Dist_city)
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# add lat, long
+div_sum %<>%
+  dplyr::left_join(., pollinators[,c(1:3)], by = "Patch_ID") 
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(lm_abun1),
+                            group = div_sum$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$Lat,
+                           div_sum$Long)
+
+# p = 0.03413; reject null of no spatial autocorrelation
+
+
+
+
+# account for S.A.-----
+## try using glmmtmb-----
+### generate a factor representing (x,y) coordinates
+### (help from this site: https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html)
+pos <- numFactor(div_sum$Lat, div_sum$Long)
+
+
+### run SA models
+lm_abun1_SA.1.exp <-  glmmTMB(total_indivs ~ Dist_city +
+        # add to account for spatial autocorrelation 
+        # doesn't work if I use Dist_city in place of Patch_ID
+                                 exp(pos + 0|Patch_ID),
+               data = div_sum,
+        REML = T)
+
+# doesn't converge when REML=F
+lm_abun1_SA.1.exp.ML <-  glmmTMB(total_indivs ~ Dist_city +
+        # add to account for spatial autocorrelation 
+        # doesn't work if I use Dist_city in place of Patch_ID
+                                 exp(pos + 0|Patch_ID),
+               data = div_sum,
+        REML = F)
+
+# this doesn't work
+lm_abun1_SA.1.gau <-  glmmTMB(total_indivs ~ Dist_city +
+                                 gau(pos + 0|Patch_ID),
+               data = div_sum,
+        REML = T)
+
+# this doesn't converge
+lm_abun1_SA.1.mat <-  glmmTMB(total_indivs ~ Dist_city +
+                                mat(pos + 0|Patch_ID),
+               data = div_sum,
+        REML = T)
+
+
+AIC(lm_abun1_SA.1.exp.ML,
+    lm_abun1_SA.1.exp, # SA model <2 AIC/df from original model so it's a better model
+    lm_abun1)
+
+car::Anova(lm_abun1_SA.1.exp) # these results are qualitatively identical to original model (p = 0.0071 vs 0.0098)
+car::Anova(lm_abun1_SA.1.exp.ML) # these results are qualitatively identical to original model (p = 0.0059 vs 0.0098)
+car::Anova(lm_abun1)
+
+
+
+# try using nlme-----
+library(nlme)
+
+lm_abun1_SA.noSA <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML")
+
+lm_abun1_SA.noSA.ML <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "ML")
+
+### run SA models
+lm_abun1_SA.exp <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corExp(form = ~ Lat + Long,
+                                                   nugget=T))
+
+lm_abun1_SA.exp.ML <- update(lm_abun1_SA.exp,
+                             method = "ML")
+
+lm_abun1_SA.gaus <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corGaus(form = ~ Lat + Long,
+                                                   nugget=T))
+
+lm_abun1_SA.gaus.ML <- update(lm_abun1_SA.gaus,
+                             method = "ML")
+
+lm_abun1_SA.rat <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corRatio(form = ~ Lat + Long,
+                                                   nugget=T))
+
+lm_abun1_SA.rat.ML <- update(lm_abun1_SA.rat,
+                             method = "ML")
+
+lm_abun1_SA.sph <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corSpher(form = ~ Lat + Long,
+                                                   nugget=T))
+
+lm_abun1_SA.sph.ML <- update(lm_abun1_SA.sph,
+                             method = "ML")
+
+AIC(lm_abun1_SA.noSA,
+    lm_abun1_SA.exp,
+    lm_abun1_SA.gaus,
+    lm_abun1_SA.rat,
+    lm_abun1_SA.sph) # AICs are identical
+
+MuMIn::model.sel(lm_abun1_SA.noSA, # noSA model is best AIC
+                 lm_abun1_SA.exp,
+                 lm_abun1_SA.gaus,
+                 lm_abun1_SA.rat,
+                 lm_abun1_SA.sph) # other SA mods' AICs identical
+
+# these results are qualitatively identical to original model fit with lm vs gls (p = 0.0071 vs 0.0098) AND SA models tested with glmmtmb!
+car::Anova(lm_abun1_SA.noSA.ML) # null mod fit w/gls identical to 4 SA mods below
+car::Anova(lm_abun1_SA.exp.ML)
+car::Anova(lm_abun1_SA.gaus.ML)
+car::Anova(lm_abun1_SA.rat.ML)
+car::Anova(lm_abun1_SA.sph.ML)
+car::Anova(lm_abun1)
+
+summary(lm_abun1_SA.noSA.ML)
+summary(lm_abun1_SA.exp.ML)
+summary(lm_abun1_SA.gaus.ML)
+summary(lm_abun1_SA.rat.ML)
+summary(lm_abun1_SA.sph.ML)
+summary(lm_abun1)
 ```
 
 
@@ -490,7 +641,7 @@ lm_abun1.urbsubs.u_nohoney_ME <- lm(total_indivs ~ Urb_score + Transect,
                          filter(Transect != 'Rural'))
 ```
 
-##### Simpson's Diversity
+#### Simpson's Diversity
 ###### All data
 ####### City_dist
 ######## Without transects- squaring TRANSFORMATION
@@ -518,6 +669,29 @@ lm_diversity <- lm(simpson^2 ~ Dist_city,
 
 ```
 
+
+######## Check for spatial autocorrelation
+```{r}
+DHARMa::testSpatialAutocorrelation(simulateResiduals(lm_diversity),
+                           x = div_sum$simpson^2,
+                           y = div_sum$Dist_city)
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(lm_diversity),
+                            group = div_sum$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$Lat,
+                           div_sum$Long)
+
+# p = 0.5906; can't reject null of no spatial autocorrelation
+
+```
 
 ######## With transects- cubing TRANSFORMATION
 ```{r}
@@ -760,7 +934,7 @@ lm.diversity_nohoney.urbsubs.u_ME <- lm(simpson^3 ~ Urb_score + Transect,
                                    data = div_sum_no_honey %>%
                                      filter(Transect != 'Rural'))
 ```
-##### Species Richness
+#### Species Richness
 ###### City_dist
 ####### Without transects- NO TRANSFORMATION NEEDED
 ```{r}
@@ -774,6 +948,29 @@ gg_reshist(lm.rich, bins=20)
 
 diagnostic(lm.rich$residuals)
 # Very normal!
+
+```
+
+######## Check for spatial autocorrelation
+```{r}
+DHARMa::testSpatialAutocorrelation(simulateResiduals(lm.rich),
+                           x = div_sum$Menhinicks_index,
+                           y = div_sum$Dist_city)
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(lm.rich),
+                            group = div_sum$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$Lat,
+                           div_sum$Long)
+
+# p = 0.6822; can't reject null of no spatial autocorrelation
 
 ```
 
@@ -837,7 +1034,7 @@ lm.rich.urbsubs.u_ME <- lm(Menhinicks_index ~ Urb_score + Transect,
                         filter(Transect != "Rural"))
 
 ```
-##### Evenness (Equitability)
+#### Evenness (Equitability)
 ###### City_dist
 ####### Without transects- NO TRANSFORMATION NEEDED
 ```{r}
@@ -854,6 +1051,28 @@ diagnostic(lm.even$residuals)
 # Looks pretty normal
 ```
 
+######## Check for spatial autocorrelation
+```{r}
+DHARMa::testSpatialAutocorrelation(simulateResiduals(lm.even),
+                           x = div_sum$simpson_equit,
+                           y = div_sum$Dist_city)
+# if there are multiple observations with the same x values,
+# create first ar group with unique values for each location
+# then aggregate the residuals per location, and calculate
+# spatial autocorrelation on the new group
+
+# calculating residuals per group
+res2 = recalculateResiduals(simulateResiduals(lm.even),
+                            group = div_sum$Patch_ID)
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$Lat,
+                           div_sum$Long)
+
+# p = 0.7764; can't reject null of no spatial autocorrelation
+
+```
 ####### With transects- CUBING TRANSFORMATION 
 ```{r}
 lm.even.urbsubs <- lm(simpson_equit ~ Dist_city * Transect,
@@ -959,8 +1178,8 @@ lm.even.urbsubs.u_ME <- lm(simpson_equit^3 ~ Urb_score + Transect,
                         filter(Transect != "Rural") )
 ```
 
-#### ANOVA
-##### Abundance
+### ANOVA
+#### Abundance
 ###### All data
 ####### City_dist
 ######## All data
@@ -1058,7 +1277,7 @@ car::Anova(lm_abun1.urbsubs.u_nohoney_ME) # nothing sig
 AIC(lm_abun1.urbsubs.u_nohoney, lm_abun1.urbsubs.u_nohoney_ME) # Full has lower AIC (not <2 away though)
 ```
 
-##### Diversity
+#### Diversity
 ###### Simpson's Diversity Index
 ####### City_dist
 ######## All data
@@ -1166,7 +1385,7 @@ car::Anova(lm.diversity_nohoney.urbsubs.u_ME) # transect sig
 AIC(lm.diversity_nohoney.urbsubs.u, lm.diversity_nohoney.urbsubs.u_ME) # full model has lower AIC (<2 away)
 ```
 
-##### Richness
+#### Richness
 ###### City_dist
 ####### Gradient
 ```{r}
@@ -1243,7 +1462,7 @@ car::Anova(lm.rich.urbsubs.u_ME) # transect marg sig
 AIC(lm.rich.urbsubs.u, lm.rich.urbsubs.u_ME) # ME model lower AIC but <2
 ```
 
-##### Simpson's Evenness (Equitability)
+#### Simpson's Evenness (Equitability)
 ###### City_dist
 ####### Gradient
 ```{r}
@@ -1280,7 +1499,7 @@ AIC(lm.even.urbsubs.u,lm.even.urbsubs.u_ME ) # ME model lower AIC (but <2 away)
 
 ```
 
-#### Export ANOVA
+### Export ANOVA
 ###### Functions
 ```{r}
 # tidy anovas
