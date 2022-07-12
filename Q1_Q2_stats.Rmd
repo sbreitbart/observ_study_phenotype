@@ -384,6 +384,24 @@ testSpatialAutocorrelation(res2,
 
 pos <- numFactor(fertile$Latitude, fertile$Longitude)
 
+peds_glmer_gradient_01.ML <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year,
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson,
+              REML = F)
+
+peds_glmer_gradient_01.REML <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year,
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson,
+              REML = T)
+
 ### run SA model
 #### model w/ exp(pos + 0|Patch_ID) doesn't converge unless Patch_ID is removed as random effect
 #### model w/ mat(pos + 0|Patch_ID) doesn't converge unless Patch_ID is removed as random effect
@@ -397,8 +415,22 @@ peds_glmer_gradient_01_SA.exp <- glmmTMB(Peduncles_minus1 ~
                                  exp(pos + 0|Patch_ID),
                                 fertile,
               zi = ~City_dist:Year + City_dist + Year,
-              family = truncated_poisson)
+              family = truncated_poisson,
+        REML = T)
 
+peds_glmer_gradient_01_SA.exp.ML <- glmmTMB(Peduncles_minus1 ~
+                              #          (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year +
+        # add to account for spatial autocorrelation             
+                                 exp(pos + 0|Patch_ID),
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson,
+        REML = F)
+
+# this doesn't converge
 peds_glmer_gradient_01_SA.mat <- glmmTMB(Peduncles_minus1 ~
                                  #       (1|Patch_ID) +
                                   City_dist:Year +
@@ -408,19 +440,21 @@ peds_glmer_gradient_01_SA.mat <- glmmTMB(Peduncles_minus1 ~
                                  mat(pos + 0|Patch_ID),
                                 fertile,
               zi = ~City_dist:Year + City_dist + Year,
-              family = truncated_poisson)
+              family = truncated_poisson,
+        REML = T)
 
 # When (1|Patch_ID) IS removed, the ANOVA results for the models accounting for spatial autocorrelation are qualitatively identical to the original model. The AIC scores are all less than or equal to 2 AIC from the original model for each added degree of freedom.
 # This is also true when the spatial autocorrelation term is changed to exp(pos + 0|City_dist) (and for the mat model).
 
-car::Anova(peds_glmer_gradient_01_SA.exp) # this is qualitatively identical to original model
-car::Anova(peds_glmer_gradient_01_SA.mat) # this is qualitatively identical to original model
-car::Anova(peds_glmer_gradient_01)
+AIC(peds_glmer_gradient_01.REML,
+    peds_glmer_gradient_01_SA.exp # qualitatively identical (<=2 AIC apart per df)
+    # peds_glmer_gradient_01_SA.mat
+    )
 
-AIC(peds_glmer_gradient_01,
-    peds_glmer_gradient_01_SA.exp, # qualitatively identical (<=2 AIC apart per df)
-    peds_glmer_gradient_01_SA.mat) # qualitatively identical (<=2 AIC apart per df)
 
+# now compare ML models for ANOVA
+car::Anova(peds_glmer_gradient_01_SA.exp.ML) # this is qualitatively identical to original model
+car::Anova(peds_glmer_gradient_01.ML)
 
 
 ## try using nlme-----
