@@ -154,6 +154,85 @@ BOTH DATA FRAMES
 ## Questions 1-2 (Milkweed data)
 ### Model Selection
 #### Linear Models (lmer and glmer)
+##### Calculate x, y positions per pop for testing for spatial autocorrelation
+```{r}
+# create UTM coordinates for each lat/long-----
+# used this site: https://www.earthpoint.us/BatchConvert.aspx
+# then checked manually w/this site: https://apps.waterconnect.sa.gov.au/smartforms/map.htm
+utm_coords <-
+  read.csv(here::here("./Urbanization_Score_files/Lat_Longs_to_UTM/80_Sites_latlongs_converted_ALL.csv"),
+           header=T) %>%
+  full_join(fertile, by = c("Latitude", "Longitude"))
+
+
+# calculating x, y positions per population for PEDUNCLES, PODS, PODS PERPED, HEIGHT-----
+groupLocations <- utm_coords %>%
+  dplyr::select(City_dist,
+                Patch_ID,
+                Latitude,
+                Longitude, 
+                Year, 
+                Easting,
+                Northing,
+                Peduncles_minus1,
+                Viable_Pods_minus1,
+                pods_per_ped,
+                Height_Sept) %>%
+  dplyr::group_by(Patch_ID, 
+                  Year) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Latitude),
+                   Long = first(Longitude),
+                   East = first(Easting),
+                   North = first(Northing),
+                   pods = mean(Viable_Pods_minus1,
+                               na.rm = TRUE),
+                   Peduncles = mean(Peduncles_minus1,
+                                    na.rm = TRUE),
+                   podsperped = mean(pods_per_ped, 
+                                     na.rm = TRUE),
+                   height = mean(Height_Sept, na.rm = TRUE)) %>%
+  # now take average of both years
+  dplyr::group_by(Patch_ID) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Lat),
+                   Long = first(Long),
+                   East = first(East),
+                   North = first(North),
+                   pods = mean(pods, 
+                               na.rm = TRUE),
+                   Peduncles = mean(Peduncles,
+                                    na.rm = TRUE),
+                   podsperped = mean(podsperped, 
+                               na.rm = TRUE),
+                   height = mean(height,
+                                    na.rm = TRUE))
+
+
+
+# calculating x, y positions per population for POLLINIA-----
+utm_coords_pollinia <-
+  read.csv(here::here("./Urbanization_Score_files/Lat_Longs_to_UTM/80_Sites_latlongs_converted_ALL.csv"),
+           header=T) %>%
+  full_join(long_Transect_Data_18_19, by = c("Latitude", "Longitude"))
+
+groupLocations_pollinia <- utm_coords_pollinia %>%
+  dplyr::select(City_dist,
+                Average_Pollinia,
+                Latitude,
+                Longitude,
+                Easting,
+                Northing,
+                Patch_ID) %>%
+  dplyr::group_by(Patch_ID) %>%
+  dplyr::summarise(City_dist = first(City_dist),
+                   Lat = first(Latitude),
+                   Long = first(Longitude),
+                   East = first(Easting),
+                   North = first(Northing),
+                   Pollinia = mean(Average_Pollinia, na.rm = TRUE))
+```
+
 ##### Peduncles
 ###### GLMER
 ####### City_dist, not urb_score
@@ -340,29 +419,13 @@ plot(simulateResiduals(peds_glmer_gradient_01)) # again, fine
 DHARMa::testSpatialAutocorrelation(simulateResiduals(peds_glmer_gradient_01),
                            x = fertile$Peduncles_minus1,
                            y = fertile$City_dist)
-# if there are multiple observations with the same x values,
-# create first ar group with unique values for each location
-# then aggregate the residuals per location, and calculate
-# spatial autocorrelation on the new group
+# if there are multiple observations with the same x values, create first ar group with unique values for each location then aggregate the residuals per location, and calculate spatial autocorrelation on the new group
 
-# calculating x, y positions per population
-groupLocations <- fertile %>%
-  dplyr::select(City_dist, Peduncles_minus1, Patch_ID, Latitude, Longitude, Year) %>%
-  dplyr::group_by(Patch_ID, Year) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Latitude),
-                   Long = first(Longitude),
-                   Peduncles = mean(Peduncles_minus1, na.rm = TRUE)) %>%
-  # now take average of both years
-  dplyr::group_by(Patch_ID) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Lat),
-                   Long = first(Long),
-                   Peduncles = mean(Peduncles, na.rm = TRUE))
 
 # calculating residuals per group
-res2 = recalculateResiduals(simulateResiduals(peds_glmer_gradient_01),
-                            group = fertile$Patch_ID)
+res2 = recalculateResiduals(simulateResiduals(
+  peds_glmer_gradient_01),
+  group = fertile$Patch_ID)
 
 # running the spatial test on grouped residuals
 testSpatialAutocorrelation(res2,
@@ -371,6 +434,12 @@ testSpatialAutocorrelation(res2,
 
 # p = 0.0086; reject null of no spatial autocorrelation
 
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$East,
+                           groupLocations$North)
+
+# p = 0.01122; reject null of no spatial autocorrelation
 
 
 
@@ -382,8 +451,17 @@ testSpatialAutocorrelation(res2,
 ### and this site: https://r-sig-mixed-models.r-project.narkive.com/wT6u4PG6/r-sig-me-spatial-autocorrelation-as-random-effect-with-count-data
 ### and this site: https://github.com/glmmTMB/glmmTMB/issues/552
 
-pos <- numFactor(fertile$Latitude, fertile$Longitude)
+utm_coords2 <- utm_coords %>%
+  drop_na(Peduncles_minus1,
+          Easting,
+          Northing,
+          Latitude,
+          Longitude) 
 
+pos <- numFactor(fertile$Latitude, fertile$Longitude)
+pos_EN <- numFactor(utm_coords2$Easting, utm_coords2$Northing)
+
+# COORDINATES IN LAT/LONG-----
 peds_glmer_gradient_01.ML <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
                                   City_dist:Year +
                                   City_dist +
@@ -457,8 +535,76 @@ car::Anova(peds_glmer_gradient_01_SA.exp.ML) # this is qualitatively identical t
 car::Anova(peds_glmer_gradient_01.ML)
 
 
-## try using nlme-----
+## try using nlme
 # not sure I can do this- can't find a model that can account for zero-inflation with this package
+
+# COORDINATES IN UTM-----
+
+### run SA model
+#### model w/ exp(pos + 0|Patch_ID) doesn't converge with or without Patch_ID as random effect
+#### model w/ mat(pos + 0|Patch_ID) doesn't converge with or without Patch_ID as random effect
+#### model w/ gau(pos + 0|Patch_ID) isn't appropriate
+peds_glmer_gradient_01_SA.exp_EN <- glmmTMB(Peduncles_minus1 ~
+                            #     (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year +
+        # add to account for spatial autocorrelation
+       exp(pos_EN + 0|Patch_ID),
+                                fertile %>%
+         drop_na(Peduncles_minus1,
+                 Latitude,
+                 Longitude),
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson,
+        REML = T)
+
+
+
+peds_glmer_gradient_01_SA.exp.ML_EN <- glmmTMB(Peduncles_minus1 ~
+                              #          (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year +
+        # add to account for spatial autocorrelation 
+        exp(pos_EN + 0|Patch_ID),
+                                fertile %>%
+         drop_na(Peduncles_minus1,
+                 Latitude,
+                 Longitude),
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson,
+        REML = F)
+
+
+
+# this doesn't converge
+peds_glmer_gradient_01_SA.mat <- glmmTMB(Peduncles_minus1 ~
+                                 # (1|Patch_ID) +
+                                  City_dist:Year +
+                                  City_dist +
+                                  Year +
+        # add to account for spatial autocorrelation
+        mat(pos_EN + 0|Patch_ID),
+                                fertile,
+              zi = ~City_dist:Year + City_dist + Year,
+              family = truncated_poisson,
+        REML = T)
+
+# When (1|Patch_ID) IS removed, the ANOVA results for the models accounting for spatial autocorrelation are qualitatively identical to the original model. The AIC scores are all less than or equal to 2 AIC from the original model for each added degree of freedom.
+# This is also true when the spatial autocorrelation term is changed to exp(pos + 0|City_dist) (and for the mat model).
+
+AIC(peds_glmer_gradient_01.REML,
+    peds_glmer_gradient_01_SA.exp_EN # qualitatively identical (<=2 AIC apart per df)
+    # peds_glmer_gradient_01_SA.mat
+    )
+
+
+# now compare ML models for ANOVA
+car::Anova(peds_glmer_gradient_01_SA.exp.ML_EN) # this is qualitatively identical to original model
+car::Anova(peds_glmer_gradient_01.ML)
+
+
 
 ```
 
@@ -1123,24 +1269,6 @@ poll_glmer_gradient_01.v2_anova <- car::Anova(poll_glmer_gradient_01.v2, type = 
 
 ######## Check for spatial autocorrelation
 ```{r}
-# if there are multiple observations with the same x values,
-# create first ar group with unique values for each location
-# then aggregate the residuals per location, and calculate
-# spatial autocorrelation on the new group
-
-# calculating x, y positions per population
-groupLocations_pollinia <- long_Transect_Data_18_19 %>%
-  dplyr::select(City_dist,
-                Average_Pollinia,
-                Latitude,
-                Longitude,
-                Patch_ID) %>%
-  dplyr::group_by(Patch_ID) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Latitude),
-                   Long = first(Longitude),
-                   Pollinia = mean(Average_Pollinia, na.rm = TRUE))
-
 # calculating residuals per group
 res2 = recalculateResiduals(
   simulateResiduals(poll_glmer_gradient_01.v2),
@@ -1152,6 +1280,14 @@ testSpatialAutocorrelation(res2,
                            groupLocations_pollinia$Long)
 
 # p = 0.1009; can't reject null of no spatial autocorrelation
+
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations_pollinia$East,
+                           groupLocations_pollinia$North)
+
+# p = 0.1228; can't reject null of no spatial autocorrelation
 ```
 
 
@@ -1532,26 +1668,6 @@ pods_glmer_gradient_01_anova <- car::Anova(pods_glmer_gradient_01, type = "III")
 
 ######## Check for spatial autocorrelation
 ```{r}
-# if there are multiple observations with the same x values,
-# create first ar group with unique values for each location
-# then aggregate the residuals per location, and calculate
-# spatial autocorrelation on the new group
-
-# calculating x, y positions per population
-groupLocations <- fertile %>%
-  dplyr::select(City_dist, Viable_Pods_minus1, Patch_ID, Latitude, Longitude, Year) %>%
-  dplyr::group_by(Patch_ID, Year) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Latitude),
-                   Long = first(Longitude),
-                   Viable_Pods_minus1 = mean(Viable_Pods_minus1, na.rm = TRUE)) %>%
-  # now take average of both years
-  dplyr::group_by(Patch_ID) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Lat),
-                   Long = first(Long),
-                   Viable_Pods_minus1 = mean(Viable_Pods_minus1, na.rm = TRUE))
-
 # calculating residuals per group
 res2 = recalculateResiduals(simulateResiduals(pods_glmer_gradient_01),
                             group = fertile$Patch_ID)
@@ -1562,6 +1678,14 @@ testSpatialAutocorrelation(res2,
                            groupLocations$Long)
 
 # p = 0.7408; can't reject null of no spatial autocorrelation
+
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$East,
+                           groupLocations$North)
+
+# p = 0.7314; can't reject null of no spatial autocorrelation
 
 ```
 
@@ -2213,25 +2337,6 @@ podsperped_lmer_gradient_02_anova <- car::Anova(podsperped_lmer_gradient_02, typ
 
 ######## Check for spatial autocorrelation
 ```{r}
-# if there are multiple observations with the same x values,
-# create first ar group with unique values for each location
-# then aggregate the residuals per location, and calculate
-# spatial autocorrelation on the new group
-
-# calculating x, y positions per population
-groupLocations <- fertile %>%
-  dplyr::select(City_dist, pods_per_ped, Patch_ID, Latitude, Longitude, Year) %>%
-  dplyr::group_by(Patch_ID, Year) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Latitude),
-                   Long = first(Longitude),
-                   podsperped = mean(pods_per_ped, na.rm = TRUE)) %>%
-  # now take average of both years
-  dplyr::group_by(Patch_ID) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Lat),
-                   Long = first(Long),
-                   podsperped = mean(podsperped, na.rm = TRUE))
 
 # calculating residuals per group
 res2 = recalculateResiduals(simulateResiduals(podsperped_lmer_gradient_02),
@@ -2243,6 +2348,14 @@ testSpatialAutocorrelation(res2,
                            groupLocations$Long)
 
 # p = 0.5123; can't reject null of no spatial autocorrelation
+
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$East,
+                           groupLocations$North)
+
+# p = 0.4744; can't reject null of no spatial autocorrelation
 
 ```
 
@@ -2616,25 +2729,6 @@ height_lmer_gradient_02_anova <- car::Anova(height_lmer_gradient_02) %T>%
 
 ######## Check for spatial autocorrelation
 ```{r}
-# if there are multiple observations with the same x values,
-# create first ar group with unique values for each location
-# then aggregate the residuals per location, and calculate
-# spatial autocorrelation on the new group
-
-# calculating x, y positions per population
-groupLocations <- fertile %>%
-  dplyr::select(City_dist, Height_Sept, Patch_ID, Latitude, Longitude, Year) %>%
-  dplyr::group_by(Patch_ID, Year) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Latitude),
-                   Long = first(Longitude),
-                   height = mean(Height_Sept, na.rm = TRUE)) %>%
-  # now take average of both years
-  dplyr::group_by(Patch_ID) %>%
-  dplyr::summarise(City_dist = first(City_dist),
-                   Lat = first(Lat),
-                   Long = first(Long),
-                   height = mean(height, na.rm = TRUE))
 
 # calculating residuals per group
 res2 = recalculateResiduals(simulateResiduals(height_lmer_gradient_02),
@@ -2647,6 +2741,14 @@ testSpatialAutocorrelation(res2,
 
 # p = 0.3936; can't reject null of no spatial autocorrelation
 
+
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           groupLocations$East,
+                           groupLocations$North)
+
+# p = 0.3432; can't reject null of no spatial autocorrelation
 ```
 
 

@@ -384,8 +384,16 @@ DHARMa::testSpatialAutocorrelation(simulateResiduals(lm_abun1),
 # spatial autocorrelation on the new group
 
 # add lat, long
+
+utm_coords <-
+  read.csv(here::here("./Urbanization_Score_files/Lat_Longs_to_UTM/80_Sites_latlongs_converted_ALL.csv"),
+           header=T) %>%
+  dplyr::rename("Lat" = "Latitude",
+                "Long" = "Longitude")
+
 div_sum %<>%
-  dplyr::left_join(., pollinators[,c(1:3)], by = "Patch_ID") 
+  dplyr::left_join(., pollinators[,c(1:3)], by = "Patch_ID") %>%
+  left_join(utm_coords, by = c("Lat", "Long"))
 
 # calculating residuals per group
 res2 = recalculateResiduals(simulateResiduals(lm_abun1),
@@ -399,12 +407,20 @@ testSpatialAutocorrelation(res2,
 # p = 0.03413; reject null of no spatial autocorrelation
 
 
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$East,
+                           div_sum$North)
+
+# p = 0.02892; reject null of no spatial autocorrelation
 
 
 # account for S.A.-----
 ## try using glmmtmb-----
 ### generate a factor representing (x,y) coordinates
 ### (help from this site: https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html)
+
+# COORDINATES IN LAT/LONG---------
 pos <- numFactor(div_sum$Lat, div_sum$Long)
 
 lm_abun1_SA.1 <-  glmmTMB(total_indivs ~ Dist_city,
@@ -453,7 +469,6 @@ car::Anova(lm_abun1_SA.1) # these results are qualitatively identical to origina
 car::Anova(lm_abun1)
 
 
-
 # try using nlme-----
 library(nlme)
 
@@ -497,6 +512,120 @@ lm_abun1_SA.sph <- nlme::gls(total_indivs ~ Dist_city,
                         data = div_sum,
                         method = "REML",
                         correlation = nlme::corSpher(form = ~ Lat + Long,
+                                                   nugget=T))
+
+lm_abun1_SA.sph.ML <- update(lm_abun1_SA.sph,
+                             method = "ML")
+
+AIC(lm_abun1_SA.noSA, # AIC 2 AIC/df lower than SA mods, so statistically equivalent
+    lm_abun1_SA.exp,
+    lm_abun1_SA.gaus,
+    lm_abun1_SA.rat,
+    lm_abun1_SA.sph) # SA models have identical AICs
+
+
+# these results are qualitatively identical to original model fit with lm vs gls (p = 0.0071 vs 0.0098) AND SA models tested with glmmtmb!
+car::Anova(lm_abun1_SA.noSA.ML) # null mod fit w/gls identical to 4 SA mods below
+car::Anova(lm_abun1_SA.exp.ML)
+car::Anova(lm_abun1_SA.gaus.ML)
+car::Anova(lm_abun1_SA.rat.ML)
+car::Anova(lm_abun1_SA.sph.ML)
+car::Anova(lm_abun1)
+
+# these are all identical
+summary(lm_abun1_SA.noSA.ML)
+summary(lm_abun1_SA.exp.ML)
+summary(lm_abun1_SA.gaus.ML)
+summary(lm_abun1_SA.rat.ML)
+summary(lm_abun1_SA.sph.ML)
+summary(lm_abun1)
+
+# COORDINATES IN UTM---------
+pos_EN <- numFactor(div_sum$East, div_sum$North)
+
+### run SA models
+lm_abun1_SA.1.exp_EN <-  glmmTMB(total_indivs ~ Dist_city +
+        # add to account for spatial autocorrelation 
+        # doesn't work if I use Dist_city in place of Patch_ID
+                               exp(pos_EN + 0|Patch_ID),
+               data = div_sum,
+        REML = T)
+
+# doesn't converge when REML=F
+# lm_abun1_SA.1.exp.ML <-  glmmTMB(total_indivs ~ Dist_city +
+#         # add to account for spatial autocorrelation
+#         # doesn't work if I use Dist_city in place of Patch_ID
+#                                  exp(pos_EN + 0|Patch_ID),
+#                data = div_sum,
+#         REML = F)
+
+# this doesn't work
+# lm_abun1_SA.1.gau <-  glmmTMB(total_indivs ~ Dist_city +
+#                                  gau(pos_EN + 0|Patch_ID),
+#                data = div_sum,
+#         REML = T)
+# 
+# # this doesn't converge
+# lm_abun1_SA.1.mat <-  glmmTMB(total_indivs ~ Dist_city +
+#                                 mat(pos_EN + 0|Patch_ID),
+#                data = div_sum,
+#         REML = T)
+
+
+AIC(lm_abun1_SA.1.exp, # SA model 2 AIC/df from original model so it's statistically equivalent
+    lm_abun1_SA.1.REML)
+
+# comparing REML = T models because exp model doesn't converge when REML = F
+car::Anova(lm_abun1_SA.1.exp) # these results are qualitatively identical to original model (p = 0.0071 vs 0.0098)
+car::Anova(lm_abun1_SA.1) # these results are qualitatively identical to original model (p = 0.0059 vs 0.0098)
+car::Anova(lm_abun1)
+
+
+
+
+# try using nlme-----
+library(nlme)
+
+lm_abun1_SA.noSA <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML")
+
+lm_abun1_SA.noSA.ML <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "ML")
+
+### run SA models
+lm_abun1_SA.exp <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corExp(form = ~ Easting + Northing,
+                                                   nugget=T))
+
+lm_abun1_SA.exp.ML <- update(lm_abun1_SA.exp,
+                             method = "ML")
+
+lm_abun1_SA.gaus <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corGaus(form = ~ Easting + Northing,
+                                                   nugget=T))
+
+lm_abun1_SA.gaus.ML <- update(lm_abun1_SA.gaus,
+                             method = "ML")
+
+lm_abun1_SA.rat <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corRatio(form = ~ Easting + Northing,
+                                                   nugget=T))
+
+lm_abun1_SA.rat.ML <- update(lm_abun1_SA.rat,
+                             method = "ML")
+
+lm_abun1_SA.sph <- nlme::gls(total_indivs ~ Dist_city,
+                        data = div_sum,
+                        method = "REML",
+                        correlation = nlme::corSpher(form = ~ Easting + Northing,
                                                    nugget=T))
 
 lm_abun1_SA.sph.ML <- update(lm_abun1_SA.sph,
@@ -694,6 +823,14 @@ testSpatialAutocorrelation(res2,
 
 # p = 0.5906; can't reject null of no spatial autocorrelation
 
+
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$East,
+                           div_sum$North)
+
+# p = 0.5388; can't reject null of no spatial autocorrelation
 ```
 
 ######## With transects- cubing TRANSFORMATION
@@ -954,7 +1091,7 @@ diagnostic(lm.rich$residuals)
 
 ```
 
-######## Check for spatial autocorrelation
+####### Check for spatial autocorrelation
 ```{r}
 DHARMa::testSpatialAutocorrelation(simulateResiduals(lm.rich),
                            x = div_sum$Menhinicks_index,
@@ -975,6 +1112,14 @@ testSpatialAutocorrelation(res2,
 
 # p = 0.6822; can't reject null of no spatial autocorrelation
 
+
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$East,
+                           div_sum$North)
+
+# p = 0.7177; can't reject null of no spatial autocorrelation
 ```
 
 ####### With transects- NO TRANSFORMATION NEEDED
@@ -1054,7 +1199,7 @@ diagnostic(lm.even$residuals)
 # Looks pretty normal
 ```
 
-######## Check for spatial autocorrelation
+####### Check for spatial autocorrelation
 ```{r}
 DHARMa::testSpatialAutocorrelation(simulateResiduals(lm.even),
                            x = div_sum$simpson_equit,
@@ -1074,6 +1219,15 @@ testSpatialAutocorrelation(res2,
                            div_sum$Long)
 
 # p = 0.7764; can't reject null of no spatial autocorrelation
+
+
+
+# running the spatial test on grouped residuals
+testSpatialAutocorrelation(res2,
+                           div_sum$East,
+                           div_sum$North)
+
+# p = 0.7732; can't reject null of no spatial autocorrelation
 
 ```
 ####### With transects- CUBING TRANSFORMATION 
