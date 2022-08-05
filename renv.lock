@@ -1376,10 +1376,10 @@
     },
     "rlang": {
       "Package": "rlang",
-      "Version": "0.4.12",
+      "Version": "1.0.4",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "0879f5388fe6e4d56d7ef0b7ccb031e5"
+      "Hash": "6539dd8c651e67e3b55b5ffea106362b"
     },
     "rmarkdown": {
       "Package": "rmarkdown",
