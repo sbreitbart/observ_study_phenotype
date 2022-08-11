@@ -452,14 +452,28 @@ testSpatialAutocorrelation(res2,
 ### and this site: https://github.com/glmmTMB/glmmTMB/issues/552
 
 utm_coords2 <- utm_coords %>%
-  drop_na(Peduncles_minus1,
+  drop_na(Peduncles,
           Easting,
           Northing,
           Latitude,
           Longitude) 
 
 pos <- numFactor(fertile$Latitude, fertile$Longitude)
-pos_EN <- numFactor(utm_coords2$Easting, utm_coords2$Northing)
+
+pos_EN_centered <- numFactor(scale(utm_coords2$Easting,
+                          center = TRUE,
+                          scale = FALSE),
+                    scale(utm_coords2$Northing,
+                          center = TRUE,
+                          scale = FALSE))
+
+pos_EN <- numFactor(utm_coords2$Easting,
+                    utm_coords2$Northing)
+
+
+pos_EN3 <- numFactor(utm_coords2$Easting/ 1000,
+                    utm_coords2$Northing/1000)
+
 
 # COORDINATES IN LAT/LONG-----
 peds_glmer_gradient_01.ML <- glmmTMB(Peduncles_minus1 ~ (1|Patch_ID) +
@@ -541,33 +555,34 @@ car::Anova(peds_glmer_gradient_01.ML)
 # COORDINATES IN UTM-----
 
 ### run SA model
-#### model w/ exp(pos + 0|Patch_ID) doesn't converge with or without Patch_ID as random effect
-#### model w/ mat(pos + 0|Patch_ID) doesn't converge with or without Patch_ID as random effect
 #### model w/ gau(pos + 0|Patch_ID) isn't appropriate
+
+# doesn't converge with or without Patch_ID as random effect
 peds_glmer_gradient_01_SA.exp_EN <- glmmTMB(Peduncles_minus1 ~
-                            #     (1|Patch_ID) +
+                         #        (1|Patch_ID) +
                                   City_dist:Year +
                                   City_dist +
                                   Year +
         # add to account for spatial autocorrelation
-       exp(pos_EN + 0|Patch_ID),
+       exp(pos_EN3 + 0|Patch_ID),
+       
                                 fertile %>%
          drop_na(Peduncles_minus1,
                  Latitude,
                  Longitude),
               zi = ~City_dist:Year + City_dist + Year,
               family = truncated_poisson,
+       
         REML = T)
 
-
-
+# doesn't converge with or without Patch_ID as random effect
 peds_glmer_gradient_01_SA.exp.ML_EN <- glmmTMB(Peduncles_minus1 ~
-                              #          (1|Patch_ID) +
+                               #         (1|Patch_ID) +
                                   City_dist:Year +
                                   City_dist +
                                   Year +
         # add to account for spatial autocorrelation 
-        exp(pos_EN + 0|Patch_ID),
+        exp(pos_EN3 + 0|Patch_ID),
                                 fertile %>%
          drop_na(Peduncles_minus1,
                  Latitude,
@@ -577,34 +592,32 @@ peds_glmer_gradient_01_SA.exp.ML_EN <- glmmTMB(Peduncles_minus1 ~
         REML = F)
 
 
+# this doesn't converge with or without Patch_ID as random effect, or REML as T or F
+# peds_glmer_gradient_01_SA.mat <- glmmTMB(Peduncles_minus1 ~
+#                                  # (1|Patch_ID) +
+#                                   City_dist:Year +
+#                                   City_dist +
+#                                   Year +
+#         # add to account for spatial autocorrelation
+#         mat(pos_EN3 + 0|Patch_ID),
+#                                 fertile %>%
+#          drop_na(Peduncles_minus1,
+#                  Latitude,
+#                  Longitude),
+#               zi = ~City_dist:Year + City_dist + Year,
+#               family = truncated_poisson,
+#         REML = F)
 
-# this doesn't converge
-peds_glmer_gradient_01_SA.mat <- glmmTMB(Peduncles_minus1 ~
-                                 # (1|Patch_ID) +
-                                  City_dist:Year +
-                                  City_dist +
-                                  Year +
-        # add to account for spatial autocorrelation
-        mat(pos_EN + 0|Patch_ID),
-                                fertile,
-              zi = ~City_dist:Year + City_dist + Year,
-              family = truncated_poisson,
-        REML = T)
-
-# When (1|Patch_ID) IS removed, the ANOVA results for the models accounting for spatial autocorrelation are qualitatively identical to the original model. The AIC scores are all less than or equal to 2 AIC from the original model for each added degree of freedom.
-# This is also true when the spatial autocorrelation term is changed to exp(pos + 0|City_dist) (and for the mat model).
-
+# compare AIC w/REML models
+# statistically equivalent
 AIC(peds_glmer_gradient_01.REML,
-    peds_glmer_gradient_01_SA.exp_EN # qualitatively identical (<=2 AIC apart per df)
-    # peds_glmer_gradient_01_SA.mat
+    peds_glmer_gradient_01_SA.exp_EN
     )
 
-
 # now compare ML models for ANOVA
-car::Anova(peds_glmer_gradient_01_SA.exp.ML_EN) # this is qualitatively identical to original model
+# qualitatively identical
+car::Anova(peds_glmer_gradient_01_SA.exp.ML_EN) 
 car::Anova(peds_glmer_gradient_01.ML)
-
-
 
 ```
 

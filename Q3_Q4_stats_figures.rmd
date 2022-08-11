@@ -524,6 +524,7 @@ AIC(lm_abun1_SA.noSA, # AIC 2 AIC/df lower than SA mods, so statistically equiva
     lm_abun1_SA.sph) # SA models have identical AICs
 
 
+
 # these results are qualitatively identical to original model fit with lm vs gls (p = 0.0071 vs 0.0098) AND SA models tested with glmmtmb!
 car::Anova(lm_abun1_SA.noSA.ML) # null mod fit w/gls identical to 4 SA mods below
 car::Anova(lm_abun1_SA.exp.ML)
@@ -541,9 +542,14 @@ summary(lm_abun1_SA.sph.ML)
 summary(lm_abun1)
 
 # COORDINATES IN UTM---------
-pos_EN <- numFactor(div_sum$East, div_sum$North)
+
+pos_EN <- numFactor(div_sum$East, 
+                    div_sum$North)
+
 
 ### run SA models
+### model with gau() isn't appropriate
+
 lm_abun1_SA.1.exp_EN <-  glmmTMB(total_indivs ~ Dist_city +
         # add to account for spatial autocorrelation 
         # doesn't work if I use Dist_city in place of Patch_ID
@@ -552,35 +558,30 @@ lm_abun1_SA.1.exp_EN <-  glmmTMB(total_indivs ~ Dist_city +
         REML = T)
 
 # doesn't converge when REML=F
-# lm_abun1_SA.1.exp.ML <-  glmmTMB(total_indivs ~ Dist_city +
-#         # add to account for spatial autocorrelation
-#         # doesn't work if I use Dist_city in place of Patch_ID
-#                                  exp(pos_EN + 0|Patch_ID),
+lm_abun1_SA.1.exp.ML <-  glmmTMB(total_indivs ~ Dist_city +
+        # add to account for spatial autocorrelation
+        # also doesn't work if I use Dist_city in place of Patch_ID
+                                 exp(pos_EN + 0|Patch_ID),
+               data = div_sum,
+        REML = F)
+
+
+# this doesn't converge with REML = T or F, with Patch_ID or Dist_city in spatial term
+# lm_abun1_SA.1.mat <-  glmmTMB(total_indivs ~ Dist_city +
+#                                 mat(pos_EN + 0|Patch_ID),
+# # add to account for spatial autocorrelation
 #                data = div_sum,
 #         REML = F)
 
-# this doesn't work
-# lm_abun1_SA.1.gau <-  glmmTMB(total_indivs ~ Dist_city +
-#                                  gau(pos_EN + 0|Patch_ID),
-#                data = div_sum,
-#         REML = T)
-# 
-# # this doesn't converge
-# lm_abun1_SA.1.mat <-  glmmTMB(total_indivs ~ Dist_city +
-#                                 mat(pos_EN + 0|Patch_ID),
-#                data = div_sum,
-#         REML = T)
 
-
-AIC(lm_abun1_SA.1.exp, # SA model 2 AIC/df from original model so it's statistically equivalent
+AIC(lm_abun1_SA.1.exp_EN,
+    lm_abun1_SA.1.exp.ML,
     lm_abun1_SA.1.REML)
 
 # comparing REML = T models because exp model doesn't converge when REML = F
-car::Anova(lm_abun1_SA.1.exp) # these results are qualitatively identical to original model (p = 0.0071 vs 0.0098)
+car::Anova(lm_abun1_SA.1.exp_EN) # these results are qualitatively identical to original model (p = 0.0071 vs 0.0098)
 car::Anova(lm_abun1_SA.1) # these results are qualitatively identical to original model (p = 0.0059 vs 0.0098)
 car::Anova(lm_abun1)
-
-
 
 
 # try using nlme-----
@@ -654,7 +655,6 @@ summary(lm_abun1_SA.rat.ML)
 summary(lm_abun1_SA.sph.ML)
 summary(lm_abun1)
 ```
-
 
 ######## With transects- NO TRANSFORMATION
 ```{r}
