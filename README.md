@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6985410.svg)](https://doi.org/10.5281/zenodo.6985410)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6985410.svg)](https://zenodo.org/record/6985410)
 
 # Urbanization and a green corridor influence reproductive success and pollinators of common milkweed
 
