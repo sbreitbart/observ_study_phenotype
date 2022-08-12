@@ -557,9 +557,8 @@ car::Anova(peds_glmer_gradient_01.ML)
 ### run SA model
 #### model w/ gau(pos + 0|Patch_ID) isn't appropriate
 
-# doesn't converge with or without Patch_ID as random effect
 peds_glmer_gradient_01_SA.exp_EN <- glmmTMB(Peduncles_minus1 ~
-                         #        (1|Patch_ID) +
+                                 (1|Patch_ID) +
                                   City_dist:Year +
                                   City_dist +
                                   Year +
@@ -575,9 +574,8 @@ peds_glmer_gradient_01_SA.exp_EN <- glmmTMB(Peduncles_minus1 ~
        
         REML = T)
 
-# doesn't converge with or without Patch_ID as random effect
 peds_glmer_gradient_01_SA.exp.ML_EN <- glmmTMB(Peduncles_minus1 ~
-                               #         (1|Patch_ID) +
+                                        (1|Patch_ID) +
                                   City_dist:Year +
                                   City_dist +
                                   Year +

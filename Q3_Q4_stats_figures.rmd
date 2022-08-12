@@ -550,20 +550,21 @@ pos_EN <- numFactor(div_sum$East,
 ### run SA models
 ### model with gau() isn't appropriate
 
-lm_abun1_SA.1.exp_EN <-  glmmTMB(total_indivs ~ Dist_city +
-        # add to account for spatial autocorrelation 
-        # doesn't work if I use Dist_city in place of Patch_ID
-                               exp(pos_EN + 0|Patch_ID),
-               data = div_sum,
-        REML = T)
+# doesn't converge
+# lm_abun1_SA.1.exp_EN <-  glmmTMB(total_indivs ~ Dist_city +
+#         # add to account for spatial autocorrelation 
+#         # doesn't work if I use Dist_city in place of Patch_ID
+#                                exp(pos_EN + 0|Patch_ID),
+#                data = div_sum,
+#         REML = T)
 
 # doesn't converge when REML=F
-lm_abun1_SA.1.exp.ML <-  glmmTMB(total_indivs ~ Dist_city +
-        # add to account for spatial autocorrelation
-        # also doesn't work if I use Dist_city in place of Patch_ID
-                                 exp(pos_EN + 0|Patch_ID),
-               data = div_sum,
-        REML = F)
+# lm_abun1_SA.1.exp.ML <-  glmmTMB(total_indivs ~ Dist_city +
+#         # add to account for spatial autocorrelation
+#         # also doesn't work if I use Dist_city in place of Patch_ID
+#                                  exp(pos_EN + 0|Patch_ID),
+#                data = div_sum,
+#         REML = F)
 
 
 # this doesn't converge with REML = T or F, with Patch_ID or Dist_city in spatial term
@@ -574,14 +575,14 @@ lm_abun1_SA.1.exp.ML <-  glmmTMB(total_indivs ~ Dist_city +
 #         REML = F)
 
 
-AIC(lm_abun1_SA.1.exp_EN,
-    lm_abun1_SA.1.exp.ML,
-    lm_abun1_SA.1.REML)
+# AIC(lm_abun1_SA.1.exp_EN,
+#     lm_abun1_SA.1.exp.ML,
+#     lm_abun1_SA.1.REML)
 
-# comparing REML = T models because exp model doesn't converge when REML = F
-car::Anova(lm_abun1_SA.1.exp_EN) # these results are qualitatively identical to original model (p = 0.0071 vs 0.0098)
-car::Anova(lm_abun1_SA.1) # these results are qualitatively identical to original model (p = 0.0059 vs 0.0098)
-car::Anova(lm_abun1)
+
+# car::Anova(lm_abun1_SA.1.exp_EN)
+# car::Anova(lm_abun1_SA.1)
+# car::Anova(lm_abun1)
 
 
 # try using nlme-----
@@ -632,14 +633,13 @@ lm_abun1_SA.sph <- nlme::gls(total_indivs ~ Dist_city,
 lm_abun1_SA.sph.ML <- update(lm_abun1_SA.sph,
                              method = "ML")
 
-AIC(lm_abun1_SA.noSA, # AIC 2 AIC/df lower than SA mods, so statistically equivalent
+AIC(lm_abun1_SA.noSA, # AIC 4 AIC lower than SA mods, so performs better than SA mods
     lm_abun1_SA.exp,
     lm_abun1_SA.gaus,
     lm_abun1_SA.rat,
     lm_abun1_SA.sph) # SA models have identical AICs
 
 
-# these results are qualitatively identical to original model fit with lm vs gls (p = 0.0071 vs 0.0098) AND SA models tested with glmmtmb!
 car::Anova(lm_abun1_SA.noSA.ML) # null mod fit w/gls identical to 4 SA mods below
 car::Anova(lm_abun1_SA.exp.ML)
 car::Anova(lm_abun1_SA.gaus.ML)
